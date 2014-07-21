@@ -1,0 +1,20 @@
+image_width: 752
+image_height: 480
+camera_name: bluefox2
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [628.167107759332, 0, 377.379138123397, 0, 629.461185993373, 246.935602566433, 0, 0, 1]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.442442967090243, 0.206226298410641, 0.00171843724048471, -0.000242584991403011, 0]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [516.980834960938, 0, 377.096810984993, 0, 0, 584.975402832031, 248.119490512488, 0, 0, 0, 1, 0]

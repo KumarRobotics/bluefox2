@@ -1,0 +1,21 @@
+<launch>
+    <arg name="serial" default="25000495"/>
+    <arg name="calib_file" default="calib_$(arg serial)"/>
+    <arg name="calib_url" default="package://bluefox2/calib/$(arg calib_file).yml"/>
+    <arg name="fps" default="20"/>
+    <arg name="color" default="false"/>
+    <arg name="expose" default="5000"/>
+    <arg name="binning" default="false"/>
+    <arg name="gain" default="0.0"/>
+
+    <node pkg="bluefox2" type="bluefox2_node" name="mv_$(arg serial)"
+        output="screen">
+        <param name="serial" type="string" value="$(arg serial)"/>
+        <param name="fps" type="int" value="$(arg fps)"/>
+        <param name="color" type="bool" value="$(arg color)"/>
+        <param name="expose" type="int" value="$(arg expose)"/>
+        <param name="binning" type="bool" value="$(arg binning)"/>
+        <param name="gain" type="double" value="$(arg gain)"/>
+        <param name="calib_url" type="string" value="$(arg calib_url)"/>
+    </node>
+</launch>
