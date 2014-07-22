@@ -47,11 +47,11 @@ target_link_libraries(camera
     )
 
 # bluefox2 node
-add_executable(${PROJECT_NAME}_node
-    src/camera_node.cpp
-    src/${PROJECT_NAME}_node.cpp
+add_executable(single_node
+    src/single.cpp
+    src/single_node.cpp
     )
-target_link_libraries(${PROJECT_NAME}_node
+target_link_libraries(single_node
     ${catkin_LIBRARIES}
     camera
     )
@@ -60,7 +60,7 @@ target_link_libraries(${PROJECT_NAME}_node
 
 # stereo
 
-add_dependencies(${PROJECT_NAME}_node
+add_dependencies(single_node
     ${catkin_EXPORTED_TARGETS}
     ${PROJECT_NAME}_gencfg
     )

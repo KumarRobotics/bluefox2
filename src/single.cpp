@@ -1,4 +1,4 @@
-#include "bluefox2/camera_node.h"
+#include "bluefox2/single.h"
 
 #include <functional>
 
@@ -15,7 +15,7 @@ using sensor_msgs::CameraInfo;
 using sensor_msgs::CameraInfoPtr;
 using camera_info_manager::CameraInfoManager;
 
-CameraNode::CameraNode(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
+Single::Single(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
   // Get parameters
   std::string serial;
   nh_.param<string>("serial", serial, "");
@@ -46,10 +46,10 @@ CameraNode::CameraNode(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
 
   // Dynamic reconfigure
   server_.setCallback(
-      boost::bind(&CameraNode::ReconfigureCallback, this, _1, _2));
+      boost::bind(&Single::ReconfigureCallback, this, _1, _2));
 }
 
-void CameraNode::Run() {
+void Single::Run() {
   CameraConfig config;
   nh_.param<bool>("color", config.color, "false");
   nh_.param<bool>("binning", config.binning, "false");
@@ -60,17 +60,17 @@ void CameraNode::Run() {
   Start();
 }
 
-void CameraNode::End() { Stop(); }
+void Single::End() { Stop(); }
 
-void CameraNode::Start() {
+void Single::Start() {
   // Set acquire to ture
   acquire_ = true;
   // Create a new thread for acquisition
-  image_thread_.reset(new std::thread(&CameraNode::AcquireImages, this));
+  image_thread_.reset(new std::thread(&Single::AcquireImages, this));
   cout << camera_->label() << camera_->serial() << ": Starting camera" << endl;
 }
 
-void CameraNode::Stop() {
+void Single::Stop() {
   // Set acquire to false to stop the thread
   acquire_ = false;
   // Wait for the thread to finish
@@ -78,7 +78,7 @@ void CameraNode::Stop() {
   cout << camera_->label() << camera_->serial() << ": Stopping camera" << endl;
 }
 
-void CameraNode::AcquireImages() {
+void Single::AcquireImages() {
   cout << camera_->label() << camera_->serial() << ": Acquiring images" << endl;
   cv::Mat image;
   while (acquire_ && ros::ok()) {
@@ -89,7 +89,7 @@ void CameraNode::AcquireImages() {
   }
 }
 
-void CameraNode::PublishImage(const cv::Mat &image) {
+void Single::PublishImage(const cv::Mat &image) {
   // Construct a cv image
   std_msgs::Header header;
   header.stamp = ros::Time::now();
@@ -109,9 +109,9 @@ void CameraNode::PublishImage(const cv::Mat &image) {
   rate_->sleep();
 }
 
-void CameraNode::SetRate(int fps) { rate_.reset(new ros::Rate(fps)); }
+void Single::SetRate(int fps) { rate_.reset(new ros::Rate(fps)); }
 
-void CameraNode::ReconfigureCallback(CameraDynConfig &config, int level) {
+void Single::ReconfigureCallback(CameraDynConfig &config, int level) {
   if (level < 0) {
     ROS_INFO_STREAM(
         "Bluefox2: Initializing dynamic reconfigure server: " << frame_id_);

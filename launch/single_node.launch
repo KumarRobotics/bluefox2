@@ -8,7 +8,7 @@
     <arg name="binning" default="false"/>
     <arg name="gain" default="0.0"/>
 
-    <node pkg="bluefox2" type="bluefox2_node" name="mv_$(arg serial)"
+    <node pkg="bluefox2" type="single_node" name="mv_$(arg serial)"
         output="screen">
         <param name="serial" type="string" value="$(arg serial)"/>
         <param name="fps" type="int" value="$(arg fps)"/>

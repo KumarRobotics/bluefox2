@@ -1,16 +1,16 @@
 #include <ros/ros.h>
 
-#include "bluefox2/camera_node.h"
+#include "bluefox2/single.h"
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "bluefox2");
 
   ros::NodeHandle nh("~");
   try {
-    bluefox2::CameraNode camera_node(nh);
-    camera_node.Run();
+    bluefox2::Single single(nh);
+    single.Run();
     ros::spin();
-    camera_node.End();
+    single.End();
   }
   catch (const std::exception &e) {
     ROS_ERROR_STREAM("Bluefox2: " << e.what());

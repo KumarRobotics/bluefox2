@@ -1,5 +1,5 @@
-#ifndef BLUEFOX2_CAMERA_NODE_H_
-#define BLUEFOX2_CAMERA_NODE_H_
+#ifndef BLUEFOX2_SINGLE_H_
+#define BLUEFOX2_SINGLE_H_
 
 #include <memory>
 #include <thread>
@@ -18,11 +18,11 @@
 
 namespace bluefox2 {
 
-class CameraNode {
+class Single {
  public:
-  CameraNode(const ros::NodeHandle &nh);
-  CameraNode(const CameraNode &) = delete;
-  CameraNode &operator=(const CameraNode &) = delete;
+  Single(const ros::NodeHandle &nh);
+  Single(const Single &) = delete;
+  Single &operator=(const Single &) = delete;
 
   void Run();
   void End();
@@ -53,4 +53,4 @@ class CameraNode {
 
 }  // namespace bluefox2
 
-#endif  // BLUEFOX2_CAMERA_NODE_H_
+#endif  // BLUEFOX2_SINGLE_H_
