@@ -41,7 +41,7 @@ class Camera {
   int width() const { return bf_settings_->cameraSetting.aoiWidth.read(); }
   const std::string label() const { return label_; }
   const std::string serial() const { return serial_; }
-  const std::String label_serial() const { return label_ + serial_; }
+  const std::string label_serial() const { return label_ + serial_; }
 
  private:
   static const int kTimeout{150};
