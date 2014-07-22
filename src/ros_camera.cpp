@@ -31,7 +31,11 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
 
   // Camera info
   string calib_url;
-  nh_.param<string>("calib_url", calib_url, "");
+  if (serial_name.empty()) {
+    nh_.param<string>("calib_url", calib_url, "");
+  } else {
+    nh_.param<string>(serial_name + "_calib_url", calib_url, "");
+  }
   CameraInfoManager cinfo_manager(nh_, "bluefox2", calib_url);
   if (!cinfo_manager.isCalibrated()) {
     ROS_WARN_STREAM("Bluefox2: " << frame_id_ << " not calibrated");

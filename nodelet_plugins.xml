@@ -2,7 +2,16 @@
     <class name="bluefox2/SingleNodelet" type="bluefox2::SingleNodelet"
         base_class_type="nodelet::Nodelet">
         <description>
-            This is a nodelet for a single bluefox2 camera
+            This is a nodelet for a single camera
+        </description>
+    </class>
+</library>
+
+<library path="lib/libstereo_nodelet">
+    <class name="bluefox2/StereoNodelet" type="bluefox2::StereoNodelet"
+        base_class_type="nodelet::Nodelet">
+        <description>
+            This is a nodelet for stereo cameras
         </description>
     </class>
 </library>
