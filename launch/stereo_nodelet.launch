@@ -37,7 +37,7 @@
         name="$(arg manager)" args="manager" output="$(arg disp)">
     </node>
     <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
-        name="stereo_nodelet" args="load bluefox2/StereoNodelet $(arg manager)"
+        name="stereo" args="load bluefox2/StereoNodelet $(arg manager)"
         output="$(arg disp)">
         <param name="left" type="string" value="$(arg left)"/>
         <param name="right" type="string" value="$(arg right)"/>

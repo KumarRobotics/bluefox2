@@ -28,7 +28,7 @@
     </node>
 
     <!--Run as plugin-->
-    <arg name="manager" default="bluefox2_nodelet"/>
+    <arg name="manager" default="single_nodelet"/>
     <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
         name="$(arg manager)" args="manager" output="$(arg disp)">
     </node>
