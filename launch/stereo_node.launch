@@ -1,6 +1,6 @@
 <launch>
-    <arg name="left" default="25001110"/>
-    <arg name="right" default="25000855"/>
+    <arg name="left" default="25000855"/>
+    <arg name="right" default="25001110"/>
     <arg name="left_calib" default="calib_$(arg left)"/>
     <arg name="left_calib_url" default="package://bluefox2/calib/$(arg left_calib).yml"/>
     <arg name="right_calib" default="calib_$(arg right)"/>
