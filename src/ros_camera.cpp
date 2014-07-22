@@ -48,10 +48,10 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
                                                 << "/" << image_topic);
 }
 
-void RosCamera::PublishImage(const cv::Mat &image) {
+void RosCamera::PublishImage(const cv::Mat &image, const ros::Time &time) {
   // Construct a cv image
   std_msgs::Header header;
-  header.stamp = ros::Time::now();
+  header.stamp = time;
   header.frame_id = frame_id_;
   std::string encodings;
   if (image.channels() == 1) {

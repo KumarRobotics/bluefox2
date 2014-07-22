@@ -19,7 +19,7 @@ class RosCamera {
  public:
   RosCamera(const ros::NodeHandle &nh,
             std::string serial_name = "");
-  void PublishImage(const cv::Mat &image);
+  void PublishImage(const cv::Mat &image, const ros::Time &time);
 
   std::unique_ptr<Camera> camera;
 

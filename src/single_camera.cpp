@@ -59,7 +59,8 @@ void SingleCamera::Acquire() {
   while (acquire_ && ros::ok()) {
     ros_camera_->camera->Request();
     if (ros_camera_->camera->Grab(image)) {
-      ros_camera_->PublishImage(image);
+      auto time = ros::Time::now();
+      ros_camera_->PublishImage(image, time);
       rate_->sleep();
     }
   }

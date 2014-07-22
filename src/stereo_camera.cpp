@@ -68,8 +68,9 @@ void StereoCamera::Acquire() {
     left_->camera->Request();
     right_->camera->Request();
     if (left_->camera->Grab(image_left) && right_->camera->Grab(image_right)) {
-      left_->PublishImage(image_left);
-      right_->PublishImage(image_right);
+      auto time = ros::Time::now();
+      left_->PublishImage(image_left, time);
+      right_->PublishImage(image_right, time);
       rate_->sleep();
     }
   }
