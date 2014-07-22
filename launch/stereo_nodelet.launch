@@ -1,6 +1,7 @@
 <launch>
     <arg name="plugin" default="false"/>
     <arg name="disp" default="screen"/>
+    <arg name="test" default="false"/>
     <!--Camera settings-->
     <arg name="left" default="25001110"/>
     <arg name="right" default="25000855"/>
@@ -33,9 +34,11 @@
 
     <!--Run as plugin-->
     <arg name="manager" default="stereo_nodelet"/>
-    <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
+    <!--Manager is not launched here-->
+    <node if="$(arg test)" pkg="nodelet" type="nodelet"
         name="$(arg manager)" args="manager" output="$(arg disp)">
     </node>
+    <!--This is the actual nodelet-->
     <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
         name="stereo" args="load bluefox2/StereoNodelet $(arg manager)"
         output="$(arg disp)">

@@ -12,8 +12,13 @@ class StereoNodelet : public nodelet::Nodelet {
   ~StereoNodelet() { stereo_camera_->End(); }
 
   virtual void onInit() {
-    stereo_camera_.reset(new StereoCamera(getPrivateNodeHandle()));
-    stereo_camera_->Run();
+    try {
+      stereo_camera_.reset(new StereoCamera(getPrivateNodeHandle()));
+      stereo_camera_->Run();
+    }
+    catch (const std::exception &e) {
+      ROS_ERROR_STREAM("Bluefox2: " << e.what());
+    }
   }
 
  private:

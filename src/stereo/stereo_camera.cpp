@@ -50,6 +50,7 @@ void StereoCamera::Start() {
 }
 
 void StereoCamera::Stop() {
+  if (!acquire_) return;
   // Set acquire to false to stop the thread
   acquire_ = false;
   // Wait for the thread to finish

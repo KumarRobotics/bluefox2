@@ -46,6 +46,7 @@ void SingleCamera::Start() {
 void SingleCamera::End() { Stop(); }
 
 void SingleCamera::Stop() {
+  if (!acquire_) return;
   // Set acquire to false to stop the thread
   acquire_ = false;
   // Wait for the thread to finish

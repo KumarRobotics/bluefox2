@@ -12,8 +12,13 @@ class SingleNodelet : public nodelet::Nodelet {
   ~SingleNodelet() { single_camera_->End(); }
 
   virtual void onInit() {
-    single_camera_.reset(new SingleCamera(getPrivateNodeHandle()));
-    single_camera_->Run();
+    try {
+      single_camera_.reset(new SingleCamera(getPrivateNodeHandle()));
+      single_camera_->Run();
+    }
+    catch (const std::exception &e) {
+      ROS_ERROR_STREAM("Bluefox2: " << e.what());
+    }
   }
 
  private:

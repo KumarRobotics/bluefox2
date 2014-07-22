@@ -1,6 +1,7 @@
 <launch>
     <arg name="plugin" default="false"/>
     <arg name="disp" default="screen"/>
+    <arg name="test" default="false"/>
 
     <!--Camera settings-->
     <arg name="serial" default="25000495"/>
@@ -13,7 +14,7 @@
     <arg name="gain" default="0.0"/>
     <arg name="trigger" default="0"/>
 
-    <!--Run as standalone-->
+    <!--Run as standalone nodelet-->
     <node unless="$(arg plugin)" pkg="nodelet" type="nodelet"
         name="mv_$(arg serial)" args="standalone bluefox2/SingleNodelet"
         output="$(arg disp)">
@@ -29,9 +30,11 @@
 
     <!--Run as plugin-->
     <arg name="manager" default="single_nodelet"/>
-    <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
+    <!--This is only for demo, manager is not usually launched here-->
+    <node if="$(arg test)" pkg="nodelet" type="nodelet"
         name="$(arg manager)" args="manager" output="$(arg disp)">
     </node>
+    <!--This is the actual nodelet plugin-->
     <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
         name="mv_$(arg serial)"
         args="load bluefox2/SingleNodelet $(arg manager)"
