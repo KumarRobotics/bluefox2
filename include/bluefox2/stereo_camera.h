@@ -1,5 +1,5 @@
-#ifndef BLUEFOX2_STEREO_H_
-#define BLUEFOX2_STEREO_H_
+#ifndef BLUEFOX2_STEREO_CAMERA_H_
+#define BLUEFOX2_STEREO_CAMERA_H_
 
 #include <memory>
 #include <thread>
@@ -21,8 +21,6 @@ namespace bluefox2 {
 class Stereo {
  public:
   Stereo(const ros::NodeHandle &nh);
-  Stereo(const Stereo &) = delete;
-  Stereo &operator=(const Stereo &) = delete;
 
   void Run();
   void End();
@@ -61,4 +59,4 @@ class Stereo {
 
 }  // namespace bluefox2
 
-#endif  // BLUEFOX2_STEREO_H_
+#endif  // BLUEFOX2_STEREO_CAMERA_H_

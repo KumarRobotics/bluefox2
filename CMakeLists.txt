@@ -40,19 +40,20 @@ include_directories(
 # camera
 add_library(camera
     src/camera.cpp
+    src/ros_camera.cpp
     )
 target_link_libraries(camera
     ${MVIMPACT_LIBRARIES}
     ${OpenCV_LIBRARIES}
+    ${catkin_LIBRARIES}
     )
 
 # bluefox2 node
 add_executable(single_node
-    src/single.cpp
+    src/single_camera.cpp
     src/single_node.cpp
     )
 target_link_libraries(single_node
-    ${catkin_LIBRARIES}
     camera
     )
 

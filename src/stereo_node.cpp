@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 
-#include "bluefox2/stereo.h"
+#include "bluefox2/stereo/stereo.h"
 
 int main(int argc, char **argv) {
   ros::init(argc, argv, "stereo");

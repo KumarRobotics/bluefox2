@@ -1,13 +1,13 @@
 #include <ros/ros.h>
 
-#include "bluefox2/single.h"
+#include "bluefox2/single_camera.h"
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "single");
+  ros::init(argc, argv, "single_node");
 
   ros::NodeHandle nh("~");
   try {
-    bluefox2::Single single(nh);
+    bluefox2::SingleCamera single(nh);
     single.Run();
     ros::spin();
     single.End();
