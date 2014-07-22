@@ -3,7 +3,7 @@
 #include "bluefox2/single.h"
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "bluefox2");
+  ros::init(argc, argv, "single");
 
   ros::NodeHandle nh("~");
   try {

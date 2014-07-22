@@ -26,7 +26,7 @@ Single::Single(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
   nh_.param<int>("fps", fps, 20);
   SetRate(fps);
 
-  // camera
+  // Camera
   camera_.reset(new Camera(serial));
 
   // Camera info
@@ -55,6 +55,7 @@ void Single::Run() {
   nh_.param<bool>("binning", config.binning, "false");
   nh_.param<int>("expose", config.expose, 5000);
   nh_.param<double>("gain", config.gain, 0.0);
+  nh_.param<int>("trigger", config.trigger, 0);
   camera_->Open();
   camera_->Configure(config);
   Start();
@@ -67,7 +68,7 @@ void Single::Start() {
   acquire_ = true;
   // Create a new thread for acquisition
   image_thread_.reset(new std::thread(&Single::AcquireImages, this));
-  cout << camera_->label() << camera_->serial() << ": Starting camera" << endl;
+  cout << camera_->label_serial() << ": Starting camera" << endl;
 }
 
 void Single::Stop() {
@@ -75,11 +76,11 @@ void Single::Stop() {
   acquire_ = false;
   // Wait for the thread to finish
   image_thread_->join();
-  cout << camera_->label() << camera_->serial() << ": Stopping camera" << endl;
+  cout << camera_->label_serial() << ": Stopping camera" << endl;
 }
 
 void Single::AcquireImages() {
-  cout << camera_->label() << camera_->serial() << ": Acquiring images" << endl;
+  cout << camera_->label_serial() << ": Acquiring images" << endl;
   cv::Mat image;
   while (acquire_ && ros::ok()) {
     camera_->Request();

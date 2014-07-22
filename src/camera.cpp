@@ -149,6 +149,7 @@ void Camera::SetTrigger(int trigger) {
 }
 
 void Camera::SetMaster() {
+  bf_settings_->cameraSetting.triggerMode.write(ctmOnDemand);
   bf_settings_->cameraSetting.flashMode.write(cfmDigout0);
   bf_settings_->cameraSetting.flashType.write(cftStandard);
   bf_settings_->cameraSetting.flashToExposeDelay_us.write(0);

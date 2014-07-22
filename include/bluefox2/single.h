@@ -36,20 +36,21 @@ class Single {
   void AcquireImages();
 
   // ROS related
-  int fps_;
   bool acquire_{false};
   ros::NodeHandle nh_;
   std::string frame_id_;
   std::unique_ptr<ros::Rate> rate_;
   image_transport::ImageTransport it_;
+  dynamic_reconfigure::Server<CameraDynConfig> server_;
+
   image_transport::CameraPublisher camera_pub_;
   sensor_msgs::ImagePtr image_;
   sensor_msgs::CameraInfoPtr cinfo_;
-  dynamic_reconfigure::Server<CameraDynConfig> server_;
+
   // Bluefox
   std::unique_ptr<Camera> camera_;
   std::unique_ptr<std::thread> image_thread_;
-};  // class CameraNode
+};  // class Single
 
 }  // namespace bluefox2
 
