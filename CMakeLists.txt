@@ -85,6 +85,19 @@ target_link_libraries(stereo_nodelet
     )
 
 # stereo sync
+add_library(stereo_sync
+    src/stereo/stereo_sync.cpp
+    )
+target_link_libraries(stereo_sync
+    ${catkin_LIBRARIES}
+    ${OpenCV_LIBRARIES}
+    )
+add_executable(stereo_sync_node
+    src/stereo/stereo_sync_node.cpp
+    )
+target_link_libraries(stereo_sync_node
+    stereo_sync
+    )
 
 add_dependencies(single_node
     ${catkin_EXPORTED_TARGETS}
