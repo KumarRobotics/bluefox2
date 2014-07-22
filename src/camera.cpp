@@ -5,6 +5,8 @@ using std::cout;
 using std::endl;
 #include <stdexcept>
 using std::runtime_error;
+#include <sstream>
+using std::ostringstream;
 
 using namespace mvIMPACT::acquire;
 
@@ -33,7 +35,7 @@ void Camera::Open() {
 }
 
 void Camera::Configure(const CameraConfig &config) {
-  cout << label_ << "Configuring camera: " << serial_ << endl;
+  cout << label_ << serial_ << ": Configuring camera" << endl;
   SetRequestCount(1);
   SetBinning(config.binning);
   SetColor(config.color);
@@ -54,7 +56,12 @@ void Camera::FindDevice(const std::string &serial) {
     }
   }
   if (!dev_) {
-    throw runtime_error("Device not found: " + serial);
+    ostringstream error_msg;
+    error_msg << "Device not found: " << serial << ". Available device:";
+    for (decltype(dev_cnt) i = 0; i < dev_cnt; ++i) {
+       error_msg << " " << dev_mgr_[i]->serial.readS();
+    }
+    throw runtime_error(error_msg.str());
   }
   serial_ = dev_->serial.read();
   cout << label_ << "Found device: " << serial_ << endl;
@@ -104,41 +111,41 @@ bool Camera::Grab(cv::Mat &image) {
 void Camera::SetBinning(bool binning) {
   auto binning_enum = binning ? cbmBinningHV : cbmOff;
   bf_settings_->cameraSetting.binningMode.write(binning_enum);
-  cout << "binning: " << bf_settings_->cameraSetting.binningMode.readS()
-       << endl;
+//  cout << "binning: " << bf_settings_->cameraSetting.binningMode.readS()
+//       << endl;
 }
 
 void Camera::SetColor(bool color) {
   auto pixel_enum = color ? idpfRGB888Packed : idpfRaw;
   bf_settings_->imageDestination.pixelFormat.write(pixel_enum);
-  cout << "pixel format: " << bf_settings_->imageDestination.pixelFormat.readS()
-       << endl;
+//  cout << "pixel format: "
+//       << bf_settings_->imageDestination.pixelFormat.readS() << endl;
 }
 
 void Camera::SetExpose(int expose) {
   bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
   bf_settings_->cameraSetting.expose_us.write(expose);
-  cout << "Expose: " << bf_settings_->cameraSetting.autoExposeControl.readS()
-       << " " << bf_settings_->cameraSetting.expose_us.read() << endl;
+//  cout << "Expose: " << bf_settings_->cameraSetting.autoExposeControl.readS()
+//       << " " << bf_settings_->cameraSetting.expose_us.read() << endl;
 }
 
 void Camera::SetGain(double gain) {
   bf_settings_->cameraSetting.autoGainControl.write(agcOff);
   bf_settings_->cameraSetting.gain_dB.write(gain);
-  cout << "Gain: " << bf_settings_->cameraSetting.autoGainControl.readS() << " "
-       << bf_settings_->cameraSetting.gain_dB.read() << endl;
+//  cout << "Gain: " << bf_settings_->cameraSetting.autoGainControl.readS()
+//       << " " << bf_settings_->cameraSetting.gain_dB.read() << endl;
 }
 
 void Camera::SetRequestCount(int count) {
   sys_settings_->requestCount.write(count);
-  cout << "Requeset count: " << sys_settings_->requestCount.read() << endl;
+//  cout << "Requeset count: " << sys_settings_->requestCount.read() << endl;
 }
 
 void Camera::SetTrigger(int trigger) {
   auto trigger_enum = trigger ? ctmOnDemand : ctmContinuous;
   bf_settings_->cameraSetting.triggerMode.write(trigger_enum);
-  cout << "Trigger: " << bf_settings_->cameraSetting.triggerMode.readS()
-       << endl;
+//  cout << "Trigger: " << bf_settings_->cameraSetting.triggerMode.readS()
+//       << endl;
 }
 
 void Camera::SetMaster() {

@@ -28,8 +28,6 @@ CameraNode::CameraNode(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
 
   // camera
   camera_.reset(new Camera(serial));
-//  camera_->use_image = std::bind(&CameraNode::PublishImage, this,
-//                                 std::placeholders::_1);
 
   // Camera info
   string calib_url;
@@ -44,7 +42,7 @@ CameraNode::CameraNode(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
   string image_topic("image_raw");
   camera_pub_ = it_.advertiseCamera(image_topic, 1);
   ROS_INFO_STREAM("Bluefox2: Publish image to " << ros::this_node::getName()
-                  << "/" << image_topic);
+                                                << "/" << image_topic);
 
   // Dynamic reconfigure
   server_.setCallback(
@@ -62,16 +60,14 @@ void CameraNode::Run() {
   Start();
 }
 
-void CameraNode::End() {
-  Stop();
-}
+void CameraNode::End() { Stop(); }
 
 void CameraNode::Start() {
   // Set acquire to ture
   acquire_ = true;
   // Create a new thread for acquisition
   image_thread_.reset(new std::thread(&CameraNode::AcquireImages, this));
-  cout << "started" << endl;
+  cout << camera_->label() << camera_->serial() << ": Starting camera" << endl;
 }
 
 void CameraNode::Stop() {
@@ -79,11 +75,11 @@ void CameraNode::Stop() {
   acquire_ = false;
   // Wait for the thread to finish
   image_thread_->join();
-  cout << "Stopped" << endl;
+  cout << camera_->label() << camera_->serial() << ": Stopping camera" << endl;
 }
 
 void CameraNode::AcquireImages() {
-  ROS_INFO("Acquiring");
+  cout << camera_->label() << camera_->serial() << ": Acquiring images" << endl;
   cv::Mat image;
   while (acquire_ && ros::ok()) {
     camera_->Request();
@@ -122,9 +118,6 @@ void CameraNode::ReconfigureCallback(CameraDynConfig &config, int level) {
     return;
   }
 
-  ROS_INFO("Config: fps: %f, color: %d, expose: %d, binning: %d, gain: %f",
-           config.fps, config.color, config.expose, config.binning,
-           config.gain);
   // Read dynamic config into new config
   CameraConfig new_config;
   SetRate(config.fps);
@@ -135,7 +128,7 @@ void CameraNode::ReconfigureCallback(CameraDynConfig &config, int level) {
   new_config.trigger = config.trigger;
   // Stop the camera if in acquisition
   if (acquire_) {
-     Stop();
+    Stop();
   }
   // Reconfigure camera
   camera_->Configure(new_config);

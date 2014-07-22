@@ -39,9 +39,8 @@ class Camera {
   bool Grab(cv::Mat &image);
   int height() const { return bf_settings_->cameraSetting.aoiHeight.read(); }
   int width() const { return bf_settings_->cameraSetting.aoiWidth.read(); }
-//  const std::string label() const { return label_; }
-
-//  std::function<void(const cv::Mat &image)> use_image;
+  const std::string label() const { return label_; }
+  const std::string serial() const { return serial_; }
 
  private:
   static const int kTimeout{150};
@@ -64,7 +63,6 @@ class Camera {
   mvIMPACT::acquire::SystemSettings *sys_settings_{};
 
 };  // class Camera
-
 }
 
 #endif  // BLUEFOX2_CAMERA_H_
