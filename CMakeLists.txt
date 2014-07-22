@@ -50,8 +50,8 @@ target_link_libraries(camera
 
 # single node
 add_executable(single_node
-    src/single_camera.cpp
-    src/single_node.cpp
+    src/single/single_camera.cpp
+    src/single/single_node.cpp
     )
 target_link_libraries(single_node
     camera
@@ -59,16 +59,30 @@ target_link_libraries(single_node
 
 # stereo node
 add_executable(stereo_node
-    src/stereo_camera.cpp
-    src/stereo_node.cpp
+    src/stereo/stereo_camera.cpp
+    src/stereo/stereo_node.cpp
     )
 target_link_libraries(stereo_node
     camera
     )
 
 # single nodelet
+add_library(single_nodelet
+    src/single/single_nodelet.cpp
+    src/single/single_camera.cpp
+    )
+target_link_libraries(single_nodelet
+    camera
+    )
 
 # stereo nodelet
+add_library(stereo_nodelet
+    src/stereo/stereo_nodelet.cpp
+    src/stereo/stereo_camera.cpp
+    )
+target_link_libraries(stereo_nodelet
+    camera
+    )
 
 # stereo sync
 
