@@ -6,6 +6,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "single_node");
 
   ros::NodeHandle nh("~");
+
   try {
     bluefox2::SingleCamera single_camera(nh);
     single_camera.Run();
