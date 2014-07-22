@@ -67,6 +67,13 @@ target_link_libraries(stereo_node
     )
 
 # single nodelet
+add_library(single_nodelet
+    src/single_nodelet.cpp
+    src/single_camera.cpp
+    )
+target_link_libraries(single_nodelet
+    camera
+    )
 
 # stereo nodelet
 

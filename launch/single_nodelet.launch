@@ -1,0 +1,49 @@
+<launch>
+    <arg name="plugin" default="false"/>
+    <arg name="disp" default="screen"/>
+
+    <!--Camera settings-->
+    <arg name="serial" default="25000495"/>
+    <arg name="calib_file" default="calib_$(arg serial)"/>
+    <arg name="calib_url" default="package://bluefox2/calib/$(arg calib_file).yml"/>
+    <arg name="fps" default="20"/>
+    <arg name="color" default="false"/>
+    <arg name="expose" default="5000"/>
+    <arg name="binning" default="false"/>
+    <arg name="gain" default="0.0"/>
+    <arg name="trigger" default="0"/>
+
+    <!--Run as standalone-->
+    <node unless="$(arg plugin)" pkg="nodelet" type="nodelet"
+        name="mv_$(arg serial)" args="standalone bluefox2/SingleNodelet"
+        output="$(arg disp)">
+        <param name="serial" type="string" value="$(arg serial)"/>
+        <param name="fps" type="int" value="$(arg fps)"/>
+        <param name="color" type="bool" value="$(arg color)"/>
+        <param name="expose" type="int" value="$(arg expose)"/>
+        <param name="binning" type="bool" value="$(arg binning)"/>
+        <param name="gain" type="double" value="$(arg gain)"/>
+        <param name="trigger" type="int" value="$(arg trigger)"/>
+        <param name="calib_url" type="string" value="$(arg calib_url)"/>
+    </node>
+
+    <!--Run as plugin-->
+    <arg name="manager" default="bluefox2_nodelet"/>
+    <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
+        name="$(arg manager)" args="manager" output="$(arg disp)">
+    </node>
+    <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
+        name="mv_$(arg serial)"
+        args="load bluefox2/SingleNodelet $(arg manager)"
+        output="$(arg disp)">
+        <param name="serial" type="string" value="$(arg serial)"/>
+        <param name="fps" type="int" value="$(arg fps)"/>
+        <param name="color" type="bool" value="$(arg color)"/>
+        <param name="expose" type="int" value="$(arg expose)"/>
+        <param name="binning" type="bool" value="$(arg binning)"/>
+        <param name="gain" type="double" value="$(arg gain)"/>
+        <param name="trigger" type="int" value="$(arg trigger)"/>
+        <param name="calib_url" type="string" value="$(arg calib_url)"/>
+    </node>
+
+</launch>

@@ -1,0 +1,8 @@
+<library path="lib/libsingle_nodelet">
+    <class name="bluefox2/SingleNodelet" type="bluefox2::SingleNodelet"
+        base_class_type="nodelet::Nodelet">
+        <description>
+            This is a nodelet for a single bluefox2 camera
+        </description>
+    </class>
+</library>
