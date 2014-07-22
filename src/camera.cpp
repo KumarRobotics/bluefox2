@@ -83,8 +83,8 @@ bool Camera::Grab(cv::Mat &image) {
   }
 
   int channel = request_->imageChannelCount.read();
-  int width = request_->imageHeight.read();
-  int height = request_->imageWidth.read();
+  int height = request_->imageHeight.read();
+  int width = request_->imageWidth.read();
   int cv_type;
   if (channel == 1) {
       cv_type = CV_8UC1;
@@ -93,8 +93,6 @@ bool Camera::Grab(cv::Mat &image) {
     }
   image.create(cv::Size(width, height), cv_type);
   // Copy data
-//  const unsigned char *frame{};
-//  frame = static_cast<const unsigned char *>(request_->imageData.read());
   memcpy(image.data, request_->imageData.read(), request_->imageSize.read());
 
   // Release capture request

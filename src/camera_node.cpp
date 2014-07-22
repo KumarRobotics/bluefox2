@@ -84,8 +84,12 @@ void CameraNode::Stop() {
 
 void CameraNode::AcquireImages() {
   ROS_INFO("Acquiring");
+  cv::Mat image;
   while (acquire_ && ros::ok()) {
-    rate_->sleep();
+    camera_->Request();
+    if (camera_->Grab(image)) {
+      PublishImage(image);
+    }
   }
 }
 
