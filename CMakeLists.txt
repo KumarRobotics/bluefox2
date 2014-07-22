@@ -48,7 +48,7 @@ target_link_libraries(camera
     ${catkin_LIBRARIES}
     )
 
-# bluefox2 node
+# single node
 add_executable(single_node
     src/single_camera.cpp
     src/single_node.cpp
@@ -57,9 +57,20 @@ target_link_libraries(single_node
     camera
     )
 
-# bluefox2 nodelet
+# stereo node
+add_executable(stereo_node
+    src/stereo_camera.cpp
+    src/stereo_node.cpp
+    )
+target_link_libraries(stereo_node
+    camera
+    )
 
-# stereo
+# single nodelet
+
+# stereo nodelet
+
+# stereo sync
 
 add_dependencies(single_node
     ${catkin_EXPORTED_TARGETS}

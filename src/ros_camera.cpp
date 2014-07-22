@@ -15,10 +15,15 @@ using sensor_msgs::CameraInfo;
 using sensor_msgs::CameraInfoPtr;
 using camera_info_manager::CameraInfoManager;
 
-RosCamera::RosCamera(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
+RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
+    : nh_{nh}, it_{nh} {
   // Get parameters
   std::string serial;
-  nh_.param<string>("serial", serial, "");
+  if (serial_name.empty()) {
+    nh_.param<string>("serial", serial, "");
+  } else {
+    nh_.param<string>(serial_name, serial, "");
+  }
   frame_id_ = "mv_" + serial;
 
   // Camera
@@ -34,7 +39,10 @@ RosCamera::RosCamera(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
   cinfo_ = CameraInfoPtr(new CameraInfo(cinfo_manager.getCameraInfo()));
 
   // Camera publisher
-  string image_topic("image_raw");
+  if (!serial_name.empty()) {
+    serial_name = serial_name + "/";
+  }
+  string image_topic(serial_name + "image_raw");
   camera_pub_ = it_.advertiseCamera(image_topic, 1);
   ROS_INFO_STREAM("Bluefox2: Publish image to " << ros::this_node::getName()
                                                 << "/" << image_topic);

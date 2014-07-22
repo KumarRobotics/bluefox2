@@ -7,10 +7,10 @@ int main(int argc, char **argv) {
 
   ros::NodeHandle nh("~");
   try {
-    bluefox2::SingleCamera single(nh);
-    single.Run();
+    bluefox2::SingleCamera single_camera(nh);
+    single_camera.Run();
     ros::spin();
-    single.End();
+    single_camera.End();
   }
   catch (const std::exception &e) {
     ROS_ERROR_STREAM("Bluefox2: " << e.what());
