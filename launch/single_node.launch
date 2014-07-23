@@ -10,7 +10,7 @@
     <arg name="trigger" default="0"/>
 
     <node pkg="bluefox2" type="single_node" name="mv_$(arg serial)"
-        output="screen">
+        respawn="true" output="screen">
         <param name="serial" type="string" value="$(arg serial)"/>
         <param name="fps" type="int" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>

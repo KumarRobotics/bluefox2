@@ -13,7 +13,7 @@
     <arg name="trigger" default="1"/>
 
     <node pkg="bluefox2" type="stereo_node" name="mv_stereo"
-        output="screen">
+        respawn="true" output="screen">
         <param name="left" type="string" value="$(arg left)"/>
         <param name="right" type="string" value="$(arg right)"/>
         <param name="fps" type="int" value="$(arg fps)"/>
