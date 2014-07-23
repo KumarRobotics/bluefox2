@@ -21,10 +21,13 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
   std::string serial;
   if (serial_name.empty()) {
     nh_.param<string>("serial", serial, "");
+    frame_id_ = serial;
   } else {
     nh_.param<string>(serial_name, serial, "");
+    frame_id_ = "stereo/" + serial_name;
   }
-  frame_id_ = "mv_" + serial;
+
+  frame_id_ = "mv_" + frame_id_;
 
   // Camera
   camera.reset(new Camera(serial));
@@ -36,7 +39,7 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
   } else {
     nh_.param<string>(serial_name + "_calib_url", calib_url, "");
   }
-  CameraInfoManager cinfo_manager(nh_, "bluefox2", calib_url);
+  CameraInfoManager cinfo_manager(nh_, frame_id_, calib_url);
   if (!cinfo_manager.isCalibrated()) {
     ROS_WARN_STREAM("Bluefox2: " << frame_id_ << " not calibrated");
   }
