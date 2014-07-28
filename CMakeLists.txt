@@ -27,16 +27,17 @@ catkin_package(
 )
 
 # mvIMPACT
+execute_process(COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCH)
+message(STATUS "Architecture: ${ARCH}")
 set(MVIMPACT_DIR "/opt/mvIMPACT_acquire")
 set(MVIMPACT_INCLUDE_DIRS ${MVIMPACT_DIR})
-set(MVIMPACT_LIBRARIES ${MVIMPACT_DIR}/lib/x86_64/libmvDeviceManager.so)
+set(MVIMPACT_LIBRARIES ${MVIMPACT_DIR}/lib/${ARCH}/libmvDeviceManager.so)
 
 include_directories(include)
 include_directories(
     ${catkin_INCLUDE_DIRS}
     ${MVIMPACT_INCLUDE_DIRS}
     )
-
 
 # camera
 add_library(camera

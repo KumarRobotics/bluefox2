@@ -3,7 +3,7 @@ camera_matrix:
   data: [636.736715, 0.000000, 377.185864, 0.000000, 637.470118, 219.463258, 0.000000, 0.000000,
       1.000000]
   rows: 3
-camera_name: bluefox2
+camera_name: mv_25000495
 distortion_coefficients:
   cols: 5
   data: [-0.425818, 0.173503, 0.001086, 0.000547, 0.000000]
