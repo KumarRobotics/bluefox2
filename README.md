@@ -27,14 +27,7 @@ Under the tab mvBlueFOX, download the following two files:
 
     Note that you don't have to extract the ```tgz``` file, just leave it as it is, the install script will do that for you. The default installation path is ```/opt/mvIMPACT_acquire```
     You will need to reboot (automatically/manually) after the installation.
-4. This is a catkin package, you can build this by either add this pacakge to your catkin workspace, or simply doing the following.
 
-    ```bash
-    mkdir build
-    cd build
-    cmake ..
-    make
-    ```
 
 ## wxPropView
 If you install the full matrix vision driver, you will have `wxPropView` installed to your system. It's an GUI application that let you inspect all properties of the camera.
