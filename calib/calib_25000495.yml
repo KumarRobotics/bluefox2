@@ -1,20 +1,22 @@
-image_width: 752
-image_height: 480
-camera_name: mv_25000495
 camera_matrix:
-  rows: 3
   cols: 3
-  data: [627.592016653205, 0, 397.53039946068, 0, 628.856546962628, 238.822605199892, 0, 0, 1]
-distortion_model: plumb_bob
-distortion_coefficients:
-  rows: 1
-  cols: 5
-  data: [-0.445187482834759, 0.214476236824754, -0.000513095324707784, 9.93888566287363e-05, 0]
-rectification_matrix:
+  data: [636.736715, 0.000000, 377.185864, 0.000000, 637.470118, 219.463258, 0.000000, 0.000000,
+      1.000000]
   rows: 3
+camera_name: bluefox2
+distortion_coefficients:
+  cols: 5
+  data: [-0.425818, 0.173503, 0.001086, 0.000547, 0.000000]
+  rows: 1
+distortion_model: plumb_bob
+image_height: 480
+image_width: 752
+projection_matrix:
+  cols: 4
+  data: [526.750427, 0.000000, 377.956446, 0.000000, 0.000000, 594.260437, 216.404323, 0.000000,
+      0.000000, 0.000000, 1.000000, 0.000000]
+  rows: 3
+rectification_matrix:
   cols: 3
   data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
-projection_matrix:
   rows: 3
-  cols: 4
-  data: [516.50244140625, 0, 405.337474246393, 0, 0, 584.0419921875, 237.953805470519, 0, 0, 0, 1, 0]
