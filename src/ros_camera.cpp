@@ -27,6 +27,7 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
     frame_id_ = "stereo/" + serial_name;
   }
 
+  // Prefix mv
   frame_id_ = "mv_" + frame_id_;
 
   // Camera
@@ -39,11 +40,13 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
   } else {
     nh_.param<string>(serial_name + "_calib_url", calib_url, "");
   }
-  CameraInfoManager cinfo_manager(nh_, frame_id_, calib_url);
-  if (!cinfo_manager.isCalibrated()) {
+  // Create camera info manager which will advertise set_camera_info service
+  cinfo_manager_.reset(
+      new camera_info_manager::CameraInfoManager(nh_, frame_id_, calib_url));
+  if (!cinfo_manager_->isCalibrated()) {
     ROS_WARN_STREAM("Bluefox2: " << frame_id_ << " not calibrated");
   }
-  cinfo_ = CameraInfoPtr(new CameraInfo(cinfo_manager.getCameraInfo()));
+  cinfo_ = CameraInfoPtr(new CameraInfo(cinfo_manager_->getCameraInfo()));
 
   // Camera publisher
   if (!serial_name.empty()) {
@@ -68,9 +71,19 @@ void RosCamera::PublishImage(const cv::Mat &image, const ros::Time &time) {
   }
   // Convert ot ros image msg
   cv_bridge::CvImage cv_image(header, encodings, image);
-  image_ = cv_image.toImageMsg();
-  cinfo_->header = image_->header;
-  camera_pub_.publish(image_, cinfo_);
+  cinfo_->header = header;
+  camera_pub_.publish(cv_image.toImageMsg(), cinfo_);
+}
+
+const CameraConfig RosCamera::ReadConfig() const {
+  CameraConfig config;
+  nh_.param<bool>("color", config.color, config.color);
+  nh_.param<bool>("binning", config.binning, config.binning);
+  nh_.param<int>("expose", config.expose, config.expose);
+  nh_.param<int>("expose_us", config.expose_us, config.expose_us);
+  nh_.param<int>("trigger", config.trigger, config.trigger);
+  nh_.param<double>("gain_db", config.gain_db, config.gain_db);
+  return config;
 }
 
 }  // namespace bluefox2

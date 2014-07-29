@@ -17,18 +17,20 @@ namespace bluefox2 {
 
 class RosCamera {
  public:
-  RosCamera(const ros::NodeHandle &nh,
-            std::string serial_name = "");
+  RosCamera(const ros::NodeHandle &nh, std::string serial_name = "");
   void PublishImage(const cv::Mat &image, const ros::Time &time);
 
+  const CameraConfig ReadConfig() const;
   std::unique_ptr<Camera> camera;
 
  private:
+  using CameraInfoManagerPtr =
+      std::unique_ptr<camera_info_manager::CameraInfoManager>;
   ros::NodeHandle nh_;
   image_transport::ImageTransport it_;
   image_transport::CameraPublisher camera_pub_;
-  sensor_msgs::ImagePtr image_;
   sensor_msgs::CameraInfoPtr cinfo_;
+  CameraInfoManagerPtr cinfo_manager_;
   std::string frame_id_;
 
 };  // class SingleCamera

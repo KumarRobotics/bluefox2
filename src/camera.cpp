@@ -7,6 +7,7 @@ using std::endl;
 using std::runtime_error;
 #include <sstream>
 using std::ostringstream;
+#include <unistd.h>
 
 using namespace mvIMPACT::acquire;
 
@@ -40,8 +41,8 @@ void Camera::Configure(const CameraConfig &config) {
   SetRequestCount(1);
   SetBinning(config.binning);
   SetColor(config.color);
-  SetExpose(config.expose);
-  SetGain(config.gain);
+  SetExpose(config.expose, config.expose_us);
+  SetGainDb(config.gain_db);
   SetTrigger(config.trigger);
 }
 
@@ -124,31 +125,51 @@ void Camera::SetColor(bool color) {
   //       << bf_settings_->imageDestination.pixelFormat.readS() << endl;
 }
 
-void Camera::SetExpose(int expose) {
-  bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
-  bf_settings_->cameraSetting.expose_us.write(expose);
-  //  cout << "Expose: " <<
-  // bf_settings_->cameraSetting.autoExposeControl.readS()
-  //       << " " << bf_settings_->cameraSetting.expose_us.read() << endl;
+void Camera::SetExpose(int expose, int expose_us) {
+  switch (expose) {
+  case 0:
+    // Manual expose
+    SetExposeUs(expose_us);
+    break;
+  case 1:
+    // Auto expose
+    SetAutoExpose();
+    break;
+  default:
+    break;
+  }
+  cout << "expose mode: " << expose << " expose_us: " << GetExposeUs() << endl;
 }
 
-void Camera::SetGain(double gain) {
+void Camera::SetAutoExpose() {
+  bf_settings_->cameraSetting.autoExposeControl.write(aecOn);
+}
+
+void Camera::SetExposeUs(int expose_us) {
+  bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
+  bf_settings_->cameraSetting.expose_us.write(expose_us);
+}
+
+int Camera::GetExposeUs() const {
+  auto aecOld = bf_settings_->cameraSetting.autoExposeControl.read();
+  bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
+  int expose_us = bf_settings_->cameraSetting.expose_us.read();
+  bf_settings_->cameraSetting.autoExposeControl.write(aecOld);
+  return expose_us;
+}
+
+void Camera::SetGainDb(double gain_db) {
   bf_settings_->cameraSetting.autoGainControl.write(agcOff);
-  bf_settings_->cameraSetting.gain_dB.write(gain);
-  //  cout << "Gain: " << bf_settings_->cameraSetting.autoGainControl.readS()
-  //       << " " << bf_settings_->cameraSetting.gain_dB.read() << endl;
+  bf_settings_->cameraSetting.gain_dB.write(gain_db);
 }
 
 void Camera::SetRequestCount(int count) {
   sys_settings_->requestCount.write(count);
-  //  cout << "Requeset count: " << sys_settings_->requestCount.read() << endl;
 }
 
 void Camera::SetTrigger(int trigger) {
   auto trigger_enum = trigger ? ctmOnDemand : ctmContinuous;
   bf_settings_->cameraSetting.triggerMode.write(trigger_enum);
-  //  cout << "Trigger: " << bf_settings_->cameraSetting.triggerMode.readS()
-  //       << endl;
 }
 
 void Camera::SetMaster() {
