@@ -52,7 +52,7 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
   if (!serial_name.empty()) {
     serial_name = serial_name + "/";
   }
-  string image_topic(serial_name + "image");
+  string image_topic(serial_name + "image_raw");
   camera_pub_ = it_.advertiseCamera(image_topic, 1);
   ROS_INFO_STREAM("Bluefox2: Publish image to " << ros::this_node::getName()
                                                 << "/" << image_topic);
