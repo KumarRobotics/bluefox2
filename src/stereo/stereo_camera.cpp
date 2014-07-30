@@ -18,7 +18,7 @@ StereoCamera::StereoCamera(const ros::NodeHandle &nh) : nh_{nh} {
   right_.reset(new RosCamera(nh_, "right"));
 
   // Setup dynamic reconfigure
-  server_.setCallback(
+  cfg_server_.setCallback(
       boost::bind(&StereoCamera::ReconfigureCallback, this, _1, _2));
 }
 

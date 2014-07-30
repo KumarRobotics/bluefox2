@@ -56,6 +56,10 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
   camera_pub_ = it_.advertiseCamera(image_topic, 1);
   ROS_INFO_STREAM("Bluefox2: Publish image to " << ros::this_node::getName()
                                                 << "/" << image_topic);
+
+  // Service to set expose
+  srv_server_ =
+      nh_.advertiseService("set_expose", &RosCamera::SetExposeUs, this);
 }
 
 void RosCamera::PublishImage(const cv::Mat &image, const ros::Time &time) {
@@ -84,6 +88,12 @@ const CameraConfig RosCamera::ReadConfig() const {
   nh_.param<int>("trigger", config.trigger, config.trigger);
   nh_.param<double>("gain_db", config.gain_db, config.gain_db);
   return config;
+}
+
+bool RosCamera::SetExposeUs(SetExposeSrv::Request &req,
+                            SetExposeSrv::Response &rsp) {
+  ROS_INFO("In service");
+  return true;
 }
 
 }  // namespace bluefox2

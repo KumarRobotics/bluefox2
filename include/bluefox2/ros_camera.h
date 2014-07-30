@@ -12,6 +12,7 @@
 #include "opencv2/core/core.hpp"
 
 #include "bluefox2/camera.h"
+#include "bluefox2/SetExposeSrv.h"
 
 namespace bluefox2 {
 
@@ -32,6 +33,9 @@ class RosCamera {
   sensor_msgs::CameraInfoPtr cinfo_;
   CameraInfoManagerPtr cinfo_manager_;
   std::string frame_id_;
+  ros::ServiceServer srv_server_;
+
+  bool SetExposeUs(SetExposeSrv::Request &req, SetExposeSrv::Response &rsp);
 
 };  // class SingleCamera
 

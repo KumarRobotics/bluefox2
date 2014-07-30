@@ -29,7 +29,7 @@ class StereoCamera {
   bool acquire_{false};
   ros::NodeHandle nh_;
   std::unique_ptr<ros::Rate> rate_;
-  dynamic_reconfigure::Server<CameraDynConfig> server_;
+  dynamic_reconfigure::Server<CameraDynConfig> cfg_server_;
   std::unique_ptr<RosCamera> left_;
   std::unique_ptr<RosCamera> right_;
   std::unique_ptr<std::thread> image_thread_;

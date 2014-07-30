@@ -17,7 +17,7 @@ SingleCamera::SingleCamera(const ros::NodeHandle &nh) : nh_{nh} {
   ros_camera_.reset(new RosCamera(nh_));
 
   // Setup dynamic reconfigure
-  server_.setCallback(
+  cfg_server_.setCallback(
       boost::bind(&SingleCamera::ReconfigureCallback, this, _1, _2));
 }
 
