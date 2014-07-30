@@ -145,9 +145,15 @@ void Camera::SetAutoExpose() {
   bf_settings_->cameraSetting.autoExposeControl.write(aecOn);
 }
 
-void Camera::SetExposeUs(int expose_us) {
+bool Camera::SetExposeUs(int expose_us) {
   bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
+  auto expose_min = bf_settings_->cameraSetting.expose_us.getMinValue();
+  auto expose_max = bf_settings_->cameraSetting.expose_us.getMaxValue();
+  if (expose_us > expose_max || expose_us < expose_min) {
+    return false;
+  }
   bf_settings_->cameraSetting.expose_us.write(expose_us);
+  return true;
 }
 
 int Camera::GetExposeUs() const {
@@ -158,9 +164,15 @@ int Camera::GetExposeUs() const {
   return expose_us;
 }
 
-void Camera::SetGainDb(double gain_db) {
+bool Camera::SetGainDb(double gain_db) {
   bf_settings_->cameraSetting.autoGainControl.write(agcOff);
+  auto gain_min = bf_settings_->cameraSetting.gain_dB.getMinValue();
+  auto gain_max = bf_settings_->cameraSetting.gain_dB.getMaxValue();
+  if (gain_db < gain_min || gain_db > gain_max) {
+    return false;
+  }
   bf_settings_->cameraSetting.gain_dB.write(gain_db);
+  return true;
 }
 
 void Camera::SetRequestCount(int count) {

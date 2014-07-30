@@ -110,5 +110,6 @@ add_dependencies(single_node
     ${catkin_EXPORTED_TARGETS}
     ${PROJECT_NAME}_gencfg
     ${PROJECT_NAME}_gencpp
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
     )
 

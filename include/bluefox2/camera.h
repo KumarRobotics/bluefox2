@@ -43,7 +43,7 @@ class Camera {
   const std::string label() const { return label_; }
   const std::string serial() const { return serial_; }
   const std::string label_serial() const { return label_ + serial_; }
-  void SetExposeUs(int expose_us);
+  bool SetExposeUs(int expose_us);
 
  private:
   static const int kTimeout{150};
@@ -52,7 +52,7 @@ class Camera {
   void SetAutoExpose();
   void SetExpose(int expose, int expose_us);
   int GetExposeUs() const;
-  void SetGainDb(double gain_db);
+  bool SetGainDb(double gain_db);
   void SetBinning(bool binning);
   void SetTrigger(int trigger);
   void SetRequestCount(int count);

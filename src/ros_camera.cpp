@@ -92,7 +92,14 @@ const CameraConfig RosCamera::ReadConfig() const {
 
 bool RosCamera::SetExposeUs(SetExposeSrv::Request &req,
                             SetExposeSrv::Response &rsp) {
-  ROS_INFO("In service");
+  if (rsp.status = camera->SetExposeUs(req.expose_us)) {
+    // If the request is successful, change the corresponding parameters
+    nh_.setParam("expose", 1);
+    nh_.setParam("expose_us", req.expose_us);
+    ROS_INFO("Request to set camera expose_us to %d", req.expose_us);
+  } else {
+    ROS_INFO("Failed to set camera expose_us to %d", req.expose_us);
+  }
   return true;
 }
 
