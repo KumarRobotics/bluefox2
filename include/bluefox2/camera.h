@@ -18,9 +18,10 @@ namespace bluefox2 {
 // Config struct
 struct CameraConfig {
   bool color{false};
-  int expose{5000};
+  int expose{0};
+  int expose_us{5000};
   bool binning{false};
-  double gain{0.0};
+  double gain_db{0.0};
   int trigger{0};
 };
 
@@ -42,13 +43,16 @@ class Camera {
   const std::string label() const { return label_; }
   const std::string serial() const { return serial_; }
   const std::string label_serial() const { return label_ + serial_; }
+  bool SetExposeUs(int expose_us);
 
  private:
   static const int kTimeout{150};
   void FindDevice(const std::string &serial);
   void SetColor(bool color);
-  void SetExpose(int expose);
-  void SetGain(double gain);
+  void SetAutoExpose();
+  void SetExpose(int expose, int expose_us);
+  int GetExposeUs() const;
+  bool SetGainDb(double gain_db);
   void SetBinning(bool binning);
   void SetTrigger(int trigger);
   void SetRequestCount(int count);

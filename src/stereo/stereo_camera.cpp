@@ -18,18 +18,13 @@ StereoCamera::StereoCamera(const ros::NodeHandle &nh) : nh_{nh} {
   right_.reset(new RosCamera(nh_, "right"));
 
   // Setup dynamic reconfigure
-  server_.setCallback(
+  cfg_server_.setCallback(
       boost::bind(&StereoCamera::ReconfigureCallback, this, _1, _2));
 }
 
 void StereoCamera::Run() {
   // Read in all parameters
-  CameraConfig config;
-  nh_.param<bool>("color", config.color, "false");
-  nh_.param<bool>("binning", config.binning, "false");
-  nh_.param<int>("expose", config.expose, 5000);
-  nh_.param<double>("gain", config.gain, 0.0);
-  nh_.param<int>("trigger", config.trigger, 0);
+  CameraConfig config = left_->ReadConfig();
 
   left_->camera->Open();
   left_->camera->Configure(config);
@@ -89,9 +84,10 @@ void StereoCamera::ReconfigureCallback(CameraDynConfig &config, int level) {
   // Read dynamic config into new config
   CameraConfig new_config;
   SetRate(config.fps);
-  new_config.gain = config.gain;
+  new_config.gain_db = config.gain_db;
   new_config.color = config.color;
   new_config.expose = config.expose;
+  new_config.expose_us = config.expose_us;
   new_config.binning = config.binning;
   new_config.trigger = config.trigger;
   // Stop the camera if in acquisition

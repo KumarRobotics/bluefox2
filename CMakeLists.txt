@@ -13,16 +13,21 @@ find_package(catkin REQUIRED COMPONENTS
     sensor_msgs
     std_msgs
     nodelet
-)
+    message_generation
+    )
 find_package(OpenCV)
 
 # dynamic reconfigure
 generate_dynamic_reconfigure_options(cfg/CameraDyn.cfg)
 
+# services
+add_service_files(FILES SetExposeSrv.srv)
+generate_messages(DEPENDENCIES std_msgs)
+
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES bluefox2
-#  CATKIN_DEPENDS camera_info_manager cv_bridge dynamic_reconfigure image_transport message_filters roscpp sensor_msgs
+   CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
 
@@ -104,5 +109,7 @@ target_link_libraries(stereo_sync_node
 add_dependencies(single_node
     ${catkin_EXPORTED_TARGETS}
     ${PROJECT_NAME}_gencfg
+    ${PROJECT_NAME}_gencpp
+    ${${PROJECT_NAME}_EXPORTED_TARGETS}
     )
 

@@ -17,18 +17,13 @@ SingleCamera::SingleCamera(const ros::NodeHandle &nh) : nh_{nh} {
   ros_camera_.reset(new RosCamera(nh_));
 
   // Setup dynamic reconfigure
-  server_.setCallback(
+  cfg_server_.setCallback(
       boost::bind(&SingleCamera::ReconfigureCallback, this, _1, _2));
 }
 
 void SingleCamera::Run() {
   // Read in all parameters
-  CameraConfig config;
-  nh_.param<bool>("color", config.color, "false");
-  nh_.param<bool>("binning", config.binning, "false");
-  nh_.param<int>("expose", config.expose, 5000);
-  nh_.param<int>("trigger", config.trigger, 0);
-  nh_.param<double>("gain", config.gain, 0.0);
+  CameraConfig config = ros_camera_->ReadConfig();
 
   ros_camera_->camera->Open();
   ros_camera_->camera->Configure(config);
@@ -78,9 +73,10 @@ void SingleCamera::ReconfigureCallback(CameraDynConfig &config, int level) {
   // Read dynamic config into new config
   CameraConfig new_config;
   SetRate(config.fps);
-  new_config.gain = config.gain;
+  new_config.gain_db = config.gain_db;
   new_config.color = config.color;
   new_config.expose = config.expose;
+  new_config.expose_us = config.expose_us;
   new_config.binning = config.binning;
   new_config.trigger = config.trigger;
   // Stop the camera if in acquisition

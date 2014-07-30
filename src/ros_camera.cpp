@@ -27,6 +27,7 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
     frame_id_ = "stereo/" + serial_name;
   }
 
+  // Prefix mv
   frame_id_ = "mv_" + frame_id_;
 
   // Camera
@@ -39,20 +40,26 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
   } else {
     nh_.param<string>(serial_name + "_calib_url", calib_url, "");
   }
-  CameraInfoManager cinfo_manager(nh_, frame_id_, calib_url);
-  if (!cinfo_manager.isCalibrated()) {
+  // Create camera info manager which will advertise set_camera_info service
+  cinfo_manager_.reset(
+      new camera_info_manager::CameraInfoManager(nh_, frame_id_, calib_url));
+  if (!cinfo_manager_->isCalibrated()) {
     ROS_WARN_STREAM("Bluefox2: " << frame_id_ << " not calibrated");
   }
-  cinfo_ = CameraInfoPtr(new CameraInfo(cinfo_manager.getCameraInfo()));
+  cinfo_ = CameraInfoPtr(new CameraInfo(cinfo_manager_->getCameraInfo()));
 
   // Camera publisher
   if (!serial_name.empty()) {
     serial_name = serial_name + "/";
   }
-  string image_topic(serial_name + "image");
+  string image_topic(serial_name + "image_raw");
   camera_pub_ = it_.advertiseCamera(image_topic, 1);
   ROS_INFO_STREAM("Bluefox2: Publish image to " << ros::this_node::getName()
                                                 << "/" << image_topic);
+
+  // Service to set expose
+  srv_server_ =
+      nh_.advertiseService("set_expose", &RosCamera::SetExposeUs, this);
 }
 
 void RosCamera::PublishImage(const cv::Mat &image, const ros::Time &time) {
@@ -68,9 +75,32 @@ void RosCamera::PublishImage(const cv::Mat &image, const ros::Time &time) {
   }
   // Convert ot ros image msg
   cv_bridge::CvImage cv_image(header, encodings, image);
-  image_ = cv_image.toImageMsg();
-  cinfo_->header = image_->header;
-  camera_pub_.publish(image_, cinfo_);
+  cinfo_->header = header;
+  camera_pub_.publish(cv_image.toImageMsg(), cinfo_);
+}
+
+const CameraConfig RosCamera::ReadConfig() const {
+  CameraConfig config;
+  nh_.param<bool>("color", config.color, config.color);
+  nh_.param<bool>("binning", config.binning, config.binning);
+  nh_.param<int>("expose", config.expose, config.expose);
+  nh_.param<int>("expose_us", config.expose_us, config.expose_us);
+  nh_.param<int>("trigger", config.trigger, config.trigger);
+  nh_.param<double>("gain_db", config.gain_db, config.gain_db);
+  return config;
+}
+
+bool RosCamera::SetExposeUs(SetExposeSrv::Request &req,
+                            SetExposeSrv::Response &rsp) {
+  if (rsp.status = camera->SetExposeUs(req.expose_us)) {
+    // If the request is successful, change the corresponding parameters
+    nh_.setParam("expose", 1);
+    nh_.setParam("expose_us", req.expose_us);
+    ROS_INFO("Request to set camera expose_us to %d", req.expose_us);
+  } else {
+    ROS_INFO("Failed to set camera expose_us to %d", req.expose_us);
+  }
+  return true;
 }
 
 }  // namespace bluefox2

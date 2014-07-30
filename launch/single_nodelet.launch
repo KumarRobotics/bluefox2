@@ -9,9 +9,10 @@
     <arg name="calib_url" default="package://bluefox2/calib/$(arg calib_file).yml"/>
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
-    <arg name="expose" default="5000"/>
+    <arg name="expose" default="0"/>
+    <arg name="expose_us" default="5000"/>
     <arg name="binning" default="false"/>
-    <arg name="gain" default="0.0"/>
+    <arg name="gain_db" default="0.0"/>
     <arg name="trigger" default="0"/>
 
     <!--Run as standalone nodelet-->
@@ -22,8 +23,9 @@
         <param name="fps" type="int" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
         <param name="expose" type="int" value="$(arg expose)"/>
+        <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
-        <param name="gain" type="double" value="$(arg gain)"/>
+        <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
     </node>
@@ -43,8 +45,9 @@
         <param name="fps" type="int" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
         <param name="expose" type="int" value="$(arg expose)"/>
+        <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
-        <param name="gain" type="double" value="$(arg gain)"/>
+        <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
     </node>
