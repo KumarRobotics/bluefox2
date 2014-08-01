@@ -189,11 +189,7 @@ void Camera::SetHdr(bool hdr) {
   if (hdr) {
     bf_settings_->cameraSetting.getHDRControl().HDRMode.write(cHDRmFixed0);
     bf_settings_->cameraSetting.getHDRControl().HDREnable.write(bTrue);
-    cout << "Knee Point 0: " << endl;
-    cout << "Voltage: " << bf_settings_->cameraSetting.getHDRControl().getHDRKneePoint(0).HDRControlVoltage_mV.read() << endl;
-    cout << "PPM: " << bf_settings_->cameraSetting.getHDRControl().getHDRKneePoint(0).HDRExposure_ppm.read() << endl;
   } else {
-    cout << "Disable hdr" << endl;
     bf_settings_->cameraSetting.getHDRControl().HDREnable.write(bFalse);
   }
 }
