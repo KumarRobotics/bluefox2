@@ -63,8 +63,8 @@ void StereoCamera::Acquire() {
     // In our case, right is master, left is slave, so we request left first
     left_->camera->Request();
     right_->camera->Request();
+    auto time = ros::Time::now();
     if (left_->camera->Grab(image_left) && right_->camera->Grab(image_right)) {
-      auto time = ros::Time::now();
       left_->PublishImage(image_left, time);
       right_->PublishImage(image_right, time);
       rate_->sleep();

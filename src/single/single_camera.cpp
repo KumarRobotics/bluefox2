@@ -54,8 +54,8 @@ void SingleCamera::Acquire() {
   cv::Mat image;
   while (acquire_ && ros::ok()) {
     ros_camera_->camera->Request();
+    auto time = ros::Time::now();
     if (ros_camera_->camera->Grab(image)) {
-      auto time = ros::Time::now();
       ros_camera_->PublishImage(image, time);
       rate_->sleep();
     }
