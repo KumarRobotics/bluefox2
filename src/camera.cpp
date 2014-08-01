@@ -44,6 +44,7 @@ void Camera::Configure(const CameraConfig &config) {
   SetExpose(config.expose, config.expose_us);
   SetGainDb(config.gain_db);
   SetTrigger(config.trigger);
+  SetHdr(config.hdr);
 }
 
 void Camera::FindDevice(const std::string &serial) {
@@ -182,6 +183,15 @@ void Camera::SetRequestCount(int count) {
 void Camera::SetTrigger(int trigger) {
   auto trigger_enum = trigger ? ctmOnDemand : ctmContinuous;
   bf_settings_->cameraSetting.triggerMode.write(trigger_enum);
+}
+
+void Camera::SetHdr(bool hdr) {
+  if (hdr) {
+    bf_settings_->cameraSetting.getHDRControl().HDRMode.write(cHDRmFixed0);
+    bf_settings_->cameraSetting.getHDRControl().HDREnable.write(bTrue);
+  } else {
+    bf_settings_->cameraSetting.getHDRControl().HDREnable.write(bFalse);
+  }
 }
 
 void Camera::SetMaster() {

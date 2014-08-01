@@ -87,6 +87,7 @@ const CameraConfig RosCamera::ReadConfig() const {
   nh_.param<int>("expose_us", config.expose_us, config.expose_us);
   nh_.param<int>("trigger", config.trigger, config.trigger);
   nh_.param<double>("gain_db", config.gain_db, config.gain_db);
+  nh_.param<bool>("hdr", config.hdr, config.hdr);
   return config;
 }
 
