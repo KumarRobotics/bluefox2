@@ -14,6 +14,7 @@
     <arg name="binning" default="false"/>
     <arg name="gain_db" default="0.0"/>
     <arg name="trigger" default="0"/>
+    <arg name="hdr" default="true"/>
 
     <!--Run as standalone nodelet-->
     <node unless="$(arg plugin)" pkg="nodelet" type="nodelet"
@@ -27,6 +28,7 @@
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
+        <param name="hdr" type="bool" value="$(arg hdr)"/>
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
     </node>
 
@@ -49,6 +51,7 @@
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
+        <param name="hdr" type="bool" value="$(arg hdr)"/>
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
     </node>
 

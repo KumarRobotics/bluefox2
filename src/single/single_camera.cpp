@@ -79,6 +79,7 @@ void SingleCamera::ReconfigureCallback(CameraDynConfig &config, int level) {
   new_config.expose_us = config.expose_us;
   new_config.binning = config.binning;
   new_config.trigger = config.trigger;
+  new_config.hdr = config.hdr;
   // Stop the camera if in acquisition
   if (acquire_) {
     Stop();

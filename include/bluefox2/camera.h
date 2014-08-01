@@ -23,6 +23,7 @@ struct CameraConfig {
   bool binning{false};
   double gain_db{0.0};
   int trigger{0};
+  bool hdr{false};
 };
 
 class Camera {
@@ -55,6 +56,7 @@ class Camera {
   bool SetGainDb(double gain_db);
   void SetBinning(bool binning);
   void SetTrigger(int trigger);
+  void SetHdr(bool hdr);
   void SetRequestCount(int count);
 
   std::string serial_;
