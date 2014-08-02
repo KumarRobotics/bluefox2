@@ -56,6 +56,7 @@ void Camera::FindDevice(const std::string &serial) {
   for (decltype(dev_cnt) i = 0; i < dev_cnt; ++i) {
     if (dev_mgr_[i]->serial.read() == serial) {
       dev_ = dev_mgr_[i];
+      break;
     }
   }
   // Print all available device when not found
