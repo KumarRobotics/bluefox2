@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(bluefox2)
 
-add_definitions("-Wall -std=c++11")
+#add_definitions("-Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 
 find_package(catkin REQUIRED COMPONENTS
     camera_info_manager
@@ -106,7 +107,7 @@ target_link_libraries(stereo_sync_node
     stereo_sync
     )
 
-add_dependencies(single_node
+add_dependencies(camera
     ${catkin_EXPORTED_TARGETS}
     ${PROJECT_NAME}_gencfg
     ${PROJECT_NAME}_gencpp
