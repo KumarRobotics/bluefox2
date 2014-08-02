@@ -1,6 +1,6 @@
 image_width: 752
 image_height: 480
-camera_name: mv_stereo/right
+camera_name: mv_25001110
 camera_matrix:
   rows: 3
   cols: 3

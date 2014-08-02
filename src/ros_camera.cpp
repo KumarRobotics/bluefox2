@@ -18,37 +18,39 @@ namespace bluefox2 {
 RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
     : nh_{nh}, it_{nh} {
   // Get parameters
-  std::string serial;
+  string serial;
+  string calib_url;
   if (serial_name.empty()) {
     nh_.param<string>("serial", serial, "");
-    frame_id_ = serial;
+    nh_.param<string>("calib_url", calib_url, "");
   } else {
+    // This load param under name left or fight
     nh_.param<string>(serial_name, serial, "");
-    frame_id_ = "stereo/" + serial_name;
+    // This load param under name left_calib_url or right_calib_url
+    nh_.param<string>(serial_name + "_calib_url", calib_url, "");
   }
 
-  // Prefix mv
-  frame_id_ = "mv_" + frame_id_;
+  // Prefix with mv_, but for stereo frame_id will be the same
+  std::string camera_name = "mv_" + serial;
+  nh_.param<string>("frame_id", frame_id_, camera_name);
 
   // Camera
   camera.reset(new Camera(serial));
 
-  // Camera info
-  string calib_url;
-  if (serial_name.empty()) {
-    nh_.param<string>("calib_url", calib_url, "");
-  } else {
-    nh_.param<string>(serial_name + "_calib_url", calib_url, "");
-  }
+  // Create a child nodehandle for advertising services
+  ros::NodeHandle nh2(nh_, serial_name);
+  cinfo_manager_.reset(new CameraInfoManager(nh2, camera_name, calib_url));
   // Create camera info manager which will advertise set_camera_info service
-  cinfo_manager_.reset(
-      new camera_info_manager::CameraInfoManager(nh_, frame_id_, calib_url));
   if (!cinfo_manager_->isCalibrated()) {
-    ROS_WARN_STREAM("Bluefox2: " << frame_id_ << " not calibrated");
+    ROS_WARN_STREAM("Bluefox2: " << camera_name << " not calibrated");
   }
   cinfo_ = CameraInfoPtr(new CameraInfo(cinfo_manager_->getCameraInfo()));
+  // Service to set expose
+  srv_server_ =
+      nh2.advertiseService("set_expose", &RosCamera::SetExposeUs, this);
 
   // Camera publisher
+  // TODO: a more elegant way for different image_topic?
   if (!serial_name.empty()) {
     serial_name = serial_name + "/";
   }
@@ -56,10 +58,6 @@ RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
   camera_pub_ = it_.advertiseCamera(image_topic, 1);
   ROS_INFO_STREAM("Bluefox2: Publish image to " << ros::this_node::getName()
                                                 << "/" << image_topic);
-
-  // Service to set expose
-  srv_server_ =
-      nh_.advertiseService("set_expose", &RosCamera::SetExposeUs, this);
 }
 
 void RosCamera::PublishImage(const cv::Mat &image, const ros::Time &time) {
@@ -93,7 +91,8 @@ const CameraConfig RosCamera::ReadConfig() const {
 
 bool RosCamera::SetExposeUs(SetExposeSrv::Request &req,
                             SetExposeSrv::Response &rsp) {
-  if (rsp.status = camera->SetExposeUs(req.expose_us)) {
+  rsp.status = camera->SetExposeUs(req.expose_us);
+  if (rsp.status) {
     // If the request is successful, change the corresponding parameters
     nh_.setParam("expose", 1);
     nh_.setParam("expose_us", req.expose_us);

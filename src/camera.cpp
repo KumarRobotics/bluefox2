@@ -140,7 +140,6 @@ void Camera::SetExpose(int expose, int expose_us) {
   default:
     break;
   }
-  cout << "expose mode: " << expose << " expose_us: " << GetExposeUs() << endl;
 }
 
 void Camera::SetAutoExpose() {
