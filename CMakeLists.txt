@@ -75,38 +75,27 @@ target_link_libraries(stereo_node
     )
 
 # single nodelet
-add_library(single_nodelet
+add_library(camera_nodelet
     src/single/single_nodelet.cpp
     src/single/single_camera.cpp
-    )
-target_link_libraries(single_nodelet
-    camera
-    )
-
-# stereo nodelet
-add_library(stereo_nodelet
     src/stereo/stereo_nodelet.cpp
     src/stereo/stereo_camera.cpp
     )
-target_link_libraries(stereo_nodelet
+target_link_libraries(camera_nodelet
     camera
     )
 
 # stereo sync
-add_library(stereo_sync
+add_executable(stereo_sync_node
+    src/stereo/stereo_sync_node.cpp
     src/stereo/stereo_sync.cpp
     )
-target_link_libraries(stereo_sync
+target_link_libraries(stereo_sync_node
     ${catkin_LIBRARIES}
     ${OpenCV_LIBRARIES}
     )
-add_executable(stereo_sync_node
-    src/stereo/stereo_sync_node.cpp
-    )
-target_link_libraries(stereo_sync_node
-    stereo_sync
-    )
 
+# dependencies
 add_dependencies(camera
     ${catkin_EXPORTED_TARGETS}
     ${PROJECT_NAME}_gencfg
