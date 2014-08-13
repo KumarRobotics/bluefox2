@@ -44,7 +44,7 @@ void Camera::Configure(const CameraConfig &config) {
   SetExpose(config.expose, config.expose_us);
   SetGainDb(config.gain_db);
   SetTrigger(config.trigger);
-  SetHdr(config.hdr);
+  //SetHdr(config.hdr);
 }
 
 void Camera::FindDevice(const std::string &serial) {
