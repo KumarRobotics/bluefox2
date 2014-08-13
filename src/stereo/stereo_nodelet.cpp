@@ -22,7 +22,7 @@ class StereoNodelet : public nodelet::Nodelet {
   }
 
  private:
-  std::unique_ptr<StereoCamera> stereo_camera_;
+  boost::shared_ptr<StereoCamera> stereo_camera_;
 };
 
 PLUGINLIB_DECLARE_CLASS(bluefox2, StereoNodelet, bluefox2::StereoNodelet,

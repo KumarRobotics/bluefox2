@@ -2,9 +2,6 @@
 #define BLUEFOX2_CAMERA_H_
 
 #include <string>
-#include <thread>
-#include <memory>
-#include <functional>
 
 #include "opencv2/core/core.hpp"
 
@@ -14,24 +11,30 @@
 #include "mvIMPACT_CPP/mvIMPACT_acquire.h"
 
 namespace bluefox2 {
-
 // Config struct
 struct CameraConfig {
-  bool color{false};
-  int expose{0};
-  int expose_us{5000};
-  bool binning{false};
-  double gain_db{0.0};
-  int trigger{0};
-  bool hdr{false};
+  bool color;
+  int expose;
+  int expose_us;
+  bool binning;
+  double gain_db;
+  int trigger;
+  bool hdr;
+
+  CameraConfig()
+      : color(false),
+        expose(0),
+        expose_us(5000),
+        binning(false),
+        gain_db(0),
+        trigger(0),
+        hdr(false) {}
 };
 
 class Camera {
  public:
   Camera(const std::string &serial);
   ~Camera();
-  Camera(const Camera &) = delete;
-  Camera &operator=(const Camera &) = delete;
 
   void Open();
   void Configure(const CameraConfig &config);
@@ -47,7 +50,7 @@ class Camera {
   bool SetExposeUs(int expose_us);
 
  private:
-  static const int kTimeout{150};
+  static const int kTimeout = 150;
   void FindDevice(const std::string &serial);
   void SetColor(bool color);
   void SetAutoExpose();
@@ -60,14 +63,14 @@ class Camera {
   void SetRequestCount(int count);
 
   std::string serial_;
-  std::string label_{"\033[0;34m[BLFOX]:\033[0m "};
+  std::string label_;
   mvIMPACT::acquire::DeviceManager dev_mgr_;
-  mvIMPACT::acquire::Device *dev_{};
-  mvIMPACT::acquire::FunctionInterface *fi_{};
-  mvIMPACT::acquire::Statistics *stats_{};
-  mvIMPACT::acquire::Request *request_{};
-  mvIMPACT::acquire::SettingsBlueFOX *bf_settings_{};
-  mvIMPACT::acquire::SystemSettings *sys_settings_{};
+  mvIMPACT::acquire::Device *dev_;
+  mvIMPACT::acquire::FunctionInterface *fi_;
+  mvIMPACT::acquire::Statistics *stats_;
+  mvIMPACT::acquire::Request *request_;
+  mvIMPACT::acquire::SettingsBlueFOX *bf_settings_;
+  mvIMPACT::acquire::SystemSettings *sys_settings_;
 
 };  // class Camera
 }

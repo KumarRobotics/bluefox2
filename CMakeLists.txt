@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(bluefox2)
 
-#add_definitions("-Wall -std=c++11")
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "-Wall")
 
 find_package(catkin REQUIRED COMPONENTS
     camera_info_manager

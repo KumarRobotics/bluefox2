@@ -16,7 +16,7 @@ using camera_info_manager::CameraInfoManager;
 namespace bluefox2 {
 
 RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
-    : nh_{nh}, it_{nh} {
+    : nh_(nh), it_(nh) {
   // Get parameters
   string serial;
   string calib_url;

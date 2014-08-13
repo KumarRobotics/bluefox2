@@ -1,7 +1,7 @@
 #ifndef BLUEFOX2_ROS_CAMERA_H_
 #define BLUEFOX2_ROS_CAMERA_H_
 
-#include <memory>
+#include <boost/shared_ptr.hpp>
 
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
@@ -22,11 +22,11 @@ class RosCamera {
   void PublishImage(const cv::Mat &image, const ros::Time &time);
 
   const CameraConfig ReadConfig() const;
-  std::unique_ptr<Camera> camera;
+  boost::shared_ptr<Camera> camera;
 
  private:
-  using CameraInfoManagerPtr =
-      std::unique_ptr<camera_info_manager::CameraInfoManager>;
+  typedef boost::shared_ptr<camera_info_manager::CameraInfoManager>
+      CameraInfoManagerPtr;
   ros::NodeHandle nh_;
   image_transport::ImageTransport it_;
   image_transport::CameraPublisher camera_pub_;

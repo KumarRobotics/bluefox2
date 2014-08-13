@@ -7,7 +7,7 @@
 
 namespace bluefox2 {
 
-StereoSync::StereoSync(const ros::NodeHandle &nh) : nh_{nh}, it_{nh} {
+StereoSync::StereoSync(const ros::NodeHandle &nh) : nh_(nh), it_(nh) {
   l_image_sub_.subscribe(it_, "left/image_raw", 1);
   l_cinfo_sub_.subscribe(nh_, "left/camera_info", 1);
 

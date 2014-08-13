@@ -7,7 +7,7 @@ namespace bluefox2 {
 using std::cout;
 using std::endl;
 
-StereoCamera::StereoCamera(const ros::NodeHandle &nh) : nh_{nh} {
+StereoCamera::StereoCamera(const ros::NodeHandle &nh) : nh_(nh) {
   // Ros rate
   double fps;
   nh_.param<double>("fps", fps, 20.0);
@@ -39,7 +39,7 @@ void StereoCamera::Start() {
   // Set acquire to ture
   acquire_ = true;
   // Create a new thread for acquisition
-  image_thread_.reset(new std::thread(&StereoCamera::Acquire, this));
+  image_thread_.reset(new boost::thread(&StereoCamera::Acquire, this));
   cout << left_->camera->label_serial() << ": Starting camera" << endl;
   cout << right_->camera->label_serial() << ": Starting camera" << endl;
 }
@@ -63,7 +63,7 @@ void StereoCamera::Acquire() {
     // In our case, right is master, left is slave, so we request left first
     left_->camera->Request();
     right_->camera->Request();
-    auto time = ros::Time::now();
+    const ros::Time time = ros::Time::now();
     if (left_->camera->Grab(image_left) && right_->camera->Grab(image_right)) {
       left_->PublishImage(image_left, time);
       right_->PublishImage(image_right, time);

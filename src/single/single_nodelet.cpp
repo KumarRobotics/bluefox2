@@ -22,7 +22,7 @@ class SingleNodelet : public nodelet::Nodelet {
   }
 
  private:
-  std::unique_ptr<SingleCamera> single_camera_;
+  boost::shared_ptr<SingleCamera> single_camera_;
 };
 
 PLUGINLIB_DECLARE_CLASS(bluefox2, SingleNodelet, bluefox2::SingleNodelet,
