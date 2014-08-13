@@ -34,9 +34,8 @@ catkin_package(
 
 # mvIMPACT
 execute_process(COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCH)
-message(STATUS "Architecture: ${ARCH}")
-set(MVIMPACT_DIR "/opt/mvIMPACT_acquire")
-set(MVIMPACT_INCLUDE_DIRS ${MVIMPACT_DIR})
+set(MVIMPACT_DIR "${PROJECT_SOURCE_DIR}/mvIMPACT")
+set(MVIMPACT_INCLUDE_DIRS ${MVIMPACT_DIR}/include)
 set(MVIMPACT_LIBRARIES ${MVIMPACT_DIR}/lib/${ARCH}/libmvDeviceManager.so)
 
 include_directories(include)
