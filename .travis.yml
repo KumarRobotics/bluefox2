@@ -1,13 +1,13 @@
 language:
-  - cpp
+    - cpp
 compiler:
-  - gcc
+    - gcc
 notifications:
-  email:
-    recipients:
-      - quchao@seas.upenn.edu
+    email:
+        recipients:
+            - quchao@seas.upenn.edu
 before_install: # Use this to prepare the system to install prerequisites or dependencies
-  # Define some config vars
+    # Define some config vars
   - export ROS_DISTRO=hydro
   - export CI_SOURCE_PATH=$(pwd)
   - export REPOSITORY_NAME=${PWD##*/}
@@ -16,13 +16,17 @@ before_install: # Use this to prepare the system to install prerequisites or dep
   - wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
   - sudo apt-get update -qq
 install: # Use this to install any prerequisites or dependencies necessary to run your build
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq g++-4.8
+  - export CXX="g++-4.8" CC="gcc-4.8"
   - sudo apt-get install -qq -y python-catkin-pkg python-rosdep python-wstool ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-perception
-  # Setup rosdep
+    # Setup rosdep
   - sudo rosdep init
   - rosdep update
 before_script: # Use this to prepare your build for testing e.g. copy database configurations, environment variables, etc.
   - source /opt/ros/$ROS_DISTRO/setup.bash
-  # Create workspace
+    # Create workspace
   - mkdir -p ~/ros/catkin_ws/src
   - cd ~/ros/catkin_ws/src
   - catkin_init_workspace
