@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(bluefox2)
 
-#add_definitions("-Wall -std=c++11")
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "-Wall")
 
 find_package(catkin REQUIRED COMPONENTS
     camera_info_manager
@@ -34,9 +33,8 @@ catkin_package(
 
 # mvIMPACT
 execute_process(COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCH)
-message(STATUS "Architecture: ${ARCH}")
-set(MVIMPACT_DIR "/opt/mvIMPACT_acquire")
-set(MVIMPACT_INCLUDE_DIRS ${MVIMPACT_DIR})
+set(MVIMPACT_DIR "${PROJECT_SOURCE_DIR}/mvIMPACT")
+set(MVIMPACT_INCLUDE_DIRS ${MVIMPACT_DIR}/include)
 set(MVIMPACT_LIBRARIES ${MVIMPACT_DIR}/lib/${ARCH}/libmvDeviceManager.so)
 
 include_directories(include)

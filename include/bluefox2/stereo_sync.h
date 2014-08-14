@@ -1,8 +1,6 @@
 #ifndef BLUEFOX2_STEREO_SYNC_H_
 #define BLUEFOX2_STEREO_SYNC_H_
 
-#include <memory>
-
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <image_transport/subscriber_filter.h>
@@ -18,13 +16,13 @@ class StereoSync {
   StereoSync(const ros::NodeHandle &nh);
 
  private:
-  using ImageSubscriberFilter = image_transport::SubscriberFilter;
-  using CinfoSubscriberFilter =
-      message_filters::Subscriber<sensor_msgs::CameraInfo>;
-  using TimeSyncPolicy = message_filters::sync_policies::ExactTime<
+  typedef image_transport::SubscriberFilter ImageSubscriberFilter;
+  typedef message_filters::Subscriber<sensor_msgs::CameraInfo>
+      CinfoSubscriberFilter;
+  typedef message_filters::sync_policies::ExactTime<
       sensor_msgs::Image, sensor_msgs::CameraInfo, sensor_msgs::Image,
-      sensor_msgs::CameraInfo>;
-  using TimeSynchronizer = message_filters::Synchronizer<TimeSyncPolicy>;
+      sensor_msgs::CameraInfo> TimeSyncPolicy;
+  typedef message_filters::Synchronizer<TimeSyncPolicy> TimeSynchronizer;
 
   void SyncCallback(const sensor_msgs::ImageConstPtr &image_left,
                     const sensor_msgs::CameraInfoConstPtr &cinfo_left,
@@ -38,7 +36,7 @@ class StereoSync {
   CinfoSubscriberFilter l_cinfo_sub_;
   CinfoSubscriberFilter r_cinfo_sub_;
 
-  std::unique_ptr<TimeSynchronizer> sync_;
+  boost::shared_ptr<TimeSynchronizer> sync_;
 
 };  // class StereoSync
 

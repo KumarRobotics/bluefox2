@@ -7,7 +7,7 @@ using std::endl;
 
 namespace bluefox2 {
 
-SingleCamera::SingleCamera(const ros::NodeHandle &nh) : nh_{nh} {
+SingleCamera::SingleCamera(const ros::NodeHandle &nh) : acquire_(false), nh_(nh) {
   // Ros rate
   double fps;
   nh_.param<double>("fps", fps, 20.0);
@@ -34,7 +34,7 @@ void SingleCamera::Start() {
   // Set acquire to ture
   acquire_ = true;
   // Create a new thread for acquisition
-  image_thread_.reset(new std::thread(&SingleCamera::Acquire, this));
+  image_thread_.reset(new boost::thread(&SingleCamera::Acquire, this));
   cout << ros_camera_->camera->label_serial() << ": Starting camera" << endl;
 }
 
@@ -54,7 +54,7 @@ void SingleCamera::Acquire() {
   cv::Mat image;
   while (acquire_ && ros::ok()) {
     ros_camera_->camera->Request();
-    auto time = ros::Time::now();
+    const ros::Time time = ros::Time::now();
     if (ros_camera_->camera->Grab(image)) {
       ros_camera_->PublishImage(image, time);
       rate_->sleep();

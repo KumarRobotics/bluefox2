@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/versatran01/bluefox2.svg?branch=master)](https://travis-ci.org/versatran01/bluefox2)
+
 # Bluefox2
 *This driver has only been tested under ubuntu 14.04 with ros indigo*  
 *This driver follows the google c++ style guide*  

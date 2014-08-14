@@ -1,11 +1,10 @@
 #ifndef BLUEFOX2_SINGLE_CAMERA_H_
 #define BLUEFOX2_SINGLE_CAMERA_H_
 
-#include <memory>
-#include <thread>
-
 #include <ros/ros.h>
 #include <dynamic_reconfigure/server.h>
+
+#include <boost/thread.hpp>
 
 #include "bluefox2/CameraDynConfig.h"
 #include "bluefox2/ros_camera.h"
@@ -26,12 +25,12 @@ class SingleCamera {
   void Stop();
   void Acquire();
 
-  bool acquire_{false};
+  bool acquire_;
   ros::NodeHandle nh_;
-  std::unique_ptr<ros::Rate> rate_;
+  boost::shared_ptr<ros::Rate> rate_;
   dynamic_reconfigure::Server<CameraDynConfig> cfg_server_;
-  std::unique_ptr<RosCamera> ros_camera_;
-  std::unique_ptr<std::thread> image_thread_;
+  boost::shared_ptr<RosCamera> ros_camera_;
+  boost::shared_ptr<boost::thread> image_thread_;
 };
 
 }  // namespace bluefox2

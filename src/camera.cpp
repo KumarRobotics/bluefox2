@@ -13,7 +13,16 @@ using namespace mvIMPACT::acquire;
 
 namespace bluefox2 {
 
-Camera::Camera(const std::string &serial) { FindDevice(serial); }
+Camera::Camera(const std::string &serial)
+    : label_("\033[0;34m[BLFOX]:\033[0m "),
+      dev_(NULL),
+      fi_(NULL),
+      stats_(NULL),
+      request_(NULL),
+      bf_settings_(NULL),
+      sys_settings_(NULL) {
+  FindDevice(serial);
+}
 
 Camera::~Camera() {
   // Close device if possible
@@ -44,16 +53,16 @@ void Camera::Configure(const CameraConfig &config) {
   SetExpose(config.expose, config.expose_us);
   SetGainDb(config.gain_db);
   SetTrigger(config.trigger);
-  //SetHdr(config.hdr);
+  // SetHdr(config.hdr);
 }
 
 void Camera::FindDevice(const std::string &serial) {
-  auto dev_cnt = dev_mgr_.deviceCount();
+  unsigned int dev_cnt = dev_mgr_.deviceCount();
   cout << label_ << "Device count: " << dev_cnt << endl;
   if (dev_cnt <= 0) {
     throw runtime_error("No device found");
   }
-  for (decltype(dev_cnt) i = 0; i < dev_cnt; ++i) {
+  for (unsigned int i = 0; i < dev_cnt; ++i) {
     if (dev_mgr_[i]->serial.read() == serial) {
       dev_ = dev_mgr_[i];
       break;
@@ -63,7 +72,7 @@ void Camera::FindDevice(const std::string &serial) {
   if (!dev_) {
     ostringstream error_msg;
     error_msg << "Device not found: " << serial << ". Available device:";
-    for (decltype(dev_cnt) i = 0; i < dev_cnt; ++i) {
+    for (unsigned int i = 0; i < dev_cnt; ++i) {
       error_msg << " " << dev_mgr_[i]->serial.readS();
     }
     throw runtime_error(error_msg.str());
@@ -114,31 +123,27 @@ bool Camera::Grab(cv::Mat &image) {
 }
 
 void Camera::SetBinning(bool binning) {
-  auto binning_enum = binning ? cbmBinningHV : cbmOff;
-  bf_settings_->cameraSetting.binningMode.write(binning_enum);
-  //  cout << "binning: " << bf_settings_->cameraSetting.binningMode.readS()
-  //       << endl;
+  bf_settings_->cameraSetting.binningMode.write(binning ? cbmBinningHV
+                                                        : cbmOff);
 }
 
 void Camera::SetColor(bool color) {
-  auto pixel_enum = color ? idpfRGB888Packed : idpfRaw;
-  bf_settings_->imageDestination.pixelFormat.write(pixel_enum);
-  //  cout << "pixel format: "
-  //       << bf_settings_->imageDestination.pixelFormat.readS() << endl;
+  bf_settings_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
+                                                         : idpfRaw);
 }
 
 void Camera::SetExpose(int expose, int expose_us) {
   switch (expose) {
-  case 0:
-    // Manual expose
-    SetExposeUs(expose_us);
-    break;
-  case 1:
-    // Auto expose
-    SetAutoExpose();
-    break;
-  default:
-    break;
+    case 0:
+      // Manual expose
+      SetExposeUs(expose_us);
+      break;
+    case 1:
+      // Auto expose
+      SetAutoExpose();
+      break;
+    default:
+      break;
   }
 }
 
@@ -148,8 +153,8 @@ void Camera::SetAutoExpose() {
 
 bool Camera::SetExposeUs(int expose_us) {
   bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
-  auto expose_min = bf_settings_->cameraSetting.expose_us.getMinValue();
-  auto expose_max = bf_settings_->cameraSetting.expose_us.getMaxValue();
+  int expose_min = bf_settings_->cameraSetting.expose_us.getMinValue();
+  int expose_max = bf_settings_->cameraSetting.expose_us.getMaxValue();
   if (expose_us > expose_max || expose_us < expose_min) {
     return false;
   }
@@ -158,7 +163,8 @@ bool Camera::SetExposeUs(int expose_us) {
 }
 
 int Camera::GetExposeUs() const {
-  auto aecOld = bf_settings_->cameraSetting.autoExposeControl.read();
+  TAutoExposureControl aecOld =
+      bf_settings_->cameraSetting.autoExposeControl.read();
   bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
   int expose_us = bf_settings_->cameraSetting.expose_us.read();
   bf_settings_->cameraSetting.autoExposeControl.write(aecOld);
@@ -167,8 +173,8 @@ int Camera::GetExposeUs() const {
 
 bool Camera::SetGainDb(double gain_db) {
   bf_settings_->cameraSetting.autoGainControl.write(agcOff);
-  auto gain_min = bf_settings_->cameraSetting.gain_dB.getMinValue();
-  auto gain_max = bf_settings_->cameraSetting.gain_dB.getMaxValue();
+  double gain_min = bf_settings_->cameraSetting.gain_dB.getMinValue();
+  double gain_max = bf_settings_->cameraSetting.gain_dB.getMaxValue();
   if (gain_db < gain_min || gain_db > gain_max) {
     return false;
   }
@@ -181,8 +187,8 @@ void Camera::SetRequestCount(int count) {
 }
 
 void Camera::SetTrigger(int trigger) {
-  auto trigger_enum = trigger ? ctmOnDemand : ctmContinuous;
-  bf_settings_->cameraSetting.triggerMode.write(trigger_enum);
+  bf_settings_->cameraSetting.triggerMode.write(trigger ? ctmOnDemand
+                                                        : ctmContinuous);
 }
 
 void Camera::SetHdr(bool hdr) {
