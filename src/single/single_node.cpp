@@ -16,5 +16,4 @@ int main(int argc, char **argv) {
   catch (const std::exception &e) {
     ROS_ERROR_STREAM("Bluefox2: " << e.what());
   }
-
 }

@@ -7,7 +7,8 @@ using std::endl;
 
 namespace bluefox2 {
 
-SingleCamera::SingleCamera(const ros::NodeHandle &nh) : acquire_(false), nh_(nh) {
+SingleCamera::SingleCamera(const ros::NodeHandle &nh)
+    : acquire_(false), nh_(nh) {
   // Ros rate
   double fps;
   nh_.param<double>("fps", fps, 20.0);

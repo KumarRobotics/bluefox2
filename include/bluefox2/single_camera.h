@@ -35,4 +35,4 @@ class SingleCamera {
 
 }  // namespace bluefox2
 
-#endif // BLUEFOX2_SINGLE_CAMERA_H_
+#endif  // BLUEFOX2_SINGLE_CAMERA_H_
