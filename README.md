@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/versatran01/bluefox2.svg?branch=master)](https://travis-ci.org/versatran01/bluefox2)
 
 # Bluefox2
-*This driver has only been tested under ubuntu 14.04 with ros indigo*  
+*This driver works with ubuntu 12.04 + ros hydro + gcc 4.6 and ubuntu 14.04 + ros indigo + gcc 4.8+*  
 *This driver follows the google c++ style guide*  
 https://github.com/KumarRobotics/bluefox2
 
