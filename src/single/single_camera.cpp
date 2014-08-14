@@ -2,10 +2,11 @@
 
 #include "bluefox2/single_camera.h"
 
-using std::cout;
-using std::endl;
 
 namespace bluefox2 {
+
+using std::cout;
+using std::endl;
 
 SingleCamera::SingleCamera(const ros::NodeHandle &nh)
     : acquire_(false), nh_(nh) {

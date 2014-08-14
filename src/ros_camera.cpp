@@ -6,14 +6,14 @@
 #include <sensor_msgs/image_encodings.h>
 #include <std_msgs/Header.h>
 
+namespace bluefox2 {
+
 using std::cout;
 using std::endl;
 using std::string;
 using sensor_msgs::CameraInfo;
 using sensor_msgs::CameraInfoPtr;
 using camera_info_manager::CameraInfoManager;
-
-namespace bluefox2 {
 
 RosCamera::RosCamera(const ros::NodeHandle &nh, std::string serial_name)
     : nh_(nh), it_(nh) {

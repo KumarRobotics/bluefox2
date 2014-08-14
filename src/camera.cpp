@@ -1,17 +1,18 @@
 #include "bluefox2/camera.h"
 
 #include <iostream>
-using std::cout;
-using std::endl;
 #include <stdexcept>
-using std::runtime_error;
 #include <sstream>
-using std::ostringstream;
 #include <unistd.h>
 
 using namespace mvIMPACT::acquire;
 
 namespace bluefox2 {
+
+using std::cout;
+using std::endl;
+using std::runtime_error;
+using std::ostringstream;
 
 Camera::Camera(const std::string &serial)
     : label_("\033[0;34m[BLFOX]:\033[0m "),
