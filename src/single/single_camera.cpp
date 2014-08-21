@@ -54,6 +54,7 @@ void SingleCamera::Stop() {
 void SingleCamera::Acquire() {
   cout << ros_camera_->camera->label_serial() << ": Acquiring images" << endl;
   cv::Mat image;
+  ros_camera_->camera->Request();
   while (acquire_ && ros::ok()) {
     ros_camera_->camera->Request();
     const ros::Time time = ros::Time::now();

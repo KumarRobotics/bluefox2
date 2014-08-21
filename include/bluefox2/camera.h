@@ -71,6 +71,7 @@ class Camera {
   mvIMPACT::acquire::Request *request_;
   mvIMPACT::acquire::SettingsBlueFOX *bf_settings_;
   mvIMPACT::acquire::SystemSettings *sys_settings_;
+  mvIMPACT::acquire::CameraSettingsBlueDevice *cam_settings_;
 
 };  // class Camera
 }

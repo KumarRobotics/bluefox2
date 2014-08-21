@@ -44,16 +44,18 @@ void Camera::Open() {
   stats_ = new Statistics(dev_);
   bf_settings_ = new SettingsBlueFOX(dev_);
   sys_settings_ = new SystemSettings(dev_);
+  cam_settings_ = new CameraSettingsBlueDevice(dev_);
 }
 
 void Camera::Configure(const CameraConfig &config) {
   cout << label_ << serial_ << ": Configuring camera" << endl;
-  SetRequestCount(1);
+  SetRequestCount(2);
   SetBinning(config.binning);
   SetColor(config.color);
   SetExpose(config.expose, config.expose_us);
   SetGainDb(config.gain_db);
   SetTrigger(config.trigger);
+  cam_settings_->pixelClock_KHz.write(cpc40000KHz);
   // SetHdr(config.hdr);
 }
 
@@ -101,6 +103,9 @@ bool Camera::Grab(cv::Mat &image) {
   if (!request_->isOK()) {
     fi_->imageRequestUnlock(requestNr);
     cout << label_ << serial_ << ": Request not ok." << endl;
+    cout << label_
+         << mvIMPACT::acquire::ImpactAcquireException::getErrorCodeAsString(
+                requestNr) << endl;
     return false;
   }
 
@@ -115,6 +120,7 @@ bool Camera::Grab(cv::Mat &image) {
   }
   image.create(cv::Size(width, height), cv_type);
   // Copy data
+  /// @todo: change memcpy to a use_image function which will publish the image
   memcpy(image.data, request_->imageData.read(), request_->imageSize.read());
 
   // Release capture request
