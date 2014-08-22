@@ -1,0 +1,18 @@
+<launch>
+    <arg name="serial"/>
+    <arg name="square"/>
+    <arg name="size"/>
+    <arg name="pattern"/>
+    <arg name="camera" default="/mv_$(arg serial)"/>
+    <arg name="image" default="$(arg camera)/image_raw"/>
+
+    <include file="$(find bluefox2)/launch/single_node.launch">
+        <arg name="serial" value="$(arg serial)"/>
+    </include>
+
+    <node pkg="camera_calibration" type="cameracalibrator.py" name="calibrator"
+        args="--pattern $(arg pattern) --square $(arg square)
+        --size $(arg size) image:=$(arg image) camera:=$(arg camera)"
+        output="screen">
+    </node>
+</launch>

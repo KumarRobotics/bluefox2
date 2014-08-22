@@ -10,7 +10,7 @@
     <arg name="binning" default="false"/>
     <arg name="gain_db" default="0.0"/>
     <arg name="trigger" default="0"/>
-    <arg name="hdr" default="true"/>
+    <arg name="hdr" default="false"/>
 
     <node pkg="bluefox2" type="single_node" name="mv_$(arg serial)"
         respawn="true" output="screen">
