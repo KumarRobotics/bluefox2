@@ -137,6 +137,9 @@ void Camera::SetBinning(bool binning) {
 void Camera::SetColor(bool color) {
   bf_settings_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
                                                          : idpfRaw);
+  if (color) {
+    bf_settings_->imageProcessing.whiteBalance.write(wbpFluorescent);
+  }
 }
 
 void Camera::SetExpose(int expose, int expose_us) {
