@@ -1,4 +1,4 @@
 The following command will add a udev rule of matrix vision bluefox camera
 
-sudo cp -f path_to_driver/Scripts/51-mvbf.rules /etc/udev/rules.d/
+sudo cp -f path_to_driver/mvIMPACT/script/51-mvbf.rules /etc/udev/rules.d/
 sudo service udev reload
