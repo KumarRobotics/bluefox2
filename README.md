@@ -52,6 +52,6 @@ If you install the full matrix vision driver, you will have `wxPropView` install
         sudo service udev reload
         ```
 
-2. Camera acquisition failure after being unplugged and plugged back in
+2. Camera acquisition failure after being unplugged and plugged back in  
 If you are using linux kernel 3.13.0, then it's likely that you will encounter this problem.
 The solution is to install the latest kernel, eg. 3.14.17
