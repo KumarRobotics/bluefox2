@@ -42,9 +42,10 @@
     </node>
 
     <!-- View -->
+    <arg name="image" default="raw"/>
     <node if="$(arg view)" pkg="image_view" type="image_view"
-        name="$(arg camera)_raw" output="$(arg output)"
-        args="image:=/$(arg camera)/image_raw">
+        name="$(arg camera)_$(arg image)" output="$(arg output)"
+        args="image:=/$(arg camera)/image_$(arg image)">
     </node>
 
     <!-- Calib -->
