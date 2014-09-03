@@ -77,7 +77,10 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
   return true;
 }
 
-void Bluefox2::Configure(Bluefox2DynConfig &config) { SetColor(config.color); }
+void Bluefox2::Configure(Bluefox2DynConfig &config) {
+  SetColor(config.color);
+  SetBinning(config.binning);
+}
 
 void Bluefox2::SetRequestCount(int count) const {
   sys_settings_->requestCount.write(count);
@@ -86,6 +89,11 @@ void Bluefox2::SetRequestCount(int count) const {
 void Bluefox2::SetColor(bool color) const {
   bf_settings_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
                                                          : idpfMono8);
+}
+
+void Bluefox2::SetBinning(bool binning) const {
+  bf_settings_->cameraSetting.binningMode.write(binning ? cbmBinningHV
+                                                        : cbmOff);
 }
 
 /*

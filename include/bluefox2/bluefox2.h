@@ -33,6 +33,7 @@ class Bluefox2 {
   static const int kTimeout = 500;
   std::string AvailableDevice() const;
   void SetColor(bool color) const;
+  void SetBinning(bool binning) const;
   //  void SetExpose(int expose, int expose_us);
   //  int GetExposeUs() const;
   //  bool SetGainDb(double gain_db);
