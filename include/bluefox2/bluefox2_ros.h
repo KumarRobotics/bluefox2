@@ -13,6 +13,11 @@ class Bluefox2Ros : public CameraRosBase {
       : CameraRosBase{nh, prefix}, bluefox2_{identifier()} {
     bluefox2_.Open();
     SetHardwareId(bluefox2_.serial());
+//    if (prefix == "left") {
+//      bluefox2_.SetMaster();
+//    } else if (prefix == "right") {
+//      bluefox2_.SetSlave();
+//    }
   }
 
   void Request() const { bluefox2_.Request(); }

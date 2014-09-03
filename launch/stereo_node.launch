@@ -1,7 +1,7 @@
 <launch>
     <!-- Settings -->
     <arg name="left" default="25000855"/>
-    <arg name="right" default="25001110"/>
+    <arg name="right" default="25001185"/>
     <arg name="left_calib_url"
         default="package://bluefox2/calib/calib_$(arg left).yml"/>
     <arg name="right_calib_url"
@@ -22,16 +22,13 @@
     <!-- Node -->
     <node pkg="bluefox2" type="stereo_node" name="$(arg camera)"
         respawn="$(arg respawn)" output="$(arg output)">
-        <group ns="left">
-            <param name="identifier" type="string" value="$(arg left)"/>
-            <param name="calib_url" type="string"
-                value="$(arg left_calib_url)"/>
-        </group>
-        <group ns="right">
-            <param name="identifier" type="string" value="$(arg right)"/>
-            <param name="calib_url" type="string"
+        <param name="left/identifier" type="string" value="$(arg left)"/>
+        <param name="left/calib_url" type="string"
+            value="$(arg left_calib_url)"/>
+        <param name="right/identifier" type="string" value="$(arg right)"/>
+        <param name="right/calib_url" type="string"
                 value="$(arg right_calib_url)"/>
-        </group>
+        <param name="camera" type="string" value="$(arg camera)"/>
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
         <param name="fps" type="int" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>

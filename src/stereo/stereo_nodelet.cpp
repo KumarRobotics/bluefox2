@@ -8,7 +8,11 @@ namespace bluefox2 {
 class StereoNodelet : public nodelet::Nodelet {
  public:
   StereoNodelet() : nodelet::Nodelet() {}
-  ~StereoNodelet() { stereo_node_->End(); }
+  ~StereoNodelet() {
+    if (stereo_node_) {
+      stereo_node_->End();
+    }
+  }
 
   virtual void onInit() {
     try {
