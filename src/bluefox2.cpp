@@ -40,9 +40,8 @@ void Bluefox2::Open() {
   // These poniters will leak, but we don't really care
   fi_ = new FunctionInterface(dev_);
   stats_ = new Statistics(dev_);
-  bf_settings_ = new SettingsBlueFOX(dev_);
-  sys_settings_ = new SystemSettings(dev_);
-  cam_settings_ = new CameraSettingsBlueDevice(dev_);
+  bf_set_ = new SettingsBlueFOX(dev_);
+  sys_set_ = new SystemSettings(dev_);
 }
 
 void Bluefox2::Request() const { fi_->imageRequestSingle(); }
@@ -82,47 +81,48 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
 }
 
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
+  SetPixelClock(config.fps);
   SetColor(config.color);
   SetBinning(config.binning);
-  SetGainDb(config.gain_db);
-  SetExposeUs(config.expose_us);
-  SetPixelClock(config.fps);
+  SetGainDb(&config.gain_db);
+  SetExposeUs(&config.expose_us);
+  SetTrigger(&config.trigger);
+  SetHdr(&config.hdr);
 }
 
 inline void Bluefox2::SetRequestCount(int count) const {
-  sys_settings_->requestCount.write(count);
+  sys_set_->requestCount.write(count);
 }
 
 inline void Bluefox2::SetColor(bool color) const {
-  bf_settings_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
-                                                         : idpfMono8);
+  bf_set_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
+                                                    : idpfMono8);
 }
 
 inline void Bluefox2::SetBinning(bool binning) const {
-  bf_settings_->cameraSetting.binningMode.write(binning ? cbmBinningHV
-                                                        : cbmOff);
+  bf_set_->cameraSetting.binningMode.write(binning ? cbmBinningHV : cbmOff);
 }
 
-void Bluefox2::SetExposeUs(int &expose_us) const {
-  bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
-  const int expose_min = bf_settings_->cameraSetting.expose_us.getMinValue();
-  const int expose_max = bf_settings_->cameraSetting.expose_us.getMaxValue();
-  expose_us = clamp(expose_us, expose_min, expose_max);
-  bf_settings_->cameraSetting.expose_us.write(expose_us);
+void Bluefox2::SetExposeUs(int *expose_us) const {
+  bf_set_->cameraSetting.autoExposeControl.write(aecOff);
+  const int expose_min = bf_set_->cameraSetting.expose_us.getMinValue();
+  const int expose_max = bf_set_->cameraSetting.expose_us.getMaxValue();
+  *expose_us = clamp(*expose_us, expose_min, expose_max);
+  bf_set_->cameraSetting.expose_us.write(*expose_us);
   // Cache expose_us
-  expose_us_ = expose_us;
+  expose_us_ = *expose_us;
 }
 
-void Bluefox2::SetGainDb(double &gain_db) const {
-  bf_settings_->cameraSetting.autoGainControl.write(agcOff);
-  const double gain_min = bf_settings_->cameraSetting.gain_dB.getMinValue();
-  const double gain_max = bf_settings_->cameraSetting.gain_dB.getMaxValue();
-  gain_db = clamp(gain_db, gain_min, gain_max);
-  bf_settings_->cameraSetting.gain_dB.write(gain_db);
+void Bluefox2::SetGainDb(double *gain_db) const {
+  bf_set_->cameraSetting.autoGainControl.write(agcOff);
+  const double gain_min = bf_set_->cameraSetting.gain_dB.getMinValue();
+  const double gain_max = bf_set_->cameraSetting.gain_dB.getMaxValue();
+  *gain_db = clamp(*gain_db, gain_min, gain_max);
+  bf_set_->cameraSetting.gain_dB.write(*gain_db);
 }
 
 void Bluefox2::SetPixelClock(double fps) const {
-  const auto pclk_khz = bf_settings_->cameraSetting.pixelClock_KHz.read();
+  const auto pclk_khz = bf_set_->cameraSetting.pixelClock_KHz.read();
   const auto max_fps =
       PixelClockToFrameRate(pclk_khz, width(), height(), expose_us());
   if (fps < max_fps) {
@@ -130,47 +130,48 @@ void Bluefox2::SetPixelClock(double fps) const {
   }
   // Promote to highest pixel clock only if we ask for faster fps
   // Never decrease pixel clock
-  const auto size = bf_settings_->cameraSetting.pixelClock_KHz.dictSize();
+  const auto size = bf_set_->cameraSetting.pixelClock_KHz.dictSize();
   const auto value =
-      bf_settings_->cameraSetting.pixelClock_KHz.getTranslationDictValue(size -
-                                                                         1);
-  bf_settings_->cameraSetting.pixelClock_KHz.write(value);
+      bf_set_->cameraSetting.pixelClock_KHz.getTranslationDictValue(size - 1);
+  bf_set_->cameraSetting.pixelClock_KHz.write(value);
+}
+
+void Bluefox2::SetTrigger(int *trigger) const {
+  bf_set_->cameraSetting.triggerMode.write(*trigger ? ctmOnDemand
+                                                    : ctmContinuous);
+}
+
+void Bluefox2::SetMaster() const {
+  bf_set_->cameraSetting.triggerMode.write(ctmOnDemand);
+  bf_set_->cameraSetting.flashMode.write(cfmDigout0);
+  bf_set_->cameraSetting.flashType.write(cftStandard);
+  bf_set_->cameraSetting.flashToExposeDelay_us.write(0);
+}
+
+void Bluefox2::SetSlave() const {
+  bf_set_->cameraSetting.triggerMode.write(ctmOnHighLevel);
+  bf_set_->cameraSetting.triggerSource.write(ctsDigIn0);
+  bf_set_->cameraSetting.frameDelay_us.write(0);
+}
+
+void Bluefox2::SetHdr(bool *hdr) const {
+  if (!bf_set_->cameraSetting.getHDRControl().isAvailable()) {
+    *hdr = false;
+    return;
+  }
+  if (*hdr) {
+    bf_set_->cameraSetting.getHDRControl().HDRMode.write(cHDRmFixed0);
+    bf_set_->cameraSetting.getHDRControl().HDREnable.write(bTrue);
+  } else {
+    bf_set_->cameraSetting.getHDRControl().HDREnable.write(bFalse);
+  }
 }
 
 double PixelClockToFrameRate(int pclk_khz, double width, double height,
                              double expose_us) {
   static const double kTriggerPulseWidthUs = 200;
-  double frame_time_us = (width + 94) * (height + 45) / pclk_khz * 1000;
+  double frame_time_us = (width + 94) * (height + 45) / pclk_khz * 1e3;
   return 1e6 / (frame_time_us + expose_us + kTriggerPulseWidthUs);
 }
-
-// void Camera::SetTrigger(int trigger) {
-//  bf_settings_->cameraSetting.triggerMode.write(trigger ? ctmOnDemand
-//                                                        : ctmContinuous);
-//}
-
-// void Camera::SetHdr(bool hdr) {
-//  if (hdr) {
-//    bf_settings_->cameraSetting.getHDRControl().HDRMode.write(cHDRmFixed0);
-//    bf_settings_->cameraSetting.getHDRControl().HDREnable.write(bTrue);
-//  } else {
-//    bf_settings_->cameraSetting.getHDRControl().HDREnable.write(bFalse);
-//  }
-//}
-
-// void Camera::SetMaster() {
-//  bf_settings_->cameraSetting.triggerMode.write(ctmOnDemand);
-//  bf_settings_->cameraSetting.flashMode.write(cfmDigout0);
-//  bf_settings_->cameraSetting.flashType.write(cftStandard);
-//  bf_settings_->cameraSetting.flashToExposeDelay_us.write(0);
-//  cout << "Set master: " << endl;
-//}
-
-// void Camera::SetSlave() {
-//  bf_settings_->cameraSetting.triggerMode.write(ctmOnHighLevel);
-//  bf_settings_->cameraSetting.triggerSource.write(ctsDigIn0);
-//  bf_settings_->cameraSetting.frameDelay_us.write(0);
-//  cout << "Set slave: " << endl;
-//}
 
 }  // namespace bluefox2

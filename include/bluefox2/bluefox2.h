@@ -17,31 +17,28 @@ class Bluefox2 {
   ~Bluefox2();
 
   std::string serial() const { return serial_; }
-  int height() const { return bf_settings_->cameraSetting.aoiHeight.read(); }
-  int width() const { return bf_settings_->cameraSetting.aoiWidth.read(); }
+  int height() const { return bf_set_->cameraSetting.aoiHeight.read(); }
+  int width() const { return bf_set_->cameraSetting.aoiWidth.read(); }
   int expose_us() const { return expose_us_; }
 
   void Open();
-  void Configure(Bluefox2DynConfig &config);
   void Request() const;
+  void SetMaster() const;
+  void SetSlave() const;
+  void Configure(Bluefox2DynConfig &config);
   bool GrabImage(sensor_msgs::Image &image_msg);
-  //  void Configure(const CameraConfig &config);
-  //  void SetMaster();
-  //  void SetSlave();
-  //  bool SetExposeUs(int expose_us);
 
  private:
   static const int kTimeout = 500;
   std::string AvailableDevice() const;
   void SetColor(bool color) const;
   void SetBinning(bool binning) const;
-  void SetExposeUs(int &expose_us) const;
-  void SetGainDb(double &gain_db) const;
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
-  //  int GetExposeUs() const;
-  //  void SetTrigger(int trigger);
-  //  void SetHdr(bool hdr);
+  void SetTrigger(int *trigger) const;
+  void SetExposeUs(int *expose_us) const;
+  void SetGainDb(double *gain_db) const;
+  void SetHdr(bool *hdr) const;
 
   std::string serial_;
   mutable int expose_us_;
@@ -50,9 +47,8 @@ class Bluefox2 {
   mvIMPACT::acquire::FunctionInterface *fi_;
   mvIMPACT::acquire::Statistics *stats_;
   mvIMPACT::acquire::Request *request_;
-  mvIMPACT::acquire::SettingsBlueFOX *bf_settings_;
-  mvIMPACT::acquire::SystemSettings *sys_settings_;
-  mvIMPACT::acquire::CameraSettingsBlueDevice *cam_settings_;
+  mvIMPACT::acquire::SettingsBlueFOX *bf_set_;
+  mvIMPACT::acquire::SystemSettings *sys_set_;
 };
 
 template <typename T>
