@@ -1,4 +1,4 @@
-<library path="lib/libcamera_nodelet">
+<library path="lib/libbluefox2_nodelet">
     <class name="bluefox2/SingleNodelet" type="bluefox2::SingleNodelet"
         base_class_type="nodelet::Nodelet">
         <description>

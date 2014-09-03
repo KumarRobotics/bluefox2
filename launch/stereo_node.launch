@@ -1,34 +1,44 @@
 <launch>
+    <!-- Settings -->
     <arg name="left" default="25000855"/>
     <arg name="right" default="25001110"/>
-    <arg name="left_calib" default="calib_$(arg left)"/>
-    <arg name="left_calib_url" default="package://bluefox2/calib/$(arg left_calib).yml"/>
-    <arg name="right_calib" default="calib_$(arg right)"/>
-    <arg name="right_calib_url" default="package://bluefox2/calib/$(arg right_calib).yml"/>
+    <arg name="left_calib_url"
+        default="package://bluefox2/calib/calib_$(arg left).yml"/>
+    <arg name="right_calib_url"
+        default="package://bluefox2/calib/calib_$(arg right).yml"/>
     <arg name="frame_id" default="mv_stereo"/>
+    <arg name="camera" default="mv_stereo"/>
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
-    <arg name="expose" default="0"/>
-    <arg name="expose_us" default="5000"/>
     <arg name="binning" default="false"/>
-    <arg name="gain_db" default="0.0"/>
     <arg name="trigger" default="1"/>
+    <arg name="expose_us" default="5000"/>
+    <arg name="gain_db" default="0.0"/>
     <arg name="hdr" default="true"/>
 
-    <node pkg="bluefox2" type="stereo_node" name="mv_stereo"
-        respawn="true" output="screen">
-        <param name="left" type="string" value="$(arg left)"/>
-        <param name="right" type="string" value="$(arg right)"/>
+    <arg name="output" default="screen"/>
+    <arg name="respawn" default="false"/>
+
+    <!-- Node -->
+    <node pkg="bluefox2" type="stereo_node" name="$(arg camera)"
+        respawn="$(arg respawn)" output="$(arg output)">
+        <group ns="left">
+            <param name="identifier" type="string" value="$(arg left)"/>
+            <param name="calib_url" type="string"
+                value="$(arg left_calib_url)"/>
+        </group>
+        <group ns="right">
+            <param name="identifier" type="string" value="$(arg right)"/>
+            <param name="calib_url" type="string"
+                value="$(arg right_calib_url)"/>
+        </group>
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
         <param name="fps" type="int" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
-        <param name="expose" type="int" value="$(arg expose)"/>
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
         <param name="hdr" type="bool" value="$(arg hdr)"/>
-        <param name="left_calib_url" type="string" value="$(arg left_calib_url)"/>
-        <param name="right_calib_url" type="string" value="$(arg right_calib_url)"/>
     </node>
 </launch>

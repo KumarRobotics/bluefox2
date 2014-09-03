@@ -1,4 +1,4 @@
-#include "bluefox2/stereo_camera.h"
+#include "bluefox2/stereo_node.h"
 
 #include <ros/ros.h>
 #include <nodelet/nodelet.h>
@@ -9,20 +9,20 @@ namespace bluefox2 {
 class StereoNodelet : public nodelet::Nodelet {
  public:
   StereoNodelet() : nodelet::Nodelet() {}
-  ~StereoNodelet() { stereo_camera_->End(); }
+  ~StereoNodelet() { stereo_node_->End(); }
 
   virtual void onInit() {
     try {
-      stereo_camera_.reset(new StereoCamera(getPrivateNodeHandle()));
-      stereo_camera_->Run();
+      stereo_node_.reset(new StereoNode(getPrivateNodeHandle()));
+      stereo_node_->Run();
     }
     catch (const std::exception &e) {
-      ROS_ERROR_STREAM("Bluefox2: " << e.what());
+      NODELET_ERROR_STREAM(e.what());
     }
   }
 
  private:
-  boost::shared_ptr<StereoCamera> stereo_camera_;
+  std::unique_ptr<StereoNode> stereo_node_;
 };
 
 PLUGINLIB_DECLARE_CLASS(bluefox2, StereoNodelet, bluefox2::StereoNodelet,
