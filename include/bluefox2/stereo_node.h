@@ -10,8 +10,11 @@ namespace bluefox2 {
 class StereoNode : public CameraNodeBase<Bluefox2DynConfig> {
 
  public:
-  SingleNode(const ros::NodeHandle &nh)
-      : CameraNodeBase{nh}, left_ros_{nh}, right_ros_{nh} {}
+  StereoNode(const ros::NodeHandle &nh)
+      : CameraNodeBase{nh}, left_ros_{nh, "left"}, right_ros_{nh, "right"} {}
+
+  virtual void Acquire() override;
+  virtual void Setup(Bluefox2DynConfig &config) override;
 
  private:
   Bluefox2Ros left_ros_;
@@ -19,4 +22,5 @@ class StereoNode : public CameraNodeBase<Bluefox2DynConfig> {
 };
 
 }  // namespace bluefox2
-#endif // BLUEFOX2_STEREO_NODE_H_
+
+#endif  // BLUEFOX2_STEREO_NODE_H_

@@ -8,8 +8,9 @@ namespace bluefox2 {
 
 class Bluefox2Ros : public CameraRosBase {
  public:
-  Bluefox2Ros(const ros::NodeHandle& nh)
-      : CameraRosBase{nh}, bluefox2_{identifier()} {
+  Bluefox2Ros(const ros::NodeHandle& nh,
+              const std::string& prefix = std::string())
+      : CameraRosBase{nh, prefix}, bluefox2_{identifier()} {
     bluefox2_.Open();
     SetHardwareId(bluefox2_.serial());
   }

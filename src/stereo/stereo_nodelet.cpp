@@ -17,7 +17,8 @@ class StereoNodelet : public nodelet::Nodelet {
       stereo_node_->Run();
     }
     catch (const std::exception &e) {
-      NODELET_ERROR_STREAM(e.what());
+      NODELET_ERROR("%s: %s", getPrivateNodeHandle().getNamespace().c_str(),
+                    e.what());
     }
   }
 

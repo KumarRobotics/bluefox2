@@ -41,11 +41,14 @@ include_directories(
     ${MVIMPACT_INCLUDE_DIRS}
     )
 
-# camera
+# bluefox2
 add_library(${PROJECT_NAME}
     src/bluefox2.cpp
     src/bluefox2_ros.cpp
     src/single/single_node.cpp
+    src/stereo/stereo_node.cpp
+    src/single/single_nodelet.cpp
+    src/stereo/stereo_nodelet.cpp
     )
 target_link_libraries(${PROJECT_NAME}
     ${MVIMPACT_LIBRARIES}
@@ -61,24 +64,12 @@ target_link_libraries(single_node
     )
 
 # stereo node
-#add_executable(stereo_node
-#    src/stereo/stereo_camera.cpp
-#    src/stereo/stereo_node.cpp
-#    )
-#target_link_libraries(stereo_node
-#    ${PROJECT_NAME}
-#    )
-
-# nodelet
-add_library(${PROJECT_NAME}_nodelet
-    src/single/single_nodelet.cpp
-#    src/single/single_camera.cpp
-#    src/stereo/stereo_nodelet.cpp
-#    src/stereo/stereo_camera.cpp
+add_executable(stereo_node
+    src/stereo/stereo_main.cpp
     )
-target_link_libraries(${PROJECT_NAME}_nodelet
-    ${PROJECT_NAME}
-    )
+target_link_libraries(stereo_node
+   ${PROJECT_NAME}
+   )
 
 # dependencies
 add_dependencies(${PROJECT_NAME}
