@@ -1,19 +1,23 @@
-#include <ros/ros.h>
+#include "bluefox2/single_node.h"
 
-#include "bluefox2/single_camera.h"
+namespace bluefox2 {
 
-int main(int argc, char **argv) {
-  ros::init(argc, argv, "single_node");
-
-  ros::NodeHandle nh("~");
-
-  try {
-    bluefox2::SingleCamera single_camera(nh);
-    single_camera.Run();
-    ros::spin();
-    single_camera.End();
+void SingleNode::Acquire() {
+  // This is a hack of boosting frame rate, but only for 200wG
+  // Need to find a way of doing this for all cameras
+  if (bluefox2_ros_.fps() > 50) {
+    bluefox2_ros_.Request();
   }
-  catch (const std::exception &e) {
-    ROS_ERROR_STREAM("Bluefox2: " << e.what());
+  while (is_acquire() && ros::ok()) {
+    bluefox2_ros_.Request();
+    bluefox2_ros_.Publish(ros::Time::now());
+    Sleep();
   }
 }
+
+void SingleNode::Setup(Bluefox2DynConfig &config) {
+  bluefox2_ros_.set_fps(config.fps);
+  bluefox2_ros_.camera().Configure(config);
+}
+
+}  // namepace bluefox2

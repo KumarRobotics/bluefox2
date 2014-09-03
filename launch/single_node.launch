@@ -1,29 +1,62 @@
 <launch>
+    <!-- Camera Settings -->
     <arg name="serial" default="25000495"/>
     <arg name="frame_id" default="mv_$(arg serial)"/>
-    <arg name="calib_file" default="calib_$(arg serial)"/>
-    <arg name="calib_url" default="package://bluefox2/calib/$(arg calib_file).yml"/>
+    <arg name="camera" default="mv_$(arg serial)"/>
+    <arg name="calib_url"
+        default="package://bluefox2/calib/calib_$(arg serial).yml"/>
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
-    <arg name="expose" default="0"/>
-    <arg name="expose_us" default="5000"/>
     <arg name="binning" default="false"/>
-    <arg name="gain_db" default="0.0"/>
     <arg name="trigger" default="0"/>
+    <arg name="expose_us" default="5000"/>
+    <arg name="gain_db" default="0.0"/>
     <arg name="hdr" default="false"/>
 
-    <node pkg="bluefox2" type="single_node" name="mv_$(arg serial)"
-        respawn="true" output="screen">
-        <param name="serial" type="string" value="$(arg serial)"/>
+    <!-- Node Settings -->
+    <arg name="output" default="screen"/>
+    <arg name="respawn" default="false"/>
+    <arg name="proc" default="false"/>
+    <arg name="view" default="false"/>
+    <arg name="calib" default="false"/>
+
+    <!-- Node -->
+    <node pkg="bluefox2" type="single_node" name="$(arg camera)"
+        respawn="$(arg respawn)" output="$(arg output)">
+        <param name="identifier" type="string" value="$(arg serial)"/>
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
+        <param name="camera" type="string" value="$(arg camera)"/>
+        <param name="calib_url" type="string" value="$(arg calib_url)"/>
         <param name="fps" type="int" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
-        <param name="expose" type="int" value="$(arg expose)"/>
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
         <param name="hdr" type="bool" value="$(arg hdr)"/>
-        <param name="calib_url" type="string" value="$(arg calib_url)"/>
     </node>
+
+    <!-- Proc -->
+    <node if="$(arg proc)" pkg="image_proc" type="image_proc"
+        name="image_proc" ns="$(arg camera)">
+    </node>
+
+    <!-- View -->
+    <arg name="image" default="raw"/>
+    <node if="$(arg view)" pkg="image_view" type="image_view"
+        name="$(arg camera)_$(arg image)" output="$(arg output)"
+        args="image:=/$(arg camera)/image_$(arg image)">
+    </node>
+
+    <!-- Calib -->
+    <group if="$(arg calib)">
+        <arg name="pattern" default="chessboard"/>
+        <arg name="size"/>
+        <arg name="square"/>
+        <node pkg="camera_calibration" type="cameracalibrator.py"
+            name="calibrator" output="screen"
+            args="-p $(arg pattern) -s $(arg size) -q $(arg square)
+            image:=/$(arg camera)/image_raw camera:=/$(arg camera)">
+        </node>
+    </group>
 </launch>
