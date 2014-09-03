@@ -16,9 +16,10 @@ class Bluefox2 {
   Bluefox2(const std::string &serial);
   ~Bluefox2();
 
-  std::string serial() const { return dev_->serial.read(); }
+  std::string serial() const { return serial_; }
   int height() const { return bf_settings_->cameraSetting.aoiHeight.read(); }
   int width() const { return bf_settings_->cameraSetting.aoiWidth.read(); }
+  int expose_us() const { return expose_us_; }
 
   void Open();
   void Configure(Bluefox2DynConfig &config);
@@ -36,12 +37,14 @@ class Bluefox2 {
   void SetBinning(bool binning) const;
   void SetExposeUs(int &expose_us) const;
   void SetGainDb(double &gain_db) const;
+  void SetPixelClock(double fps) const;
+  void SetRequestCount(int count) const;
   //  int GetExposeUs() const;
-  //  void SetBinning(bool binning);
   //  void SetTrigger(int trigger);
   //  void SetHdr(bool hdr);
-  void SetRequestCount(int count) const;
 
+  std::string serial_;
+  mutable int expose_us_;
   mvIMPACT::acquire::DeviceManager dev_mgr_;
   mvIMPACT::acquire::Device *dev_;
   mvIMPACT::acquire::FunctionInterface *fi_;
@@ -56,6 +59,9 @@ template <typename T>
 T clamp(const T &value, const T &low, const T &high) {
   return std::max(low, std::min(high, value));
 }
+
+double PixelClockToFrameRate(int pclk_khz, double width, double height,
+                             double expose_us);
 
 }  // namespace bluefox2
 

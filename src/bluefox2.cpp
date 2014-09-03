@@ -7,14 +7,17 @@ namespace bluefox2 {
 
 using namespace mvIMPACT::acquire;
 
-Bluefox2::Bluefox2(const std::string &serial) : dev_{nullptr} {
+Bluefox2::Bluefox2(const std::string &serial)
+    : serial_{serial}, expose_us_{0}, dev_{nullptr} {
   if (!(dev_ = dev_mgr_.getDeviceBySerial(serial))) {
     throw std::runtime_error(serial + " not found. " + AvailableDevice());
   }
 }
 
 Bluefox2::~Bluefox2() {
-  if (dev_ && dev_->isOpen()) dev_->close();
+  if (dev_ && dev_->isOpen()) {
+    dev_->close();
+  }
 }
 
 std::string Bluefox2::AvailableDevice() const {
@@ -34,6 +37,7 @@ void Bluefox2::Open() {
     throw std::runtime_error(e.what());
   }
 
+  // These poniters will leak, but we don't really care
   fi_ = new FunctionInterface(dev_);
   stats_ = new Statistics(dev_);
   bf_settings_ = new SettingsBlueFOX(dev_);
@@ -82,18 +86,19 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetBinning(config.binning);
   SetGainDb(config.gain_db);
   SetExposeUs(config.expose_us);
+  SetPixelClock(config.fps);
 }
 
-void Bluefox2::SetRequestCount(int count) const {
+inline void Bluefox2::SetRequestCount(int count) const {
   sys_settings_->requestCount.write(count);
 }
 
-void Bluefox2::SetColor(bool color) const {
+inline void Bluefox2::SetColor(bool color) const {
   bf_settings_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
                                                          : idpfMono8);
 }
 
-void Bluefox2::SetBinning(bool binning) const {
+inline void Bluefox2::SetBinning(bool binning) const {
   bf_settings_->cameraSetting.binningMode.write(binning ? cbmBinningHV
                                                         : cbmOff);
 }
@@ -104,6 +109,8 @@ void Bluefox2::SetExposeUs(int &expose_us) const {
   const int expose_max = bf_settings_->cameraSetting.expose_us.getMaxValue();
   expose_us = clamp(expose_us, expose_min, expose_max);
   bf_settings_->cameraSetting.expose_us.write(expose_us);
+  // Cache expose_us
+  expose_us_ = expose_us;
 }
 
 void Bluefox2::SetGainDb(double &gain_db) const {
@@ -114,19 +121,28 @@ void Bluefox2::SetGainDb(double &gain_db) const {
   bf_settings_->cameraSetting.gain_dB.write(gain_db);
 }
 
-/*
-void Camera::Configure(const CameraConfig &config) {
-  cout << label_ << serial_ << ": Configuring camera" << endl;
-  SetRequestCount(2);
-  SetBinning(config.binning);
-  SetColor(config.color);
-  SetExpose(config.expose, config.expose_us);
-  SetGainDb(config.gain_db);
-  SetTrigger(config.trigger);
-  cam_settings_->pixelClock_KHz.write(cpc40000KHz);
-  // SetHdr(config.hdr);
+void Bluefox2::SetPixelClock(double fps) const {
+  const auto pclk_khz = bf_settings_->cameraSetting.pixelClock_KHz.read();
+  const auto max_fps =
+      PixelClockToFrameRate(pclk_khz, width(), height(), expose_us());
+  if (fps < max_fps) {
+    return;
+  }
+  // Promote to highest pixel clock only if we ask for faster fps
+  // Never decrease pixel clock
+  const auto size = bf_settings_->cameraSetting.pixelClock_KHz.dictSize();
+  const auto value =
+      bf_settings_->cameraSetting.pixelClock_KHz.getTranslationDictValue(size -
+                                                                         1);
+  bf_settings_->cameraSetting.pixelClock_KHz.write(value);
 }
-*/
+
+double PixelClockToFrameRate(int pclk_khz, double width, double height,
+                             double expose_us) {
+  static const double kTriggerPulseWidthUs = 200;
+  double frame_time_us = (width + 94) * (height + 45) / pclk_khz * 1000;
+  return 1e6 / (frame_time_us + expose_us + kTriggerPulseWidthUs);
+}
 
 // void Camera::SetTrigger(int trigger) {
 //  bf_settings_->cameraSetting.triggerMode.write(trigger ? ctmOnDemand

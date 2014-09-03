@@ -1,5 +1,3 @@
-#include <ros/ros.h>
-
 #include "bluefox2/stereo_node.h"
 
 int main(int argc, char **argv) {

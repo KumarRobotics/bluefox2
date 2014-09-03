@@ -1,5 +1,3 @@
-#include <ros/ros.h>
-
 #include "bluefox2/single_node.h"
 
 int main(int argc, char **argv) {
