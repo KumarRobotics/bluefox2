@@ -32,15 +32,14 @@ class Bluefox2 {
  private:
   static const int kTimeout = 500;
   std::string AvailableDevice() const;
-  //  void SetColor(bool color);
-  //  void SetAutoExpose();
+  void SetColor(bool color) const;
   //  void SetExpose(int expose, int expose_us);
   //  int GetExposeUs() const;
   //  bool SetGainDb(double gain_db);
   //  void SetBinning(bool binning);
   //  void SetTrigger(int trigger);
   //  void SetHdr(bool hdr);
-  void SetRequestCount(int count);
+  void SetRequestCount(int count) const;
 
   mvIMPACT::acquire::DeviceManager dev_mgr_;
   mvIMPACT::acquire::Device *dev_;

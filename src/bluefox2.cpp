@@ -77,13 +77,15 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
   return true;
 }
 
-void Bluefox2::Configure(Bluefox2DynConfig &config) {
-  std::cout << "Default request count: " << sys_settings_->requestCount.read()
-            << std::endl;
+void Bluefox2::Configure(Bluefox2DynConfig &config) { SetColor(config.color); }
+
+void Bluefox2::SetRequestCount(int count) const {
+  sys_settings_->requestCount.write(count);
 }
 
-void Bluefox2::SetRequestCount(int count) {
-  sys_settings_->requestCount.write(count);
+void Bluefox2::SetColor(bool color) const {
+  bf_settings_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
+                                                         : idpfMono8);
 }
 
 /*
