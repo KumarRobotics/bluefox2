@@ -80,6 +80,8 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetColor(config.color);
   SetBinning(config.binning);
+  SetGainDb(config.gain_db);
+  SetExposeUs(config.expose_us);
 }
 
 void Bluefox2::SetRequestCount(int count) const {
@@ -96,6 +98,22 @@ void Bluefox2::SetBinning(bool binning) const {
                                                         : cbmOff);
 }
 
+void Bluefox2::SetExposeUs(int &expose_us) const {
+  bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
+  const int expose_min = bf_settings_->cameraSetting.expose_us.getMinValue();
+  const int expose_max = bf_settings_->cameraSetting.expose_us.getMaxValue();
+  expose_us = clamp(expose_us, expose_min, expose_max);
+  bf_settings_->cameraSetting.expose_us.write(expose_us);
+}
+
+void Bluefox2::SetGainDb(double &gain_db) const {
+  bf_settings_->cameraSetting.autoGainControl.write(agcOff);
+  const double gain_min = bf_settings_->cameraSetting.gain_dB.getMinValue();
+  const double gain_max = bf_settings_->cameraSetting.gain_dB.getMaxValue();
+  gain_db = clamp(gain_db, gain_min, gain_max);
+  bf_settings_->cameraSetting.gain_dB.write(gain_db);
+}
+
 /*
 void Camera::Configure(const CameraConfig &config) {
   cout << label_ << serial_ << ": Configuring camera" << endl;
@@ -109,73 +127,6 @@ void Camera::Configure(const CameraConfig &config) {
   // SetHdr(config.hdr);
 }
 */
-
-// void Bluefox2::SetBinning(bool binning) {
-//  bf_settings_->cameraSetting.binningMode.write(binning ? cbmBinningHV
-//                                                        : cbmOff);
-//}
-
-// void Bluefox2::SetColor(bool color) {
-//  bf_settings_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
-//                                                         : idpfRaw);
-//  if (color) {
-//    bf_settings_->imageProcessing.whiteBalance.write(wbpFluorescent);
-//  }
-//}
-
-// void Camera::SetExpose(int expose, int expose_us) {
-//  switch (expose) {
-//    case 0:
-//      // Manual expose
-//      SetExposeUs(expose_us);
-//      break;
-//    case 1:
-//      // Auto expose
-//      SetAutoExpose();
-//      break;
-//    default:
-//      break;
-//  }
-//}
-
-// void Camera::SetAutoExpose() {
-//  bf_settings_->cameraSetting.autoExposeControl.write(aecOn);
-//}
-
-// bool Camera::SetExposeUs(int expose_us) {
-//  bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
-//  int expose_min = bf_settings_->cameraSetting.expose_us.getMinValue();
-//  int expose_max = bf_settings_->cameraSetting.expose_us.getMaxValue();
-//  if (expose_us > expose_max || expose_us < expose_min) {
-//    return false;
-//  }
-//  bf_settings_->cameraSetting.expose_us.write(expose_us);
-//  return true;
-//}
-
-// int Camera::GetExposeUs() const {
-//  TAutoExposureControl aecOld =
-//      bf_settings_->cameraSetting.autoExposeControl.read();
-//  bf_settings_->cameraSetting.autoExposeControl.write(aecOff);
-//  int expose_us = bf_settings_->cameraSetting.expose_us.read();
-//  bf_settings_->cameraSetting.autoExposeControl.write(aecOld);
-//  return expose_us;
-//}
-
-// bool Camera::SetGainDb(double gain_db) {
-//  bf_settings_->cameraSetting.autoGainControl.write(agcOff);
-//  double gain_min = bf_settings_->cameraSetting.gain_dB.getMinValue();
-//  double gain_max = bf_settings_->cameraSetting.gain_dB.getMaxValue();
-//  if (gain_db < gain_min || gain_db > gain_max) {
-//    return false;
-//  }
-//  bf_settings_->cameraSetting.gain_dB.write(gain_db);
-//  return true;
-//}
-
-// void Camera::SetRequestCount(int count) {
-//  sys_settings_->requestCount.write(count);
-//}
 
 // void Camera::SetTrigger(int trigger) {
 //  bf_settings_->cameraSetting.triggerMode.write(trigger ? ctmOnDemand

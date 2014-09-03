@@ -34,9 +34,9 @@ class Bluefox2 {
   std::string AvailableDevice() const;
   void SetColor(bool color) const;
   void SetBinning(bool binning) const;
-  //  void SetExpose(int expose, int expose_us);
+  void SetExposeUs(int &expose_us) const;
+  void SetGainDb(double &gain_db) const;
   //  int GetExposeUs() const;
-  //  bool SetGainDb(double gain_db);
   //  void SetBinning(bool binning);
   //  void SetTrigger(int trigger);
   //  void SetHdr(bool hdr);
@@ -51,6 +51,11 @@ class Bluefox2 {
   mvIMPACT::acquire::SystemSettings *sys_settings_;
   mvIMPACT::acquire::CameraSettingsBlueDevice *cam_settings_;
 };
+
+template <typename T>
+T clamp(const T &value, const T &low, const T &high) {
+  return std::max(low, std::min(high, value));
+}
 
 }  // namespace bluefox2
 
