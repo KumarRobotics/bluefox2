@@ -21,7 +21,7 @@ std::string Bluefox2::AvailableDevice() const {
   auto dev_cnt = dev_mgr_.deviceCount();
   std::string devices = std::to_string(dev_cnt) + " availabe device(s): ";
   for (decltype(dev_cnt) i = 0; i < dev_cnt; ++i) {
-    devices += dev_mgr_.getDevice(i)->serial.read();
+    devices += dev_mgr_.getDevice(i)->serial.read() + " ";
   }
   return devices;
 }
