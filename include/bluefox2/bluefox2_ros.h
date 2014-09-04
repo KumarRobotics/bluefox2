@@ -30,4 +30,4 @@ class Bluefox2Ros : public CameraRosBase {
 
 }  // namespace bluefox2
 
-#endif  // ROS_BLUEFOX2_H_
+#endif  // BLUEFOX2_ROS_H_
