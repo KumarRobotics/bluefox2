@@ -29,7 +29,6 @@ class StereoNodelet : public nodelet::Nodelet {
   std::unique_ptr<StereoNode> stereo_node_;
 };
 
-PLUGINLIB_DECLARE_CLASS(bluefox2, StereoNodelet, bluefox2::StereoNodelet,
-                        nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(StereoNodelet, nodelet::Nodelet)
 
 }  // namespace bluefox2

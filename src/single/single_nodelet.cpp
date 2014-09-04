@@ -29,7 +29,6 @@ class SingleNodelet : public nodelet::Nodelet {
   std::unique_ptr<SingleNode> single_node_;
 };
 
-PLUGINLIB_DECLARE_CLASS(bluefox2, SingleNodelet, bluefox2::SingleNodelet,
-                        nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(SingleNodelet, nodelet::Nodelet)
 
 }  // namespace bluefox2
