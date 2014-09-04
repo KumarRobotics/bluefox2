@@ -16,7 +16,7 @@ class Bluefox2 {
   Bluefox2(const std::string &serial);
   ~Bluefox2();
 
-  std::string serial() const { return serial_; }
+  const std::string &serial() const { return serial_; }
   int height() const { return bf_set_->cameraSetting.aoiHeight.read(); }
   int width() const { return bf_set_->cameraSetting.aoiWidth.read(); }
   int expose_us() const { return expose_us_; }

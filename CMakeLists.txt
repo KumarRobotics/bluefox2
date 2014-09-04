@@ -9,9 +9,7 @@ endif()
 add_definitions(-Wall -std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
-    roscpp nodelet sensor_msgs
-    camera_info_manager image_transport
-    dynamic_reconfigure diagnostic_updater
+    roscpp nodelet camera_base
     message_generation
     )
 
