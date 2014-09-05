@@ -7,7 +7,7 @@ namespace bluefox2 {
 
 class StereoNodelet : public nodelet::Nodelet {
  public:
-  StereoNodelet() : nodelet::Nodelet() {}
+  StereoNodelet() = default;
   ~StereoNodelet() {
     if (stereo_node_) {
       stereo_node_->End();

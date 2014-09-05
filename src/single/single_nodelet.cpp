@@ -7,7 +7,7 @@ namespace bluefox2 {
 
 class SingleNodelet : public nodelet::Nodelet {
  public:
-  SingleNodelet() : nodelet::Nodelet() {}
+  SingleNodelet() = default;
   ~SingleNodelet() {
     if (single_node_) {
       single_node_->End();
