@@ -25,7 +25,6 @@ class StereoNodelet : public nodelet::Nodelet {
   boost::shared_ptr<StereoCamera> stereo_camera_;
 };
 
-PLUGINLIB_DECLARE_CLASS(bluefox2, StereoNodelet, bluefox2::StereoNodelet,
-                        nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(bluefox2::StereoNodelet, nodelet::Nodelet)
 
 }  // namespace bluefox2

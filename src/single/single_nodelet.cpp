@@ -25,7 +25,6 @@ class SingleNodelet : public nodelet::Nodelet {
   boost::shared_ptr<SingleCamera> single_camera_;
 };
 
-PLUGINLIB_DECLARE_CLASS(bluefox2, SingleNodelet, bluefox2::SingleNodelet,
-                        nodelet::Nodelet)
+PLUGINLIB_EXPORT_CLASS(bluefox2::SingleNodelet, nodelet::Nodelet)
 
 }  // namespace bluefox2
