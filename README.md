@@ -1,11 +1,11 @@
 [![Build Status](https://travis-ci.org/KumarRobotics/bluefox2.svg?branch=master)](https://travis-ci.org/KumarRobotics/bluefox2)
 
 # Bluefox2
-*This driver works with ubuntu 14.04 + ros indigo + gcc 4.8+*
-*This driver follows the google c++ style guide*
+*This driver works with ubuntu 14.04 + ros indigo + gcc 4.8+*  
+*This driver follows the google c++ style guide*  
 https://github.com/KumarRobotics/bluefox2
 
-![image](http://i.imgur.com/89Bb1hR.png)
+![image](http://i.imgur.com/89Bb1hR.png)  
 [mvBluefox MLC](http://www.matrix-vision.com/USB2.0-single-board-camera-mvbluefox-mlc.html)
 
 ## Supported hardware
@@ -19,6 +19,14 @@ The ROS API of this driver should be considered **unstable**.
 ### single_node
 
 `single_node` is a driver for a single bluefox2 camera.
+
+#### Published topics
+
+`~image_raw` ([sensor_msgs/Image](http://docs.ros.org/api/sensor_msgs/html/msg/Image.html))    
+    The unprocessed image data.
+
+`~camera_info` ([sensor_msgs/CameraInfo](http://docs.ros.org/api/sensor_msgs/html/msg/CameraInfo.html))    
+Contains the camera calibration (if calibrated) and extra data about the camera configuration.
 
 ## [Install mvIMPACT Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
 1. Download the latest bluefox driver [link](http://www.matrix-vision.com/latest-drivers.html).
