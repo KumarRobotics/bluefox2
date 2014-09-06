@@ -13,6 +13,7 @@ class Bluefox2Ros : public CameraRosBase {
       : CameraRosBase(nh, prefix), bluefox2_(identifier()), boost_(false) {
     bluefox2_.Open();
     SetHardwareId(bluefox2_.serial());
+    /// @todo: better diagnostic
     // if (prefix == "left") {
     //   bluefox2_.SetMaster();
     // } else if (prefix == "right") {
@@ -24,7 +25,8 @@ class Bluefox2Ros : public CameraRosBase {
   void set_boost(bool boost) { boost_ = boost; }
   void Request() const { bluefox2_.Request(); }
   Bluefox2& camera() { return bluefox2_; }
-  virtual bool Grab(const sensor_msgs::ImagePtr& image_msg) override;
+  virtual bool Grab(const sensor_msgs::ImagePtr& image_msg,
+                    const sensor_msgs::CameraInfoPtr& cinfo_msg) override;
 
  private:
   Bluefox2 bluefox2_;
