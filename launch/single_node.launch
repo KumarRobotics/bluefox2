@@ -8,10 +8,11 @@
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
     <arg name="binning" default="false"/>
-    <arg name="trigger" default="0"/>
+    <arg name="trigger" default="1"/>
     <arg name="expose_us" default="5000"/>
     <arg name="gain_db" default="0.0"/>
     <arg name="hdr" default="false"/>
+    <arg name="boost" default="false"/>
 
     <!-- Node Settings -->
     <arg name="output" default="screen"/>
@@ -34,6 +35,7 @@
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
         <param name="hdr" type="bool" value="$(arg hdr)"/>
+        <param name="boost" type="bool" value="$(arg boost)"/>
     </node>
 
     <!-- Proc -->

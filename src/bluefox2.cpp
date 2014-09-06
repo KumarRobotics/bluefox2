@@ -137,6 +137,7 @@ void Bluefox2::SetGainDb(double *gain_db) const {
 }
 
 void Bluefox2::SetTrigger(int *trigger) const {
+//  bf_set_->cameraSetting.triggerMode.
   bf_set_->cameraSetting.triggerMode.write(*trigger ? ctmOnDemand
                                                     : ctmContinuous);
 }
