@@ -43,7 +43,7 @@
             value="$(arg right_calib_url)"/>
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
         <param name="camera" type="string" value="$(arg camera)"/>
-        <param name="fps" type="int" value="$(arg fps)"/>
+        <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
         <param name="auto_fix_expose" type="bool" value="$(arg auto_fix_expose)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>

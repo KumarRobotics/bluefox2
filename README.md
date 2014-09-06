@@ -22,10 +22,10 @@ The ROS API of this driver should be considered **unstable**.
 
 #### Published topics
 
-`~image_raw` ([sensor_msgs/Image](http://docs.ros.org/api/sensor_msgs/html/msg/Image.html))    
+`~image_raw` ([sensor_msgs/Image](http://docs.ros.org/api/sensor_msgs/html/msg/Image.html))  
     The unprocessed image data.
 
-`~camera_info` ([sensor_msgs/CameraInfo](http://docs.ros.org/api/sensor_msgs/html/msg/CameraInfo.html))    
+`~camera_info` ([sensor_msgs/CameraInfo](http://docs.ros.org/api/sensor_msgs/html/msg/CameraInfo.html))  
 Contains the camera calibration (if calibrated) and extra data about the camera configuration.
 
 ### Parameters
@@ -35,6 +35,43 @@ See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package f
 
 `~serial` (`string`, default: `<serial>`)  
     bluefox 2camera serial number
+
+`~frame_id` (`string`, default: `mv_<serial>`)  
+    tf frame id
+
+`~camera` (`string`, default: `mv_<serial>`)  
+    camera name used in the calibration file
+
+`~calib_url` (`string`, default: `package://bluefox2/calib/calib_<serial>.yml`)  
+    camera calibration url
+
+`~fps` (`double`, default: `20.0`)  
+    frame per second
+
+`~color` (`bool`, default: `false`)  
+    pixelformat, `true` will use `RGB888Packed`, `false` will use `mono8`
+
+`~binning` (`bool`, default: `false`)  
+    `true` use `BinningHV`, which is horizontal + vertical binning
+
+`~trigger` (`int`, default: `1`)  
+    `1` use `OnDemand`, `0` use `Continuous`. we recommend `OnDemand` for more precise timing control
+
+`~auto_fix_expose` (`bool`, default: `false`)  
+    `true` will let the camera decide the exposure and fix it to that value. This feature is experimental, use with caution.
+
+`~expose_us` (`int`, default: `5000`)  
+    exposeure time in us
+
+`~gain_db` (`double`, default: `0.0`)  
+    gain in Db
+
+`~hdr` (`bool`, default: `false`)  
+    Only 200wG camera supports this mode, set `hdr` to `true` for other cameras will have no effect
+
+`~boost` (`bool`, default: `false`)  
+    `true` will put 2 request into the request queue. For high fps only. This allows 200wG to work at 90 fps and 200bG at 24 fps (at `trigger = 1`). Using this will result in inprecise time stamp of captured image. Use with caution
+
 
 ## [Install mvIMPACT Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
 1. Download the latest bluefox driver [link](http://www.matrix-vision.com/latest-drivers.html).

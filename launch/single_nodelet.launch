@@ -40,7 +40,7 @@
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
         <param name="camera" type="string" value="$(arg camera)"/>
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
-        <param name="fps" type="int" value="$(arg fps)"/>
+        <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
