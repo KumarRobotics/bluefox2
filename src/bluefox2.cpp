@@ -137,7 +137,14 @@ void Bluefox2::SetGainDb(double *gain_db) const {
 }
 
 void Bluefox2::SetTrigger(int *trigger) const {
-//  bf_set_->cameraSetting.triggerMode.
+  if (*trigger == 1) {
+    std::vector<TCameraTriggerMode> values;
+    bf_set_->cameraSetting.triggerMode.getTranslationDictValues(values);
+    if (std::find(values.cbegin(), values.cend(), ctmOnDemand) ==
+        values.cend()) {
+      *trigger = 0;
+    }
+  }
   bf_set_->cameraSetting.triggerMode.write(*trigger ? ctmOnDemand
                                                     : ctmContinuous);
 }
