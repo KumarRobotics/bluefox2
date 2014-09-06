@@ -28,6 +28,14 @@ The ROS API of this driver should be considered **unstable**.
 `~camera_info` ([sensor_msgs/CameraInfo](http://docs.ros.org/api/sensor_msgs/html/msg/CameraInfo.html))    
 Contains the camera calibration (if calibrated) and extra data about the camera configuration.
 
+### Parameters
+
+Dynamically Reconfigurable Parameters.  
+See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package for details on dynamically reconfigurable parameters.
+
+`~serial` (`string`, default: `<serial>`)  
+    bluefox 2camera serial number
+
 ## [Install mvIMPACT Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
 1. Download the latest bluefox driver [link](http://www.matrix-vision.com/latest-drivers.html).
 Under the tab mvBlueFOX, download the following two files:
