@@ -10,7 +10,7 @@ namespace bluefox2 {
 class SingleNode : public CameraNodeBase<Bluefox2DynConfig> {
  public:
   SingleNode(const ros::NodeHandle &nh)
-      : CameraNodeBase{nh}, bluefox2_ros_{nh} {}
+      : CameraNodeBase(nh), bluefox2_ros_(nh) {}
 
   virtual void Acquire() override;
   virtual void Setup(Bluefox2DynConfig &config) override;

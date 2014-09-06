@@ -5,7 +5,7 @@ namespace bluefox2 {
 void SingleNode::Acquire() {
   // This is a hack of boosting frame rate, but only for 200wG
   // Need to find a way of doing this for all cameras
-  if (bluefox2_ros_.fps() > 50) {
+  if (bluefox2_ros_.boost()) {
     bluefox2_ros_.Request();
   }
   while (is_acquire() && ros::ok()) {
@@ -17,6 +17,7 @@ void SingleNode::Acquire() {
 
 void SingleNode::Setup(Bluefox2DynConfig &config) {
   bluefox2_ros_.set_fps(config.fps);
+  bluefox2_ros_.set_boost(config.boost);
   bluefox2_ros_.camera().Configure(config);
 }
 

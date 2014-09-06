@@ -8,7 +8,7 @@ namespace bluefox2 {
 using namespace mvIMPACT::acquire;
 
 Bluefox2::Bluefox2(const std::string &serial)
-    : serial_{serial}, expose_us_{0}, dev_{nullptr} {
+    : serial_(serial), expose_us_(0), dev_(nullptr) {
   if (!(dev_ = dev_mgr_.getDeviceBySerial(serial))) {
     throw std::runtime_error(serial + " not found. " + AvailableDevice());
   }
