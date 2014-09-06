@@ -7,8 +7,8 @@ void StereoNode::Acquire() {
     left_ros_.Request();
     right_ros_.Request();
     const ros::Time time = ros::Time::now();
-    left_ros_.Publish(time);
-    right_ros_.Publish(time);
+    left_ros_.PublishCamera(time);
+    right_ros_.PublishCamera(time);
     Sleep();
   }
 }

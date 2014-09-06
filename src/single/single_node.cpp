@@ -10,7 +10,7 @@ void SingleNode::Acquire() {
   }
   while (is_acquire() && ros::ok()) {
     bluefox2_ros_.Request();
-    bluefox2_ros_.Publish(ros::Time::now());
+    bluefox2_ros_.PublishCamera(ros::Time::now());
     Sleep();
   }
 }
