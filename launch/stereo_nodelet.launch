@@ -10,6 +10,7 @@
     <arg name="camera" default="mv_stereo"/>
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
+    <arg name="auto_fix_expose" default="false"/>
     <arg name="binning" default="false"/>
     <arg name="trigger" default="1"/>
     <arg name="expose_us" default="5000"/>
@@ -44,6 +45,7 @@
         <param name="camera" type="string" value="$(arg camera)"/>
         <param name="fps" type="int" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
+        <param name="auto_fix_expose" type="bool" value="$(arg auto_fix_expose)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
