@@ -9,6 +9,7 @@
     <arg name="color" default="false"/>
     <arg name="binning" default="false"/>
     <arg name="trigger" default="1"/>
+    <arg name="auto_fix_expose" default="false"/>
     <arg name="expose_us" default="5000"/>
     <arg name="gain_db" default="0.0"/>
     <arg name="hdr" default="false"/>
@@ -30,6 +31,7 @@
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
         <param name="fps" type="int" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
+        <param name="auto_fix_expose" type="bool" value="$(arg auto_fix_expose)"/>
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>

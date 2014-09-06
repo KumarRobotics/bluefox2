@@ -36,9 +36,10 @@ class Bluefox2 {
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
   void SetTrigger(int *trigger) const;
-  void SetExposeUs(int *expose_us) const;
+  void SetExposeUs(int *expose_us, bool* auto_fix_expose) const;
   void SetGainDb(double *gain_db) const;
   void SetHdr(bool *hdr) const;
+  void RequestImages(int n) const;
 
   std::string serial_;
   mutable int expose_us_;

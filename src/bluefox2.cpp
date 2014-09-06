@@ -46,6 +46,14 @@ void Bluefox2::Open() {
 
 void Bluefox2::Request() const { fi_->imageRequestSingle(); }
 
+void Bluefox2::RequestImages(int n) const {
+  for (int i = 0; i < n; ++i) {
+    fi_->imageRequestSingle();
+    int requestNr = fi_->imageRequestWaitFor(kTimeout);
+    fi_->imageRequestUnlock(requestNr);
+  }
+}
+
 bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
   int requestNr = INVALID_ID;
   requestNr = fi_->imageRequestWaitFor(kTimeout);
@@ -85,7 +93,7 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetColor(config.color);
   SetBinning(config.binning);
   SetGainDb(&config.gain_db);
-  SetExposeUs(&config.expose_us);
+  SetExposeUs(&config.expose_us, &config.auto_fix_expose);
   SetTrigger(&config.trigger);
   SetHdr(&config.hdr);
 }
@@ -118,12 +126,20 @@ inline void Bluefox2::SetBinning(bool binning) const {
   bf_set_->cameraSetting.binningMode.write(binning ? cbmBinningHV : cbmOff);
 }
 
-void Bluefox2::SetExposeUs(int *expose_us) const {
-  bf_set_->cameraSetting.autoExposeControl.write(aecOff);
-  const int expose_min = bf_set_->cameraSetting.expose_us.getMinValue();
-  const int expose_max = bf_set_->cameraSetting.expose_us.getMaxValue();
-  *expose_us = clamp(*expose_us, expose_min, expose_max);
-  bf_set_->cameraSetting.expose_us.write(*expose_us);
+void Bluefox2::SetExposeUs(int *expose_us, bool *auto_fix_expose) const {
+  if (*auto_fix_expose) {
+    bf_set_->cameraSetting.autoExposeControl.write(aecOn);
+    RequestImages(20);
+    bf_set_->cameraSetting.autoExposeControl.write(aecOff);
+    *expose_us = bf_set_->cameraSetting.expose_us.read();
+    *auto_fix_expose = false;
+  } else {
+    bf_set_->cameraSetting.autoExposeControl.write(aecOff);
+    const int expose_min = bf_set_->cameraSetting.expose_us.getMinValue();
+    const int expose_max = bf_set_->cameraSetting.expose_us.getMaxValue();
+    *expose_us = clamp(*expose_us, expose_min, expose_max);
+    bf_set_->cameraSetting.expose_us.write(*expose_us);
+  }
   // Cache expose_us
   expose_us_ = *expose_us;
 }
@@ -140,6 +156,7 @@ void Bluefox2::SetTrigger(int *trigger) const {
   if (*trigger == 1) {
     std::vector<TCameraTriggerMode> values;
     bf_set_->cameraSetting.triggerMode.getTranslationDictValues(values);
+    // OnDemand option not found, just use continuous
     if (std::find(values.cbegin(), values.cend(), ctmOnDemand) ==
         values.cend()) {
       *trigger = 0;
