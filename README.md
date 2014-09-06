@@ -30,8 +30,7 @@ Contains the camera calibration (if calibrated) and extra data about the camera 
 
 ### Parameters
 
-Dynamically Reconfigurable Parameters.  
-See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package for details on dynamically reconfigurable parameters.
+Normal parameters.
 
 `~serial` (`string`, default: `<serial>`)  
     bluefox 2camera serial number
@@ -44,6 +43,9 @@ See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package f
 
 `~calib_url` (`string`, default: `package://bluefox2/calib/calib_<serial>.yml`)  
     camera calibration url
+
+Dynamically Reconfigurable Parameters.  
+See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package for details on dynamically reconfigurable parameters.
 
 `~fps` (`double`, default: `20.0`)  
     frame per second
