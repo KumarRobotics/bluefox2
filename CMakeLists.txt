@@ -1,17 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(bluefox2)
 
-# set default build type
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE RelWithDebInfo)
-endif()
-
 add_definitions(-Wall -std=c++11)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp nodelet camera_base
     message_generation
     )
+find_package(mvimpact REQUIRED)
 
 # dynamic reconfigure
 generate_dynamic_reconfigure_options(cfg/Bluefox2Dyn.cfg)
@@ -28,10 +25,10 @@ catkin_package(
     )
 
 # mvIMPACT change this to Findmvimpact later
-execute_process(COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCH)
-set(MVIMPACT_DIR ${PROJECT_SOURCE_DIR}/mvIMPACT)
-set(MVIMPACT_INCLUDE_DIRS ${MVIMPACT_DIR}/include)
-set(MVIMPACT_LIBRARIES ${MVIMPACT_DIR}/lib/${ARCH}/libmvDeviceManager.so)
+# execute_process(COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCH)
+# set(MVIMPACT_DIR ${PROJECT_SOURCE_DIR}/mvIMPACT)
+# set(MVIMPACT_INCLUDE_DIRS ${MVIMPACT_DIR}/include)
+# set(MVIMPACT_LIBRARIES ${MVIMPACT_DIR}/lib/${ARCH}/libmvDeviceManager.so)
 
 include_directories(
     include
