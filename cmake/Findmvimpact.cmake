@@ -64,7 +64,6 @@ endmacro(MVIMPACT_REPORT_NOT_FOUND)
 # Search user-installed locations first, so that we prefer user installs
 # to system installs where both exist.
 get_filename_component(BLUEFOX2_DIR ${CMAKE_CURRENT_SOURCE_DIR} REALPATH)
-message(STATUS "current dir: " ${BLUEFOX2_DIR}/mvIMPACT/include)
 list(APPEND MVIMPACT_CHECK_INCLUDE_DIRS
     /opt/mvIMPACT_acquire
     ${BLUEFOX2_DIR}/mvIMPACT/include
@@ -74,7 +73,6 @@ list(APPEND MVIMPACT_CHECK_LIBRARY_DIRS
     /opt/mvIMPACT_acquire/lib/${ARCH}
     ${BLUEFOX2_DIR}/mvIMPACT/lib/${ARCH}
     )
-message(STATUS "current dir: " ${MVIMPACT_CHECK_INCLUDE_DIRS})
 
 # Check general hints
 if(MVIMPACT_HINTS AND EXISTS ${MVIMPACT_HINTS})
