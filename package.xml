@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>bluefox2</name>
-  <version>0.1.1</version>
+  <version>0.1.0</version>
   <description>The bluefox2 package</description>
   <maintainer email="quchao@seas.upenn.edu">Chao Qu</maintainer>
 
