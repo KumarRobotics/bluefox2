@@ -7,8 +7,7 @@ namespace bluefox2 {
 
 using namespace mvIMPACT::acquire;
 
-Bluefox2::Bluefox2(const std::string &serial)
-    : serial_(serial), expose_us_(0), dev_(nullptr) {
+Bluefox2::Bluefox2(const std::string &serial) : serial_(serial), dev_(nullptr) {
   if (!(dev_ = dev_mgr_.getDeviceBySerial(serial))) {
     throw std::runtime_error(serial + " not found. " + AvailableDevice());
   }
@@ -37,7 +36,7 @@ void Bluefox2::Open() {
     throw std::runtime_error(e.what());
   }
 
-  // These poniters will leak, but we don't really care
+  // These poniters will probably leak, but we don't really care
   fi_ = new FunctionInterface(dev_);
   stats_ = new Statistics(dev_);
   bf_set_ = new SettingsBlueFOX(dev_);
@@ -90,12 +89,15 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
 
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetPixelClock(config.fps);
-  SetColor(config.color);
+  SetColor(&config.color);
   SetBinning(config.binning);
   SetGainDb(&config.gain_db);
   SetExposeUs(&config.expose_us, &config.auto_fix_expose);
   SetTrigger(&config.trigger);
   SetHdr(&config.hdr);
+  SetWhiteBalance(&config.white_balance);
+  // Cache this config
+  config_ = config;
 }
 
 inline void Bluefox2::SetRequestCount(int count) const {
@@ -106,6 +108,7 @@ void Bluefox2::SetPixelClock(double fps) const {
   const auto pclk_khz = bf_set_->cameraSetting.pixelClock_KHz.read();
   const auto max_fps =
       PixelClockToFrameRate(pclk_khz, width(), height(), expose_us());
+  // Do nothing if we have the capacity to deliver the required fps
   if (fps < max_fps) {
     return;
   }
@@ -117,12 +120,17 @@ void Bluefox2::SetPixelClock(double fps) const {
   bf_set_->cameraSetting.pixelClock_KHz.write(value);
 }
 
-inline void Bluefox2::SetColor(bool color) const {
-  bf_set_->imageDestination.pixelFormat.write(color ? idpfRGB888Packed
-                                                    : idpfMono8);
+bool Bluefox2::IsColor() const { return product().back() == 'C'; }
+
+void Bluefox2::SetColor(bool *color) const {
+  if (!IsColor()) {
+    *color = false;
+  }
+  bf_set_->imageDestination.pixelFormat.write(*color ? idpfRGB888Packed
+                                                     : idpfMono8);
 }
 
-inline void Bluefox2::SetBinning(bool binning) const {
+void Bluefox2::SetBinning(bool binning) const {
   bf_set_->cameraSetting.binningMode.write(binning ? cbmBinningHV : cbmOff);
 }
 
@@ -140,8 +148,6 @@ void Bluefox2::SetExposeUs(int *expose_us, bool *auto_fix_expose) const {
     *expose_us = clamp(*expose_us, expose_min, expose_max);
     bf_set_->cameraSetting.expose_us.write(*expose_us);
   }
-  // Cache expose_us
-  expose_us_ = *expose_us;
 }
 
 void Bluefox2::SetGainDb(double *gain_db) const {
@@ -156,7 +162,7 @@ void Bluefox2::SetTrigger(int *trigger) const {
   if (*trigger == 1) {
     std::vector<TCameraTriggerMode> values;
     bf_set_->cameraSetting.triggerMode.getTranslationDictValues(values);
-    // OnDemand option not found, just use continuous
+    // OnDemand option not supported, can only use continuous
     if (std::find(values.cbegin(), values.cend(), ctmOnDemand) ==
         values.cend()) {
       *trigger = 0;
@@ -167,6 +173,7 @@ void Bluefox2::SetTrigger(int *trigger) const {
 }
 
 void Bluefox2::SetHdr(bool *hdr) const {
+  // Hdr not supported
   if (!bf_set_->cameraSetting.getHDRControl().isAvailable()) {
     *hdr = false;
     return;
@@ -177,6 +184,19 @@ void Bluefox2::SetHdr(bool *hdr) const {
   } else {
     bf_set_->cameraSetting.getHDRControl().HDREnable.write(bFalse);
   }
+}
+
+void Bluefox2::SetWhiteBalance(int *white_balance) const {
+  // Put white balance as unavailable if it's not a color camera
+  if (!IsColor()) {
+    *white_balance = -1;
+    return;
+  }
+  *white_balance = (*white_balance < 0)
+                       ? bf_set_->imageProcessing.whiteBalance.read()
+                       : *white_balance;
+  bf_set_->imageProcessing.whiteBalance.write(
+      static_cast<TWhiteBalanceParameter>(*white_balance));
 }
 
 void Bluefox2::SetMaster() const {
