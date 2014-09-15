@@ -17,9 +17,10 @@ class Bluefox2 {
   ~Bluefox2();
 
   const std::string &serial() const { return serial_; }
+  std::string product() const { return dev_->product.readS(); }
   int height() const { return bf_set_->cameraSetting.aoiHeight.read(); }
   int width() const { return bf_set_->cameraSetting.aoiWidth.read(); }
-  int expose_us() const { return expose_us_; }
+  int expose_us() const { return config_.expose_us; }
 
   void Open();
   void Request() const;
@@ -30,19 +31,22 @@ class Bluefox2 {
 
  private:
   static const int kTimeout = 500;
+
   std::string AvailableDevice() const;
-  void SetColor(bool color) const;
+  void SetColor(bool *color) const;
   void SetBinning(bool binning) const;
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
   void SetTrigger(int *trigger) const;
-  void SetExposeUs(int *expose_us, bool* auto_fix_expose) const;
+  void SetExposeUs(int *expose_us, bool *auto_fix_expose) const;
   void SetGainDb(double *gain_db) const;
   void SetHdr(bool *hdr) const;
+  void SetWhiteBalance(int *white_balance) const;
   void RequestImages(int n) const;
+  bool IsColor() const;
 
   std::string serial_;
-  mutable int expose_us_;
+  Bluefox2DynConfig config_;
   mvIMPACT::acquire::DeviceManager dev_mgr_;
   mvIMPACT::acquire::Device *dev_;
   mvIMPACT::acquire::FunctionInterface *fi_;

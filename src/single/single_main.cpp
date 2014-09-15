@@ -14,4 +14,3 @@ int main(int argc, char **argv) {
     ROS_ERROR("%s: %s", nh.getNamespace().c_str(), e.what());
   }
 }
-
