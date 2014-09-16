@@ -47,38 +47,49 @@ Normal parameters.
 Dynamically Reconfigurable Parameters.  
 See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package for details on dynamically reconfigurable parameters.
 
-`~fps` (`double`, default: `20.0`)  
-    frame per second
+`~fps` (`double`, default: `20.0`)
 
-`~color` (`bool`, default: `false`)  
-    pixelformat, `true` will use `RGB888Packed`, `false` will use `mono8`
+frame per second
 
-`~binning` (`bool`, default: `false`)  
-    `true` use `BinningHV`, which is horizontal + vertical binning
+`~color` (`bool`, default: `false`)
 
-`~trigger` (`int`, default: `1`)  
-    `1` use `OnDemand`, `0` use `Continuous`. we recommend `OnDemand` for more precise timing control
+pixelformat, `true` will use `RGB888Packed`, `false` will use `mono8`
 
-`~auto_fix_expose` (`bool`, default: `false`)  
-    `true` will let the camera decide the exposure and fix it to that value. This feature is experimental, use with caution.
+`~binning` (`bool`, default: `false`)
 
-`~expose_us` (`int`, default: `5000`)  
-    exposeure time in us
+`true` use `BinningHV`, which is horizontal + vertical binning
 
-`~gain_db` (`double`, default: `0.0`)  
-    gain in Db
+`~trigger` (`int`, default: `1`)
+
+`1` use `OnDemand`, `0` use `Continuous`. we recommend `OnDemand` for more precise timing control
+
+`~auto_fix_expose` (`bool`, default: `false`)
+
+`true` will let the camera decide the exposure and fix it to that value. This feature is experimental, use with caution.
+
+`~expose_us` (`int`, default: `5000`)
+
+exposeure time in us
+
+`~gain_db` (`double`, default: `0.0`)
+
+gain in Db
 
 `~white_balance` (`int`, default: `0`)
-    set white balance paramter for color camera, for grayscale camera this value will be `-1`, which is `unavailable`
+
+set white balance paramter for color camera, for grayscale camera this value will be `-1`, which is `unavailable`
     
 `~dark_current_filter` (`int`, default: `1`)
-    dark current filter, read this [article](http://www.photonics.com/Article.aspx?AID=44298) for more information. When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed
 
-`~hdr` (`bool`, default: `false`)  
-    Only 200wG camera supports this mode, set `hdr` to `true` for other cameras will have no effect
+dark current filter, read this [article](http://www.photonics.com/Article.aspx?AID=44298) for more information. When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed
 
-`~boost` (`bool`, default: `false`)  
-    `true` will put 2 request into the request queue. For high fps only. This allows 200wG to work at 90 fps and 200bG at 24 fps (at `trigger = 1`). Using this will result in inprecise time stamp of captured image. Use with caution
+`~hdr` (`bool`, default: `false`)
+
+Only 200wG camera supports this mode, set `hdr` to `true` for other cameras will have no effect
+
+`~boost` (`bool`, default: `false`)
+
+`true` will put 2 request into the request queue. For high fps only. This allows 200wG to work at 90 fps and 200bG at 24 fps (at `trigger = 1`). Using this will result in inprecise time stamp of captured image. Use with caution
 
 
 ## [Install mvIMPACT Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
