@@ -16,7 +16,9 @@ void StereoNode::Acquire() {
 void StereoNode::Setup(Bluefox2DynConfig &config) {
   left_ros_.set_fps(config.fps);
   right_ros_.set_fps(config.fps);
-  left_ros_.camera().Configure(config);
+  // Some hacky stuff... work on it later
+  auto config_cpy = config;
+  left_ros_.camera().Configure(config_cpy);
   right_ros_.camera().Configure(config);
 }
 
