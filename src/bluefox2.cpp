@@ -96,6 +96,7 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetTrigger(&config.trigger);
   SetHdr(&config.hdr);
   SetWhiteBalance(&config.white_balance);
+  DarkCurrentFilter(&config.dark_current_filter);
   // Cache this config
   config_ = config;
 }
@@ -130,8 +131,8 @@ void Bluefox2::SetColor(bool *color) const {
                                                      : idpfMono8);
 }
 
-void Bluefox2::SetBinning(bool binning) const {
-  bf_set_->cameraSetting.binningMode.write(binning ? cbmBinningHV : cbmOff);
+void Bluefox2::SetBinning(bool cbm) const {
+  bf_set_->cameraSetting.binningMode.write(cbm ? cbmBinningHV : cbmOff);
 }
 
 void Bluefox2::SetExposeUs(int *expose_us, bool *auto_fix_expose) const {
@@ -158,18 +159,17 @@ void Bluefox2::SetGainDb(double *gain_db) const {
   bf_set_->cameraSetting.gain_dB.write(*gain_db);
 }
 
-void Bluefox2::SetTrigger(int *trigger) const {
-  if (*trigger == 1) {
+void Bluefox2::SetTrigger(int *ctm) const {
+  if (*ctm == 1) {
     std::vector<TCameraTriggerMode> values;
     bf_set_->cameraSetting.triggerMode.getTranslationDictValues(values);
     // OnDemand option not supported, can only use continuous
     if (std::find(values.cbegin(), values.cend(), ctmOnDemand) ==
         values.cend()) {
-      *trigger = 0;
+      *ctm = 0;
     }
   }
-  bf_set_->cameraSetting.triggerMode.write(*trigger ? ctmOnDemand
-                                                    : ctmContinuous);
+  bf_set_->cameraSetting.triggerMode.write(*ctm ? ctmOnDemand : ctmContinuous);
 }
 
 void Bluefox2::SetHdr(bool *hdr) const {
@@ -186,17 +186,36 @@ void Bluefox2::SetHdr(bool *hdr) const {
   }
 }
 
-void Bluefox2::SetWhiteBalance(int *white_balance) const {
+void Bluefox2::SetWhiteBalance(int *wbp) const {
   // Put white balance as unavailable if it's not a color camera
   if (!IsColor()) {
-    *white_balance = -1;
+    *wbp = -1;
     return;
   }
-  *white_balance = (*white_balance < 0)
-                       ? bf_set_->imageProcessing.whiteBalance.read()
-                       : *white_balance;
+  *wbp = (*wbp < 0) ? bf_set_->imageProcessing.whiteBalance.read() : *wbp;
   bf_set_->imageProcessing.whiteBalance.write(
-      static_cast<TWhiteBalanceParameter>(*white_balance));
+      static_cast<TWhiteBalanceParameter>(*wbp));
+}
+
+void Bluefox2::DarkCurrentFilter(int *dcfm) const {
+  bf_set_->imageProcessing.darkCurrentFilterMode.write(
+      static_cast<TDarkCurrentFilterMode>(*dcfm));
+  // Special case for calibrate mode
+  if (*dcfm == static_cast<int>(dcfmCalibrateDarkCurrent)) {
+    // Read image count, and request some more images
+    int dcfm_img_cnt =
+        bf_set_->imageProcessing.darkCurrentFilterCalibrationImageCount.read();
+    RequestImages(dcfm_img_cnt + 5);
+    *dcfm = GetDcfm();
+    // Then turn on immediately
+    bf_set_->imageProcessing.darkCurrentFilterMode.write(dcfmOn);
+    *dcfm = GetDcfm();
+  }
+}
+
+int Bluefox2::GetDcfm() const {
+  return static_cast<int>(
+      bf_set_->imageProcessing.darkCurrentFilterMode.read());
 }
 
 void Bluefox2::SetMaster() const {

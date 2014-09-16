@@ -34,16 +34,18 @@ class Bluefox2 {
 
   std::string AvailableDevice() const;
   void SetColor(bool *color) const;
-  void SetBinning(bool binning) const;
+  void SetBinning(bool cbm) const;
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
-  void SetTrigger(int *trigger) const;
+  void SetTrigger(int *ctm) const;
   void SetExposeUs(int *expose_us, bool *auto_fix_expose) const;
   void SetGainDb(double *gain_db) const;
   void SetHdr(bool *hdr) const;
-  void SetWhiteBalance(int *white_balance) const;
+  void SetWhiteBalance(int *wbp) const;
   void RequestImages(int n) const;
+  void DarkCurrentFilter(int *dcfm) const;
   bool IsColor() const;
+  int GetDcfm() const;
 
   std::string serial_;
   Bluefox2DynConfig config_;
