@@ -68,6 +68,12 @@ See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package f
 `~gain_db` (`double`, default: `0.0`)  
     gain in Db
 
+`~white_balance` (`int`, default: `0`)
+    set white balance paramter for color camera, for grayscale camera this value will be `-1`, which is `unavailable`
+    
+`~dark_current_filter` (`int`, default: `1`)
+    dark current filter, read this [article](http://www.photonics.com/Article.aspx?AID=44298) for more information. When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed
+
 `~hdr` (`bool`, default: `false`)  
     Only 200wG camera supports this mode, set `hdr` to `true` for other cameras will have no effect
 
