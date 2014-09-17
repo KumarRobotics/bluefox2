@@ -81,7 +81,11 @@ set white balance paramter for color camera, for grayscale camera this value wil
     
 `~dark_current_filter` (`int`, default: `1`)
 
-dark current filter, read this [article](http://www.photonics.com/Article.aspx?AID=44298) for more information. When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed
+When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed.
+
+TODO: turn of offsetautocalibration during darkcurrentfilter calibration.
+
+Read this [one](http://www.matrix-vision.com/faq-reader/245.html) as well. Basically, if you are using bluefox2-mcl, then you will have a lot of noise in you sensor. I you can't live with that, just get a better camera.
 
 `~hdr` (`bool`, default: `false`)
 
