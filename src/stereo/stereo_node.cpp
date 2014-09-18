@@ -1,18 +1,25 @@
-#include <ros/ros.h>
+#include "bluefox2/stereo_node.h"
 
-#include "bluefox2/stereo_camera.h"
+namespace bluefox2 {
 
-int main(int argc, char **argv) {
-  ros::init(argc, argv, "stereo_node");
-
-  ros::NodeHandle nh("~");
-  try {
-    bluefox2::StereoCamera stereo_camera(nh);
-    stereo_camera.Run();
-    ros::spin();
-    stereo_camera.End();
-  }
-  catch (const std::exception &e) {
-    ROS_ERROR_STREAM("Bluefox2: " << e.what());
+void StereoNode::Acquire() {
+  while (is_acquire() && ros::ok()) {
+    left_ros_.Request();
+    right_ros_.Request();
+    const ros::Time time = ros::Time::now();
+    left_ros_.PublishCamera(time);
+    right_ros_.PublishCamera(time);
+    Sleep();
   }
 }
+
+void StereoNode::Setup(Bluefox2DynConfig &config) {
+  left_ros_.set_fps(config.fps);
+  right_ros_.set_fps(config.fps);
+  // Some hacky stuff... work on it later
+  auto config_cpy = config;
+  left_ros_.camera().Configure(config_cpy);
+  right_ros_.camera().Configure(config);
+}
+
+}  // namepace bluefox2

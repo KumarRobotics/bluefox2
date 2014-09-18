@@ -1,17 +1,106 @@
 [![Build Status](https://travis-ci.org/KumarRobotics/bluefox2.svg?branch=master)](https://travis-ci.org/KumarRobotics/bluefox2)
 
 # Bluefox2
-*This driver works with ubuntu 12.04 + ros hydro + gcc 4.6 and ubuntu 14.04 + ros indigo + gcc 4.8+*  
+*This driver works with ubuntu 14.04 + ros indigo + gcc 4.8+*  
 *This driver follows the google c++ style guide*  
 https://github.com/KumarRobotics/bluefox2
 
 ![image](http://i.imgur.com/89Bb1hR.png)  
 [mvBluefox MLC](http://www.matrix-vision.com/USB2.0-single-board-camera-mvbluefox-mlc.html)
-## [Install Bluefox Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
-1. Download the latest bluefox driver [link](http://www.matrix-vision.com/latest-drivers.html).  
+
+## Supported hardware
+This driver should work with any Matrix-Vision Bluefox usb2.0 MCL cameras (bluefox2).
+
+## API Stability
+The ROS API of this driver should be considered **unstable**.
+
+## ROS API
+
+### single_node
+
+`single_node` is a driver for a single bluefox2 camera.
+
+#### Published topics
+
+`~image_raw` ([sensor_msgs/Image](http://docs.ros.org/api/sensor_msgs/html/msg/Image.html))  
+    The unprocessed image data.
+
+`~camera_info` ([sensor_msgs/CameraInfo](http://docs.ros.org/api/sensor_msgs/html/msg/CameraInfo.html))  
+Contains the camera calibration (if calibrated) and extra data about the camera configuration.
+
+### Parameters
+
+Normal parameters.
+
+`~serial` (`string`, default: `<serial>`)  
+    bluefox 2camera serial number
+
+`~frame_id` (`string`, default: `mv_<serial>`)  
+    tf frame id
+
+`~camera` (`string`, default: `mv_<serial>`)  
+    camera name used in the calibration file
+
+`~calib_url` (`string`, default: `package://bluefox2/calib/calib_<serial>.yml`)  
+    camera calibration url
+
+Dynamically Reconfigurable Parameters.  
+See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package for details on dynamically reconfigurable parameters.
+
+`~fps` (`double`, default: `20.0`)
+
+frame per second
+
+`~color` (`bool`, default: `false`)
+
+pixelformat, `true` will use `RGB888Packed`, `false` will use `mono8`
+
+`~binning` (`bool`, default: `false`)
+
+`true` use `BinningHV`, which is horizontal + vertical binning
+
+`~trigger` (`int`, default: `1`)
+
+`1` use `OnDemand`, `0` use `Continuous`. we recommend `OnDemand` for more precise timing control
+
+`~auto_fix_expose` (`bool`, default: `false`)
+
+`true` will let the camera decide the exposure and fix it to that value. This feature is experimental, use with caution.
+
+`~expose_us` (`int`, default: `5000`)
+
+exposeure time in us
+
+`~gain_db` (`double`, default: `0.0`)
+
+gain in Db
+
+`~white_balance` (`int`, default: `0`)
+
+set white balance paramter for color camera, for grayscale camera this value will be `-1`, which is `unavailable`
+    
+`~dark_current_filter` (`int`, default: `1`)
+
+When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed.
+
+TODO: turn of offsetautocalibration during darkcurrentfilter calibration.
+
+Read this [one](http://www.matrix-vision.com/faq-reader/245.html) as well. Basically, if you are using bluefox2-mcl, then you will have a lot of noise in you sensor. I you can't live with that, just get a better camera.
+
+`~hdr` (`bool`, default: `false`)
+
+Only 200wG camera supports this mode, set `hdr` to `true` for other cameras will have no effect
+
+`~boost` (`bool`, default: `false`)
+
+`true` will put 2 request into the request queue. For high fps only. This allows 200wG to work at 90 fps and 200bG at 24 fps (at `trigger = 1`). Using this will result in inprecise time stamp of captured image. Use with caution
+
+
+## [Install mvIMPACT Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
+1. Download the latest bluefox driver [link](http://www.matrix-vision.com/latest-drivers.html).
 Under the tab mvBlueFOX, download the following two files:
   * `install_mvBlueFOX`
-  * `mvBlueFOX-x86_64_ABI2-x.y.z.tgz`  
+  * `mvBlueFOX-x86_64_ABI2-x.y.z.tgz`
 
   The installation script `install_mvBlueFOX.sh` and the archive `mvBlueFOX-x86_64_ABI2-x.y.z.tgz` must reside in the same directory. Nothing is written to this directory during script execution, so no write access to the directory is needed in order to execute the script.
 2. Change permission of `install_mvBlueFOX.sh`
@@ -20,7 +109,7 @@ Under the tab mvBlueFOX, download the following two files:
     sudo chmod +x install_mvBlueFOX.sh
     ```
 
-3. Run the installation script  
+3. Run the installation script
 **Do this only if you wish to install the driver to your system!**
 
     ```bash
@@ -35,7 +124,7 @@ Under the tab mvBlueFOX, download the following two files:
 If you install the full matrix vision driver, you will have `wxPropView` installed to your system. It's an GUI application that let you inspect all properties of the camera.
 
 ## FAQs
-1. I have the driver locally in my ros package, but everytime I plug in a camera, I need to change the permission.  
+1. I have the driver locally in my ros package, but everytime I plug in a camera, I need to change the permission.
     * Simple fix:
 
         ```bash
@@ -52,6 +141,6 @@ If you install the full matrix vision driver, you will have `wxPropView` install
         sudo service udev reload
         ```
 
-2. Camera acquisition failure after being unplugged and plugged back in  
+2. Camera acquisition failure after being unplugged and plugged back in
 If you are using linux kernel 3.13.0, then it's likely that you will encounter this problem.
 The solution is to install the latest kernel, eg. 3.14.17

@@ -1,6 +1,5 @@
-#include "bluefox2/single_camera.h"
+#include "bluefox2/single_node.h"
 
-#include <ros/ros.h>
 #include <nodelet/nodelet.h>
 #include <pluginlib/class_list_macros.h>
 
@@ -8,21 +7,26 @@ namespace bluefox2 {
 
 class SingleNodelet : public nodelet::Nodelet {
  public:
-  SingleNodelet() : nodelet::Nodelet() {}
-  ~SingleNodelet() { single_camera_->End(); }
+  SingleNodelet() = default;
+  ~SingleNodelet() {
+    if (single_node_) {
+      single_node_->End();
+    }
+  }
 
   virtual void onInit() {
     try {
-      single_camera_.reset(new SingleCamera(getPrivateNodeHandle()));
-      single_camera_->Run();
+      single_node_.reset(new SingleNode(getPrivateNodeHandle()));
+      single_node_->Run();
     }
     catch (const std::exception &e) {
-      ROS_ERROR_STREAM("Bluefox2: " << e.what());
+      NODELET_ERROR("%s: %s", getPrivateNodeHandle().getNamespace().c_str(),
+                    e.what());
     }
   }
 
  private:
-  boost::shared_ptr<SingleCamera> single_camera_;
+  std::unique_ptr<SingleNode> single_node_;
 };
 
 PLUGINLIB_EXPORT_CLASS(bluefox2::SingleNodelet, nodelet::Nodelet)

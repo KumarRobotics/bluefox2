@@ -1,34 +1,77 @@
 <launch>
+    <!-- Camera Settings -->
     <arg name="left" default="25000855"/>
     <arg name="right" default="25001110"/>
-    <arg name="left_calib" default="calib_$(arg left)"/>
-    <arg name="left_calib_url" default="package://bluefox2/calib/$(arg left_calib).yml"/>
-    <arg name="right_calib" default="calib_$(arg right)"/>
-    <arg name="right_calib_url" default="package://bluefox2/calib/$(arg right_calib).yml"/>
-    <arg name="frame_id" default="mv_stereo"/>
+    <arg name="left_calib_url"
+        default="package://bluefox2/calib/calib_$(arg left).yml"/>
+    <arg name="right_calib_url"
+        default="package://bluefox2/calib/calib_$(arg right).yml"/>
+    <arg name="frame_id" default="stereo"/>
+    <arg name="camera" default="mv_stereo"/>
+    <arg name="left_camera" default="mv_$(arg left)"/>
+    <arg name="right_camera" default="mv_$(arg right)"/>
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
-    <arg name="expose" default="0"/>
-    <arg name="expose_us" default="5000"/>
     <arg name="binning" default="false"/>
-    <arg name="gain_db" default="0.0"/>
     <arg name="trigger" default="1"/>
+    <arg name="auto_fix_expose" default="false"/>
+    <arg name="expose_us" default="5000"/>
+    <arg name="gain_db" default="0.0"/>
     <arg name="hdr" default="true"/>
 
-    <node pkg="bluefox2" type="stereo_node" name="mv_stereo"
-        respawn="true" output="screen">
-        <param name="left" type="string" value="$(arg left)"/>
-        <param name="right" type="string" value="$(arg right)"/>
+    <!-- Node Settings -->
+    <arg name="output" default="screen"/>
+    <arg name="respawn" default="false"/>
+    <arg name="proc" default="false"/>
+    <arg name="view" default="false"/>
+    <arg name="calib" default="false"/>
+
+    <!-- Node -->
+    <node pkg="bluefox2" type="stereo_node" name="$(arg camera)"
+        respawn="$(arg respawn)" output="$(arg output)">
+        <param name="left/camera" type="string" value="$(arg left_camera)"/>
+        <param name="left/identifier" type="string" value="$(arg left)"/>
+        <param name="left/calib_url" type="string"
+            value="$(arg left_calib_url)"/>
+        <param name="right/camera" type="string" value="$(arg right_camera)"/>
+        <param name="right/identifier" type="string" value="$(arg right)"/>
+        <param name="right/calib_url" type="string"
+                value="$(arg right_calib_url)"/>
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
-        <param name="fps" type="int" value="$(arg fps)"/>
+        <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
-        <param name="expose" type="int" value="$(arg expose)"/>
+        <param name="auto_fix_expose" type="bool" value="$(arg auto_fix_expose)"/>
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>
         <param name="hdr" type="bool" value="$(arg hdr)"/>
-        <param name="left_calib_url" type="string" value="$(arg left_calib_url)"/>
-        <param name="right_calib_url" type="string" value="$(arg right_calib_url)"/>
     </node>
+
+    <!-- Proc -->
+    <node if="$(arg proc)" pkg="stereo_image_proc" type="stereo_image_proc"
+        name="stereo_image_proc" ns="$(arg camera)">
+    </node>
+
+    <!-- View -->
+    <arg name="image" default="rect"/>
+    <node if="$(arg view)" pkg="image_view" type="stereo_view"
+        name="$(arg camera)_raw" output="$(arg output)"
+        args="stereo:=$(arg camera) image:=image_$(arg image)">
+    </node>
+
+    <!-- Calib -->
+    <group if="$(arg calib)">
+        <arg name="pattern" default="chessboard"/>
+        <arg name="size"/>
+        <arg name="square"/>
+        <node pkg="camera_calibration" type="cameracalibrator.py"
+            name="calibrator" output="screen"
+            args="-p $(arg pattern) -s $(arg size) -q $(arg square)
+            right:=/$(arg camera)/right/image_raw
+            left:=/$(arg camera)/left/image_raw
+            right_camera:=/$(arg camera)/right
+            left_camera:=/$(arg camera)/left">
+        </node>
+    </group>
 </launch>
