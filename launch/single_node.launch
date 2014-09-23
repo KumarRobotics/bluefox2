@@ -48,6 +48,7 @@
     </node>
 
     <!-- View -->
+    <arg name="image" default="image_raw"/>
     <node if="$(arg view)"
         pkg="image_view" type="image_view" name="viewer"
         output="$(arg output)" ns="$(arg camera)" args="image:=$(arg image)">
