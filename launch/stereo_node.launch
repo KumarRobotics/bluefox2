@@ -54,10 +54,10 @@
     </node>
 
     <!-- View -->
-    <arg name="image" default="rect"/>
+    <arg name="image" default="image_rect"/>
     <node if="$(arg view)" pkg="image_view" type="stereo_view"
         name="$(arg camera)_raw" output="$(arg output)"
-        args="stereo:=$(arg camera) image:=image_$(arg image)">
+        args="stereo:=$(arg camera) image:=$(arg image)">
     </node>
 
     <!-- Calib -->
