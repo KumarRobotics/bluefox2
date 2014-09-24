@@ -2,10 +2,13 @@
 
 # Bluefox2
 *This driver works with ubuntu 14.04 + ros indigo + gcc 4.8+*  
+
 *This driver follows the google c++ style guide*  
+
 https://github.com/KumarRobotics/bluefox2
 
 ![image](http://i.imgur.com/89Bb1hR.png)  
+
 [mvBluefox MLC](http://www.matrix-vision.com/USB2.0-single-board-camera-mvbluefox-mlc.html)
 
 ## Supported hardware
@@ -22,29 +25,36 @@ The ROS API of this driver should be considered **unstable**.
 
 #### Published topics
 
-`~image_raw` ([sensor_msgs/Image](http://docs.ros.org/api/sensor_msgs/html/msg/Image.html))  
+`~image_raw` ([sensor_msgs/Image](http://docs.ros.org/api/sensor_msgs/html/msg/Image.html))
+
     The unprocessed image data.
 
-`~camera_info` ([sensor_msgs/CameraInfo](http://docs.ros.org/api/sensor_msgs/html/msg/CameraInfo.html))  
+`~camera_info` ([sensor_msgs/CameraInfo](http://docs.ros.org/api/sensor_msgs/html/msg/CameraInfo.html))
+
 Contains the camera calibration (if calibrated) and extra data about the camera configuration.
 
 ### Parameters
 
 Normal parameters.
 
-`~serial` (`string`, default: `<serial>`)  
+`~serial` (`string`, default: `<serial>`)
+
     bluefox 2camera serial number
 
-`~frame_id` (`string`, default: `mv_<serial>`)  
+`~frame_id` (`string`, default: `mv_<serial>`)
+
     tf frame id
 
-`~camera` (`string`, default: `mv_<serial>`)  
+`~camera` (`string`, default: `mv_<serial>`)
+
     camera name used in the calibration file
 
-`~calib_url` (`string`, default: `package://bluefox2/calib/calib_<serial>.yml`)  
+`~calib_url` (`string`, default: `package://bluefox2/calib/calib_<serial>.yml`)
+
     camera calibration url
 
-Dynamically Reconfigurable Parameters.  
+Dynamically Reconfigurable Parameters.
+
 See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package for details on dynamically reconfigurable parameters.
 
 `~fps` (`double`, default: `20.0`)
@@ -78,14 +88,14 @@ gain in Db
 `~white_balance` (`int`, default: `0`)
 
 set white balance paramter for color camera, for grayscale camera this value will be `-1`, which is `unavailable`
-    
+
 `~dark_current_filter` (`int`, default: `1`)
 
 When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed.
 
-TODO: turn of offsetautocalibration during darkcurrentfilter calibration.
+TODO: turn off offsetautocalibration and set the offset to a proper value during darkcurrentfilter calibration.
 
-Read this [one](http://www.matrix-vision.com/faq-reader/245.html) as well. Basically, if you are using bluefox2-mcl, then you will have a lot of noise in you sensor. I you can't live with that, just get a better camera.
+Read this [one](http://www.matrix-vision.com/faq-reader/245.html) as well. Basically, if you are using bluefox2-mlc, then you will have a lot of noise in you sensor. I you can't live with that, just get a better camera.
 
 `~hdr` (`bool`, default: `false`)
 

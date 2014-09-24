@@ -20,7 +20,6 @@
     <arg name="respawn" default="false"/>
     <arg name="proc" default="false"/>
     <arg name="view" default="false"/>
-    <arg name="image" default="image_raw"/>
     <arg name="calib" default="false"/>
 
     <!-- Node -->
