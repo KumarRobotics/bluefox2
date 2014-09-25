@@ -2,6 +2,7 @@
 #define BLUEFOX2_H_
 
 #include <sensor_msgs/Image.h>
+#include <sensor_msgs/CameraInfo.h>
 #include "bluefox2/Bluefox2DynConfig.h"
 
 #ifndef linux
@@ -27,7 +28,8 @@ class Bluefox2 {
   void SetMaster() const;
   void SetSlave() const;
   void Configure(Bluefox2DynConfig &config);
-  bool GrabImage(sensor_msgs::Image &image_msg);
+  bool GrabImage(sensor_msgs::Image &image_msg,
+                 sensor_msgs::CameraInfo &cinfo_msg);
 
  private:
   static const int kTimeout = 500;

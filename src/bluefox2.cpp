@@ -53,7 +53,8 @@ void Bluefox2::RequestImages(int n) const {
   }
 }
 
-bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
+bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
+                         sensor_msgs::CameraInfo &cinfo_msg) {
   int requestNr = INVALID_ID;
   requestNr = fi_->imageRequestWaitFor(kTimeout);
   // Check if request nr is valid
@@ -82,6 +83,8 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
     image_msg.data.resize(data_size);
   }
   memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
+  cinfo_msg.binning_x = config_.binning ? 2 : 0;
+  cinfo_msg.binning_y = config_.binning ? 2 : 0;
   // Release capture request
   fi_->imageRequestUnlock(requestNr);
   return true;

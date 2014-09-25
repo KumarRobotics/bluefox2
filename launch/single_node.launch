@@ -41,15 +41,16 @@
     </node>
 
     <!-- Proc -->
-    <node if="$(arg proc)" pkg="image_proc" type="image_proc"
-        name="image_proc" ns="$(arg camera)">
+    <node if="$(arg proc)"
+        pkg="image_proc" type="image_proc" name="image_proc"
+        ns="$(arg camera)">
     </node>
 
     <!-- View -->
-    <arg name="image" default="raw"/>
-    <node if="$(arg view)" pkg="image_view" type="image_view"
-        name="$(arg camera)_$(arg image)" output="$(arg output)"
-        args="image:=/$(arg camera)/image_$(arg image)">
+    <arg name="image" default="image_raw"/>
+    <node if="$(arg view)"
+        pkg="image_view" type="image_view" name="viewer"
+        output="$(arg output)" ns="$(arg camera)" args="image:=$(arg image)">
     </node>
 
     <!-- Calib -->

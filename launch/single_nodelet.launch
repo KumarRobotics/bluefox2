@@ -22,15 +22,17 @@
     <arg name="view" default="false"/>
 
     <!-- Standalone -->
-    <arg unless="$(arg plugin)" name="option"
-        value="standalone bluefox2/SingleNodelet"/>
+    <arg unless="$(arg plugin)"
+        name="option" value="standalone bluefox2/SingleNodelet"/>
 
     <!-- Manager -->
-    <arg if="$(arg plugin)" name="manager" default="single_nodelet"/>
-    <arg if="$(arg plugin)" name="option"
-        value="load bluefox2/SingleNodelet $(arg manager)"/>
-    <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
-        name="$(arg manager)" args="manager" output="$(arg output)">
+    <arg if="$(arg plugin)"
+        name="manager" default="single_nodelet"/>
+    <arg if="$(arg plugin)"
+        name="option" value="load bluefox2/SingleNodelet $(arg manager)"/>
+    <node if="$(arg plugin)"
+        pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager"
+        output="$(arg output)">
     </node>
 
     <!-- Nodelet -->
@@ -51,9 +53,22 @@
         <param name="boost" type="bool" value="$(arg boost)"/>
     </node>
 
+    <!--Proc-->
+    <arg if="$(arg plugin)"
+        name="proc_option" value="load image_proc/rectify $(arg manager)"/>
+    <arg unless="$(arg plugin)"
+        name="proc_option" value="standalone image_proc/rectify"/>
+    <node if="$(arg proc)"
+        pkg="nodelet" type="nodelet" name="rectify_mono" ns="$(arg camera)"
+        args="$(arg proc_option)">
+        <remap from="image_mono" to="image_raw"/>
+        <remap from="image_rect" to="image_rect_mono"/>
+    </node>
+
     <!-- View -->
-    <node if="$(arg view)" pkg="image_view" type="image_view"
-        name="$(arg camera)_raw" output="$(arg output)"
-        args="image:=/$(arg camera)/image_raw">
+    <arg name="image" default="image_raw"/>
+    <node if="$(arg view)"
+        pkg="image_view" type="image_view" name="viewer"
+        output="$(arg output)" ns="$(arg camera)" args="image:=$(arg image)">
     </node>
 </launch>

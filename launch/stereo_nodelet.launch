@@ -1,5 +1,5 @@
 <launch>
-    <!-- Settings -->
+    <!-- Camera Settings -->
     <arg name="left" default="25000855"/>
     <arg name="right" default="25001185"/>
     <arg name="left_calib_url"
@@ -17,19 +17,24 @@
     <arg name="gain_db" default="0.0"/>
     <arg name="hdr" default="true"/>
 
-    <arg name="plugin" default="false"/>
+    <!-- Node Settings -->
     <arg name="output" default="screen"/>
+    <arg name="plugin" default="false"/>
+    <arg name="proc" default="false"/>
+    <arg name="view" default="false"/>
 
     <!-- Standalone -->
     <arg unless="$(arg plugin)" name="option"
         value="standalone bluefox2/StereoNodelet"/>
 
     <!-- Manager -->
-    <arg if="$(arg plugin)" name="manager" default="stereo_nodelet"/>
-    <arg if="$(arg plugin)" name="option"
-        value="load bluefox2/StereoNodelet $(arg manager)"/>
-    <node if="$(arg plugin)" pkg="nodelet" type="nodelet"
-        name="$(arg manager)" args="manager" output="$(arg output)">
+    <arg if="$(arg plugin)"
+        name="manager" default="stereo_nodelet"/>
+    <arg if="$(arg plugin)"
+        name="option"  value="load bluefox2/StereoNodelet $(arg manager)"/>
+    <node if="$(arg plugin)"
+        pkg="nodelet" type="nodelet" name="$(arg manager)" args="manager"
+        output="$(arg output)">
     </node>
 
     <!-- Nodelet -->
