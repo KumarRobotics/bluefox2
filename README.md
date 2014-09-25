@@ -39,19 +39,19 @@ Normal parameters.
 
 `~serial` (`string`, default: `<serial>`)
 
-    bluefox 2camera serial number
+bluefox 2camera serial number
 
 `~frame_id` (`string`, default: `mv_<serial>`)
 
-    tf frame id
+tf frame id
 
 `~camera` (`string`, default: `mv_<serial>`)
 
-    camera name used in the calibration file
+camera name used in the calibration file
 
 `~calib_url` (`string`, default: `package://bluefox2/calib/calib_<serial>.yml`)
 
-    camera calibration url
+camera calibration url
 
 Dynamically Reconfigurable Parameters.
 
