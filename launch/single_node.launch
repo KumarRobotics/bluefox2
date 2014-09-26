@@ -9,30 +9,31 @@
     <arg name="color" default="false"/>
     <arg name="binning" default="false"/>
     <arg name="trigger" default="1"/>
-    <arg name="auto_fix_expose" default="false"/>
+    <arg name="auto_expose" default="0"/>
     <arg name="expose_us" default="5000"/>
+    <arg name="white_balance" default="-1"/>
     <arg name="gain_db" default="0.0"/>
     <arg name="hdr" default="false"/>
     <arg name="boost" default="false"/>
 
     <!-- Node Settings -->
     <arg name="output" default="screen"/>
-    <arg name="respawn" default="false"/>
     <arg name="proc" default="false"/>
     <arg name="view" default="false"/>
     <arg name="calib" default="false"/>
 
     <!-- Node -->
     <node pkg="bluefox2" type="single_node" name="$(arg camera)"
-        respawn="$(arg respawn)" output="$(arg output)">
+        output="$(arg output)">
         <param name="identifier" type="string" value="$(arg serial)"/>
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
         <param name="camera" type="string" value="$(arg camera)"/>
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
         <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
-        <param name="auto_fix_expose" type="bool" value="$(arg auto_fix_expose)"/>
+        <param name="auto_fix_expose" type="int" value="$(arg auto_expose)"/>
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
+        <param name="white_balance" type="int" value="$(arg white_balance)"/>
         <param name="binning" type="bool" value="$(arg binning)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="trigger" type="int" value="$(arg trigger)"/>

@@ -35,17 +35,19 @@ class Bluefox2 {
   static const int kTimeout = 500;
 
   std::string AvailableDevice() const;
+  ///@todo: maybe move all these setting function to a separate file
   void SetColor(bool *color) const;
   void SetBinning(bool cbm) const;
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
   void SetTrigger(int *ctm) const;
-  void SetExposeUs(int *expose_us, bool *auto_fix_expose) const;
+  void SetExpose(int *expose_us, int auto_expose) const;
+  void SetExposeUs(int *expose_us) const;
   void SetGainDb(double *gain_db) const;
   void SetHdr(bool *hdr) const;
   void SetWhiteBalance(int *wbp) const;
+  void SetDarkCurrentFilter(int *dcfm) const;
   void RequestImages(int n) const;
-  void DarkCurrentFilter(int *dcfm) const;
   bool IsColor() const;
   int GetDcfm() const;
 
@@ -57,12 +59,18 @@ class Bluefox2 {
   mvIMPACT::acquire::Statistics *stats_;
   mvIMPACT::acquire::Request *request_;
   mvIMPACT::acquire::SettingsBlueFOX *bf_set_;
+  mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_;
   mvIMPACT::acquire::SystemSettings *sys_set_;
 };
 
 template <typename T>
-T clamp(const T &value, const T &low, const T &high) {
+T Clamp(const T &value, const T &low, const T &high) {
   return std::max(low, std::min(high, value));
+}
+
+template <typename Property, typename T>
+void ClampProperty(const Property &prop, T *value) {
+  *value = Clamp(*value, prop.getMinValue(), prop.getMaxValue());
 }
 
 double PixelClockToFrameRate(int pclk_khz, double width, double height,
