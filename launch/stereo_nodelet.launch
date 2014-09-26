@@ -10,7 +10,7 @@
     <arg name="camera" default="mv_stereo"/>
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
-    <arg name="ace" default="0"/>
+    <arg name="aec" default="0"/>
     <arg name="cbm" default="false"/>
     <arg name="ctm" default="1"/>
     <arg name="dcfm" default="0"/>
@@ -53,7 +53,7 @@
         <param name="camera" type="string" value="$(arg camera)"/>
         <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
-        <param name="ace" type="int" value="$(arg ace)"/>
+        <param name="aec" type="int" value="$(arg aec)"/>
         <param name="cbm" type="bool" value="$(arg cbm)"/>
         <param name="ctm" type="int" value="$(arg ctm)"/>
         <param name="dcfm" type="int" value="$(arg dcfm)"/>
