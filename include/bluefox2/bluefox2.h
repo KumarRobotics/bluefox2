@@ -37,16 +37,16 @@ class Bluefox2 {
   std::string AvailableDevice() const;
   ///@todo: maybe move all these setting function to a separate file
   void SetColor(bool *color) const;
-  void SetBinning(bool cbm) const;
+  void SetCbm(bool cbm) const;
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
-  void SetTrigger(int *ctm) const;
-  void SetExpose(int *expose_us, int auto_expose) const;
+  void SetCtm(int *ctm) const;
+  void SetAec(int *expose_us, int auto_expose) const;
   void SetExposeUs(int *expose_us) const;
   void SetGainDb(double *gain_db) const;
   void SetHdr(bool *hdr) const;
-  void SetWhiteBalance(int *wbp) const;
-  void SetDarkCurrentFilter(int *dcfm) const;
+  void SetWbp(int *wbp) const;
+  void SetDcfm(int *dcfm) const;
   void RequestImages(int n) const;
   bool IsColor() const;
   int GetDcfm() const;

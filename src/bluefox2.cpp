@@ -85,8 +85,8 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
     image_msg.data.resize(data_size);
   }
   memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
-  cinfo_msg.binning_x = config_.binning ? 2 : 0;
-  cinfo_msg.binning_y = config_.binning ? 2 : 0;
+  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
+  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
   // Release capture request
   fi_->imageRequestUnlock(requestNr);
   return true;
@@ -95,13 +95,13 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetPixelClock(config.fps);
   SetColor(&config.color);
-  SetBinning(config.binning);
+  SetCbm(config.cbm);
   SetGainDb(&config.gain_db);
-  SetExpose(&config.expose_us, config.auto_expose);
-  SetTrigger(&config.trigger);
+  SetAec(&config.expose_us, config.aec);
+  SetCtm(&config.ctm);
   SetHdr(&config.hdr);
-  SetWhiteBalance(&config.white_balance);
-  SetDarkCurrentFilter(&config.dark_current_filter);
+  SetWbp(&config.wbp);
+  SetDcfm(&config.dcfm);
   // Cache this config
   config_ = config;
 }
@@ -136,11 +136,11 @@ void Bluefox2::SetColor(bool *color) const {
                                                      : idpfMono8);
 }
 
-void Bluefox2::SetBinning(bool cbm) const {
+void Bluefox2::SetCbm(bool cbm) const {
   cam_set_->binningMode.write(cbm ? cbmBinningHV : cbmOff);
 }
 
-void Bluefox2::SetExpose(int *expose_us, int auto_expose) const {
+void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
   switch (auto_expose) {
     case 0:
       // Manual
@@ -189,7 +189,7 @@ void Bluefox2::SetGainDb(double *gain_db) const {
   cam_set_->gain_dB.write(*gain_db);
 }
 
-void Bluefox2::SetTrigger(int *ctm) const {
+void Bluefox2::SetCtm(int *ctm) const {
   if (*ctm == 1) {
     std::vector<TCameraTriggerMode> values;
     cam_set_->triggerMode.getTranslationDictValues(values);
@@ -216,7 +216,7 @@ void Bluefox2::SetHdr(bool *hdr) const {
   }
 }
 
-void Bluefox2::SetWhiteBalance(int *wbp) const {
+void Bluefox2::SetWbp(int *wbp) const {
   // Put white balance as unavailable if it's not a color camera
   if (!IsColor()) {
     *wbp = -1;
@@ -239,7 +239,7 @@ void Bluefox2::SetWhiteBalance(int *wbp) const {
   *wbp = static_cast<int>(wbpUser1);
 }
 
-void Bluefox2::SetDarkCurrentFilter(int *dcfm) const {
+void Bluefox2::SetDcfm(int *dcfm) const {
   img_proc_->darkCurrentFilterMode.write(
       static_cast<TDarkCurrentFilterMode>(*dcfm));
   // Special case for calibrate mode

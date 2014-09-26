@@ -7,13 +7,14 @@
         default="package://bluefox2/calib/calib_$(arg serial).yml"/>
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
-    <arg name="binning" default="false"/>
-    <arg name="trigger" default="1"/>
-    <arg name="auto_expose" default="0"/>
-    <arg name="expose_us" default="5000"/>
-    <arg name="white_balance" default="-1"/>
-    <arg name="gain_db" default="0.0"/>
+    <arg name="ace" default="0"/>
+    <arg name="cbm" default="false"/>
+    <arg name="ctm" default="1"/>
+    <arg name="dcfm" default="0"/>
     <arg name="hdr" default="false"/>
+    <arg name="wbp" default="-1"/>
+    <arg name="expose_us" default="5000"/>
+    <arg name="gain_db" default="0.0"/>
     <arg name="boost" default="false"/>
 
     <!-- Node Settings -->
@@ -31,13 +32,14 @@
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
         <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
-        <param name="auto_fix_expose" type="int" value="$(arg auto_expose)"/>
-        <param name="expose_us" type="int" value="$(arg expose_us)"/>
-        <param name="white_balance" type="int" value="$(arg white_balance)"/>
-        <param name="binning" type="bool" value="$(arg binning)"/>
-        <param name="gain_db" type="double" value="$(arg gain_db)"/>
-        <param name="trigger" type="int" value="$(arg trigger)"/>
+        <param name="ace" type="int" value="$(arg ace)"/>
+        <param name="cbm" type="bool" value="$(arg cbm)"/>
+        <param name="ctm" type="int" value="$(arg ctm)"/>
+        <param name="dcfm" type="int" value="$(arg dcfm)"/>
         <param name="hdr" type="bool" value="$(arg hdr)"/>
+        <param name="wbp" type="int" value="$(arg wbp)"/>
+        <param name="expose_us" type="int" value="$(arg expose_us)"/>
+        <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="boost" type="bool" value="$(arg boost)"/>
     </node>
 
