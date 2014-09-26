@@ -73,10 +73,10 @@ camera binning mode, `true` use `BinningHV`, which is horizontal + vertical binn
 
 camera trigger mode:
 
-* `0` - Continuous
-* `1` - OnDemand
+* `0` - ctm_continuous
+* `1` - ctm_on_demand
 
-we recommend *OnDemand* for more precise timing control. If a device does not support *OnDemand*, it will be set to *Continuous*
+we recommend *ctm_on_demand* for more precise timing control. If a device does not support *ctm_on_demand*, it will be set to *ctm_continuous*
 
 `~aec` (`int`, default: `0`)
 
@@ -99,13 +99,19 @@ gain in Db
 
 white balance parameter:
 * `-1` - wbp_unavailable
-* `0` - wbp_tungsten
+* `0~5` - wbp_tungsten and friends
+* `6` ~ wbp_user1
 * `7` - wbp_calibrate, calibrate next frame for white balance
+
+[TODO]: Instruction on calibrating white balance
 
 `~dcfm` (`int`, default: `1`)
 
 dark current filter mode:
 * `0` - dcfm_off
+* `1` - dcfm_on
+* `2` - dcfm_calibrate
+* `3` - correction_image
 
 When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed.
 
@@ -119,7 +125,11 @@ Only 200wG camera supports this mode, set `hdr` to `true` for other cameras will
 
 `~boost` (`bool`, default: `false`)
 
-`true` will put 2 request into the request queue. For high fps only. This allows 200wG to work at 90 fps and 200bG at 24 fps (at `trigger = 1`). Using this will result in inprecise time stamp of captured image. Use with caution
+boost mode:
+* `true` - send 2 requests into the request queue
+* `false` - send only 1 request
+
+This mode is requried by high fps which allows 200wG to work at 90 fps and 200bG at 24 fps (with `ctm = 1`). Using this will result in inprecise time stamp of captured image. Use with caution.
 
 
 ## [Install mvIMPACT Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
