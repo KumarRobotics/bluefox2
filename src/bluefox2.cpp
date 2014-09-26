@@ -42,6 +42,7 @@ void Bluefox2::Open() {
   bf_set_ = new SettingsBlueFOX(dev_);
   cam_set_ = new CameraSettingsBlueFOX(dev_);
   sys_set_ = new SystemSettings(dev_);
+  img_proc_ = new ImageProcessing(dev_);
 }
 
 void Bluefox2::Request() const { fi_->imageRequestSingle(); }
@@ -221,29 +222,39 @@ void Bluefox2::SetWhiteBalance(int *wbp) const {
     *wbp = -1;
     return;
   }
-  *wbp = (*wbp < 0) ? bf_set_->imageProcessing.whiteBalance.read() : *wbp;
-  bf_set_->imageProcessing.whiteBalance.write(
-      static_cast<TWhiteBalanceParameter>(*wbp));
+  // Predefined and user wbp
+  if (*wbp < 7) {
+    *wbp = (*wbp < 0) ? img_proc_->whiteBalance.read() : *wbp;
+    img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(*wbp));
+    return;
+  }
+  // Calibrate
+  // Set wbp to user1
+  img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(wbpUser1));
+  // Calibrate next frame
+  img_proc_->whiteBalanceCalibration.write(wbcmNextFrame);
+  // Request one image?
+  RequestImages(1);
+  // Set config to user1
+  *wbp = static_cast<int>(wbpUser1);
 }
 
 void Bluefox2::SetDarkCurrentFilter(int *dcfm) const {
-  bf_set_->imageProcessing.darkCurrentFilterMode.write(
+  img_proc_->darkCurrentFilterMode.write(
       static_cast<TDarkCurrentFilterMode>(*dcfm));
   // Special case for calibrate mode
   if (*dcfm == static_cast<int>(dcfmCalibrateDarkCurrent)) {
     // Read image count, and request some more images
-    int dcfm_img_cnt =
-        bf_set_->imageProcessing.darkCurrentFilterCalibrationImageCount.read();
+    int dcfm_img_cnt = img_proc_->darkCurrentFilterCalibrationImageCount.read();
     RequestImages(dcfm_img_cnt + 5);
     // Then turn on immediately
-    bf_set_->imageProcessing.darkCurrentFilterMode.write(dcfmOn);
+    img_proc_->darkCurrentFilterMode.write(dcfmOn);
     *dcfm = GetDcfm();
   }
 }
 
 int Bluefox2::GetDcfm() const {
-  return static_cast<int>(
-      bf_set_->imageProcessing.darkCurrentFilterMode.read());
+  return static_cast<int>(img_proc_->darkCurrentFilterMode.read());
 }
 
 void Bluefox2::SetMaster() const {

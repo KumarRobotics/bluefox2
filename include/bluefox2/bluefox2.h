@@ -59,6 +59,7 @@ class Bluefox2 {
   mvIMPACT::acquire::Statistics *stats_;
   mvIMPACT::acquire::Request *request_;
   mvIMPACT::acquire::SettingsBlueFOX *bf_set_;
+  mvIMPACT::acquire::ImageProcessing *img_proc_;
   mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_;
   mvIMPACT::acquire::SystemSettings *sys_set_;
 };
