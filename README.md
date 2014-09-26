@@ -65,17 +65,27 @@ frame per second
 
 pixelformat, `true` will use `RGB888Packed`, `false` will use `mono8`
 
-`~binning` (`bool`, default: `false`)
+`~cbm` (`bool`, default: `false`)
 
-`true` use `BinningHV`, which is horizontal + vertical binning
+camera binning mode, `true` use `BinningHV`, which is horizontal + vertical binning
 
-`~trigger` (`int`, default: `1`)
+`~ctm` (`int`, default: `1`)
 
-`1` use `OnDemand`, `0` use `Continuous`. we recommend `OnDemand` for more precise timing control
+camera trigger mode:
 
-`~auto_fix_expose` (`bool`, default: `false`)
+* `0` - Continuous
+* `1` - OnDemand
 
-`true` will let the camera decide the exposure and fix it to that value. This feature is experimental, use with caution.
+we recommend *OnDemand* for more precise timing control. If a device does not support *OnDemand*, it will be set to *Continuous*
+
+`~aec` (`int`, default: `0`)
+
+auto expose control:
+
+* `0` - aec_off, fixed exposure time
+* `1` - aec_on, auto control by driver
+* `2` - aec_fix, auto determined by driver and set to a fixed value
+* `3` - aec_clamp, auto control by driver, but clamped to expose time set by user, tuned controller
 
 `~expose_us` (`int`, default: `5000`)
 
@@ -85,11 +95,17 @@ exposeure time in us
 
 gain in Db
 
-`~white_balance` (`int`, default: `0`)
+`~wbp` (`int`, default: `0`)
 
-set white balance paramter for color camera, for grayscale camera this value will be `-1`, which is `unavailable`
+white balance parameter:
+* `-1` - wbp_unavailable
+* `0` - wbp_tungsten
+* `7` - wbp_calibrate, calibrate next frame for white balance
 
-`~dark_current_filter` (`int`, default: `1`)
+`~dcfm` (`int`, default: `1`)
+
+dark current filter mode:
+* `0` - dcfm_off
 
 When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed.
 
