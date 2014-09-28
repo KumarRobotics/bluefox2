@@ -10,12 +10,15 @@
     <arg name="camera" default="mv_stereo"/>
     <arg name="fps" default="20"/>
     <arg name="color" default="false"/>
-    <arg name="auto_fix_expose" default="false"/>
-    <arg name="binning" default="false"/>
-    <arg name="trigger" default="1"/>
+    <arg name="aec" default="0"/>
+    <arg name="cbm" default="false"/>
+    <arg name="ctm" default="1"/>
+    <arg name="dcfm" default="0"/>
+    <arg name="hdr" default="false"/>
+    <arg name="wbp" default="-1"/>
     <arg name="expose_us" default="5000"/>
     <arg name="gain_db" default="0.0"/>
-    <arg name="hdr" default="true"/>
+    <arg name="boost" default="false"/>
 
     <!-- Node Settings -->
     <arg name="output" default="screen"/>
@@ -50,11 +53,14 @@
         <param name="camera" type="string" value="$(arg camera)"/>
         <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
-        <param name="auto_fix_expose" type="bool" value="$(arg auto_fix_expose)"/>
-        <param name="binning" type="bool" value="$(arg binning)"/>
-        <param name="trigger" type="int" value="$(arg trigger)"/>
+        <param name="aec" type="int" value="$(arg aec)"/>
+        <param name="cbm" type="bool" value="$(arg cbm)"/>
+        <param name="ctm" type="int" value="$(arg ctm)"/>
+        <param name="dcfm" type="int" value="$(arg dcfm)"/>
+        <param name="hdr" type="bool" value="$(arg hdr)"/>
+        <param name="wbp" type="int" value="$(arg wbp)"/>
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
-        <param name="hdr" type="bool" value="$(arg hdr)"/>
+        <param name="boost" type="bool" value="$(arg boost)"/>
     </node>
 </launch>

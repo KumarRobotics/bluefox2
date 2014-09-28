@@ -40,7 +40,9 @@ void Bluefox2::Open() {
   fi_ = new FunctionInterface(dev_);
   stats_ = new Statistics(dev_);
   bf_set_ = new SettingsBlueFOX(dev_);
+  cam_set_ = new CameraSettingsBlueFOX(dev_);
   sys_set_ = new SystemSettings(dev_);
+  img_proc_ = new ImageProcessing(dev_);
 }
 
 void Bluefox2::Request() const { fi_->imageRequestSingle(); }
@@ -83,8 +85,8 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
     image_msg.data.resize(data_size);
   }
   memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
-  cinfo_msg.binning_x = config_.binning ? 2 : 0;
-  cinfo_msg.binning_y = config_.binning ? 2 : 0;
+  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
+  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
   // Release capture request
   fi_->imageRequestUnlock(requestNr);
   return true;
@@ -93,13 +95,13 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetPixelClock(config.fps);
   SetColor(&config.color);
-  SetBinning(config.binning);
+  SetCbm(config.cbm);
   SetGainDb(&config.gain_db);
-  SetExposeUs(&config.expose_us, &config.auto_fix_expose);
-  SetTrigger(&config.trigger);
+  SetAec(&config.expose_us, config.aec);
+  SetCtm(&config.ctm);
   SetHdr(&config.hdr);
-  SetWhiteBalance(&config.white_balance);
-  DarkCurrentFilter(&config.dark_current_filter);
+  SetWbp(&config.wbp);
+  SetDcfm(&config.dcfm);
   // Cache this config
   config_ = config;
 }
@@ -109,7 +111,7 @@ inline void Bluefox2::SetRequestCount(int count) const {
 }
 
 void Bluefox2::SetPixelClock(double fps) const {
-  const auto pclk_khz = bf_set_->cameraSetting.pixelClock_KHz.read();
+  const auto pclk_khz = cam_set_->pixelClock_KHz.read();
   const auto max_fps =
       PixelClockToFrameRate(pclk_khz, width(), height(), expose_us());
   // Do nothing if we have the capacity to deliver the required fps
@@ -118,14 +120,14 @@ void Bluefox2::SetPixelClock(double fps) const {
   }
   // Promote to highest pixel clock only if we ask for faster fps
   // Never decrease pixel clock
-  const auto size = bf_set_->cameraSetting.pixelClock_KHz.dictSize();
-  const auto value =
-      bf_set_->cameraSetting.pixelClock_KHz.getTranslationDictValue(size - 1);
-  bf_set_->cameraSetting.pixelClock_KHz.write(value);
+  const auto size = cam_set_->pixelClock_KHz.dictSize();
+  const auto value = cam_set_->pixelClock_KHz.getTranslationDictValue(size - 1);
+  cam_set_->pixelClock_KHz.write(value);
 }
 
 bool Bluefox2::IsColor() const { return product().back() == 'C'; }
 
+///@todo: Maybe use something in image processing?
 void Bluefox2::SetColor(bool *color) const {
   if (!IsColor()) {
     *color = false;
@@ -134,104 +136,138 @@ void Bluefox2::SetColor(bool *color) const {
                                                      : idpfMono8);
 }
 
-void Bluefox2::SetBinning(bool cbm) const {
-  bf_set_->cameraSetting.binningMode.write(cbm ? cbmBinningHV : cbmOff);
+void Bluefox2::SetCbm(bool cbm) const {
+  cam_set_->binningMode.write(cbm ? cbmBinningHV : cbmOff);
 }
 
-void Bluefox2::SetExposeUs(int *expose_us, bool *auto_fix_expose) const {
-  if (*auto_fix_expose) {
-    bf_set_->cameraSetting.autoExposeControl.write(aecOn);
-    RequestImages(20);
-    bf_set_->cameraSetting.autoExposeControl.write(aecOff);
-    *expose_us = bf_set_->cameraSetting.expose_us.read();
-    *auto_fix_expose = false;
-  } else {
-    bf_set_->cameraSetting.autoExposeControl.write(aecOff);
-    const int expose_min = bf_set_->cameraSetting.expose_us.getMinValue();
-    const int expose_max = bf_set_->cameraSetting.expose_us.getMaxValue();
-    *expose_us = clamp(*expose_us, expose_min, expose_max);
-    bf_set_->cameraSetting.expose_us.write(*expose_us);
+void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
+  switch (auto_expose) {
+    case 0:
+      // Manual
+      SetExposeUs(expose_us);
+      break;
+    case 1:
+      // Auto
+      cam_set_->autoExposeControl.write(aecOn);
+      break;
+    case 2:
+      // Auto fix
+      cam_set_->autoExposeControl.write(aecOn);
+      RequestImages(20);
+      cam_set_->autoExposeControl.write(aecOff);
+      *expose_us = cam_set_->expose_us.read();
+      break;
+    case 3: {
+      // Auto clamp, from Shaojie Shen
+      cam_set_->autoControlParameters.controllerSpeed.write(acsUserDefined);
+      cam_set_->autoControlParameters.controllerGain.write(0.5);
+      cam_set_->autoControlParameters.controllerIntegralTime_ms.write(100);
+      cam_set_->autoControlParameters.controllerDerivativeTime_ms.write(0.0001);
+      cam_set_->autoControlParameters.desiredAverageGreyValue.write(100);
+      cam_set_->autoControlParameters.controllerDelay_Images.write(0);
+      cam_set_->autoControlParameters.exposeLowerLimit_us.write(50);
+      ClampProperty(cam_set_->expose_us, expose_us);
+      cam_set_->autoControlParameters.exposeUpperLimit_us.write(*expose_us);
+      cam_set_->autoExposeControl.write(aecOn);
+      break;
+    }
+    default:
+      // Manual
+      SetExposeUs(expose_us);
   }
 }
 
-void Bluefox2::SetGainDb(double *gain_db) const {
-  bf_set_->cameraSetting.autoGainControl.write(agcOff);
-  const double gain_min = bf_set_->cameraSetting.gain_dB.getMinValue();
-  const double gain_max = bf_set_->cameraSetting.gain_dB.getMaxValue();
-  *gain_db = clamp(*gain_db, gain_min, gain_max);
-  bf_set_->cameraSetting.gain_dB.write(*gain_db);
+void Bluefox2::SetExposeUs(int *expose_us) const {
+  cam_set_->autoExposeControl.write(aecOff);
+  ClampProperty(cam_set_->expose_us, expose_us);
+  cam_set_->expose_us.write(*expose_us);
 }
 
-void Bluefox2::SetTrigger(int *ctm) const {
+void Bluefox2::SetGainDb(double *gain_db) const {
+  cam_set_->autoGainControl.write(agcOff);
+  ClampProperty(cam_set_->gain_dB, gain_db);
+  cam_set_->gain_dB.write(*gain_db);
+}
+
+void Bluefox2::SetCtm(int *ctm) const {
   if (*ctm == 1) {
     std::vector<TCameraTriggerMode> values;
-    bf_set_->cameraSetting.triggerMode.getTranslationDictValues(values);
+    cam_set_->triggerMode.getTranslationDictValues(values);
     // OnDemand option not supported, can only use continuous
     if (std::find(values.cbegin(), values.cend(), ctmOnDemand) ==
         values.cend()) {
       *ctm = 0;
     }
   }
-  bf_set_->cameraSetting.triggerMode.write(*ctm ? ctmOnDemand : ctmContinuous);
+  cam_set_->triggerMode.write(*ctm ? ctmOnDemand : ctmContinuous);
 }
 
 void Bluefox2::SetHdr(bool *hdr) const {
   // Hdr not supported
-  if (!bf_set_->cameraSetting.getHDRControl().isAvailable()) {
+  if (!cam_set_->getHDRControl().isAvailable()) {
     *hdr = false;
     return;
   }
   if (*hdr) {
-    bf_set_->cameraSetting.getHDRControl().HDRMode.write(cHDRmFixed0);
-    bf_set_->cameraSetting.getHDRControl().HDREnable.write(bTrue);
+    cam_set_->getHDRControl().HDRMode.write(cHDRmFixed0);
+    cam_set_->getHDRControl().HDREnable.write(bTrue);
   } else {
-    bf_set_->cameraSetting.getHDRControl().HDREnable.write(bFalse);
+    cam_set_->getHDRControl().HDREnable.write(bFalse);
   }
 }
 
-void Bluefox2::SetWhiteBalance(int *wbp) const {
+void Bluefox2::SetWbp(int *wbp) const {
   // Put white balance as unavailable if it's not a color camera
   if (!IsColor()) {
     *wbp = -1;
     return;
   }
-  *wbp = (*wbp < 0) ? bf_set_->imageProcessing.whiteBalance.read() : *wbp;
-  bf_set_->imageProcessing.whiteBalance.write(
-      static_cast<TWhiteBalanceParameter>(*wbp));
+  // Predefined and user wbp
+  if (*wbp < 7) {
+    *wbp = (*wbp < 0) ? img_proc_->whiteBalance.read() : *wbp;
+    img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(*wbp));
+    return;
+  }
+  // Calibrate
+  // Set wbp to user1
+  img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(wbpUser1));
+  // Calibrate next frame
+  img_proc_->whiteBalanceCalibration.write(wbcmNextFrame);
+  // Request one image?
+  RequestImages(1);
+  // Set config to user1
+  *wbp = static_cast<int>(wbpUser1);
 }
 
-void Bluefox2::DarkCurrentFilter(int *dcfm) const {
-  bf_set_->imageProcessing.darkCurrentFilterMode.write(
+void Bluefox2::SetDcfm(int *dcfm) const {
+  img_proc_->darkCurrentFilterMode.write(
       static_cast<TDarkCurrentFilterMode>(*dcfm));
   // Special case for calibrate mode
   if (*dcfm == static_cast<int>(dcfmCalibrateDarkCurrent)) {
     // Read image count, and request some more images
-    int dcfm_img_cnt =
-        bf_set_->imageProcessing.darkCurrentFilterCalibrationImageCount.read();
+    int dcfm_img_cnt = img_proc_->darkCurrentFilterCalibrationImageCount.read();
     RequestImages(dcfm_img_cnt + 5);
-    *dcfm = GetDcfm();
     // Then turn on immediately
-    bf_set_->imageProcessing.darkCurrentFilterMode.write(dcfmOn);
+    img_proc_->darkCurrentFilterMode.write(dcfmOn);
     *dcfm = GetDcfm();
   }
 }
 
 int Bluefox2::GetDcfm() const {
-  return static_cast<int>(
-      bf_set_->imageProcessing.darkCurrentFilterMode.read());
+  return static_cast<int>(img_proc_->darkCurrentFilterMode.read());
 }
 
 void Bluefox2::SetMaster() const {
-  bf_set_->cameraSetting.triggerMode.write(ctmOnDemand);
-  bf_set_->cameraSetting.flashMode.write(cfmDigout0);
-  bf_set_->cameraSetting.flashType.write(cftStandard);
-  bf_set_->cameraSetting.flashToExposeDelay_us.write(0);
+  cam_set_->triggerMode.write(ctmOnDemand);
+  cam_set_->flashMode.write(cfmDigout0);
+  cam_set_->flashType.write(cftStandard);
+  cam_set_->flashToExposeDelay_us.write(0);
 }
 
 void Bluefox2::SetSlave() const {
-  bf_set_->cameraSetting.triggerMode.write(ctmOnHighLevel);
-  bf_set_->cameraSetting.triggerSource.write(ctsDigIn0);
-  bf_set_->cameraSetting.frameDelay_us.write(0);
+  cam_set_->triggerMode.write(ctmOnHighLevel);
+  cam_set_->triggerSource.write(ctsDigIn0);
+  cam_set_->frameDelay_us.write(0);
 }
 
 double PixelClockToFrameRate(int pclk_khz, double width, double height,

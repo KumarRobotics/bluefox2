@@ -39,19 +39,19 @@ Normal parameters.
 
 `~serial` (`string`, default: `<serial>`)
 
-    bluefox 2camera serial number
+bluefox 2camera serial number
 
 `~frame_id` (`string`, default: `mv_<serial>`)
 
-    tf frame id
+tf frame id
 
 `~camera` (`string`, default: `mv_<serial>`)
 
-    camera name used in the calibration file
+camera name used in the calibration file
 
 `~calib_url` (`string`, default: `package://bluefox2/calib/calib_<serial>.yml`)
 
-    camera calibration url
+camera calibration url
 
 Dynamically Reconfigurable Parameters.
 
@@ -65,17 +65,27 @@ frame per second
 
 pixelformat, `true` will use `RGB888Packed`, `false` will use `mono8`
 
-`~binning` (`bool`, default: `false`)
+`~cbm` (`bool`, default: `false`)
 
-`true` use `BinningHV`, which is horizontal + vertical binning
+camera binning mode, `true` use `BinningHV`, which is horizontal + vertical binning
 
-`~trigger` (`int`, default: `1`)
+`~ctm` (`int`, default: `1`)
 
-`1` use `OnDemand`, `0` use `Continuous`. we recommend `OnDemand` for more precise timing control
+camera trigger mode:
 
-`~auto_fix_expose` (`bool`, default: `false`)
+* `0` - ctm_continuous
+* `1` - ctm_on_demand
 
-`true` will let the camera decide the exposure and fix it to that value. This feature is experimental, use with caution.
+we recommend *ctm_on_demand* for more precise timing control. If a device does not support *ctm_on_demand*, it will be set to *ctm_continuous*
+
+`~aec` (`int`, default: `0`)
+
+auto expose control:
+
+* `0` - aec_off, fixed exposure time
+* `1` - aec_on, auto control by driver
+* `2` - aec_fix, auto determined by driver and set to a fixed value
+* `3` - aec_clamp, auto control by driver, but clamped to expose time set by user, tuned controller
 
 `~expose_us` (`int`, default: `5000`)
 
@@ -85,11 +95,23 @@ exposeure time in us
 
 gain in Db
 
-`~white_balance` (`int`, default: `0`)
+`~wbp` (`int`, default: `0`)
 
-set white balance paramter for color camera, for grayscale camera this value will be `-1`, which is `unavailable`
+white balance parameter:
+* `-1` - wbp_unavailable
+* `0~5` - wbp_tungsten and friends
+* `6` ~ wbp_user1
+* `7` - wbp_calibrate, calibrate next frame for white balance
 
-`~dark_current_filter` (`int`, default: `1`)
+[TODO]: Instruction on calibrating white balance
+
+`~dcfm` (`int`, default: `1`)
+
+dark current filter mode:
+* `0` - dcfm_off
+* `1` - dcfm_on
+* `2` - dcfm_calibrate
+* `3` - correction_image
 
 When you want to calibrate dark current, first put the lense cap on, and then change `dark_current_filter` to `calibrate`, then the camera will capture some amount of images and then turn on the filter. After that, noises in the background of image will be removed.
 
@@ -103,7 +125,11 @@ Only 200wG camera supports this mode, set `hdr` to `true` for other cameras will
 
 `~boost` (`bool`, default: `false`)
 
-`true` will put 2 request into the request queue. For high fps only. This allows 200wG to work at 90 fps and 200bG at 24 fps (at `trigger = 1`). Using this will result in inprecise time stamp of captured image. Use with caution
+boost mode:
+* `true` - send 2 requests into the request queue
+* `false` - send only 1 request
+
+This mode is requried by high fps which allows 200wG to work at 90 fps and 200bG at 24 fps (with `ctm = 1`). Using this will result in inprecise time stamp of captured image. Use with caution.
 
 
 ## [Install mvIMPACT Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
