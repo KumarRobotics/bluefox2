@@ -1,14 +1,18 @@
 <launch>
+    <!-- Common Interface -->
+    <arg name="rate" default="20"/>
+
     <!-- Camera Settings -->
     <arg name="left" default="25000855"/>
-    <arg name="right" default="25001185"/>
-    <arg name="left_calib_url"
-        default="package://bluefox2/calib/calib_$(arg left).yml"/>
-    <arg name="right_calib_url"
-        default="package://bluefox2/calib/calib_$(arg right).yml"/>
-    <arg name="frame_id" default="mv_stereo"/>
-    <arg name="camera" default="mv_stereo"/>
-    <arg name="fps" default="20"/>
+    <arg name="right" default="25001110"/>
+    <arg name="left_camera_name" default="mv_$(arg left)"/>
+    <arg name="right_camera_name" default="mv_$(arg right)"/>
+    <arg name="left_calib_url" default="package://bluefox2/calib/calib_$(arg left).yml"/>
+    <arg name="right_calib_url" default="package://bluefox2/calib/calib_$(arg right).yml"/>
+
+    <arg name="camera" default="stereo"/>
+    <arg name="frame_id" default="$(arg camera)"/>
+    <arg name="fps" default="$(arg rate)"/>
     <arg name="color" default="false"/>
     <arg name="aec" default="0"/>
     <arg name="cbm" default="false"/>
@@ -43,14 +47,15 @@
     <!-- Nodelet -->
     <node pkg="nodelet" type="nodelet" name="$(arg camera)"
         args="$(arg option)" output="$(arg output)">
+        <param name="left/camera_name" type="string" value="$(arg left_camera_name)"/>
         <param name="left/identifier" type="string" value="$(arg left)"/>
-        <param name="left/calib_url" type="string"
-            value="$(arg left_calib_url)"/>
+        <param name="left/calib_url" type="string" value="$(arg left_calib_url)"/>
+
+        <param name="right/camera_name" type="string" value="$(arg right_camera_name)"/>
         <param name="right/identifier" type="string" value="$(arg right)"/>
-        <param name="right/calib_url" type="string"
-            value="$(arg right_calib_url)"/>
+        <param name="right/calib_url" type="string" value="$(arg right_calib_url)"/>
+
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
-        <param name="camera" type="string" value="$(arg camera)"/>
         <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
         <param name="aec" type="int" value="$(arg aec)"/>

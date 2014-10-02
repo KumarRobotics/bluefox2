@@ -1,11 +1,16 @@
 <launch>
+    <!-- Common Interface -->
+    <arg name="device"/>
+    <arg name="rate" default="20"/>
+
     <!-- Camera Settings -->
-    <arg name="serial" default="25000495"/>
-    <arg name="frame_id" default="mv_$(arg serial)"/>
-    <arg name="camera" default="mv_$(arg serial)"/>
+    <arg name="serial" default="$(arg device)"/>
+    <arg name="camera_name" default="mv_$(arg serial)"/>
+    <arg name="camera" default="$(arg camera_name)"/>
+    <arg name="frame_id" default="$(arg camera)"/>
     <arg name="calib_url"
         default="package://bluefox2/calib/calib_$(arg serial).yml"/>
-    <arg name="fps" default="20"/>
+    <arg name="fps" default="$(arg rate)"/>
     <arg name="color" default="false"/>
     <arg name="aec" default="0"/>
     <arg name="cbm" default="false"/>
@@ -18,10 +23,11 @@
     <arg name="boost" default="false"/>
 
     <!-- Node Settings -->
-    <arg name="output" default="screen"/>
     <arg name="plugin" default="false"/>
+    <arg name="output" default="screen"/>
     <arg name="proc" default="false"/>
     <arg name="view" default="false"/>
+    <arg name="calib" default="false"/>
 
     <!-- Standalone -->
     <arg unless="$(arg plugin)"
@@ -42,7 +48,7 @@
         args="$(arg option)" output="$(arg output)">
         <param name="identifier" type="string" value="$(arg serial)"/>
         <param name="frame_id" type="string" value="$(arg frame_id)"/>
-        <param name="camera" type="string" value="$(arg camera)"/>
+        <param name="camera_name" type="string" value="$(arg camera_name)"/>
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
         <param name="fps" type="double" value="$(arg fps)"/>
         <param name="color" type="bool" value="$(arg color)"/>
