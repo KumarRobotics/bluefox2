@@ -1,6 +1,8 @@
 [![Build Status](https://travis-ci.org/KumarRobotics/bluefox2.svg?branch=master)](https://travis-ci.org/KumarRobotics/bluefox2)
 
 # Bluefox2
+*This driver depends on package [`camera_base`](https://github.com/KumarRobotics/camera_base)*
+
 *This driver works with ubuntu 14.04 + ros indigo + gcc 4.8+*
 
 *This driver follows the google c++ style guide*
