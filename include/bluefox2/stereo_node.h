@@ -7,7 +7,7 @@
 
 namespace bluefox2 {
 
-class StereoNode : public CameraNodeBase<Bluefox2DynConfig> {
+class StereoNode : public camera_base::CameraNodeBase<Bluefox2DynConfig> {
  public:
   StereoNode(const ros::NodeHandle &nh)
       : CameraNodeBase(nh), left_ros_(nh, "left"), right_ros_(nh, "right") {}
