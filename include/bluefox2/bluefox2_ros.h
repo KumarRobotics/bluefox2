@@ -6,7 +6,7 @@
 
 namespace bluefox2 {
 
-class Bluefox2Ros : public CameraRosBase {
+class Bluefox2Ros : public camera_base::CameraRosBase {
  public:
   Bluefox2Ros(const ros::NodeHandle& nh,
               const std::string& prefix = std::string())
