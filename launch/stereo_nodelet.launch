@@ -7,8 +7,8 @@
     <arg name="right" default="25001110"/>
     <arg name="left_camera_name" default="mv_$(arg left)"/>
     <arg name="right_camera_name" default="mv_$(arg right)"/>
-    <arg name="left_calib_url" default="package://bluefox2/calib/calib_$(arg left).yml"/>
-    <arg name="right_calib_url" default="package://bluefox2/calib/calib_$(arg right).yml"/>
+    <arg name="left_calib_url" default=""/>
+    <arg name="right_calib_url" default=""/>
 
     <arg name="camera" default="stereo"/>
     <arg name="frame_id" default="$(arg camera)"/>
