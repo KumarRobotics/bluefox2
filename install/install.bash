@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
 CURRENT_DIR=$(pwd)
+REPO_NAME=mvimpact_acquire
+CLONE_DIR=/tmp
 
-cd /tmp
-git clone https://github.com/versatran01/mvimpact_acquire.git
-cd mvimpact_acquire
+cd ${CLONE_DIR}
+git clone https://github.com/versatran01/${REPO_NAME}.git
+cd ${REPO_NAME}
 PLATFORM=$(uname -i)
 if [[ ${PLATFORM} == "x86_64" ]] ; then
     echo "Installing 64-bit version"
@@ -19,7 +21,7 @@ else
 fi
 
 echo "Cleaning up..."
-cd /tmp
-rm -rf mvimpact_acquire
+cd ${CLONE_DIR}
+rm -rf ${REPO_NAME}
 cd ${CURRENT_DIR}
 echo "Done."
