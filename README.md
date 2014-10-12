@@ -65,7 +65,7 @@ Name of the node
 
 frame id of the published topics
 
-`~calib_url` (`string`, default: `package://bluefox2/calib/calib_<serial>.yml`)
+`~calib_url` (`string`)
 
 camera calibration url
 
