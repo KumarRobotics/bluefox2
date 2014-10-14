@@ -24,12 +24,6 @@ catkin_package(
     #  DEPENDS system_lib
     )
 
-# mvIMPACT change this to Findmvimpact later
-# execute_process(COMMAND uname -m COMMAND tr -d '\n' OUTPUT_VARIABLE ARCH)
-# set(MVIMPACT_DIR ${PROJECT_SOURCE_DIR}/mvIMPACT)
-# set(MVIMPACT_INCLUDE_DIRS ${MVIMPACT_DIR}/include)
-# set(MVIMPACT_LIBRARIES ${MVIMPACT_DIR}/lib/${ARCH}/libmvDeviceManager.so)
-
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}

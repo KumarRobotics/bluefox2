@@ -45,7 +45,7 @@ class Bluefox2 {
   void SetExposeUs(int *expose_us) const;
   void SetGainDb(double *gain_db) const;
   void SetHdr(bool *hdr) const;
-  void SetWbp(int *wbp) const;
+  void SetWbp(int *wbp, double *r_gain, double *g_gain, double *b_gain) const;
   void SetDcfm(int *dcfm) const;
   void RequestImages(int n) const;
   bool IsColor() const;

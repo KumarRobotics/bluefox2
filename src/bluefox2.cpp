@@ -100,7 +100,7 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetAec(&config.expose_us, config.aec);
   SetCtm(&config.ctm);
   SetHdr(&config.hdr);
-  SetWbp(&config.wbp);
+  SetWbp(&config.wbp, &config.r_gain, &config.g_gain, &config.b_gain);
   SetDcfm(&config.dcfm);
   // Cache this config
   config_ = config;
@@ -216,27 +216,45 @@ void Bluefox2::SetHdr(bool *hdr) const {
   }
 }
 
-void Bluefox2::SetWbp(int *wbp) const {
+void Bluefox2::SetWbp(int *wbp, double *r_gain, double *g_gain,
+                      double *b_gain) const {
   // Put white balance as unavailable if it's not a color camera
   if (!IsColor()) {
     *wbp = -1;
     return;
   }
-  // Predefined and user wbp
-  if (*wbp < 7) {
+
+  // Predefined wbp
+  if (*wbp < 6) {
     *wbp = (*wbp < 0) ? img_proc_->whiteBalance.read() : *wbp;
     img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(*wbp));
+  }
+
+  // User1 wbp
+  if (*wbp == 6) {
+    WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
+    wbp_set.redGain.write(*r_gain);
+    wbp_set.greenGain.write(*g_gain);
+    wbp_set.blueGain.write(*b_gain);
     return;
   }
+
   // Calibrate
-  // Set wbp to user1
-  img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(wbpUser1));
-  // Calibrate next frame
-  img_proc_->whiteBalanceCalibration.write(wbcmNextFrame);
-  // Request one image?
-  RequestImages(1);
-  // Set config to user1
-  *wbp = static_cast<int>(wbpUser1);
+  if (*wbp == 10) {
+    // Set wbp to user1
+    img_proc_->whiteBalance.write(
+        static_cast<TWhiteBalanceParameter>(wbpUser1));
+    // Calibrate next frame
+    img_proc_->whiteBalanceCalibration.write(wbcmNextFrame);
+    // Request one image?
+    RequestImages(1);
+    // Set config to user1 and update gains
+    WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
+    *wbp = static_cast<int>(wbpUser1);
+    *r_gain = wbp_set.redGain.read();
+    *g_gain = wbp_set.greenGain.read();
+    *b_gain = wbp_set.blueGain.read();
+  }
 }
 
 void Bluefox2::SetDcfm(int *dcfm) const {
