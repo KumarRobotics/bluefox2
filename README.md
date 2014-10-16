@@ -14,7 +14,7 @@ https://github.com/KumarRobotics/bluefox2
 [mvBluefox MLC](http://www.matrix-vision.com/USB2.0-single-board-camera-mvbluefox-mlc.html)
 
 ## Supported hardware
-This driver should work with any Matrix-Vision Bluefox usb2.0 MCL cameras (bluefox2).
+This driver should work with any Matrix-Vision Bluefox usb2.0 MLC cameras (bluefox2).
 
 ## API Stability
 The ROS API of this driver should be considered **unstable**.
