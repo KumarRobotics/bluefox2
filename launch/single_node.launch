@@ -45,7 +45,7 @@
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="boost" type="bool" value="$(arg boost)"/>
-        <param name="mm" type="int" value="$(arg flip)"/>
+        <param name="mm" type="int" value="$(arg mm)"/>
     </node>
 
     <!-- Proc -->
