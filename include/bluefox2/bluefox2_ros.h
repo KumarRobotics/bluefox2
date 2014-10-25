@@ -10,7 +10,7 @@ class Bluefox2Ros : public camera_base::CameraRosBase {
  public:
   Bluefox2Ros(const ros::NodeHandle& nh,
               const std::string& prefix = std::string())
-      : CameraRosBase(nh, prefix), bluefox2_(identifier(),flip()), boost_(false) {
+      : CameraRosBase(nh, prefix), bluefox2_(identifier()), boost_(false) {
     bluefox2_.Open();
     SetHardwareId(bluefox2_.serial());
     /// @todo: better diagnostic

@@ -7,7 +7,7 @@ namespace bluefox2 {
 
 using namespace mvIMPACT::acquire;
 
-Bluefox2::Bluefox2(const std::string &serial, bool flip_image) : serial_(serial), dev_(nullptr), flip_image_(flip_image) {
+Bluefox2::Bluefox2(const std::string &serial) : serial_(serial), dev_(nullptr) {
   if (!(dev_ = dev_mgr_.getDeviceBySerial(serial))) {
     throw std::runtime_error(serial + " not found. " + AvailableDevice());
   }
@@ -85,19 +85,7 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
     image_msg.data.resize(data_size);
   }
   // Copy data from camera
-  if(!flip_image_)
-    memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
-  else {
-    // flip copies data in reverse direction
-    uint8_t * data = reinterpret_cast<uint8_t *>(request_->imageData.read());
-    int i_p = 0;
-    for(int i = data_size/sizeof(uint8_t) - channels + 1; i >=0 ; i-=channels) {
-      for(int j = 0 ; j < channels ; j++) {
-        image_msg.data[i_p + j] = data[i + j];
-      }
-      i_p += channels;
-    }
-  }
+  memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
 
   cinfo_msg.binning_x = config_.cbm ? 2 : 0;
   cinfo_msg.binning_y = config_.cbm ? 2 : 0;
@@ -114,6 +102,7 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetAec(&config.expose_us, config.aec);
   SetCtm(&config.ctm);
   SetHdr(&config.hdr);
+  SetMM(config.mm);
   SetWbp(&config.wbp, &config.r_gain, &config.g_gain, &config.b_gain);
   SetDcfm(&config.dcfm);
   // Cache this config
@@ -129,9 +118,7 @@ void Bluefox2::SetPixelClock(double fps) const {
   const auto max_fps =
       PixelClockToFrameRate(pclk_khz, width(), height(), expose_us());
   // Do nothing if we have the capacity to deliver the required fps
-  if (fps < max_fps) {
-    return;
-  }
+  if (fps < max_fps) return;
   // Promote to highest pixel clock only if we ask for faster fps
   // Never decrease pixel clock
   const auto size = cam_set_->pixelClock_KHz.dictSize();
@@ -143,9 +130,7 @@ bool Bluefox2::IsColor() const { return product().back() == 'C'; }
 
 ///@todo: Maybe use something in image processing?
 void Bluefox2::SetColor(bool *color) const {
-  if (!IsColor()) {
-    *color = false;
-  }
+  if (!IsColor()) *color = false;
   bf_set_->imageDestination.pixelFormat.write(*color ? idpfRGB888Packed
                                                      : idpfMono8);
 }
@@ -283,6 +268,10 @@ void Bluefox2::SetDcfm(int *dcfm) const {
     img_proc_->darkCurrentFilterMode.write(dcfmOn);
     *dcfm = GetDcfm();
   }
+}
+
+void Bluefox2::SetMM(int mm) const {
+  img_proc_->mirrorModeGlobal.write(static_cast<TMirrorMode>(mm));
 }
 
 int Bluefox2::GetDcfm() const {

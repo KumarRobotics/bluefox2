@@ -14,7 +14,7 @@ namespace bluefox2 {
 
 class Bluefox2 {
  public:
-  Bluefox2(const std::string &serial, bool flip_image =false);
+  Bluefox2(const std::string &serial);
   ~Bluefox2();
 
   const std::string &serial() const { return serial_; }
@@ -42,6 +42,7 @@ class Bluefox2 {
   void SetRequestCount(int count) const;
   void SetCtm(int *ctm) const;
   void SetAec(int *expose_us, int auto_expose) const;
+  void SetMM(int mm) const;
   void SetExposeUs(int *expose_us) const;
   void SetGainDb(double *gain_db) const;
   void SetHdr(bool *hdr) const;
@@ -62,7 +63,6 @@ class Bluefox2 {
   mvIMPACT::acquire::ImageProcessing *img_proc_;
   mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_;
   mvIMPACT::acquire::SystemSettings *sys_set_;
-  bool flip_image_;
 };
 
 template <typename T>
