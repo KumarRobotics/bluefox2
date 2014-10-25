@@ -20,6 +20,7 @@
     <arg name="expose_us" default="5000"/>
     <arg name="gain_db" default="0.0"/>
     <arg name="boost" default="false"/>
+    <arg name="flip" default="false"/>
 
     <!-- Node Settings -->
     <arg name="output" default="screen"/>
@@ -44,6 +45,7 @@
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="boost" type="bool" value="$(arg boost)"/>
+        <param name="flip" type="bool" value="$(arg flip)"/>
     </node>
 
     <!-- Proc -->
