@@ -94,6 +94,17 @@ camera trigger mode:
 
 we recommend using *ctm_on_demand* for more precise timing control whenever possible. If a device does not support *ctm_on_demand*, it will be set to *ctm_continuous*.
 
+`~mm` (`int`, default: `0`)
+
+mirror mode:
+
+* `0` - mm_off, no mirroring
+* `1` - mm_topdown, resulting image will be flipped around a horizontal axis.
+* `2` - mm_leftright, resulting image will be flipped around a vertical axis.
+* `3` - resulting image will be both around a horizontal and vertical axis
+
+for now only global mirror operation mode is supported, channel based mirror operation is not.
+
 `~aec` (`int`, default: `0`)
 
 auto expose control:
