@@ -7,7 +7,7 @@ namespace bluefox2 {
 
 using namespace mvIMPACT::acquire;
 
-Bluefox2::Bluefox2(const std::string &serial) : serial_(serial), dev_(nullptr) {
+Bluefox2::Bluefox2(const std::string &serial, bool flip_image) : serial_(serial), dev_(nullptr), flip_image_(flip_image) {
   if (!(dev_ = dev_mgr_.getDeviceBySerial(serial))) {
     throw std::runtime_error(serial + " not found. " + AvailableDevice());
   }
@@ -84,7 +84,21 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
   if (image_msg.data.size() != data_size) {
     image_msg.data.resize(data_size);
   }
-  memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
+  // Copy data from camera
+  if(!flip_image_)
+    memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
+  else {
+    // flip copies data in reverse direction
+    uint8_t * data = reinterpret_cast<uint8_t *>(request_->imageData.read());
+    int i_p = 0;
+    for(int i = data_size/sizeof(uint8_t) - channels + 1; i >=0 ; i-=channels) {
+      for(int j = 0 ; j < channels ; j++) {
+        image_msg.data[i_p + j] = data[i + j];
+      }
+      i_p += channels;
+    }
+  }
+
   cinfo_msg.binning_x = config_.cbm ? 2 : 0;
   cinfo_msg.binning_y = config_.cbm ? 2 : 0;
   // Release capture request

@@ -14,7 +14,7 @@ namespace bluefox2 {
 
 class Bluefox2 {
  public:
-  Bluefox2(const std::string &serial);
+  Bluefox2(const std::string &serial, bool flip_image =false);
   ~Bluefox2();
 
   const std::string &serial() const { return serial_; }
@@ -62,6 +62,7 @@ class Bluefox2 {
   mvIMPACT::acquire::ImageProcessing *img_proc_;
   mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_;
   mvIMPACT::acquire::SystemSettings *sys_set_;
+  bool flip_image_;
 };
 
 template <typename T>
