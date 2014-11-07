@@ -8,7 +8,7 @@
     <arg name="camera_name" default="mv_$(arg serial)"/>
     <arg name="camera" default="$(arg camera_name)"/>
     <arg name="frame_id" default="$(arg camera)"/>
-    <arg name="calib_url" default=""/>
+    <arg name="calib_url" default="file:///${ROS_HOME}/camera_info/$(arg camera_name).yaml"/>
     <arg name="fps" default="$(arg rate)"/>
     <arg name="color" default="false"/>
     <arg name="aec" default="0"/>
