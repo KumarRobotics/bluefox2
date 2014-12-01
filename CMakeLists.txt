@@ -8,7 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp nodelet camera_base
     message_generation
     )
-find_package(mvimpact REQUIRED)
+find_package(mvIMPACT REQUIRED)
 
 # dynamic reconfigure
 generate_dynamic_reconfigure_options(cfg/Bluefox2Dyn.cfg)
@@ -27,7 +27,7 @@ catkin_package(
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
-    ${MVIMPACT_INCLUDE_DIRS}
+    ${mvIMPACT_INCLUDE_DIRS}
     )
 
 # bluefox2
@@ -40,7 +40,7 @@ add_library(${PROJECT_NAME}
     src/stereo/stereo_nodelet.cpp
     )
 target_link_libraries(${PROJECT_NAME}
-    ${MVIMPACT_LIBRARIES}
+    ${mvIMPACT_LIBRARIES}
     ${catkin_LIBRARIES}
     )
 
