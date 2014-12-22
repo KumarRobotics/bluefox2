@@ -13,12 +13,16 @@ class Bluefox2Ros : public camera_base::CameraRosBase {
       : CameraRosBase(nh, prefix), bluefox2_(identifier()), boost_(false) {
     bluefox2_.Open();
     SetHardwareId(bluefox2_.serial());
-    /// @todo: better diagnostic
-    // if (prefix == "left") {
-    //   bluefox2_.SetMaster();
-    // } else if (prefix == "right") {
-    //   bluefox2_.SetSlave();
-    // }
+
+    // Some hack for getting hardware sync to work
+    ros::NodeHandle cnh(nh, prefix);
+    std::string mode;
+    cnh.param<std::string>("mode", mode, "");
+    if (mode == "master") {
+      bluefox2_.SetMaster();
+    } else if (mode == "slave") {
+      bluefox2_.SetSlave();
+    }
   }
 
   bool boost() const { return boost_; }

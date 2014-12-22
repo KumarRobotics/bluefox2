@@ -189,6 +189,8 @@ void Bluefox2::SetGainDb(double *gain_db) const {
 }
 
 void Bluefox2::SetCtm(int *ctm) const {
+  // Do nothing when set to hard sync
+  if (*ctm == 2) return;
   if (*ctm == 1) {
     std::vector<TCameraTriggerMode> values;
     cam_set_->triggerMode.getTranslationDictValues(values);

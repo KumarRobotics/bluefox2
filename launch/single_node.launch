@@ -65,9 +65,11 @@
         <arg name="pattern" default="chessboard"/>
         <arg name="size"/>
         <arg name="square"/>
+        <arg name="num_dist_coeff" default="2"/>
         <node pkg="camera_calibration" type="cameracalibrator.py"
             name="calibrator" output="screen"
             args="-p $(arg pattern) -s $(arg size) -q $(arg square)
+            -k $(arg num_dist_coeff)
             image:=/$(arg camera)/image_raw camera:=/$(arg camera)">
         </node>
     </group>

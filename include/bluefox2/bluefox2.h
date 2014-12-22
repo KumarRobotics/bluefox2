@@ -14,7 +14,7 @@ namespace bluefox2 {
 
 class Bluefox2 {
  public:
-  Bluefox2(const std::string &serial);
+  explicit Bluefox2(const std::string &serial);
   ~Bluefox2();
 
   const std::string &serial() const { return serial_; }
