@@ -206,7 +206,7 @@ void Bluefox2::SetCtm(int *ctm) const {
 bool Bluefox2::IsCtmOnDemandSupported() const {
   std::vector<TCameraTriggerMode> values;
   cam_set_->triggerMode.getTranslationDictValues(values);
-  return std::find(values.cbegin(), values.cend(), ctmOnDemand) ==
+  return std::find(values.cbegin(), values.cend(), ctmOnDemand) !=
          values.cend();
 }
 
@@ -297,12 +297,14 @@ void Bluefox2::SetMaster() const {
   cam_set_->flashMode.write(cfmDigout0);
   cam_set_->flashType.write(cftStandard);
   cam_set_->flashToExposeDelay_us.write(0);
+  std::cout << serial() << ": master" << std::endl;
 }
 
 void Bluefox2::SetSlave() const {
   cam_set_->triggerMode.write(ctmOnHighLevel);
   cam_set_->triggerSource.write(ctsDigIn0);
   cam_set_->frameDelay_us.write(0);
+  std::cout << serial() << ": slave" << std::endl;
 }
 
 double PixelClockToFrameRate(int pclk_khz, double width, double height,
