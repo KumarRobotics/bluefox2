@@ -25,6 +25,7 @@ class Bluefox2 {
 
   void Open();
   void Request() const;
+  void SetMM(int mm) const;
   void SetMaster() const;
   void SetSlave() const;
   void Configure(Bluefox2DynConfig &config);
@@ -42,14 +43,14 @@ class Bluefox2 {
   void SetRequestCount(int count) const;
   void SetCtm(int *ctm) const;
   void SetAec(int *expose_us, int auto_expose) const;
-  void SetMM(int mm) const;
   void SetExposeUs(int *expose_us) const;
   void SetGainDb(double *gain_db) const;
   void SetHdr(bool *hdr) const;
   void SetWbp(int *wbp, double *r_gain, double *g_gain, double *b_gain) const;
   void SetDcfm(int *dcfm) const;
   void RequestImages(int n) const;
-  bool IsColor() const;
+  bool IsColorSupported() const;
+  bool IsCtmOnDemandSupported() const;
   int GetDcfm() const;
 
   std::string serial_;
@@ -63,6 +64,7 @@ class Bluefox2 {
   mvIMPACT::acquire::ImageProcessing *img_proc_;
   mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_;
   mvIMPACT::acquire::SystemSettings *sys_set_;
+  mvIMPACT::acquire::InfoBlueDevice *bf_info_;
 };
 
 template <typename T>

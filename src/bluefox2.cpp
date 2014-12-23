@@ -43,6 +43,7 @@ void Bluefox2::Open() {
   cam_set_ = new CameraSettingsBlueFOX(dev_);
   sys_set_ = new SystemSettings(dev_);
   img_proc_ = new ImageProcessing(dev_);
+  bf_info_ = new InfoBlueDevice(dev_);
 }
 
 void Bluefox2::Request() const { fi_->imageRequestSingle(); }
@@ -102,7 +103,7 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetAec(&config.expose_us, config.aec);
   SetCtm(&config.ctm);
   SetHdr(&config.hdr);
-  SetMM(config.mm);
+  //  SetMM(config.mm);
   SetWbp(&config.wbp, &config.r_gain, &config.g_gain, &config.b_gain);
   SetDcfm(&config.dcfm);
   // Cache this config
@@ -126,11 +127,15 @@ void Bluefox2::SetPixelClock(double fps) const {
   cam_set_->pixelClock_KHz.write(value);
 }
 
-bool Bluefox2::IsColor() const { return product().back() == 'C'; }
+bool Bluefox2::IsColorSupported() const {
+  const auto color_mode = bf_info_->sensorColorMode.read();
+  //  return product().back() == 'C';
+  return color_mode > iscmMono;
+}
 
 ///@todo: Maybe use something in image processing?
 void Bluefox2::SetColor(bool *color) const {
-  if (!IsColor()) *color = false;
+  if (!IsColorSupported()) *color = false;
   bf_set_->imageDestination.pixelFormat.write(*color ? idpfRGB888Packed
                                                      : idpfMono8);
 }
@@ -192,15 +197,17 @@ void Bluefox2::SetCtm(int *ctm) const {
   // Do nothing when set to hard sync
   if (*ctm == 2) return;
   if (*ctm == 1) {
-    std::vector<TCameraTriggerMode> values;
-    cam_set_->triggerMode.getTranslationDictValues(values);
     // OnDemand option not supported, can only use continuous
-    if (std::find(values.cbegin(), values.cend(), ctmOnDemand) ==
-        values.cend()) {
-      *ctm = 0;
-    }
+    if (IsCtmOnDemandSupported()) *ctm = 0;
   }
   cam_set_->triggerMode.write(*ctm ? ctmOnDemand : ctmContinuous);
+}
+
+bool Bluefox2::IsCtmOnDemandSupported() const {
+  std::vector<TCameraTriggerMode> values;
+  cam_set_->triggerMode.getTranslationDictValues(values);
+  return std::find(values.cbegin(), values.cend(), ctmOnDemand) ==
+         values.cend();
 }
 
 void Bluefox2::SetHdr(bool *hdr) const {
@@ -220,7 +227,7 @@ void Bluefox2::SetHdr(bool *hdr) const {
 void Bluefox2::SetWbp(int *wbp, double *r_gain, double *g_gain,
                       double *b_gain) const {
   // Put white balance as unavailable if it's not a color camera
-  if (!IsColor()) {
+  if (!IsColorSupported()) {
     *wbp = -1;
     return;
   }
@@ -281,7 +288,12 @@ int Bluefox2::GetDcfm() const {
 }
 
 void Bluefox2::SetMaster() const {
-  cam_set_->triggerMode.write(ctmOnDemand);
+  // Prefer on demand if it's available
+  if (IsCtmOnDemandSupported()) {
+    cam_set_->triggerMode.write(ctmOnDemand);
+  } else {
+    cam_set_->triggerMode.write(ctmContinuous);
+  }
   cam_set_->flashMode.write(cfmDigout0);
   cam_set_->flashType.write(cftStandard);
   cam_set_->flashToExposeDelay_us.write(0);
