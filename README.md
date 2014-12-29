@@ -216,6 +216,14 @@ camera calibration URL for the left and right camera.
 
 All the rest parameters are the same with `single_node`, changing them will change the corresponding settings in both cameras.
 
+## Hardware sync
+
+Notice that if you are using two 200w cameras, there's no need to use hardware synchronization because software synchronization is supported. The stereo_node will send two request one after another and the delay could be ignored.
+
+[Using 2 mvBlueFOX-MLC cameras in Master-Slave mode](http://www.matrix-vision.com/manuals/mvBlueFOX/UseCases_page_0.html#UseCases_section_MasterSlave_Mode)
+
+[Single-board version (mvBlueFOX-MLC2xx)](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_tech.html#mvBF_subsection_single )
+
 ## [Install mvIMPACT Driver](http://www.matrix-vision.com/manuals/mvBlueFOX/mvBF_page_quickstart.html#mvBF_subsubsection_quickstart_linux_software)
 Run:
 
