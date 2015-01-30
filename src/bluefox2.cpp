@@ -198,7 +198,7 @@ void Bluefox2::SetCtm(int *ctm) const {
   if (*ctm == 2) return;
   if (*ctm == 1) {
     // OnDemand option not supported, can only use continuous
-    if (IsCtmOnDemandSupported()) *ctm = 0;
+    if (!IsCtmOnDemandSupported()) *ctm = 0;
   }
   cam_set_->triggerMode.write(*ctm ? ctmOnDemand : ctmContinuous);
 }
