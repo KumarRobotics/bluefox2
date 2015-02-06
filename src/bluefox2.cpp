@@ -1,13 +1,10 @@
 #include "bluefox2/bluefox2.h"
 
-#include <stdexcept>
-#include <sensor_msgs/image_encodings.h>
-
 namespace bluefox2 {
 
 using namespace mvIMPACT::acquire;
 
-Bluefox2::Bluefox2(const std::string &serial) : serial_(serial), dev_(nullptr) {
+Bluefox2::Bluefox2(const std::string &serial) : serial_(serial) {
   if (!(dev_ = dev_mgr_.getDeviceBySerial(serial))) {
     throw std::runtime_error(serial + " not found. " + AvailableDevice());
   }
@@ -20,15 +17,15 @@ Bluefox2::~Bluefox2() {
 }
 
 std::string Bluefox2::AvailableDevice() const {
-  auto dev_cnt = dev_mgr_.deviceCount();
+  const auto dev_cnt = dev_mgr_.deviceCount();
   std::string devices = std::to_string(dev_cnt) + " availabe device(s): ";
-  for (decltype(dev_cnt) i = 0; i < dev_cnt; ++i) {
+  for (decltype(dev_mgr_.deviceCount()) i = 0; i < dev_cnt; ++i) {
     devices += dev_mgr_.getDevice(i)->serial.read() + " ";
   }
   return devices;
 }
 
-void Bluefox2::Open() {
+void Bluefox2::OpenDevice() {
   try {
     dev_->open();
   }
@@ -42,11 +39,19 @@ void Bluefox2::Open() {
   bf_set_ = new SettingsBlueFOX(dev_);
   cam_set_ = new CameraSettingsBlueFOX(dev_);
   sys_set_ = new SystemSettings(dev_);
-  img_proc_ = new ImageProcessing(dev_);
   bf_info_ = new InfoBlueDevice(dev_);
+  img_proc_ = new ImageProcessing(dev_);
 }
 
-void Bluefox2::Request() const { fi_->imageRequestSingle(); }
+void Bluefox2::RequestSingle() const {
+  int result = DMR_NO_ERROR;
+  result = fi_->imageRequestSingle();
+  if (result != DMR_NO_ERROR) {
+    std::cout << "Error while requesting image: "
+              << ImpactAcquireException::getErrorCodeAsString(result)
+              << std::endl;
+  }
+}
 
 void Bluefox2::RequestImages(int n) const {
   for (int i = 0; i < n; ++i) {
@@ -57,45 +62,59 @@ void Bluefox2::RequestImages(int n) const {
 }
 
 bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
-                         sensor_msgs::CameraInfo &cinfo_msg) {
-  int requestNr = INVALID_ID;
-  requestNr = fi_->imageRequestWaitFor(kTimeout);
+                         sensor_msgs::CameraInfo &cinfo_msg) const {
+  int request_nr = INVALID_ID;
+  request_nr = fi_->imageRequestWaitFor(kTimeout);
   // Check if request nr is valid
-  if (!fi_->isRequestNrValid(requestNr)) {
-    fi_->imageRequestUnlock(requestNr);
+  if (!fi_->isRequestNrValid(request_nr)) {
+    //    fi_->imageRequestUnlock(requestNr);
     return false;
   }
-  request_ = fi_->getRequest(requestNr);
+  const Request *request = fi_->getRequest(request_nr);
   // Check if request is ok
-  if (!request_->isOK()) {
-    fi_->imageRequestUnlock(requestNr);
+  if (!request->isOK()) {
+    //    fi_->imageRequestUnlock(requestNr);
     return false;
   }
-  // Assemble image_msg
-  auto channels = request_->imageChannelCount.read();
-  image_msg.height = request_->imageHeight.read();
-  image_msg.width = request_->imageWidth.read();
-  image_msg.step = image_msg.width * channels;
-  if (channels == 1) {
-    image_msg.encoding = sensor_msgs::image_encodings::MONO8;
-  } else if (channels == 3) {
-    image_msg.encoding = sensor_msgs::image_encodings::BGR8;
-  }
-  size_t data_size = request_->imageSize.read();
-  if (image_msg.data.size() != data_size) {
-    image_msg.data.resize(data_size);
-  }
-  // Copy data from camera
-  memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
 
-  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
-  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
+  FillSensorMsgs(request, image_msg, cinfo_msg);
   // Release capture request
-  fi_->imageRequestUnlock(requestNr);
+  fi_->imageRequestUnlock(request_nr);
   return true;
 }
 
+void Bluefox2::FillSensorMsgs(const Request *request,
+                              sensor_msgs::Image &image_msg,
+                              sensor_msgs::CameraInfo &cinfo_msg) const {
+  image_msg.data.resize(request->imageSize.read());
+  image_msg.height = request->imageHeight.read();
+  image_msg.width = request->imageWidth.read();
+  image_msg.step = request->imageLinePitch.read();
+
+  if (request->imageBayerMosaicParity.read() != bmpUndefined) {
+    // Bayer pattern
+    const auto bytes_per_pixel = request->imageBytesPerPixel.read();
+    image_msg.encoding = BayerPatternToEncoding(
+        request->imageBayerMosaicParity.read(), bytes_per_pixel);
+  } else {
+    image_msg.encoding =
+        PixelFormatToEncoding(request->imagePixelFormat.read());
+  }
+  memcpy(&image_msg.data[0], request->imageData.read(), image_msg.data.size());
+  // Binning
+  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
+  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
+  // Compensate timestamp
+  const auto expose_us = request->infoExposeTime_us.read();
+  image_msg.header.stamp += ros::Duration(expose_us * 1e-6 / 2);
+  cinfo_msg.header.stamp = image_msg.header.stamp;
+}
+
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
+  // Clear request queue
+  fi_->imageRequestReset(0, 0);
+  config_ = config;
+
   SetPixelClock(config.fps);
   SetColor(&config.color);
   SetCbm(config.cbm);
@@ -103,21 +122,25 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetAec(&config.expose_us, config.aec);
   SetCtm(&config.ctm);
   SetHdr(&config.hdr);
-  //  SetMM(config.mm);
   SetWbp(&config.wbp, &config.r_gain, &config.g_gain, &config.b_gain);
   SetDcfm(&config.dcfm);
   // Cache this config
   config_ = config;
 }
 
-inline void Bluefox2::SetRequestCount(int count) const {
+void Bluefox2::SetRequestCount(int count) const {
   sys_set_->requestCount.write(count);
+}
+
+bool Bluefox2::IsColorSupported() const {
+  const auto color_mode = bf_info_->sensorColorMode.read();
+  return color_mode > iscmMono;
 }
 
 void Bluefox2::SetPixelClock(double fps) const {
   const auto pclk_khz = cam_set_->pixelClock_KHz.read();
   const auto max_fps =
-      PixelClockToFrameRate(pclk_khz, width(), height(), expose_us());
+      PixelClockToFrameRate(pclk_khz, width(), height(), config_expose_us());
   // Do nothing if we have the capacity to deliver the required fps
   if (fps < max_fps) return;
   // Promote to highest pixel clock only if we ask for faster fps
@@ -127,13 +150,6 @@ void Bluefox2::SetPixelClock(double fps) const {
   cam_set_->pixelClock_KHz.write(value);
 }
 
-bool Bluefox2::IsColorSupported() const {
-  const auto color_mode = bf_info_->sensorColorMode.read();
-  //  return product().back() == 'C';
-  return color_mode > iscmMono;
-}
-
-///@todo: Maybe use something in image processing?
 void Bluefox2::SetColor(bool *color) const {
   if (!IsColorSupported()) *color = false;
   bf_set_->imageDestination.pixelFormat.write(*color ? idpfRGB888Packed
@@ -269,7 +285,7 @@ void Bluefox2::SetDcfm(int *dcfm) const {
   img_proc_->darkCurrentFilterMode.write(
       static_cast<TDarkCurrentFilterMode>(*dcfm));
   // Special case for calibrate mode
-  if (*dcfm == static_cast<int>(dcfmCalibrateDarkCurrent)) {
+  if (*dcfm == dcfmCalibrateDarkCurrent) {
     // Read image count, and request some more images
     int dcfm_img_cnt = img_proc_->darkCurrentFilterCalibrationImageCount.read();
     RequestImages(dcfm_img_cnt + 5);
@@ -305,13 +321,6 @@ void Bluefox2::SetSlave() const {
   cam_set_->triggerSource.write(ctsDigIn0);
   cam_set_->frameDelay_us.write(0);
   std::cout << serial() << ": slave" << std::endl;
-}
-
-double PixelClockToFrameRate(int pclk_khz, double width, double height,
-                             double expose_us) {
-  static const double kTriggerPulseWidthUs = 200;
-  double frame_time_us = (width + 94) * (height + 45) / pclk_khz * 1e3;
-  return 1e6 / (frame_time_us + expose_us + kTriggerPulseWidthUs);
 }
 
 }  // namespace bluefox2

@@ -4,8 +4,8 @@ namespace bluefox2 {
 
 void StereoNode::Acquire() {
   while (is_acquire() && ros::ok()) {
-    left_ros_.Request();
-    right_ros_.Request();
+    left_ros_.RequestSingle();
+    right_ros_.RequestSingle();
     const ros::Time time = ros::Time::now();
     left_ros_.PublishCamera(time);
     right_ros_.PublishCamera(time);

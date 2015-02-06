@@ -3,8 +3,8 @@
 namespace bluefox2 {
 
 Bluefox2Ros::Bluefox2Ros(const ros::NodeHandle& nh, const std::string& prefix)
-    : CameraRosBase(nh, prefix), bluefox2_(identifier()), boost_(false) {
-  bluefox2_.Open();
+    : CameraRosBase(nh, prefix), bluefox2_(identifier()) {
+  bluefox2_.OpenDevice();
   SetHardwareId(bluefox2_.serial());
 
   // Some hack for getting hardware sync to work
@@ -27,7 +27,7 @@ Bluefox2Ros::Bluefox2Ros(const ros::NodeHandle& nh, const std::string& prefix)
 bool Bluefox2Ros::Grab(const sensor_msgs::ImagePtr& image_msg,
                        const sensor_msgs::CameraInfoPtr& cinfo_msg) {
   // Add expose time to current time stamp
-  image_msg->header.stamp += ros::Duration(bluefox2_.expose_us() * 1e-6);
+  //  image_msg->header.stamp += ros::Duration(bluefox2_.expose_us() * 1e-6);
   return bluefox2_.GrabImage(*image_msg, *cinfo_msg);
 }
 

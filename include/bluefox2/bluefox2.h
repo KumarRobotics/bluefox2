@@ -4,11 +4,7 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/CameraInfo.h>
 #include "bluefox2/Bluefox2DynConfig.h"
-
-#ifndef linux
-#define linux
-#endif
-#include "mvIMPACT_CPP/mvIMPACT_acquire.h"
+#include "bluefox2/mvimpact_helper.h"
 
 namespace bluefox2 {
 
@@ -19,23 +15,30 @@ class Bluefox2 {
 
   const std::string &serial() const { return serial_; }
   std::string product() const { return dev_->product.readS(); }
+
   int height() const { return bf_set_->cameraSetting.aoiHeight.read(); }
   int width() const { return bf_set_->cameraSetting.aoiWidth.read(); }
-  int expose_us() const { return config_.expose_us; }
+  int config_expose_us() const { return config_.expose_us; }
 
-  void Open();
-  void Request() const;
+  void OpenDevice();
+  void RequestSingle() const;
+  void Configure(Bluefox2DynConfig &config);
+  bool GrabImage(sensor_msgs::Image &image_msg,
+                 sensor_msgs::CameraInfo &cinfo_msg) const;
+
   void SetMM(int mm) const;
   void SetMaster() const;
   void SetSlave() const;
-  void Configure(Bluefox2DynConfig &config);
-  bool GrabImage(sensor_msgs::Image &image_msg,
-                 sensor_msgs::CameraInfo &cinfo_msg);
 
  private:
-  static const int kTimeout = 500;
+  static const int kTimeout = 300;
+
+  void FillSensorMsgs(const mvIMPACT::acquire::Request *request,
+                      sensor_msgs::Image &image_msg,
+                      sensor_msgs::CameraInfo &cinfo_msg) const;
 
   std::string AvailableDevice() const;
+
   ///@todo: maybe move all these setting function to a separate file
   void SetColor(bool *color) const;
   void SetCbm(bool cbm) const;
@@ -56,29 +59,15 @@ class Bluefox2 {
   std::string serial_;
   Bluefox2DynConfig config_;
   mvIMPACT::acquire::DeviceManager dev_mgr_;
-  mvIMPACT::acquire::Device *dev_;
-  mvIMPACT::acquire::FunctionInterface *fi_;
-  mvIMPACT::acquire::Statistics *stats_;
-  mvIMPACT::acquire::Request *request_;
-  mvIMPACT::acquire::SettingsBlueFOX *bf_set_;
-  mvIMPACT::acquire::ImageProcessing *img_proc_;
-  mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_;
-  mvIMPACT::acquire::SystemSettings *sys_set_;
-  mvIMPACT::acquire::InfoBlueDevice *bf_info_;
+  mvIMPACT::acquire::Device *dev_{nullptr};
+  mvIMPACT::acquire::FunctionInterface *fi_{nullptr};
+  mvIMPACT::acquire::Statistics *stats_{nullptr};
+  mvIMPACT::acquire::SettingsBlueFOX *bf_set_{nullptr};
+  mvIMPACT::acquire::ImageProcessing *img_proc_{nullptr};
+  mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_{nullptr};
+  mvIMPACT::acquire::SystemSettings *sys_set_{nullptr};
+  mvIMPACT::acquire::InfoBlueDevice *bf_info_{nullptr};
 };
-
-template <typename T>
-T Clamp(const T &value, const T &low, const T &high) {
-  return std::max(low, std::min(high, value));
-}
-
-template <typename Property, typename T>
-void ClampProperty(const Property &prop, T *value) {
-  *value = Clamp(*value, prop.getMinValue(), prop.getMaxValue());
-}
-
-double PixelClockToFrameRate(int pclk_khz, double width, double height,
-                             double expose_us);
 
 }  // namespace bluefox2
 
