@@ -42,11 +42,19 @@ void Bluefox2::OpenDevice() {
   bf_set_ = new SettingsBlueFOX(dev_);
   cam_set_ = new CameraSettingsBlueFOX(dev_);
   sys_set_ = new SystemSettings(dev_);
-  img_proc_ = new ImageProcessing(dev_);
   bf_info_ = new InfoBlueDevice(dev_);
+  img_proc_ = new ImageProcessing(dev_);
 }
 
-void Bluefox2::RequestImage() const { fi_->imageRequestSingle(); }
+void Bluefox2::RequestImage() const {
+  int result = DMR_NO_ERROR;
+  result = fi_->imageRequestSingle();
+  if (result != DMR_NO_ERROR) {
+    std::cout << "Error while requesting image: "
+              << ImpactAcquireException::getErrorCodeAsString(result)
+              << std::endl;
+  }
+}
 
 void Bluefox2::RequestImages(int n) const {
   for (int i = 0; i < n; ++i) {
@@ -58,14 +66,14 @@ void Bluefox2::RequestImages(int n) const {
 
 bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
                          sensor_msgs::CameraInfo &cinfo_msg) const {
-  int requestNr = INVALID_ID;
-  requestNr = fi_->imageRequestWaitFor(kTimeout);
+  int request_nr = INVALID_ID;
+  request_nr = fi_->imageRequestWaitFor(kTimeout);
   // Check if request nr is valid
-  if (!fi_->isRequestNrValid(requestNr)) {
+  if (!fi_->isRequestNrValid(request_nr)) {
     //    fi_->imageRequestUnlock(requestNr);
     return false;
   }
-  const Request *request = fi_->getRequest(requestNr);
+  const Request *request = fi_->getRequest(request_nr);
   // Check if request is ok
   if (!request->isOK()) {
     //    fi_->imageRequestUnlock(requestNr);
@@ -73,26 +81,8 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
   }
 
   FillSensorMsgs(request, image_msg, cinfo_msg);
-  // Assemble image_msg
-  //  auto channels = request_->imageChannelCount.read();
-  //  image_msg.height = request_->imageHeight.read();
-  //  image_msg.width = request_->imageWidth.read();
-  //  image_msg.step = image_msg.width * channels;
-  //  if (channels == 1) {
-  //    image_msg.encoding = sensor_msgs::image_encodings::MONO8;
-  //  } else if (channels == 3) {
-  //    image_msg.encoding = sensor_msgs::image_encodings::BGR8;
-  //  }
-  //  size_t data_size = request_->imageSize.read();
-  //  if (image_msg.data.size() != data_size) {
-  //    image_msg.data.resize(data_size);
-  //  }
-  // Copy data from camera
-  //  memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
-  //  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
-  //  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
   // Release capture request
-  fi_->imageRequestUnlock(requestNr);
+  fi_->imageRequestUnlock(request_nr);
   return true;
 }
 
@@ -117,6 +107,10 @@ void Bluefox2::FillSensorMsgs(const Request *request,
   // binning
   cinfo_msg.binning_x = config_.cbm ? 2 : 0;
   cinfo_msg.binning_y = config_.cbm ? 2 : 0;
+  // compensate timestamp
+  const auto expose_us = request->infoExposeTime_us.read();
+  image_msg.header.stamp += ros::Duration(expose_us * 1e-6 / 2);
+  cinfo_msg.header.stamp = image_msg.header.stamp;
 }
 
 void Bluefox2::Configure(Bluefox2DynConfig &config) {

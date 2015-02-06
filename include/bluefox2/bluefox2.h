@@ -6,11 +6,6 @@
 #include "bluefox2/Bluefox2DynConfig.h"
 #include "bluefox2/mvimpact_helper.h"
 
-#ifndef linux
-#define linux
-#endif
-#include "mvIMPACT_CPP/mvIMPACT_acquire.h"
-
 namespace bluefox2 {
 
 class Bluefox2 {
@@ -23,7 +18,6 @@ class Bluefox2 {
 
   int height() const { return bf_set_->cameraSetting.aoiHeight.read(); }
   int width() const { return bf_set_->cameraSetting.aoiWidth.read(); }
-  int expose_us() const { return config_.expose_us; }
   int config_expose_us() const { return config_.expose_us; }
 
   void OpenDevice();
