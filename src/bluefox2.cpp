@@ -7,7 +7,7 @@ namespace bluefox2 {
 
 using namespace mvIMPACT::acquire;
 
-Bluefox2::Bluefox2(const std::string &serial) : serial_(serial), dev_(nullptr) {
+Bluefox2::Bluefox2(const std::string &serial) : serial_(serial) {
   if (!(dev_ = dev_mgr_.getDeviceBySerial(serial))) {
     throw std::runtime_error(serial + " not found. " + AvailableDevice());
   }
@@ -20,9 +20,9 @@ Bluefox2::~Bluefox2() {
 }
 
 std::string Bluefox2::AvailableDevice() const {
-  auto dev_cnt = dev_mgr_.deviceCount();
+  const auto dev_cnt = dev_mgr_.deviceCount();
   std::string devices = std::to_string(dev_cnt) + " availabe device(s): ";
-  for (decltype(dev_cnt) i = 0; i < dev_cnt; ++i) {
+  for (decltype(dev_mgr_.deviceCount()) i = 0; i < dev_cnt; ++i) {
     devices += dev_mgr_.getDevice(i)->serial.read() + " ";
   }
   return devices;
@@ -141,7 +141,7 @@ inline void Bluefox2::SetRequestCount(int count) const {
 void Bluefox2::SetPixelClock(double fps) const {
   const auto pclk_khz = cam_set_->pixelClock_KHz.read();
   const auto max_fps =
-      PixelClockToFrameRate(pclk_khz, width(), height(), expose_us());
+      PixelClockToFrameRate(pclk_khz, width(), height(), config_expose_us());
   // Do nothing if we have the capacity to deliver the required fps
   if (fps < max_fps) return;
   // Promote to highest pixel clock only if we ask for faster fps

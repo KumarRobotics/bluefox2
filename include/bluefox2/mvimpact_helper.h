@@ -9,8 +9,8 @@
 namespace bluefox2 {
 
 /**
- * @brief PrintDeviceDetails
- * @param device
+ * @brief PrintDeviceDetails Print detials of this device
+ * @param device Pointer to Device
  */
 void PrintDeviceDetails(const mvIMPACT::acquire::Device *device) noexcept;
 

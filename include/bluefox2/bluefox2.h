@@ -24,6 +24,7 @@ class Bluefox2 {
   int height() const { return bf_set_->cameraSetting.aoiHeight.read(); }
   int width() const { return bf_set_->cameraSetting.aoiWidth.read(); }
   int expose_us() const { return config_.expose_us; }
+  int config_expose_us() const { return config_.expose_us; }
 
   void OpenDevice();
   void RequestImage() const;
@@ -43,6 +44,7 @@ class Bluefox2 {
                       sensor_msgs::CameraInfo &cinfo_msg) const noexcept;
 
   std::string AvailableDevice() const;
+
   ///@todo: maybe move all these setting function to a separate file
   void SetColor(bool *color) const;
   void SetCbm(bool cbm) const;
@@ -63,14 +65,14 @@ class Bluefox2 {
   std::string serial_;
   Bluefox2DynConfig config_;
   mvIMPACT::acquire::DeviceManager dev_mgr_;
-  mvIMPACT::acquire::Device *dev_;
-  mvIMPACT::acquire::FunctionInterface *fi_;
-  mvIMPACT::acquire::Statistics *stats_;
-  mvIMPACT::acquire::SettingsBlueFOX *bf_set_;
-  mvIMPACT::acquire::ImageProcessing *img_proc_;
-  mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_;
-  mvIMPACT::acquire::SystemSettings *sys_set_;
-  mvIMPACT::acquire::InfoBlueDevice *bf_info_;
+  mvIMPACT::acquire::Device *dev_{nullptr};
+  mvIMPACT::acquire::FunctionInterface *fi_{nullptr};
+  mvIMPACT::acquire::Statistics *stats_{nullptr};
+  mvIMPACT::acquire::SettingsBlueFOX *bf_set_{nullptr};
+  mvIMPACT::acquire::ImageProcessing *img_proc_{nullptr};
+  mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_{nullptr};
+  mvIMPACT::acquire::SystemSettings *sys_set_{nullptr};
+  mvIMPACT::acquire::InfoBlueDevice *bf_info_{nullptr};
 };
 
 }  // namespace bluefox2
