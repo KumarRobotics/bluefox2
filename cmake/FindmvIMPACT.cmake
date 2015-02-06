@@ -1,11 +1,12 @@
-# FindMvimpact.cmake - Find mvimpact sdk, version >= 4.
+# FindmvIMPACT.cmake - Find mvIMPACT sdk, version >= 4.
 # Modified from FindEigen.cmake by alexs.mac@gmail.com  (Alex Stewart)
 #
 # This module defines the following variables:
 #
 # mvIMPACT_FOUND: TRUE if mvimpact is found.
 # mvIMPACT_INCLUDE_DIRS: Include directories for mvimpact.
-# mvIMPACT_LIBRARIES: Libraries for all mvimpact component libraries and dependencies.
+# mvIMPACT_LIBRARIES: Libraries for all mvimpact component libraries and
+#                     dependencies.
 #
 # mvIMPACT_VERSION: Extracted from lib/libmvBlueFOX .so.x.y.z
 # mvIMPACT_WORLD_VERSION: Equal to 4 if mvIMPACT_VERSION = 4.0.5

@@ -9,6 +9,7 @@ find_package(catkin REQUIRED COMPONENTS
     message_generation
     )
 find_package(mvIMPACT REQUIRED)
+find_package(Boost COMPONENTS program_options REQUIRED)
 
 # dynamic reconfigure
 generate_dynamic_reconfigure_options(cfg/Bluefox2Dyn.cfg)
@@ -30,35 +31,7 @@ include_directories(
     ${mvIMPACT_INCLUDE_DIRS}
     )
 
-# bluefox2
-add_library(${PROJECT_NAME}
-    src/bluefox2.cpp
-    src/bluefox2_ros.cpp
-    src/single/single_node.cpp
-    src/stereo/stereo_node.cpp
-    src/single/single_nodelet.cpp
-    src/stereo/stereo_nodelet.cpp
-    )
-target_link_libraries(${PROJECT_NAME}
-    ${mvIMPACT_LIBRARIES}
-    ${catkin_LIBRARIES}
-    )
-
-# single node
-add_executable(single_node
-    src/single/single_main.cpp
-    )
-target_link_libraries(single_node
-    ${PROJECT_NAME}
-    )
-
-# stereo node
-add_executable(stereo_node
-    src/stereo/stereo_main.cpp
-    )
-target_link_libraries(stereo_node
-   ${PROJECT_NAME}
-   )
+add_subdirectory(src)
 
 # dependencies
 add_dependencies(${PROJECT_NAME}

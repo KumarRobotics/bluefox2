@@ -28,7 +28,7 @@ std::string Bluefox2::AvailableDevice() const {
   return devices;
 }
 
-void Bluefox2::Open() {
+void Bluefox2::OpenDevice() {
   try {
     dev_->open();
   }
@@ -46,7 +46,7 @@ void Bluefox2::Open() {
   bf_info_ = new InfoBlueDevice(dev_);
 }
 
-void Bluefox2::Request() const { fi_->imageRequestSingle(); }
+void Bluefox2::RequestImage() const { fi_->imageRequestSingle(); }
 
 void Bluefox2::RequestImages(int n) const {
   for (int i = 0; i < n; ++i) {
@@ -57,42 +57,66 @@ void Bluefox2::RequestImages(int n) const {
 }
 
 bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
-                         sensor_msgs::CameraInfo &cinfo_msg) {
+                         sensor_msgs::CameraInfo &cinfo_msg) const {
   int requestNr = INVALID_ID;
   requestNr = fi_->imageRequestWaitFor(kTimeout);
   // Check if request nr is valid
   if (!fi_->isRequestNrValid(requestNr)) {
-    fi_->imageRequestUnlock(requestNr);
+    //    fi_->imageRequestUnlock(requestNr);
     return false;
   }
-  request_ = fi_->getRequest(requestNr);
+  const Request *request = fi_->getRequest(requestNr);
   // Check if request is ok
-  if (!request_->isOK()) {
-    fi_->imageRequestUnlock(requestNr);
+  if (!request->isOK()) {
+    //    fi_->imageRequestUnlock(requestNr);
     return false;
   }
-  // Assemble image_msg
-  auto channels = request_->imageChannelCount.read();
-  image_msg.height = request_->imageHeight.read();
-  image_msg.width = request_->imageWidth.read();
-  image_msg.step = image_msg.width * channels;
-  if (channels == 1) {
-    image_msg.encoding = sensor_msgs::image_encodings::MONO8;
-  } else if (channels == 3) {
-    image_msg.encoding = sensor_msgs::image_encodings::BGR8;
-  }
-  size_t data_size = request_->imageSize.read();
-  if (image_msg.data.size() != data_size) {
-    image_msg.data.resize(data_size);
-  }
-  // Copy data from camera
-  memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
 
-  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
-  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
+  FillSensorMsgs(request, image_msg, cinfo_msg);
+  // Assemble image_msg
+  //  auto channels = request_->imageChannelCount.read();
+  //  image_msg.height = request_->imageHeight.read();
+  //  image_msg.width = request_->imageWidth.read();
+  //  image_msg.step = image_msg.width * channels;
+  //  if (channels == 1) {
+  //    image_msg.encoding = sensor_msgs::image_encodings::MONO8;
+  //  } else if (channels == 3) {
+  //    image_msg.encoding = sensor_msgs::image_encodings::BGR8;
+  //  }
+  //  size_t data_size = request_->imageSize.read();
+  //  if (image_msg.data.size() != data_size) {
+  //    image_msg.data.resize(data_size);
+  //  }
+  // Copy data from camera
+  //  memcpy(&image_msg.data[0], request_->imageData.read(), data_size);
+  //  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
+  //  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
   // Release capture request
   fi_->imageRequestUnlock(requestNr);
   return true;
+}
+
+void Bluefox2::FillSensorMsgs(const Request *request,
+                              sensor_msgs::Image &image_msg,
+                              sensor_msgs::CameraInfo &cinfo_msg) const
+    noexcept {
+  image_msg.data.resize(request->imageSize.read());
+  image_msg.height = request->imageHeight.read();
+  image_msg.width = request->imageWidth.read();
+  image_msg.step = request->imageLinePitch.read();
+
+  if (request->imageBayerMosaicParity.read() != bmpUndefined) {
+    const auto bytes_per_pixel = request->imageBytesPerPixel.read() * 8;
+    image_msg.encoding = BayerPatternToEncoding(
+        request->imageBayerMosaicParity.read(), bytes_per_pixel);
+  } else {
+    image_msg.encoding =
+        PixelFormatToEncoding(request->imagePixelFormat.read());
+  }
+  memcpy(&image_msg.data[0], request->imageData.read(), image_msg.data.size());
+  // binning
+  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
+  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
 }
 
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
@@ -305,13 +329,6 @@ void Bluefox2::SetSlave() const {
   cam_set_->triggerSource.write(ctsDigIn0);
   cam_set_->frameDelay_us.write(0);
   std::cout << serial() << ": slave" << std::endl;
-}
-
-double PixelClockToFrameRate(int pclk_khz, double width, double height,
-                             double expose_us) {
-  static const double kTriggerPulseWidthUs = 200;
-  double frame_time_us = (width + 94) * (height + 45) / pclk_khz * 1e3;
-  return 1e6 / (frame_time_us + expose_us + kTriggerPulseWidthUs);
 }
 
 }  // namespace bluefox2

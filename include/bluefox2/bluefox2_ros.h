@@ -13,7 +13,7 @@ class Bluefox2Ros : public camera_base::CameraRosBase {
 
   bool boost() const { return boost_; }
   void set_boost(bool boost) { boost_ = boost; }
-  void Request() const { bluefox2_.Request(); }
+  void Request() const { bluefox2_.RequestImage(); }
   Bluefox2& camera() { return bluefox2_; }
 
   bool Grab(const sensor_msgs::ImagePtr& image_msg,
