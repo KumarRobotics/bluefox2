@@ -3,7 +3,7 @@
 #include "bluefox2/mvimpact_helper.h"
 #include <boost/program_options.hpp>
 
-using namespace bluefox3;
+using namespace bluefox2;
 namespace bpo = boost::program_options;
 
 void PrintUsage() {
