@@ -1,8 +1,5 @@
 #include "bluefox2/bluefox2.h"
 
-#include <stdexcept>
-#include <sensor_msgs/image_encodings.h>
-
 namespace bluefox2 {
 
 using namespace mvIMPACT::acquire;
@@ -96,7 +93,8 @@ void Bluefox2::FillSensorMsgs(const Request *request,
   image_msg.step = request->imageLinePitch.read();
 
   if (request->imageBayerMosaicParity.read() != bmpUndefined) {
-    const auto bytes_per_pixel = request->imageBytesPerPixel.read() * 8;
+    // Bayer pattern
+    const auto bytes_per_pixel = request->imageBytesPerPixel.read();
     image_msg.encoding = BayerPatternToEncoding(
         request->imageBayerMosaicParity.read(), bytes_per_pixel);
   } else {
@@ -104,10 +102,10 @@ void Bluefox2::FillSensorMsgs(const Request *request,
         PixelFormatToEncoding(request->imagePixelFormat.read());
   }
   memcpy(&image_msg.data[0], request->imageData.read(), image_msg.data.size());
-  // binning
+  // Binning
   cinfo_msg.binning_x = config_.cbm ? 2 : 0;
   cinfo_msg.binning_y = config_.cbm ? 2 : 0;
-  // compensate timestamp
+  // Compensate timestamp
   const auto expose_us = request->infoExposeTime_us.read();
   image_msg.header.stamp += ros::Duration(expose_us * 1e-6 / 2);
   cinfo_msg.header.stamp = image_msg.header.stamp;
@@ -145,15 +143,15 @@ void Bluefox2::SetPixelClock(double fps) const {
   cam_set_->pixelClock_KHz.write(value);
 }
 
-bool Bluefox2::IsColorSupported() const {
-  const auto color_mode = bf_info_->sensorColorMode.read();
-  //  return product().back() == 'C';
-  return color_mode > iscmMono;
-}
+// bool Bluefox2::IsColorSupported() const {
+//  const auto color_mode = bf_info_->sensorColorMode.read();
+//  //  return product().back() == 'C';
+//  return color_mode > iscmMono;
+//}
 
 ///@todo: Maybe use something in image processing?
 void Bluefox2::SetColor(bool *color) const {
-  if (!IsColorSupported()) *color = false;
+  if (!IsColorSupported(bf_info_)) *color = false;
   bf_set_->imageDestination.pixelFormat.write(*color ? idpfRGB888Packed
                                                      : idpfMono8);
 }
@@ -245,7 +243,7 @@ void Bluefox2::SetHdr(bool *hdr) const {
 void Bluefox2::SetWbp(int *wbp, double *r_gain, double *g_gain,
                       double *b_gain) const {
   // Put white balance as unavailable if it's not a color camera
-  if (!IsColorSupported()) {
+  if (!IsColorSupported(bf_info_)) {
     *wbp = -1;
     return;
   }

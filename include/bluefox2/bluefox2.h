@@ -52,7 +52,7 @@ class Bluefox2 {
   void SetWbp(int *wbp, double *r_gain, double *g_gain, double *b_gain) const;
   void SetDcfm(int *dcfm) const;
   void RequestImages(int n) const;
-  bool IsColorSupported() const;
+  //  bool IsColorSupported() const;
   bool IsCtmOnDemandSupported() const;
   int GetDcfm() const;
 

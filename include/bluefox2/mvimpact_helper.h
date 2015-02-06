@@ -37,25 +37,28 @@ void ClampProperty(const PropertyType &prop, T *value) noexcept {
 }
 
 /**
- * @brief PixelFormatToEncoding
- * @param format
- * @return
+ * @brief PixelFormatToEncoding Convert pixel format to image encoding
+ * @param pixel_format mvIMPACT ImageBufferPixelFormat
+ * @return Image encoding
  */
 std::string PixelFormatToEncoding(
-    const mvIMPACT::acquire::TImageBufferPixelFormat &format) noexcept;
+    const mvIMPACT::acquire::TImageBufferPixelFormat &pixel_format) noexcept;
 
 /**
- * @brief BayerPatternToEncoding
- * @param pattern
- * @param bits
- * @return
+ * @brief BayerPatternToEncoding Convert bayer pattern to image encoding
+ * @param bayer_pattern mvIMPACT BayerMosaicParity
+ * @param bytes_per_pixel Number of bytes per pixel
+ * @return Image encoding
  */
 std::string BayerPatternToEncoding(
-    const mvIMPACT::acquire::TBayerMosaicParity &pattern,
-    unsigned int bits) noexcept;
+    const mvIMPACT::acquire::TBayerMosaicParity &bayer_pattern,
+    unsigned int bytes_per_pixel) noexcept;
 
 double PixelClockToFrameRate(int pclk_khz, double width, double height,
                              double expose_us) noexcept;
+
+bool IsColorSupported(const mvIMPACT::acquire::InfoBlueDevice *bf_info);
+
 }  // namespace bluefox2
 
 #endif  // BLUEFOX2_MVIMPACT_HELPER_H_

@@ -16,9 +16,9 @@ void PrintDeviceDetails(const Device* device) noexcept {
 }
 
 std::string PixelFormatToEncoding(
-    const TImageBufferPixelFormat& format) noexcept {
+    const TImageBufferPixelFormat& pixel_format) noexcept {
   using namespace sensor_msgs::image_encodings;
-  switch (format) {
+  switch (pixel_format) {
     case ibpfMono8:
       return MONO8;
     case ibpfMono16:
@@ -36,11 +36,11 @@ std::string PixelFormatToEncoding(
   }
 }
 
-std::string BayerPatternToEncoding(const TBayerMosaicParity& pattern,
-                                   unsigned int bits) noexcept {
+std::string BayerPatternToEncoding(const TBayerMosaicParity& bayer_pattern,
+                                   unsigned int bytes_per_pixel) noexcept {
   using namespace sensor_msgs::image_encodings;
-  if (bits == 8) {
-    switch (pattern) {
+  if (bytes_per_pixel == 1) {
+    switch (bayer_pattern) {
       case bmpRG:
         return BAYER_RGGB8;
       case bmpGB:
@@ -52,8 +52,8 @@ std::string BayerPatternToEncoding(const TBayerMosaicParity& pattern,
       default:
         return MONO8;
     }
-  } else if (bits == 16) {
-    switch (pattern) {
+  } else if (bytes_per_pixel == 12) {
+    switch (bayer_pattern) {
       case bmpRG:
         return BAYER_RGGB16;
       case bmpGB:
@@ -75,6 +75,11 @@ double PixelClockToFrameRate(int pclk_khz, double width, double height,
   static const double kTriggerPulseWidthUs = 200;
   double frame_time_us = (width + 94) * (height + 45) / pclk_khz * 1e3;
   return 1e6 / (frame_time_us + expose_us + kTriggerPulseWidthUs);
+}
+
+bool IsColorSupported(const InfoBlueDevice* bf_info) {
+  const auto color_mode = bf_info->sensorColorMode.read();
+  return color_mode > iscmMono;
 }
 
 }  // namespace bluefox2
