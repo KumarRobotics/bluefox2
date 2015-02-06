@@ -21,7 +21,7 @@ class Bluefox2 {
   int config_expose_us() const { return config_.expose_us; }
 
   void OpenDevice();
-  void RequestImage() const;
+  void RequestSingle() const;
   void Configure(Bluefox2DynConfig &config);
   bool GrabImage(sensor_msgs::Image &image_msg,
                  sensor_msgs::CameraInfo &cinfo_msg) const;
@@ -31,11 +31,11 @@ class Bluefox2 {
   void SetSlave() const;
 
  private:
-  static const int kTimeout = 500;
+  static const int kTimeout = 300;
 
   void FillSensorMsgs(const mvIMPACT::acquire::Request *request,
                       sensor_msgs::Image &image_msg,
-                      sensor_msgs::CameraInfo &cinfo_msg) const noexcept;
+                      sensor_msgs::CameraInfo &cinfo_msg) const;
 
   std::string AvailableDevice() const;
 
@@ -52,7 +52,7 @@ class Bluefox2 {
   void SetWbp(int *wbp, double *r_gain, double *g_gain, double *b_gain) const;
   void SetDcfm(int *dcfm) const;
   void RequestImages(int n) const;
-  //  bool IsColorSupported() const;
+  bool IsColorSupported() const;
   bool IsCtmOnDemandSupported() const;
   int GetDcfm() const;
 

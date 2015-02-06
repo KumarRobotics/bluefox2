@@ -12,7 +12,7 @@ namespace bluefox2 {
  * @brief PrintDeviceDetails Print detials of this device
  * @param device Pointer to Device
  */
-void PrintDeviceDetails(const mvIMPACT::acquire::Device *device) noexcept;
+void PrintDeviceDetails(const mvIMPACT::acquire::Device *device);
 
 /**
  * @brief Clamp
@@ -32,7 +32,7 @@ T Clamp(const T &value, const T &low, const T &high) noexcept {
  * @param value
  */
 template <typename PropertyType, typename T>
-void ClampProperty(const PropertyType &prop, T *value) noexcept {
+void ClampProperty(const PropertyType &prop, T *value) {
   *value = Clamp(*value, prop.getMinValue(), prop.getMaxValue());
 }
 
@@ -42,7 +42,7 @@ void ClampProperty(const PropertyType &prop, T *value) noexcept {
  * @return Image encoding
  */
 std::string PixelFormatToEncoding(
-    const mvIMPACT::acquire::TImageBufferPixelFormat &pixel_format) noexcept;
+    const mvIMPACT::acquire::TImageBufferPixelFormat &pixel_format);
 
 /**
  * @brief BayerPatternToEncoding Convert bayer pattern to image encoding
@@ -52,12 +52,10 @@ std::string PixelFormatToEncoding(
  */
 std::string BayerPatternToEncoding(
     const mvIMPACT::acquire::TBayerMosaicParity &bayer_pattern,
-    unsigned int bytes_per_pixel) noexcept;
+    unsigned int bytes_per_pixel);
 
 double PixelClockToFrameRate(int pclk_khz, double width, double height,
-                             double expose_us) noexcept;
-
-bool IsColorSupported(const mvIMPACT::acquire::InfoBlueDevice *bf_info);
+                             double expose_us);
 
 }  // namespace bluefox2
 

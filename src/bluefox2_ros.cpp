@@ -3,7 +3,7 @@
 namespace bluefox2 {
 
 Bluefox2Ros::Bluefox2Ros(const ros::NodeHandle& nh, const std::string& prefix)
-    : CameraRosBase(nh, prefix), bluefox2_(identifier()), boost_(false) {
+    : CameraRosBase(nh, prefix), bluefox2_(identifier()) {
   bluefox2_.OpenDevice();
   SetHardwareId(bluefox2_.serial());
 

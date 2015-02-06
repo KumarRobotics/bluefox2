@@ -17,6 +17,7 @@ class SingleNode : public camera_base::CameraNodeBase<Bluefox2DynConfig> {
 
  private:
   Bluefox2Ros bluefox2_ros_;
+  bool boost_{false};
 };
 
 }  // namespace bluefox2

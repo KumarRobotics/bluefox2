@@ -11,9 +11,7 @@ class Bluefox2Ros : public camera_base::CameraRosBase {
   Bluefox2Ros(const ros::NodeHandle& nh,
               const std::string& prefix = std::string());
 
-  bool boost() const { return boost_; }
-  void set_boost(bool boost) { boost_ = boost; }
-  void Request() const { bluefox2_.RequestImage(); }
+  void RequestSingle() const { bluefox2_.RequestSingle(); }
   Bluefox2& camera() { return bluefox2_; }
 
   bool Grab(const sensor_msgs::ImagePtr& image_msg,
@@ -21,7 +19,6 @@ class Bluefox2Ros : public camera_base::CameraRosBase {
 
  private:
   Bluefox2 bluefox2_;
-  bool boost_;
 };
 
 }  // namespace bluefox2

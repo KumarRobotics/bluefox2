@@ -43,7 +43,7 @@ void Bluefox2::OpenDevice() {
   img_proc_ = new ImageProcessing(dev_);
 }
 
-void Bluefox2::RequestImage() const {
+void Bluefox2::RequestSingle() const {
   int result = DMR_NO_ERROR;
   result = fi_->imageRequestSingle();
   if (result != DMR_NO_ERROR) {
@@ -85,8 +85,7 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
 
 void Bluefox2::FillSensorMsgs(const Request *request,
                               sensor_msgs::Image &image_msg,
-                              sensor_msgs::CameraInfo &cinfo_msg) const
-    noexcept {
+                              sensor_msgs::CameraInfo &cinfo_msg) const {
   image_msg.data.resize(request->imageSize.read());
   image_msg.height = request->imageHeight.read();
   image_msg.width = request->imageWidth.read();
@@ -112,6 +111,10 @@ void Bluefox2::FillSensorMsgs(const Request *request,
 }
 
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
+  // Clear request queue
+  fi_->imageRequestReset(0, 0);
+  config_ = config;
+
   SetPixelClock(config.fps);
   SetColor(&config.color);
   SetCbm(config.cbm);
@@ -119,15 +122,19 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetAec(&config.expose_us, config.aec);
   SetCtm(&config.ctm);
   SetHdr(&config.hdr);
-  //  SetMM(config.mm);
   SetWbp(&config.wbp, &config.r_gain, &config.g_gain, &config.b_gain);
   SetDcfm(&config.dcfm);
   // Cache this config
   config_ = config;
 }
 
-inline void Bluefox2::SetRequestCount(int count) const {
+void Bluefox2::SetRequestCount(int count) const {
   sys_set_->requestCount.write(count);
+}
+
+bool Bluefox2::IsColorSupported() const {
+  const auto color_mode = bf_info_->sensorColorMode.read();
+  return color_mode > iscmMono;
 }
 
 void Bluefox2::SetPixelClock(double fps) const {
@@ -143,15 +150,8 @@ void Bluefox2::SetPixelClock(double fps) const {
   cam_set_->pixelClock_KHz.write(value);
 }
 
-// bool Bluefox2::IsColorSupported() const {
-//  const auto color_mode = bf_info_->sensorColorMode.read();
-//  //  return product().back() == 'C';
-//  return color_mode > iscmMono;
-//}
-
-///@todo: Maybe use something in image processing?
 void Bluefox2::SetColor(bool *color) const {
-  if (!IsColorSupported(bf_info_)) *color = false;
+  if (!IsColorSupported()) *color = false;
   bf_set_->imageDestination.pixelFormat.write(*color ? idpfRGB888Packed
                                                      : idpfMono8);
 }
@@ -243,7 +243,7 @@ void Bluefox2::SetHdr(bool *hdr) const {
 void Bluefox2::SetWbp(int *wbp, double *r_gain, double *g_gain,
                       double *b_gain) const {
   // Put white balance as unavailable if it's not a color camera
-  if (!IsColorSupported(bf_info_)) {
+  if (!IsColorSupported()) {
     *wbp = -1;
     return;
   }
@@ -285,7 +285,7 @@ void Bluefox2::SetDcfm(int *dcfm) const {
   img_proc_->darkCurrentFilterMode.write(
       static_cast<TDarkCurrentFilterMode>(*dcfm));
   // Special case for calibrate mode
-  if (*dcfm == static_cast<int>(dcfmCalibrateDarkCurrent)) {
+  if (*dcfm == dcfmCalibrateDarkCurrent) {
     // Read image count, and request some more images
     int dcfm_img_cnt = img_proc_->darkCurrentFilterCalibrationImageCount.read();
     RequestImages(dcfm_img_cnt + 5);
