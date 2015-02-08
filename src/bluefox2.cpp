@@ -173,21 +173,22 @@ void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
     case 2:
       // Auto fix
       cam_set_->autoExposeControl.write(aecOn);
-      RequestImages(20);
+      RequestImages(10);
       cam_set_->autoExposeControl.write(aecOff);
       *expose_us = cam_set_->expose_us.read();
       break;
     case 3: {
       // Auto clamp, from Shaojie Shen
-      cam_set_->autoControlParameters.controllerSpeed.write(acsUserDefined);
-      cam_set_->autoControlParameters.controllerGain.write(0.5);
-      cam_set_->autoControlParameters.controllerIntegralTime_ms.write(100);
-      cam_set_->autoControlParameters.controllerDerivativeTime_ms.write(0.0001);
-      cam_set_->autoControlParameters.desiredAverageGreyValue.write(100);
-      cam_set_->autoControlParameters.controllerDelay_Images.write(0);
-      cam_set_->autoControlParameters.exposeLowerLimit_us.write(50);
+      //      cam_set_->autoControlParameters.controllerGain.write(0.5);
+      //      cam_set_->autoControlParameters.controllerIntegralTime_ms.write(100);
+      //      cam_set_->autoControlParameters.controllerDerivativeTime_ms.write(0.0001);
+      //      cam_set_->autoControlParameters.desiredAverageGreyValue.write(100);
+      //      cam_set_->autoControlParameters.controllerDelay_Images.write(0);
+      cam_set_->autoControlParameters.controllerSpeed.write(acsFast);
+      cam_set_->autoControlParameters.desiredAverageGreyValue.write(95);
       ClampProperty(cam_set_->expose_us, expose_us);
       cam_set_->autoControlParameters.exposeUpperLimit_us.write(*expose_us);
+      cam_set_->autoControlParameters.exposeLowerLimit_us.write(50);
       cam_set_->autoExposeControl.write(aecOn);
       break;
     }
