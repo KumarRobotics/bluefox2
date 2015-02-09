@@ -281,16 +281,21 @@ void Bluefox2::SetWbp(int *wbp, double *r_gain, double *g_gain,
 }
 
 void Bluefox2::SetDcfm(int *dcfm) const {
-  img_proc_->darkCurrentFilterMode.write(
-      static_cast<TDarkCurrentFilterMode>(*dcfm));
-  // Special case for calibrate mode
   if (*dcfm == dcfmCalibrateDarkCurrent) {
+    // Special case for calibrate mode
+    // Set "OffsetAutoCalibration = Off"
+    cam_set_->offsetAutoCalibration.write(aocOff);
+    // Set the (Filter-) "Mode = Calibrate"
+    img_proc_->darkCurrentFilterMode.write(dcfmCalibrateDarkCurrent);
     // Read image count, and request some more images
-    int dcfm_img_cnt = img_proc_->darkCurrentFilterCalibrationImageCount.read();
-    RequestImages(dcfm_img_cnt + 5);
+    int img_cnt = img_proc_->darkCurrentFilterCalibrationImageCount.read();
+    RequestImages(img_cnt);
     // Then turn on immediately
     img_proc_->darkCurrentFilterMode.write(dcfmOn);
     *dcfm = GetDcfm();
+  } else {
+    img_proc_->darkCurrentFilterMode.write(
+        static_cast<TDarkCurrentFilterMode>(*dcfm));
   }
 }
 
