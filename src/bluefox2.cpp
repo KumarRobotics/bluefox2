@@ -8,6 +8,7 @@ Bluefox2::Bluefox2(const std::string &serial) : serial_(serial) {
   if (!(dev_ = dev_mgr_.getDeviceBySerial(serial))) {
     throw std::runtime_error(serial + " not found. " + AvailableDevice());
   }
+  OpenDevice();
 }
 
 Bluefox2::~Bluefox2() {
@@ -28,8 +29,7 @@ std::string Bluefox2::AvailableDevice() const {
 void Bluefox2::OpenDevice() {
   try {
     dev_->open();
-  }
-  catch (const ImpactAcquireException &e) {
+  } catch (const ImpactAcquireException &e) {
     throw std::runtime_error(e.what());
   }
 
@@ -118,8 +118,11 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetPixelClock(config.fps);
   SetColor(&config.color);
   SetCbm(config.cbm);
-  SetGainDb(&config.gain_db);
+
+  SetAgc(&config.gain_db, config.agc);
   SetAec(&config.expose_us, config.aec);
+  SetAcs(config.acs);
+
   SetCtm(&config.ctm);
   SetHdr(&config.hdr);
   SetWbp(&config.wbp, &config.r_gain, &config.g_gain, &config.b_gain);
@@ -168,6 +171,9 @@ void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
       break;
     case 1:
       // Auto
+      ClampProperty(cam_set_->expose_us, expose_us);
+      cam_set_->autoControlParameters.exposeUpperLimit_us.write(*expose_us);
+      cam_set_->autoControlParameters.exposeLowerLimit_us.write(50);
       cam_set_->autoExposeControl.write(aecOn);
       break;
     case 2:
@@ -177,21 +183,6 @@ void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
       cam_set_->autoExposeControl.write(aecOff);
       *expose_us = cam_set_->expose_us.read();
       break;
-    case 3: {
-      // Auto clamp, from Shaojie Shen
-      //      cam_set_->autoControlParameters.controllerGain.write(0.5);
-      //      cam_set_->autoControlParameters.controllerIntegralTime_ms.write(100);
-      //      cam_set_->autoControlParameters.controllerDerivativeTime_ms.write(0.0001);
-      //      cam_set_->autoControlParameters.desiredAverageGreyValue.write(100);
-      //      cam_set_->autoControlParameters.controllerDelay_Images.write(0);
-      cam_set_->autoControlParameters.controllerSpeed.write(acsFast);
-      cam_set_->autoControlParameters.desiredAverageGreyValue.write(95);
-      ClampProperty(cam_set_->expose_us, expose_us);
-      cam_set_->autoControlParameters.exposeUpperLimit_us.write(*expose_us);
-      cam_set_->autoControlParameters.exposeLowerLimit_us.write(50);
-      cam_set_->autoExposeControl.write(aecOn);
-      break;
-    }
     default:
       // Manual
       SetExposeUs(expose_us);
@@ -202,6 +193,19 @@ void Bluefox2::SetExposeUs(int *expose_us) const {
   cam_set_->autoExposeControl.write(aecOff);
   ClampProperty(cam_set_->expose_us, expose_us);
   cam_set_->expose_us.write(*expose_us);
+}
+
+void Bluefox2::SetAgc(double *gain_db, bool auto_gain) const {
+  if (auto_gain) {
+    cam_set_->autoGainControl.write(agcOn);
+  } else {
+    SetGainDb(gain_db);
+  }
+}
+
+void Bluefox2::SetAcs(int acs) const {
+  cam_set_->autoControlParameters.controllerSpeed.write(
+      static_cast<TAutoControlSpeed>(acs));
 }
 
 void Bluefox2::SetGainDb(double *gain_db) const {
@@ -253,19 +257,13 @@ void Bluefox2::SetWbp(int *wbp, double *r_gain, double *g_gain,
   if (*wbp < 6) {
     *wbp = (*wbp < 0) ? img_proc_->whiteBalance.read() : *wbp;
     img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(*wbp));
-  }
-
-  // User1 wbp
-  if (*wbp == 6) {
+  } else if (*wbp == 6) {
     WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
     wbp_set.redGain.write(*r_gain);
     wbp_set.greenGain.write(*g_gain);
     wbp_set.blueGain.write(*b_gain);
-    return;
-  }
-
-  // Calibrate
-  if (*wbp == 10) {
+    //    return;
+  } else if (*wbp == 10) {
     // Set wbp to user1
     img_proc_->whiteBalance.write(
         static_cast<TWhiteBalanceParameter>(wbpUser1));
