@@ -1,5 +1,5 @@
-#ifndef BLUEFOX2_CAMERA_SETTINGS_H_
-#define BLUEFOX2_CAMERA_SETTINGS_H_
+#ifndef BLUEFOX2_SETTINGS_H_
+#define BLUEFOX2_SETTINGS_H_
 
 #include <iostream>
 
@@ -65,4 +65,4 @@ double PixelClockToFrameRate(int pclk_khz, double width, double height,
                              double expose_us);
 }  // namespace bluefox2
 
-#endif  // BLUEFOX2_CAMERA_SETTINGS_H_
+#endif  // BLUEFOX2_SETTINGS_H_

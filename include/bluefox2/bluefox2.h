@@ -56,6 +56,7 @@ class Bluefox2 {
   void SetAgc(double *gain_db, bool auto_gain) const;
   void SetGainDb(double *gain_db) const;
   void SetAcs(int acs) const;
+  void SetAverageGreyValue(int *des_gray_val) const;
 
   void SetHdr(bool *hdr) const;
   void SetWbp(int *wbp, double *r_gain, double *g_gain, double *b_gain) const;

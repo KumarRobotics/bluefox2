@@ -122,6 +122,7 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetAgc(&config.gain_db, config.agc);
   SetAec(&config.expose_us, config.aec);
   SetAcs(config.acs);
+  SetAverageGreyValue(&config.des_grey_value);
 
   SetCtm(&config.ctm);
   SetHdr(&config.hdr);
@@ -151,6 +152,12 @@ void Bluefox2::SetPixelClock(double fps) const {
   const auto size = cam_set_->pixelClock_KHz.dictSize();
   const auto value = cam_set_->pixelClock_KHz.getTranslationDictValue(size - 1);
   cam_set_->pixelClock_KHz.write(value);
+}
+
+void Bluefox2::SetAverageGreyValue(int *des_gray_val) const {
+  ClampProperty(cam_set_->autoControlParameters.desiredAverageGreyValue,
+                des_gray_val);
+  cam_set_->autoControlParameters.desiredAverageGreyValue.write(*des_gray_val);
 }
 
 void Bluefox2::SetColor(bool *color) const {
