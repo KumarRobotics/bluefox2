@@ -1,10 +1,21 @@
 #include <iostream>
-
-#include "bluefox2/mvimpact_helper.h"
 #include <boost/program_options.hpp>
 
-using namespace bluefox2;
+#ifndef linux
+#define linux
+#endif
+#include "mvIMPACT_CPP/mvIMPACT_acquire.h"
+
+using namespace mvIMPACT::acquire;
 namespace bpo = boost::program_options;
+
+void PrintDeviceDetails(const Device* device) {
+  std::cout << "Serial: " << device->serial.read()
+            << ", Version: " << device->deviceVersion.read()
+            << ", Family: " << device->family.read()
+            << ", Firmware: " << device->firmwareVersion.read()
+            << ", Product: " << device->product.read() << std::endl;
+}
 
 void PrintUsage() {
   std::cout << "list_mvdevice is a command line tool"
@@ -27,8 +38,7 @@ int main(int argc, char** argv) {
   try {
     bpo::store(bpo::parse_command_line(argc, argv, opt_desc), var_map);
     bpo::notify(var_map);
-  }
-  catch (const std::exception& e) {
+  } catch (const std::exception& e) {
     std::cout << e.what() << "\n\n";
     PrintUsage();
     PrintOption(opt_desc);
@@ -73,8 +83,7 @@ int main(int argc, char** argv) {
         device->open();
         std::cout << "Successfully opened device: " << device->serial.read()
                   << std::endl;
-      }
-      catch (const ImpactAcquireException& iae) {
+      } catch (const ImpactAcquireException& iae) {
         std::cout << "*** Error: An error occurred while opening the "
                      "device(error code: " << iae.getErrorCode() << ")."
                   << std::endl;

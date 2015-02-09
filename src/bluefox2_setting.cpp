@@ -1,19 +1,10 @@
-#include "bluefox2/mvimpact_helper.h"
-
-#include <iostream>
+#include "bluefox2/bluefox2_setting.h"
 #include <sensor_msgs/image_encodings.h>
 
-namespace bluefox2 {
-
 using namespace mvIMPACT::acquire;
+using namespace sensor_msgs::image_encodings;
 
-void PrintDeviceDetails(const Device* device) {
-  std::cout << "Serial: " << device->serial.read()
-            << ", Version: " << device->deviceVersion.read()
-            << ", Family: " << device->family.read()
-            << ", Firmware: " << device->firmwareVersion.read()
-            << ", Product: " << device->product.read() << std::endl;
-}
+namespace bluefox2 {
 
 std::string PixelFormatToEncoding(const TImageBufferPixelFormat& pixel_format) {
   using namespace sensor_msgs::image_encodings;
@@ -51,7 +42,7 @@ std::string BayerPatternToEncoding(const TBayerMosaicParity& bayer_pattern,
       default:
         return MONO8;
     }
-  } else if (bytes_per_pixel == 12) {
+  } else if (bytes_per_pixel == 2) {
     switch (bayer_pattern) {
       case bmpRG:
         return BAYER_RGGB16;

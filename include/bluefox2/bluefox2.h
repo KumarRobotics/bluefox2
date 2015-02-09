@@ -4,7 +4,7 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/CameraInfo.h>
 #include "bluefox2/Bluefox2DynConfig.h"
-#include "bluefox2/mvimpact_helper.h"
+#include "bluefox2/bluefox2_setting.h"
 
 namespace bluefox2 {
 
@@ -42,12 +42,13 @@ class Bluefox2 {
   void RequestImages(int n) const;
 
   ///@todo: maybe move all these setting function to a separate file
-  void SetCbm(bool cbm) const;
+  //  void SetCbm(bool cbm) const;
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
 
   void SetColor(bool *color) const;  // need to change
   void SetCtm(int *ctm) const;
+  void SetCbm(bool cbm) const;
 
   // Auto control parameters
   void SetAec(int *expose_us, int auto_expose) const;
