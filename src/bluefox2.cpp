@@ -292,6 +292,7 @@ void Bluefox2::SetDcfm(int *dcfm) const {
     RequestImages(img_cnt);
     // Then turn on immediately
     img_proc_->darkCurrentFilterMode.write(dcfmOn);
+    cam_set_->offsetAutoCalibration.write(aocOn);
     *dcfm = GetDcfm();
   } else {
     img_proc_->darkCurrentFilterMode.write(
