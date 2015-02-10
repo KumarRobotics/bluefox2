@@ -81,19 +81,3 @@ html_docs/*
 gen/
 gen/*
 
-# COMPILED DYNAMIC LIBRARIES
-*.so
-*.dylib
-*.dll
-
-# COMPILED STATIC LIBRARIES
-*.lai
-*.la
-*.a
-*.lib
-
-# EXECUTABLES
-*.exe
-*.out
-*.app
-*.pcd
