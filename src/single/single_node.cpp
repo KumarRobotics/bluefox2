@@ -11,7 +11,10 @@ void SingleNode::Acquire() {
   }
   while (is_acquire() && ros::ok()) {
     bluefox2_ros_.RequestSingle();
-    bluefox2_ros_.PublishCamera(ros::Time::now());
+    const auto expose_us = bluefox2_ros_.camera().expose_us();
+    const auto expose_duration = ros::Duration(expose_us * 1e-6 / 2);
+    const auto time = ros::Time::now() + expose_duration;
+    bluefox2_ros_.PublishCamera(time);
     Sleep();
   }
 }

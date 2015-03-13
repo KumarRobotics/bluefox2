@@ -19,12 +19,16 @@ class Bluefox2 {
   int height() const { return bf_set_->cameraSetting.aoiHeight.read(); }
   int width() const { return bf_set_->cameraSetting.aoiWidth.read(); }
   int config_expose_us() const { return config_.expose_us; }
+  int expose_us() const {
+    return (request_ && request_->isOK()) ? request_->infoExposeTime_us.read()
+                                          : 0;
+  }
 
   void OpenDevice();
   void RequestSingle() const;
   void Configure(Bluefox2DynConfig &config);
   bool GrabImage(sensor_msgs::Image &image_msg,
-                 sensor_msgs::CameraInfo &cinfo_msg) const;
+                 sensor_msgs::CameraInfo &cinfo_msg);
 
   void SetMM(int mm) const;
   void SetMaster() const;
@@ -33,9 +37,8 @@ class Bluefox2 {
  private:
   static const int kTimeout = 300;
 
-  void FillSensorMsgs(const mvIMPACT::acquire::Request *request,
-                      sensor_msgs::Image &image_msg,
-                      sensor_msgs::CameraInfo &cinfo_msg) const;
+  void FillSensorMsgs(sensor_msgs::Image &image_msg,
+                      sensor_msgs::CameraInfo &cinfo_msg);
 
   std::string AvailableDevice() const;
 
@@ -67,6 +70,7 @@ class Bluefox2 {
 
   std::string serial_;
   Bluefox2DynConfig config_;
+  mvIMPACT::acquire::Request *request_{nullptr};
   mvIMPACT::acquire::DeviceManager dev_mgr_;
   mvIMPACT::acquire::Device *dev_{nullptr};
   mvIMPACT::acquire::FunctionInterface *fi_{nullptr};
