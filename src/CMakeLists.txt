@@ -21,5 +21,5 @@ add_executable(stereo_node stereo/stereo_main.cpp)
 target_link_libraries(stereo_node ${PROJECT_NAME})
 
 # list_mvdevice
-add_executable(list_mvdevice list_mvdevice.cpp)
-target_link_libraries(list_mvdevice ${PROJECT_NAME} ${Boost_LIBRARIES})
+add_executable(list_cameras list_cameras.cpp)
+target_link_libraries(list_cameras ${PROJECT_NAME} ${Boost_LIBRARIES})
