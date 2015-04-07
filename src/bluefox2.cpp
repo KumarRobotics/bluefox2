@@ -62,7 +62,7 @@ void Bluefox2::RequestImages(int n) const {
 }
 
 bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
-                         sensor_msgs::CameraInfo &cinfo_msg) const {
+                         sensor_msgs::CameraInfo &cinfo_msg) {
   int request_nr = INVALID_ID;
   request_nr = fi_->imageRequestWaitFor(kTimeout);
   // Check if request nr is valid
@@ -70,44 +70,39 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
     //    fi_->imageRequestUnlock(requestNr);
     return false;
   }
-  const Request *request = fi_->getRequest(request_nr);
+  request_ = fi_->getRequest(request_nr);
   // Check if request is ok
-  if (!request->isOK()) {
+  if (!request_->isOK()) {
     //    fi_->imageRequestUnlock(requestNr);
     return false;
   }
 
-  FillSensorMsgs(request, image_msg, cinfo_msg);
+  FillSensorMsgs(image_msg, cinfo_msg);
   // Release capture request
   fi_->imageRequestUnlock(request_nr);
   return true;
 }
 
-void Bluefox2::FillSensorMsgs(const Request *request,
-                              sensor_msgs::Image &image_msg,
-                              sensor_msgs::CameraInfo &cinfo_msg) const {
-  image_msg.data.resize(request->imageSize.read());
-  image_msg.height = request->imageHeight.read();
-  image_msg.width = request->imageWidth.read();
-  image_msg.step = request->imageLinePitch.read();
+void Bluefox2::FillSensorMsgs(sensor_msgs::Image &image_msg,
+                              sensor_msgs::CameraInfo &cinfo_msg) {
+  image_msg.data.resize(request_->imageSize.read());
+  image_msg.height = request_->imageHeight.read();
+  image_msg.width = request_->imageWidth.read();
+  image_msg.step = request_->imageLinePitch.read();
 
-  if (request->imageBayerMosaicParity.read() != bmpUndefined) {
+  if (request_->imageBayerMosaicParity.read() != bmpUndefined) {
     // Bayer pattern
-    const auto bytes_per_pixel = request->imageBytesPerPixel.read();
+    const auto bytes_per_pixel = request_->imageBytesPerPixel.read();
     image_msg.encoding = BayerPatternToEncoding(
-        request->imageBayerMosaicParity.read(), bytes_per_pixel);
+        request_->imageBayerMosaicParity.read(), bytes_per_pixel);
   } else {
     image_msg.encoding =
-        PixelFormatToEncoding(request->imagePixelFormat.read());
+        PixelFormatToEncoding(request_->imagePixelFormat.read());
   }
-  memcpy(&image_msg.data[0], request->imageData.read(), image_msg.data.size());
+  memcpy(&image_msg.data[0], request_->imageData.read(), image_msg.data.size());
   // Binning
   cinfo_msg.binning_x = config_.cbm ? 2 : 0;
   cinfo_msg.binning_y = config_.cbm ? 2 : 0;
-  // Compensate timestamp
-  const auto expose_us = request->infoExposeTime_us.read();
-  image_msg.header.stamp += ros::Duration(expose_us * 1e-6 / 2);
-  cinfo_msg.header.stamp = image_msg.header.stamp;
 }
 
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
