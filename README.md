@@ -54,7 +54,7 @@ bluefox2 camera serial number.
 
 `~camera_name` (`string`, default: `mv_<serial>`)
 
-Camera name used by `camera_info_manager` for loading calibration file, should be the same as the name in `calib_<serial>.yml`.
+Camera name used by `camera_info_manager` for loading calibration file, should be the same as the name in `mv_<serial>.yaml`.
 
 `~camera` (`string`, default: `<camera_name>`)
 
