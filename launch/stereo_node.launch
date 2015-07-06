@@ -7,8 +7,10 @@
     <arg name="right" default="25001110"/>
     <arg name="left_camera_name" default="mv_$(arg left)"/>
     <arg name="right_camera_name" default="mv_$(arg right)"/>
-    <arg name="left_calib_url" default="file://${ROS_HOME}/camera_info/$(arg left_camera_name).yaml"/>
-    <arg name="right_calib_url" default="file://${ROS_HOME}/camera_info/$(arg right_camera_name).yaml"/>
+    <arg name="left_calib_url"
+        default="file://${ROS_HOME}/camera_info/$(arg left_camera_name).yaml"/>
+    <arg name="right_calib_url"
+        default="file://${ROS_HOME}/camera_info/$(arg right_camera_name).yaml"/>
 
     <arg name="camera" default="stereo"/>
     <arg name="frame_id" default="$(arg camera)"/>

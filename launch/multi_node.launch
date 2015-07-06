@@ -1,0 +1,67 @@
+<launch>
+    <!-- Common Interface -->
+    <arg name="rate" default="20"/>
+    <arg name="num_cameras"/>
+
+    <!-- Camera Settings -->
+    <arg name="camera0" default="25000855"/>
+    <arg name="camera0_camera_name" default="mv_$(arg camera0)"/>
+    <arg name="camera0_calib_url"
+    	default="file://${ROS_HOME}/camera_info/$(arg camera0_camera_name).yaml"/>
+
+    <arg name="camera1" default="25001110"/>
+    <arg name="camera1_camera_name" default="mv_$(arg camera1)"/>
+    <arg name="camera1_calib_url"
+    	default="file://${ROS_HOME}/camera_info/$(arg camera1_camera_name).yaml"/>
+
+    <arg name="camera2" default="25001110"/>
+    <arg name="camera2_camera_name" default="mv_$(arg camera2)"/>
+    <arg name="camera2_calib_url"
+    	default="file://${ROS_HOME}/camera_info/$(arg camera2_camera_name).yaml"/>
+
+    <arg name="camera" default="multi"/>
+    <arg name="frame_id" default="$(arg camera)"/>
+    <arg name="calib_url" default="file://${ROS_HOME}/camera_info/$(arg camera_name).yaml"/>
+    <arg name="fps" default="$(arg rate)"/>
+    <arg name="color" default="false"/>
+    <arg name="aec" default="0"/>
+    <arg name="cbm" default="false"/>
+    <arg name="ctm" default="1"/>
+    <arg name="dcfm" default="0"/>
+    <arg name="hdr" default="false"/>
+    <arg name="wbp" default="-1"/>
+    <arg name="expose_us" default="5000"/>
+    <arg name="gain_db" default="0.0"/>
+    <arg name="mm" default="0"/>
+
+    <!-- Node Settings -->
+    <arg name="output" default="screen"/>
+
+    <!-- Node -->
+    <node pkg="bluefox2" type="single_node" name="$(arg camera)" output="$(arg output)">
+    	  <param name="num_cameras" type="int" value="$(arg num_cameras)"/>
+        <param name="camera0/camera_name" type="string" value="$(arg camera0_camera_name)"/>
+        <param name="camera0/identifier" type="string" value="$(arg camera0)"/>
+        <param name="camera0/calib_url" type="string" value="$(arg camera0_calib_url)"/>
+
+        <param name="camera1/camera_name" type="string" value="$(arg camera1_camera_name)"/>
+        <param name="camera1/identifier" type="string" value="$(arg camera1)"/>
+        <param name="camera1/calib_url" type="string" value="$(arg camera1_calib_url)"/>
+
+        <param name="camera2/camera_name" type="string" value="$(arg camera2_camera_name)"/>
+        <param name="camera2/identifier" type="string" value="$(arg camera2)"/>
+        <param name="camera2/calib_url" type="string" value="$(arg camera2_calib_url)"/>
+
+        <param name="frame_id" type="string" value="$(arg frame_id)"/>
+        <param name="fps" type="double" value="$(arg fps)"/>
+        <param name="color" type="bool" value="$(arg color)"/>
+        <param name="aec" type="int" value="$(arg aec)"/>
+        <param name="cbm" type="bool" value="$(arg cbm)"/>
+        <param name="ctm" type="int" value="$(arg ctm)"/>
+        <param name="dcfm" type="int" value="$(arg dcfm)"/>
+        <param name="hdr" type="bool" value="$(arg hdr)"/>
+        <param name="wbp" type="int" value="$(arg wbp)"/>
+        <param name="expose_us" type="int" value="$(arg expose_us)"/>
+        <param name="gain_db" type="double" value="$(arg gain_db)"/>
+    </node>
+</launch>

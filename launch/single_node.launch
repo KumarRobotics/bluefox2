@@ -52,7 +52,7 @@
 
     <!-- Proc -->
     <node if="$(arg proc)"
-        pkg="image_proc" type="image_proc" name="image_proc" ns="$(arg node)">
+        pkg="image_proc" type="image_proc" name="image_proc" ns="$(arg camera)">
     </node>
 
     <!-- View -->
