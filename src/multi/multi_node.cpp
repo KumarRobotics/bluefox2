@@ -16,8 +16,8 @@ MultiNode::MultiNode(const ros::NodeHandle& pnh) : CameraNodeBase(pnh) {
       multi_ros_.push_back(boost::make_shared<Bluefox2Ros>(pnh, camera));
     } else {
       ROS_WARN(
-          "Multi camera system has %d cameras, but camera %d is not in the "
-          "launch file",
+          "Multi camera system has %d cameras"
+          " but camera %d is not in the launch file",
           num_cameras, i);
     }
   }
