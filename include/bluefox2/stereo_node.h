@@ -2,7 +2,7 @@
 #define BLUEFOX2_STEREO_NODE_H_
 
 #include "bluefox2/Bluefox2DynConfig.h"
-#include "camera_base/camera_node_base.h"
+#include <camera_base/camera_node_base.h>
 
 namespace bluefox2 {
 

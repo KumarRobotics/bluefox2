@@ -33,7 +33,7 @@ void Bluefox2::OpenDevice() {
     throw std::runtime_error(e.what());
   }
 
-  // These poniters will probably leak, but we don't really care
+  // These pointers will probably leak, but we don't really care
   fi_ = new FunctionInterface(dev_);
   stats_ = new Statistics(dev_);
   bf_set_ = new SettingsBlueFOX(dev_);
@@ -56,8 +56,8 @@ void Bluefox2::RequestSingle() const {
 void Bluefox2::RequestImages(int n) const {
   for (int i = 0; i < n; ++i) {
     fi_->imageRequestSingle();
-    int requestNr = fi_->imageRequestWaitFor(kTimeout);
-    fi_->imageRequestUnlock(requestNr);
+    int request_nr = fi_->imageRequestWaitFor(kTimeout);
+    fi_->imageRequestUnlock(request_nr);
   }
 }
 
@@ -67,13 +67,13 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
   request_nr = fi_->imageRequestWaitFor(kTimeout);
   // Check if request nr is valid
   if (!fi_->isRequestNrValid(request_nr)) {
-    //    fi_->imageRequestUnlock(requestNr);
+    fi_->imageRequestUnlock(request_nr);
     return false;
   }
   request_ = fi_->getRequest(request_nr);
   // Check if request is ok
   if (!request_->isOK()) {
-    //    fi_->imageRequestUnlock(requestNr);
+    fi_->imageRequestUnlock(request_nr);
     return false;
   }
 
