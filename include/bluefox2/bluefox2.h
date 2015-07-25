@@ -37,9 +37,6 @@ class Bluefox2 {
  private:
   static const int kTimeout = 300;
 
-  void FillSensorMsgs(sensor_msgs::Image &image_msg,
-                      sensor_msgs::CameraInfo &cinfo_msg);
-
   std::string AvailableDevice() const;
 
   void RequestImages(int n) const;
@@ -49,20 +46,20 @@ class Bluefox2 {
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
 
-  void SetColor(bool *color) const;  // need to change
+  void SetIdpf(int &idpf) const;
   void SetCtm(int *ctm) const;
-  void SetCbm(bool cbm) const;
+  void SetCbm(int &cbm) const;
 
   // Auto control parameters
-  void SetAec(int *expose_us, int auto_expose) const;
-  void SetExposeUs(int *expose_us) const;
+  void SetAec(int &auto_expose, int &expose_us) const;
+  void SetExposeUs(int &expose_us) const;
   void SetAgc(double *gain_db, bool auto_gain) const;
-  void SetGainDb(double *gain_db) const;
+  void SetGainDb(double &gain_db) const;
   void SetAcs(int acs) const;
   void SetAverageGreyValue(int *des_gray_val) const;
 
   void SetHdr(bool *hdr) const;
-  void SetWbp(int *wbp, double *r_gain, double *g_gain, double *b_gain) const;
+  void SetWbp(int &wbp, double &r_gain, double &g_gain, double &b_gain) const;
   void SetDcfm(int *dcfm) const;
   bool IsColorSupported() const;
   bool IsCtmOnDemandSupported() const;

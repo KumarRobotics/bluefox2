@@ -10,9 +10,10 @@
     <arg name="frame_id" default="$(arg camera)"/>
     <arg name="calib_url" default="file://${ROS_HOME}/camera_info/$(arg camera_name).yaml"/>
     <arg name="fps" default="$(arg rate)"/>
-    <arg name="color" default="false"/>
+
+    <arg name="idpf" default="0"/>
     <arg name="aec" default="0"/>
-    <arg name="cbm" default="false"/>
+    <arg name="cbm" default="0"/>
     <arg name="ctm" default="1"/>
     <arg name="dcfm" default="0"/>
     <arg name="hdr" default="false"/>
@@ -36,9 +37,9 @@
         <param name="camera_name" type="string" value="$(arg camera_name)"/>
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
         <param name="fps" type="double" value="$(arg fps)"/>
-        <param name="color" type="bool" value="$(arg color)"/>
+        <param name="idpf" type="int" value="$(arg idpf)"/>
         <param name="aec" type="int" value="$(arg aec)"/>
-        <param name="cbm" type="bool" value="$(arg cbm)"/>
+        <param name="cbm" type="int" value="$(arg cbm)"/>
         <param name="ctm" type="int" value="$(arg ctm)"/>
         <param name="dcfm" type="int" value="$(arg dcfm)"/>
         <param name="hdr" type="bool" value="$(arg hdr)"/>

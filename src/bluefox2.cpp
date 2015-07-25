@@ -1,4 +1,5 @@
 #include "bluefox2/bluefox2.h"
+#include <sensor_msgs/fill_image.h>
 
 namespace bluefox2 {
 
@@ -33,7 +34,7 @@ void Bluefox2::OpenDevice() {
     throw std::runtime_error(e.what());
   }
 
-  // These pointers will probably leak, but we don't really care
+  // These poniters will probably leak, but we don't really care
   fi_ = new FunctionInterface(dev_);
   stats_ = new Statistics(dev_);
   bf_set_ = new SettingsBlueFOX(dev_);
@@ -56,53 +57,57 @@ void Bluefox2::RequestSingle() const {
 void Bluefox2::RequestImages(int n) const {
   for (int i = 0; i < n; ++i) {
     fi_->imageRequestSingle();
-    int request_nr = fi_->imageRequestWaitFor(kTimeout);
-    fi_->imageRequestUnlock(request_nr);
+    int requestNr = fi_->imageRequestWaitFor(kTimeout);
+    fi_->imageRequestUnlock(requestNr);
   }
 }
 
 bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
                          sensor_msgs::CameraInfo &cinfo_msg) {
+  // NOTE: A request object is locked for the driver whenever the corresponding
+  // wait function returns a valid request object.
+  // All requests returned by
+  // mvIMPACT::acquire::FunctionInterface::imageRequestWaitFor need to be
+  // unlocked no matter which result mvIMPACT::acquire::Request::requestResult
+  // contains.
+  // http://www.matrix-vision.com/manuals/SDK_CPP/ImageAcquisition_section_capture.html
+
   int request_nr = INVALID_ID;
   request_nr = fi_->imageRequestWaitFor(kTimeout);
-  // Check if request nr is valid
+
+  // Check if request is valid
   if (!fi_->isRequestNrValid(request_nr)) {
-    fi_->imageRequestUnlock(request_nr);
-    return false;
-  }
-  request_ = fi_->getRequest(request_nr);
-  // Check if request is ok
-  if (!request_->isOK()) {
+    // We do not need to unlock here because the request is not valid?
     fi_->imageRequestUnlock(request_nr);
     return false;
   }
 
-  FillSensorMsgs(image_msg, cinfo_msg);
+  request_ = fi_->getRequest(request_nr);
+
+  // Check if request is ok
+  if (!request_->isOK()) {
+    // need to unlock here because the request is valid even if it is not ok
+    fi_->imageRequestUnlock(request_nr);
+    return false;
+  }
+
+  std::string encoding;
+  const auto bayer_mosaic_parity = request_->imageBayerMosaicParity.read();
+  if (bayer_mosaic_parity != bmpUndefined) {
+    // Bayer pattern
+    const auto bytes_per_pixel = request_->imageBytesPerPixel.read();
+    encoding = BayerPatternToEncoding(bayer_mosaic_parity, bytes_per_pixel);
+  } else {
+    encoding = PixelFormatToEncoding(request_->imagePixelFormat.read());
+  }
+  sensor_msgs::fillImage(image_msg, encoding, request_->imageHeight.read(),
+                         request_->imageWidth.read(),
+                         request_->imageLinePitch.read(),
+                         request_->imageData.read());
+
   // Release capture request
   fi_->imageRequestUnlock(request_nr);
   return true;
-}
-
-void Bluefox2::FillSensorMsgs(sensor_msgs::Image &image_msg,
-                              sensor_msgs::CameraInfo &cinfo_msg) {
-  image_msg.data.resize(request_->imageSize.read());
-  image_msg.height = request_->imageHeight.read();
-  image_msg.width = request_->imageWidth.read();
-  image_msg.step = request_->imageLinePitch.read();
-
-  if (request_->imageBayerMosaicParity.read() != bmpUndefined) {
-    // Bayer pattern
-    const auto bytes_per_pixel = request_->imageBytesPerPixel.read();
-    image_msg.encoding = BayerPatternToEncoding(
-        request_->imageBayerMosaicParity.read(), bytes_per_pixel);
-  } else {
-    image_msg.encoding =
-        PixelFormatToEncoding(request_->imagePixelFormat.read());
-  }
-  memcpy(&image_msg.data[0], request_->imageData.read(), image_msg.data.size());
-  // Binning
-  cinfo_msg.binning_x = config_.cbm ? 2 : 0;
-  cinfo_msg.binning_y = config_.cbm ? 2 : 0;
 }
 
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
@@ -110,21 +115,30 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   fi_->imageRequestReset(0, 0);
   config_ = config;
 
-  SetPixelClock(config.fps);
-  SetColor(&config.color);
+  // Pixel Format
+  SetIdpf(config.idpf);
+
+  // TODO: need to fix all these settings
   SetCbm(config.cbm);
+  SetAec(config.aec, config.expose_us);
+
+  SetPixelClock(config.fps);
 
   SetAgc(&config.gain_db, config.agc);
-  SetAec(&config.expose_us, config.aec);
   SetAcs(config.acs);
   SetAverageGreyValue(&config.des_grey_value);
 
   SetCtm(&config.ctm);
   SetHdr(&config.hdr);
-  SetWbp(&config.wbp, &config.r_gain, &config.g_gain, &config.b_gain);
+  SetWbp(config.wbp, config.r_gain, config.g_gain, config.b_gain);
   SetDcfm(&config.dcfm);
   // Cache this config
   config_ = config;
+}
+
+void Bluefox2::SetIdpf(int &idpf) const {
+  WriteProperty(bf_set_->imageDestination.pixelFormat, idpf);
+  ReadProperty(bf_set_->imageDestination.pixelFormat, idpf);
 }
 
 void Bluefox2::SetRequestCount(int count) const {
@@ -151,21 +165,26 @@ void Bluefox2::SetPixelClock(double fps) const {
 
 void Bluefox2::SetAverageGreyValue(int *des_gray_val) const {
   ClampProperty(cam_set_->autoControlParameters.desiredAverageGreyValue,
-                des_gray_val);
+                *des_gray_val);
   cam_set_->autoControlParameters.desiredAverageGreyValue.write(*des_gray_val);
 }
 
-void Bluefox2::SetColor(bool *color) const {
-  if (!IsColorSupported()) *color = false;
-  bf_set_->imageDestination.pixelFormat.write(*color ? idpfRGB888Packed
-                                                     : idpfMono8);
+void Bluefox2::SetCbm(int &cbm) const {
+  try {
+    cam_set_->binningMode.write(static_cast<TCameraBinningMode>(cbm));
+    PrintProperty(cam_set_->binningMode);
+  } catch (...) {
+    std::cout << "Failed to set property: " << cbm << std::endl;
+    std::vector<std::pair<std::string, TCameraBinningMode>> dict;
+    cam_set_->binningMode.getTranslationDict(dict);
+    for (const auto &p : dict) {
+      std::cout << p.first << " " << p.second << std::endl;
+    }
+  }
+  cbm = static_cast<int>(cam_set_->binningMode.read());
 }
 
-void Bluefox2::SetCbm(bool cbm) const {
-  cam_set_->binningMode.write(cbm ? cbmBinningHV : cbmOff);
-}
-
-void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
+void Bluefox2::SetAec(int &auto_expose, int &expose_us) const {
   switch (auto_expose) {
     case 0:
       // Manual
@@ -174,7 +193,7 @@ void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
     case 1:
       // Auto
       ClampProperty(cam_set_->expose_us, expose_us);
-      cam_set_->autoControlParameters.exposeUpperLimit_us.write(*expose_us);
+      cam_set_->autoControlParameters.exposeUpperLimit_us.write(expose_us);
       cam_set_->autoControlParameters.exposeLowerLimit_us.write(50);
       cam_set_->autoExposeControl.write(aecOn);
       break;
@@ -183,7 +202,7 @@ void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
       cam_set_->autoExposeControl.write(aecOn);
       RequestImages(10);
       cam_set_->autoExposeControl.write(aecOff);
-      *expose_us = cam_set_->expose_us.read();
+      expose_us = cam_set_->expose_us.read();
       break;
     default:
       // Manual
@@ -191,17 +210,17 @@ void Bluefox2::SetAec(int *expose_us, int auto_expose) const {
   }
 }
 
-void Bluefox2::SetExposeUs(int *expose_us) const {
+void Bluefox2::SetExposeUs(int &expose_us) const {
   cam_set_->autoExposeControl.write(aecOff);
   ClampProperty(cam_set_->expose_us, expose_us);
-  cam_set_->expose_us.write(*expose_us);
+  cam_set_->expose_us.write(expose_us);
 }
 
 void Bluefox2::SetAgc(double *gain_db, bool auto_gain) const {
   if (auto_gain) {
     cam_set_->autoGainControl.write(agcOn);
   } else {
-    SetGainDb(gain_db);
+    SetGainDb(*gain_db);
   }
 }
 
@@ -210,10 +229,10 @@ void Bluefox2::SetAcs(int acs) const {
       static_cast<TAutoControlSpeed>(acs));
 }
 
-void Bluefox2::SetGainDb(double *gain_db) const {
+void Bluefox2::SetGainDb(double &gain_db) const {
   cam_set_->autoGainControl.write(agcOff);
   ClampProperty(cam_set_->gain_dB, gain_db);
-  cam_set_->gain_dB.write(*gain_db);
+  cam_set_->gain_dB.write(gain_db);
 }
 
 void Bluefox2::SetCtm(int *ctm) const {
@@ -247,25 +266,25 @@ void Bluefox2::SetHdr(bool *hdr) const {
   }
 }
 
-void Bluefox2::SetWbp(int *wbp, double *r_gain, double *g_gain,
-                      double *b_gain) const {
+void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
+                      double &b_gain) const {
   // Put white balance as unavailable if it's not a color camera
   if (!IsColorSupported()) {
-    *wbp = -1;
+    wbp = -1;
     return;
   }
 
   // Predefined wbp
-  if (*wbp < 6) {
-    *wbp = (*wbp < 0) ? img_proc_->whiteBalance.read() : *wbp;
-    img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(*wbp));
-  } else if (*wbp == 6) {
+  if (wbp < 6) {
+    wbp = (wbp < 0) ? img_proc_->whiteBalance.read() : wbp;
+    img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(wbp));
+  } else if (wbp == 6) {
     WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
-    wbp_set.redGain.write(*r_gain);
-    wbp_set.greenGain.write(*g_gain);
-    wbp_set.blueGain.write(*b_gain);
+    wbp_set.redGain.write(r_gain);
+    wbp_set.greenGain.write(g_gain);
+    wbp_set.blueGain.write(b_gain);
     //    return;
-  } else if (*wbp == 10) {
+  } else if (wbp == 10) {
     // Set wbp to user1
     img_proc_->whiteBalance.write(
         static_cast<TWhiteBalanceParameter>(wbpUser1));
@@ -275,10 +294,10 @@ void Bluefox2::SetWbp(int *wbp, double *r_gain, double *g_gain,
     RequestImages(1);
     // Set config to user1 and update gains
     WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
-    *wbp = static_cast<int>(wbpUser1);
-    *r_gain = wbp_set.redGain.read();
-    *g_gain = wbp_set.greenGain.read();
-    *b_gain = wbp_set.blueGain.read();
+    wbp = static_cast<int>(wbpUser1);
+    r_gain = wbp_set.redGain.read();
+    g_gain = wbp_set.greenGain.read();
+    b_gain = wbp_set.blueGain.read();
   }
 }
 
