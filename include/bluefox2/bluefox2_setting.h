@@ -47,7 +47,7 @@ TranslationDict<typename PropertyType::value_type> GetTranslationDict(
 template <typename ValueType>
 void PrintTranslationDict(const TranslationDict<ValueType>& dict) {
   for (const auto& p : dict) {
-    std::cout << p.first << ": " << p.second << "\n";
+    std::cout << "[" << p.first << ": " << p.second << "]";
   }
   std::cout << std::endl;
 }
@@ -87,19 +87,20 @@ void PrintProperty(const Prop& prop) {
   std::cout << "  Visible: " << prop.isVisible() << "\n";
 }
 
+// TODO: improve error display
 template <typename PropertyType, typename ValueType>
 void WriteProperty(const PropertyType& prop, ValueType value) {
   using PropertyValueType = typename PropertyType::value_type;
   // Check if it's possible to write to this property
   if (!(prop.isVisible() && prop.isWriteable() && prop.isValid())) {
-    std::cout << prop.readS() << ": unable to write to property" << std::endl;
+    std::cout << prop.name() << ": unable to write to property" << std::endl;
     return;
   }
 
   try {
     prop.write(static_cast<PropertyValueType>(value));
   } catch (...) {
-    std::cout << prop.readS() << ": failed to write to property" << std::endl;
+    std::cout << prop.name() << ": failed to write to property" << std::endl;
     PrintTranslationDict(GetTranslationDict(prop));
   }
 }
@@ -107,14 +108,14 @@ void WriteProperty(const PropertyType& prop, ValueType value) {
 template <typename PropertyType, typename ValueType>
 void ReadProperty(const PropertyType& prop, ValueType& value) {
   if (!(prop.isValid() && prop.isVisible())) {
-    std::cout << prop.readS() << ": unable to read from property" << std::endl;
+    std::cout << prop.name() << ": unable to read from property" << std::endl;
     return;
   }
 
   try {
     value = static_cast<ValueType>(prop.read());
   } catch (...) {
-    std::cout << prop.readS() << ": failed to read from property" << std::endl;
+    std::cout << prop.name() << ": failed to read from property" << std::endl;
   }
 }
 

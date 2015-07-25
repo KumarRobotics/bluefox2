@@ -39,16 +39,16 @@ class Bluefox2 {
 
   std::string AvailableDevice() const;
 
+  // Settings
+  void SetIdpf(int &idpf) const;
+  void SetCbm(int &cbm) const;
+
   void RequestImages(int n) const;
 
-  ///@todo: maybe move all these setting function to a separate file
-  //  void SetCbm(bool cbm) const;
   void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
 
-  void SetIdpf(int &idpf) const;
   void SetCtm(int *ctm) const;
-  void SetCbm(int &cbm) const;
 
   // Auto control parameters
   void SetAec(int &auto_expose, int &expose_us) const;

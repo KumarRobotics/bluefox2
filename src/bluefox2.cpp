@@ -141,6 +141,12 @@ void Bluefox2::SetIdpf(int &idpf) const {
   ReadProperty(bf_set_->imageDestination.pixelFormat, idpf);
 }
 
+void Bluefox2::SetCbm(int &cbm) const {
+  WriteProperty(cam_set_->binningMode, cbm);
+  ReadProperty(cam_set_->binningMode, cbm);
+}
+
+// TODO: fix
 void Bluefox2::SetRequestCount(int count) const {
   sys_set_->requestCount.write(count);
 }
@@ -169,20 +175,6 @@ void Bluefox2::SetAverageGreyValue(int *des_gray_val) const {
   cam_set_->autoControlParameters.desiredAverageGreyValue.write(*des_gray_val);
 }
 
-void Bluefox2::SetCbm(int &cbm) const {
-  try {
-    cam_set_->binningMode.write(static_cast<TCameraBinningMode>(cbm));
-    PrintProperty(cam_set_->binningMode);
-  } catch (...) {
-    std::cout << "Failed to set property: " << cbm << std::endl;
-    std::vector<std::pair<std::string, TCameraBinningMode>> dict;
-    cam_set_->binningMode.getTranslationDict(dict);
-    for (const auto &p : dict) {
-      std::cout << p.first << " " << p.second << std::endl;
-    }
-  }
-  cbm = static_cast<int>(cam_set_->binningMode.read());
-}
 
 void Bluefox2::SetAec(int &auto_expose, int &expose_us) const {
   switch (auto_expose) {
