@@ -48,8 +48,7 @@ int Bluefox2::GetExposeUs() const {
   if (request_ && request_->isOK()) {
     return request_->infoExposeTime_us.read();
   } else {
-    // TODO: Should this be 0?
-    return config_.expose_us;
+    return 0;
   }
 }
 
@@ -122,7 +121,6 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
 void Bluefox2::Configure(Bluefox2DynConfig &config) {
   // Clear request queue
   fi_->imageRequestReset(0, 0);
-  config_ = config;
 
   // Pixel Format
   SetIdpf(config.idpf);
@@ -149,7 +147,6 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   // Request
   FillCaptureQueue(config.request);
 
-  // TODO: need to fix all these settings
   // Cache this config
   config_ = config;
 }

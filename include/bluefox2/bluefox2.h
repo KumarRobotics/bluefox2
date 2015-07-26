@@ -40,7 +40,7 @@ class Bluefox2 {
   void SetCbm(int &cbm) const;
 
   void SetAgc(bool &auto_gain, double &gain_db) const;
-  void SetAec(bool &auto_expose, int &GetExposeUs) const;
+  void SetAec(bool &auto_expose, int &expose_us) const;
   void SetAcs(int &acs, int &des_gray_val) const;
 
   void SetWbp(int &wbp, double &r_gain, double &g_gain, double &b_gain) const;
