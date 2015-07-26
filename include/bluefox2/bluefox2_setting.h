@@ -17,9 +17,9 @@ using namespace mvIMPACT::acquire;
 template <typename ValueType>
 using TranslationDict = std::vector<std::pair<std::string, ValueType>>;
 
-template <typename T>
-T Clamp(const T& value, const T& low, const T& high) {
-  return std::max(low, std::min(high, value));
+template <typename T1, typename T2>
+T1 Clamp(const T1& value, const T2& low, const T2& high) {
+  return std::max<T1>(low, std::min<T1>(high, value));
 }
 
 template <typename PropertyType, typename ValueType>
@@ -95,6 +95,11 @@ void WriteProperty(const PropertyType& prop, ValueType value) {
   if (!(prop.isVisible() && prop.isWriteable() && prop.isValid())) {
     std::cout << prop.name() << ": unable to write to property" << std::endl;
     return;
+  }
+
+  // Clamp value to valid range
+  if (prop.hasMaxValue() && prop.hasMinValue()) {
+    value = ClampProperty(prop, value);
   }
 
   try {

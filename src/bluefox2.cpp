@@ -117,15 +117,16 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
 
   // Pixel Format
   SetIdpf(config.idpf);
+  // Binning
+  SetCbm(config.cbm);
+
+  SetAgc(config.agc, config.gain_db);
+  SetAec(config.aec, config.expose_us);
+  //  SetAcs(config.acs);
 
   // TODO: need to fix all these settings
-  SetCbm(config.cbm);
-  SetAec(config.aec, config.expose_us);
-
   SetPixelClock(config.fps);
 
-  SetAgc(&config.gain_db, config.agc);
-  SetAcs(config.acs);
   SetAverageGreyValue(&config.des_grey_value);
 
   SetCtm(&config.ctm);
@@ -144,6 +145,26 @@ void Bluefox2::SetIdpf(int &idpf) const {
 void Bluefox2::SetCbm(int &cbm) const {
   WriteProperty(cam_set_->binningMode, cbm);
   ReadProperty(cam_set_->binningMode, cbm);
+}
+
+void Bluefox2::SetAgc(bool &auto_gain, double &gain_db) const {
+  if (auto_gain) {
+    WriteProperty(cam_set_->autoGainControl, auto_gain);
+    ReadProperty(cam_set_->autoGainControl, auto_gain);
+  } else {
+    WriteProperty(cam_set_->gain_dB, gain_db);
+    ReadProperty(cam_set_->gain_dB, gain_db);
+  }
+}
+
+void Bluefox2::SetAec(bool &auto_expose, int &expose_us) const {
+  if (auto_expose) {
+    WriteProperty(cam_set_->autoExposeControl, auto_expose);
+    ReadProperty(cam_set_->autoExposeControl, auto_expose);
+  } else {
+    WriteProperty(cam_set_->expose_us, expose_us);
+    ReadProperty(cam_set_->expose_us, expose_us);
+  }
 }
 
 // TODO: fix
@@ -175,45 +196,10 @@ void Bluefox2::SetAverageGreyValue(int *des_gray_val) const {
   cam_set_->autoControlParameters.desiredAverageGreyValue.write(*des_gray_val);
 }
 
-
-void Bluefox2::SetAec(int &auto_expose, int &expose_us) const {
-  switch (auto_expose) {
-    case 0:
-      // Manual
-      SetExposeUs(expose_us);
-      break;
-    case 1:
-      // Auto
-      ClampProperty(cam_set_->expose_us, expose_us);
-      cam_set_->autoControlParameters.exposeUpperLimit_us.write(expose_us);
-      cam_set_->autoControlParameters.exposeLowerLimit_us.write(50);
-      cam_set_->autoExposeControl.write(aecOn);
-      break;
-    case 2:
-      // Auto fix
-      cam_set_->autoExposeControl.write(aecOn);
-      RequestImages(10);
-      cam_set_->autoExposeControl.write(aecOff);
-      expose_us = cam_set_->expose_us.read();
-      break;
-    default:
-      // Manual
-      SetExposeUs(expose_us);
-  }
-}
-
 void Bluefox2::SetExposeUs(int &expose_us) const {
   cam_set_->autoExposeControl.write(aecOff);
   ClampProperty(cam_set_->expose_us, expose_us);
   cam_set_->expose_us.write(expose_us);
-}
-
-void Bluefox2::SetAgc(double *gain_db, bool auto_gain) const {
-  if (auto_gain) {
-    cam_set_->autoGainControl.write(agcOn);
-  } else {
-    SetGainDb(*gain_db);
-  }
 }
 
 void Bluefox2::SetAcs(int acs) const {

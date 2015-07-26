@@ -43,6 +43,9 @@ class Bluefox2 {
   void SetIdpf(int &idpf) const;
   void SetCbm(int &cbm) const;
 
+  void SetAgc(bool &auto_gain, double &gain_db) const;
+  void SetAec(bool &auto_expose, int &expose_us) const;
+
   void RequestImages(int n) const;
 
   void SetPixelClock(double fps) const;
@@ -51,9 +54,7 @@ class Bluefox2 {
   void SetCtm(int *ctm) const;
 
   // Auto control parameters
-  void SetAec(int &auto_expose, int &expose_us) const;
   void SetExposeUs(int &expose_us) const;
-  void SetAgc(double *gain_db, bool auto_gain) const;
   void SetGainDb(double &gain_db) const;
   void SetAcs(int acs) const;
   void SetAverageGreyValue(int *des_gray_val) const;

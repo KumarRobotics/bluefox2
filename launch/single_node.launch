@@ -12,14 +12,17 @@
     <arg name="fps" default="$(arg rate)"/>
 
     <arg name="idpf" default="0"/>
-    <arg name="aec" default="0"/>
+    <arg name="aec" default="true"/>
+    <arg name="expose_us" default="10000"/>
+    <arg name="agc" default="true"/>
+    <arg name="gain_db" default="0.0"/>
+
     <arg name="cbm" default="0"/>
+
     <arg name="ctm" default="1"/>
     <arg name="dcfm" default="0"/>
     <arg name="hdr" default="false"/>
     <arg name="wbp" default="-1"/>
-    <arg name="expose_us" default="5000"/>
-    <arg name="gain_db" default="0.0"/>
     <arg name="boost" default="false"/>
     <arg name="mm" default="0"/>
     <arg name="jpeg_quality" default="80"/>
@@ -38,14 +41,16 @@
         <param name="calib_url" type="string" value="$(arg calib_url)"/>
         <param name="fps" type="double" value="$(arg fps)"/>
         <param name="idpf" type="int" value="$(arg idpf)"/>
-        <param name="aec" type="int" value="$(arg aec)"/>
+        <param name="aec" type="bool" value="$(arg aec)"/>
+        <param name="expose_us" type="int" value="$(arg expose_us)"/>
+        <param name="agc" type="bool" value="$(arg aec)"/>
+        <param name="gain_db" type="double" value="$(arg gain_db)"/>
+
         <param name="cbm" type="int" value="$(arg cbm)"/>
         <param name="ctm" type="int" value="$(arg ctm)"/>
         <param name="dcfm" type="int" value="$(arg dcfm)"/>
         <param name="hdr" type="bool" value="$(arg hdr)"/>
         <param name="wbp" type="int" value="$(arg wbp)"/>
-        <param name="expose_us" type="int" value="$(arg expose_us)"/>
-        <param name="gain_db" type="double" value="$(arg gain_db)"/>
         <param name="boost" type="bool" value="$(arg boost)"/>
         <param name="mm" type="int" value="$(arg mm)"/>
         <param name="image_raw/compressed/jpeg_quality" type="int" value="$(arg jpeg_quality)"/>
