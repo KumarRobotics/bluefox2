@@ -171,7 +171,7 @@ void Bluefox2::SetAec(bool &auto_expose, int &expose_us) const {
 // TODO: consider adding auto control limit here
 void Bluefox2::SetAcs(int &acs, int &des_gray_val) const {
   if (cam_set_->autoControlParameters.isAvailable()) {
-    bool agc, aec;
+    bool agc = false, aec = false;
     ReadProperty(cam_set_->autoGainControl, agc);
     ReadProperty(cam_set_->autoExposeControl, aec);
     if (agc || aec) {
@@ -240,6 +240,21 @@ void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
   }
 }
 
+// TODO: provide other HDR point?
+void Bluefox2::SetHdr(bool &hdr) const {
+  auto& hdr_control = cam_set_->getHDRControl();
+  if (!hdr_control.isAvailable()) {
+    hdr = false;
+    return;
+  }
+
+  WriteProperty(hdr_control.HDREnable, hdr);
+  ReadProperty(hdr_control.HDREnable, hdr);
+  if (hdr) {
+    WriteProperty(hdr_control.HDRMode, cHDRmFixed0);
+  }
+}
+
 // TODO: fix
 void Bluefox2::SetRequestCount(int count) const {
   sys_set_->requestCount.write(count);
@@ -273,20 +288,6 @@ bool Bluefox2::IsCtmOnDemandSupported() const {
   cam_set_->triggerMode.getTranslationDictValues(values);
   return std::find(values.cbegin(), values.cend(), ctmOnDemand) !=
          values.cend();
-}
-
-void Bluefox2::SetHdr(bool &hdr) const {
-  // Hdr not supported
-  if (!cam_set_->getHDRControl().isAvailable()) {
-    hdr = false;
-    return;
-  }
-  if (hdr) {
-    cam_set_->getHDRControl().HDRMode.write(cHDRmFixed0);
-    cam_set_->getHDRControl().HDREnable.write(bTrue);
-  } else {
-    cam_set_->getHDRControl().HDREnable.write(bFalse);
-  }
 }
 
 void Bluefox2::SetDcfm(int *dcfm) const {
