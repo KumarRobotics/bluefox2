@@ -50,10 +50,10 @@ class Bluefox2 {
   void SetWbp(int &wbp, double &r_gain, double &g_gain, double &b_gain) const;
   void SetHdr(bool &hdr) const;
   void SetDcfm(int &dcfm) const;
+  void SetCpc(int &cpc) const;
 
   void RequestImages(int n) const;
 
-  void SetPixelClock(double fps) const;
   void SetRequestCount(int count) const;
 
   void SetCtm(int *ctm) const;

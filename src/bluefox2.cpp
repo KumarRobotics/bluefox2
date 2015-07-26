@@ -133,9 +133,10 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetHdr(config.hdr);
   // Dark Current Filter
   SetDcfm(config.dcfm);
+  // Pixel Clock
+  SetCpc(config.cpc);
 
   // TODO: need to fix all these settings
-  SetPixelClock(config.fps);
   SetCtm(&config.ctm);
   // Cache this config
   config_ = config;
@@ -276,22 +277,14 @@ void Bluefox2::SetDcfm(int &dcfm) const {
   }
 }
 
+void Bluefox2::SetCpc(int &cpc) const {
+  WriteProperty(cam_set_->pixelClock_KHz, cpc);
+  ReadProperty(cam_set_->pixelClock_KHz, cpc);
+}
+
 // TODO: fix
 void Bluefox2::SetRequestCount(int count) const {
   sys_set_->requestCount.write(count);
-}
-
-void Bluefox2::SetPixelClock(double fps) const {
-  const auto pclk_khz = cam_set_->pixelClock_KHz.read();
-  const auto max_fps =
-      PixelClockToFrameRate(pclk_khz, width(), height(), config_expose_us());
-  // Do nothing if we have the capacity to deliver the required fps
-  if (fps < max_fps) return;
-  // Promote to highest pixel clock only if we ask for faster fps
-  // Never decrease pixel clock
-  const auto size = cam_set_->pixelClock_KHz.dictSize();
-  const auto value = cam_set_->pixelClock_KHz.getTranslationDictValue(size - 1);
-  cam_set_->pixelClock_KHz.write(value);
 }
 
 void Bluefox2::SetCtm(int *ctm) const {
