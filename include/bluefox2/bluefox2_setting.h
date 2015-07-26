@@ -1,5 +1,5 @@
-#ifndef BLUEFOX2_SETTINGS_H_
-#define BLUEFOX2_SETTINGS_H_
+#ifndef BLUEFOX2_SETTING_H_
+#define BLUEFOX2_SETTING_H_
 
 #include <iostream>
 
@@ -97,9 +97,11 @@ void WriteProperty(const PropertyType& prop, ValueType value) {
     return;
   }
 
-  // Clamp value to valid range
-  if (prop.hasMaxValue() && prop.hasMinValue()) {
-    value = ClampProperty(prop, value);
+  // Clamp value to valid range only if it's not an enum
+  if (!std::is_enum<PropertyValueType>::value) {
+    if (prop.hasMaxValue() && prop.hasMinValue()) {
+      value = ClampProperty(prop, value);
+    }
   }
 
   try {
@@ -124,10 +126,6 @@ void ReadProperty(const PropertyType& prop, ValueType& value) {
   }
 }
 
-//  if (prop.hasMaxValue() && prop.hasMinValue()) {
-//    // This modifies value so that the dynamic reconfigure gets updated
-//    value = ClampProperty(prop, value);
-
 }  // namespace bluefox2
 
-#endif  // BLUEFOX2_SETTINGS_H_
+#endif  // BLUEFOX2_SETTING_H_

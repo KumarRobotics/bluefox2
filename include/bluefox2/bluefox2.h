@@ -48,6 +48,8 @@ class Bluefox2 {
   void SetAcs(int &acs, int &des_gray_val) const;
 
   void SetWbp(int &wbp, double &r_gain, double &g_gain, double &b_gain) const;
+  void SetHdr(bool &hdr) const;
+  void SetDcfm(int &dcfm) const;
 
   void RequestImages(int n) const;
 
@@ -56,13 +58,8 @@ class Bluefox2 {
 
   void SetCtm(int *ctm) const;
 
-  // Auto control parameters
-
-  void SetHdr(bool &hdr) const;
-  void SetDcfm(int *dcfm) const;
   bool IsColorSupported() const;
   bool IsCtmOnDemandSupported() const;
-  int GetDcfm() const;
 
   std::string serial_;
   Bluefox2DynConfig config_;

@@ -131,11 +131,12 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetWbp(config.wbp, config.r_gain, config.g_gain, config.b_gain);
   // High Dynamic Range
   SetHdr(config.hdr);
+  // Dark Current Filter
+  SetDcfm(config.dcfm);
 
   // TODO: need to fix all these settings
   SetPixelClock(config.fps);
   SetCtm(&config.ctm);
-  SetDcfm(&config.dcfm);
   // Cache this config
   config_ = config;
 }
@@ -242,7 +243,7 @@ void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
 
 // TODO: provide other HDR point?
 void Bluefox2::SetHdr(bool &hdr) const {
-  auto& hdr_control = cam_set_->getHDRControl();
+  auto &hdr_control = cam_set_->getHDRControl();
   if (!hdr_control.isAvailable()) {
     hdr = false;
     return;
@@ -252,6 +253,26 @@ void Bluefox2::SetHdr(bool &hdr) const {
   ReadProperty(hdr_control.HDREnable, hdr);
   if (hdr) {
     WriteProperty(hdr_control.HDRMode, cHDRmFixed0);
+  }
+}
+
+void Bluefox2::SetDcfm(int &dcfm) const {
+  if (dcfm == dcfmCalibrateDarkCurrent) {
+    // Special case for calibrate mode
+    // Set "OffsetAutoCalibration = Off"
+    WriteProperty(cam_set_->offsetAutoCalibration, aocOff);
+    // TODO: turn off auto control here?
+    // Set filter mode = calibrate
+    WriteProperty(img_proc_->darkCurrentFilterMode, dcfmCalibrateDarkCurrent);
+    // Read image count, and request some more images
+    int img_cnt = img_proc_->darkCurrentFilterCalibrationImageCount.read();
+    RequestImages(img_cnt);
+    // Then turn on immediately
+    WriteProperty(img_proc_->darkCurrentFilterMode, dcfmOn);
+    WriteProperty(cam_set_->offsetAutoCalibration, aocOn);
+    ReadProperty(img_proc_->darkCurrentFilterMode, dcfm);
+  } else {
+    WriteProperty(img_proc_->darkCurrentFilterMode, dcfm);
   }
 }
 
@@ -290,32 +311,8 @@ bool Bluefox2::IsCtmOnDemandSupported() const {
          values.cend();
 }
 
-void Bluefox2::SetDcfm(int *dcfm) const {
-  if (*dcfm == dcfmCalibrateDarkCurrent) {
-    // Special case for calibrate mode
-    // Set "OffsetAutoCalibration = Off"
-    cam_set_->offsetAutoCalibration.write(aocOff);
-    // Set the (Filter-) "Mode = Calibrate"
-    img_proc_->darkCurrentFilterMode.write(dcfmCalibrateDarkCurrent);
-    // Read image count, and request some more images
-    int img_cnt = img_proc_->darkCurrentFilterCalibrationImageCount.read();
-    RequestImages(img_cnt);
-    // Then turn on immediately
-    img_proc_->darkCurrentFilterMode.write(dcfmOn);
-    cam_set_->offsetAutoCalibration.write(aocOn);
-    *dcfm = GetDcfm();
-  } else {
-    img_proc_->darkCurrentFilterMode.write(
-        static_cast<TDarkCurrentFilterMode>(*dcfm));
-  }
-}
-
 void Bluefox2::SetMM(int mm) const {
   WriteProperty(img_proc_->mirrorModeGlobal, mm);
-}
-
-int Bluefox2::GetDcfm() const {
-  return static_cast<int>(img_proc_->darkCurrentFilterMode.read());
 }
 
 void Bluefox2::SetMaster() const {
