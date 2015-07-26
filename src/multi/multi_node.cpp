@@ -29,7 +29,7 @@ void MultiNode::Acquire() {
       bf2_ros->RequestSingle();
     }
     // For now just use the first camera's exposure time to compensate
-    const auto expose_us = multi_ros_.front()->camera().expose_us();
+    const auto expose_us = multi_ros_.front()->camera().GetExposeUs();
     const auto expose_duration = ros::Duration(expose_us * 1e-6 / 2);
     const auto time = ros::Time::now() + expose_duration;
     for (const Bluefox2RosPtr& bf2_ros : multi_ros_) {

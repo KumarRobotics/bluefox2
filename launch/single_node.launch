@@ -16,14 +16,12 @@
     <arg name="expose_us" default="10000"/>
     <arg name="agc" default="true"/>
     <arg name="gain_db" default="0.0"/>
-
     <arg name="cbm" default="0"/>
-
     <arg name="ctm" default="1"/>
     <arg name="dcfm" default="0"/>
     <arg name="hdr" default="false"/>
     <arg name="wbp" default="-1"/>
-    <arg name="boost" default="false"/>
+    <arg name="request" default="0"/>
     <arg name="mm" default="0"/>
     <arg name="jpeg_quality" default="80"/>
 
@@ -45,13 +43,12 @@
         <param name="expose_us" type="int" value="$(arg expose_us)"/>
         <param name="agc" type="bool" value="$(arg aec)"/>
         <param name="gain_db" type="double" value="$(arg gain_db)"/>
-
         <param name="cbm" type="int" value="$(arg cbm)"/>
         <param name="ctm" type="int" value="$(arg ctm)"/>
         <param name="dcfm" type="int" value="$(arg dcfm)"/>
         <param name="hdr" type="bool" value="$(arg hdr)"/>
         <param name="wbp" type="int" value="$(arg wbp)"/>
-        <param name="boost" type="bool" value="$(arg boost)"/>
+        <param name="request" type="int" value="$(arg request)"/>
         <param name="mm" type="int" value="$(arg mm)"/>
         <param name="image_raw/compressed/jpeg_quality" type="int" value="$(arg jpeg_quality)"/>
     </node>

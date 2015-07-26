@@ -16,13 +16,7 @@ class Bluefox2 {
   const std::string &serial() const { return serial_; }
   std::string product() const { return dev_->product.readS(); }
 
-  int height() const { return bf_set_->cameraSetting.aoiHeight.read(); }
-  int width() const { return bf_set_->cameraSetting.aoiWidth.read(); }
-  int config_expose_us() const { return config_.expose_us; }
-  int expose_us() const {
-    return (request_ && request_->isOK()) ? request_->infoExposeTime_us.read()
-                                          : 0;
-  }
+  int GetExposeUs() const;
 
   void OpenDevice();
   void RequestSingle() const;
@@ -39,27 +33,26 @@ class Bluefox2 {
 
   std::string AvailableDevice() const;
 
+  bool IsCtmOnDemandSupported() const;
+
   // Settings
   void SetIdpf(int &idpf) const;
   void SetCbm(int &cbm) const;
 
   void SetAgc(bool &auto_gain, double &gain_db) const;
-  void SetAec(bool &auto_expose, int &expose_us) const;
+  void SetAec(bool &auto_expose, int &GetExposeUs) const;
   void SetAcs(int &acs, int &des_gray_val) const;
 
   void SetWbp(int &wbp, double &r_gain, double &g_gain, double &b_gain) const;
   void SetHdr(bool &hdr) const;
   void SetDcfm(int &dcfm) const;
   void SetCpc(int &cpc) const;
+  void SetCtm(int &ctm) const;
 
+  // Request
+  void FillCaptureQueue(int &n) const;
   void RequestImages(int n) const;
-
   void SetRequestCount(int count) const;
-
-  void SetCtm(int *ctm) const;
-
-  bool IsColorSupported() const;
-  bool IsCtmOnDemandSupported() const;
 
   std::string serial_;
   Bluefox2DynConfig config_;

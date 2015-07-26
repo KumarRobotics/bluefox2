@@ -44,6 +44,15 @@ void Bluefox2::OpenDevice() {
   img_proc_ = new ImageProcessing(dev_);
 }
 
+int Bluefox2::GetExposeUs() const {
+  if (request_ && request_->isOK()) {
+    return request_->infoExposeTime_us.read();
+  } else {
+    // TODO: Should this be 0?
+    return config_.expose_us;
+  }
+}
+
 void Bluefox2::RequestSingle() const {
   int result = DMR_NO_ERROR;
   result = fi_->imageRequestSingle();
@@ -135,11 +144,21 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetDcfm(config.dcfm);
   // Pixel Clock
   SetCpc(config.cpc);
+  // Trigger Mode
+  SetCtm(config.ctm);
+  // Request
+  FillCaptureQueue(config.request);
 
   // TODO: need to fix all these settings
-  SetCtm(&config.ctm);
   // Cache this config
   config_ = config;
+}
+
+void Bluefox2::FillCaptureQueue(int &n) const {
+  n = std::min<int>(n, fi_->requestCount() - 1);
+  for (int i = 0; i < n; ++i) {
+    fi_->imageRequestSingle();
+  }
 }
 
 void Bluefox2::SetIdpf(int &idpf) const {
@@ -191,14 +210,10 @@ void Bluefox2::SetAcs(int &acs, int &des_gray_val) const {
   acs = Bluefox2Dyn_acs_unavailable;
 }
 
-bool Bluefox2::IsColorSupported() const {
-  return bf_info_->sensorColorMode.read() > iscmMono;
-}
-
 void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
                       double &b_gain) const {
   // Put white balance as unavailable if it's not a color camera
-  if (!IsColorSupported()) {
+  if (bf_info_->sensorColorMode.read() <= iscmMono) {
     wbp = Bluefox2Dyn_wbp_unavailable;
     return;
   }
@@ -287,14 +302,11 @@ void Bluefox2::SetRequestCount(int count) const {
   sys_set_->requestCount.write(count);
 }
 
-void Bluefox2::SetCtm(int *ctm) const {
+void Bluefox2::SetCtm(int &ctm) const {
   // Do nothing when set to hard sync
-  if (*ctm == 2) return;
-  if (*ctm == 1) {
-    // OnDemand option not supported, can only use continuous
-    if (!IsCtmOnDemandSupported()) *ctm = 0;
-  }
-  cam_set_->triggerMode.write(*ctm ? ctmOnDemand : ctmContinuous);
+  if (ctm == -1) return;
+  WriteProperty(cam_set_->triggerMode, ctm);
+  ReadProperty(cam_set_->triggerMode, ctm);
 }
 
 bool Bluefox2::IsCtmOnDemandSupported() const {

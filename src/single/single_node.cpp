@@ -8,15 +8,9 @@ SingleNode::SingleNode(const ros::NodeHandle& pnh)
       bluefox2_ros_(boost::make_shared<Bluefox2Ros>(pnh)) {}
 
 void SingleNode::Acquire() {
-  // This is a hack of boosting frame rate, but only for 200wG
-  // Need to find a way of doing this for all cameras
-  if (boost_) {
-    std::cout << "Boost mode!!!!!" << std::endl;
-    bluefox2_ros_->RequestSingle();
-  }
   while (is_acquire() && ros::ok()) {
     bluefox2_ros_->RequestSingle();
-    const auto expose_us = bluefox2_ros_->camera().expose_us();
+    const auto expose_us = bluefox2_ros_->camera().GetExposeUs();
     const auto expose_duration = ros::Duration(expose_us * 1e-6 / 2);
     const auto time = ros::Time::now() + expose_duration;
     bluefox2_ros_->PublishCamera(time);
@@ -26,7 +20,6 @@ void SingleNode::Acquire() {
 
 void SingleNode::Setup(Bluefox2DynConfig& config) {
   bluefox2_ros_->set_fps(config.fps);
-  boost_ = config.boost;
   bluefox2_ros_->camera().Configure(config);
 }
 
