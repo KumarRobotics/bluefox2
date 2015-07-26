@@ -127,12 +127,14 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   // Auto Controller
   SetAcs(config.acs, config.des_grey_value);
 
+  // White Balance
+  SetWbp(config.wbp, config.r_gain, config.g_gain, config.b_gain);
+  // High Dynamic Range
+  SetHdr(config.hdr);
+
   // TODO: need to fix all these settings
   SetPixelClock(config.fps);
-
   SetCtm(&config.ctm);
-  SetHdr(&config.hdr);
-  SetWbp(config.wbp, config.r_gain, config.g_gain, config.b_gain);
   SetDcfm(&config.dcfm);
   // Cache this config
   config_ = config;
@@ -169,23 +171,78 @@ void Bluefox2::SetAec(bool &auto_expose, int &expose_us) const {
 // TODO: consider adding auto control limit here
 void Bluefox2::SetAcs(int &acs, int &des_gray_val) const {
   if (cam_set_->autoControlParameters.isAvailable()) {
-    WriteProperty(cam_set_->autoControlParameters.controllerSpeed, acs);
-    ReadProperty(cam_set_->autoControlParameters.controllerSpeed, acs);
-    WriteProperty(cam_set_->autoControlParameters.desiredAverageGreyValue,
-                  des_gray_val);
-    ReadProperty(cam_set_->autoControlParameters.desiredAverageGreyValue,
-                 des_gray_val);
+    bool agc, aec;
+    ReadProperty(cam_set_->autoGainControl, agc);
+    ReadProperty(cam_set_->autoExposeControl, aec);
+    if (agc || aec) {
+      if (acs != Bluefox2Dyn_acs_unavailable) {
+        WriteProperty(cam_set_->autoControlParameters.controllerSpeed, acs);
+      }
+      ReadProperty(cam_set_->autoControlParameters.controllerSpeed, acs);
+      WriteProperty(cam_set_->autoControlParameters.desiredAverageGreyValue,
+                    des_gray_val);
+      ReadProperty(cam_set_->autoControlParameters.desiredAverageGreyValue,
+                   des_gray_val);
+      return;
+    }
+  }
+  acs = Bluefox2Dyn_acs_unavailable;
+}
+
+bool Bluefox2::IsColorSupported() const {
+  return bf_info_->sensorColorMode.read() > iscmMono;
+}
+
+void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
+                      double &b_gain) const {
+  // Put white balance as unavailable if it's not a color camera
+  if (!IsColorSupported()) {
+    wbp = Bluefox2Dyn_wbp_unavailable;
+    return;
+  }
+
+  // Predefined white balance parameters
+  if (wbp < Bluefox2Dyn_wbp_user1) {
+    if (wbp > Bluefox2Dyn_wbp_unavailable) {
+      WriteProperty(img_proc_->whiteBalance, wbp);
+    }
+    ReadProperty(img_proc_->whiteBalance, wbp);
+    return;
+  }
+
+  // User defined white balance parameters
+  if (wbp == Bluefox2Dyn_wbp_user1) {
+    WriteProperty(img_proc_->whiteBalance, wbp);
+    auto wbp_set = img_proc_->getWBUserSetting(0);
+    WriteProperty(wbp_set.redGain, r_gain);
+    WriteProperty(wbp_set.greenGain, g_gain);
+    WriteProperty(wbp_set.blueGain, b_gain);
+    ReadProperty(wbp_set.redGain, r_gain);
+    ReadProperty(wbp_set.greenGain, g_gain);
+    ReadProperty(wbp_set.blueGain, b_gain);
+    return;
+  }
+
+  // TODO: considering support continuous white balance calibration?
+  if (wbp == Bluefox2Dyn_wbp_calibrate) {
+    // Set wbp to user1
+    WriteProperty(img_proc_->whiteBalance, wbpUser1);
+    // Calibrate next frame
+    WriteProperty(img_proc_->whiteBalanceCalibration, wbcmNextFrame);
+    // Request one image?
+    RequestImages(1);
+    // Set config to user1 and update gains
+    WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
+    ReadProperty(wbp_set.redGain, r_gain);
+    ReadProperty(wbp_set.greenGain, g_gain);
+    ReadProperty(wbp_set.blueGain, b_gain);
+    ReadProperty(img_proc_->whiteBalance, wbp);
   }
 }
 
 // TODO: fix
 void Bluefox2::SetRequestCount(int count) const {
   sys_set_->requestCount.write(count);
-}
-
-bool Bluefox2::IsColorSupported() const {
-  const auto color_mode = bf_info_->sensorColorMode.read();
-  return color_mode > iscmMono;
 }
 
 void Bluefox2::SetPixelClock(double fps) const {
@@ -218,52 +275,17 @@ bool Bluefox2::IsCtmOnDemandSupported() const {
          values.cend();
 }
 
-void Bluefox2::SetHdr(bool *hdr) const {
+void Bluefox2::SetHdr(bool &hdr) const {
   // Hdr not supported
   if (!cam_set_->getHDRControl().isAvailable()) {
-    *hdr = false;
+    hdr = false;
     return;
   }
-  if (*hdr) {
+  if (hdr) {
     cam_set_->getHDRControl().HDRMode.write(cHDRmFixed0);
     cam_set_->getHDRControl().HDREnable.write(bTrue);
   } else {
     cam_set_->getHDRControl().HDREnable.write(bFalse);
-  }
-}
-
-void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
-                      double &b_gain) const {
-  // Put white balance as unavailable if it's not a color camera
-  if (!IsColorSupported()) {
-    wbp = -1;
-    return;
-  }
-
-  // Predefined wbp
-  if (wbp < 6) {
-    wbp = (wbp < 0) ? img_proc_->whiteBalance.read() : wbp;
-    img_proc_->whiteBalance.write(static_cast<TWhiteBalanceParameter>(wbp));
-  } else if (wbp == 6) {
-    WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
-    wbp_set.redGain.write(r_gain);
-    wbp_set.greenGain.write(g_gain);
-    wbp_set.blueGain.write(b_gain);
-    //    return;
-  } else if (wbp == 10) {
-    // Set wbp to user1
-    img_proc_->whiteBalance.write(
-        static_cast<TWhiteBalanceParameter>(wbpUser1));
-    // Calibrate next frame
-    img_proc_->whiteBalanceCalibration.write(wbcmNextFrame);
-    // Request one image?
-    RequestImages(1);
-    // Set config to user1 and update gains
-    WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
-    wbp = static_cast<int>(wbpUser1);
-    r_gain = wbp_set.redGain.read();
-    g_gain = wbp_set.greenGain.read();
-    b_gain = wbp_set.blueGain.read();
   }
 }
 
@@ -288,7 +310,7 @@ void Bluefox2::SetDcfm(int *dcfm) const {
 }
 
 void Bluefox2::SetMM(int mm) const {
-  img_proc_->mirrorModeGlobal.write(static_cast<TMirrorMode>(mm));
+  WriteProperty(img_proc_->mirrorModeGlobal, mm);
 }
 
 int Bluefox2::GetDcfm() const {
