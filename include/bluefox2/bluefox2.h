@@ -36,6 +36,7 @@ class Bluefox2 {
   bool IsCtmOnDemandSupported() const;
 
   // Settings
+  void SetAoi(int &width, int &height) const;
   void SetIdpf(int &idpf) const;
   void SetCbm(int &cbm) const;
 
@@ -52,7 +53,6 @@ class Bluefox2 {
   // Request
   void FillCaptureQueue(int &n) const;
   void RequestImages(int n) const;
-  void SetRequestCount(int count) const;
 
   std::string serial_;
   Bluefox2DynConfig config_;
@@ -60,7 +60,7 @@ class Bluefox2 {
   mvIMPACT::acquire::DeviceManager dev_mgr_;
   mvIMPACT::acquire::Device *dev_{nullptr};
   mvIMPACT::acquire::FunctionInterface *fi_{nullptr};
-  mvIMPACT::acquire::Statistics *stats_{nullptr};
+  //  mvIMPACT::acquire::Statistics *stats_{nullptr};
   mvIMPACT::acquire::SettingsBlueFOX *bf_set_{nullptr};
   mvIMPACT::acquire::ImageProcessing *img_proc_{nullptr};
   mvIMPACT::acquire::CameraSettingsBlueFOX *cam_set_{nullptr};

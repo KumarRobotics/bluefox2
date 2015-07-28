@@ -36,7 +36,7 @@ void Bluefox2::OpenDevice() {
 
   // These poniters will probably leak, but we don't really care
   fi_ = new FunctionInterface(dev_);
-  stats_ = new Statistics(dev_);
+  //  stats_ = new Statistics(dev_);
   bf_set_ = new SettingsBlueFOX(dev_);
   cam_set_ = new CameraSettingsBlueFOX(dev_);
   sys_set_ = new SystemSettings(dev_);
@@ -122,6 +122,8 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   // Clear request queue
   fi_->imageRequestReset(0, 0);
 
+  // Area of Intreset
+  SetAoi(config.width, config.height);
   // Pixel Format
   SetIdpf(config.idpf);
   // Binning
@@ -157,6 +159,8 @@ void Bluefox2::FillCaptureQueue(int &n) const {
     fi_->imageRequestSingle();
   }
 }
+
+void Bluefox2::SetAoi(int &width, int &height) const {}
 
 void Bluefox2::SetIdpf(int &idpf) const {
   WriteProperty(bf_set_->imageDestination.pixelFormat, idpf);
@@ -292,11 +296,6 @@ void Bluefox2::SetDcfm(int &dcfm) const {
 void Bluefox2::SetCpc(int &cpc) const {
   WriteProperty(cam_set_->pixelClock_KHz, cpc);
   ReadProperty(cam_set_->pixelClock_KHz, cpc);
-}
-
-// TODO: fix
-void Bluefox2::SetRequestCount(int count) const {
-  sys_set_->requestCount.write(count);
 }
 
 void Bluefox2::SetCtm(int &ctm) const {
