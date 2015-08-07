@@ -15,6 +15,8 @@ class SingleNode : public camera_base::CameraNodeBase<Bluefox2DynConfig> {
   virtual void Acquire() override;
   virtual void Setup(Bluefox2DynConfig &config) override;
 
+  void AcquireOnce();
+
  private:
   boost::shared_ptr<Bluefox2Ros> bluefox2_ros_;
   bool boost_{false};
