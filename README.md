@@ -153,20 +153,11 @@ If you are using a color camera, you would want to perform a 'dark current filte
 ![image](http://i.imgur.com/WFrVAOB.jpg)
 5. This calibration process cannot be done automatically since it requires the sensor be running for a few minutes and manually putting the lense cap on.
 
-TODO: turn off offsetautocalibration and set the offset to a proper value during darkcurrentfilter calibration.
-
 Read this [article](http://www.matrix-vision.com/faq-reader/245.html) as well.
 
 `~hdr` (`bool`, default: `false`)
 
 Only 200wG camera supports this mode, set `hdr` to `true` for other cameras will have no effect.
-
-`~boost` (`bool`, default: `false`)
-
-boost mode:
-
-* `true` - send 2 requests into the request queue
-* `false` - send only 1 request
 
 This mode is required when high fps desired which allows 200wG to work at 90 fps and 200bG at 24 fps (with `ctm = 1`). Using this will result in imprecise time stamp of captured image. Use with caution.
 
