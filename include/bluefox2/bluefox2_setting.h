@@ -85,6 +85,7 @@ void PrintProperty(const Prop& prop) {
   }
   std::cout << "  Writable: " << prop.isWriteable() << "\n";
   std::cout << "  Visible: " << prop.isVisible() << "\n";
+  std::cout << "  Valid: " << prop.isValid() << std::endl;
 }
 
 // TODO: improve error display

@@ -56,10 +56,11 @@ std::string BayerPatternToEncoding(const TBayerMosaicParity& bayer_pattern,
   return MONO8;
 }
 
+// http://www.matrix-vision.com/manuals/mvBlueFOX/Appendix_page_0.html#CMOS752_section_1_1
 double PixelClockToFrameRate(int pclk_khz, double width, double height,
                              double expose_us) {
   static const double kTriggerPulseWidthUs = 200;
-  double frame_time_us = (width + 94) * (height + 45) / pclk_khz * 1e3;
+  double frame_time_us = (width + 61) * (height + 45) / pclk_khz * 1e3;
   return 1e6 / (frame_time_us + expose_us + kTriggerPulseWidthUs);
 }
 

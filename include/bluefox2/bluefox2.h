@@ -15,6 +15,8 @@ class Bluefox2 {
 
   const std::string &serial() const { return serial_; }
   std::string product() const { return dev_->product.readS(); }
+  int timeout_ms() const { return timeout_ms_; }
+  void set_timeout_ms(int timeout_ms) { timeout_ms_ = timeout_ms; }
 
   int GetExposeUs() const;
 
@@ -29,8 +31,6 @@ class Bluefox2 {
   void SetSlave() const;
 
  private:
-  static const int kTimeout = 300;
-
   std::string AvailableDevice() const;
 
   bool IsCtmOnDemandSupported() const;
@@ -49,11 +49,13 @@ class Bluefox2 {
   void SetDcfm(int &dcfm) const;
   void SetCpc(int &cpc) const;
   void SetCtm(int &ctm) const;
+  void SetCts(int &cts) const;
 
   // Request
   void FillCaptureQueue(int &n) const;
   void RequestImages(int n) const;
 
+  int timeout_ms_{200};
   std::string serial_;
   Bluefox2DynConfig config_;
   mvIMPACT::acquire::Request *request_{nullptr};

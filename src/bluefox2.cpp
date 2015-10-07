@@ -65,7 +65,7 @@ void Bluefox2::RequestSingle() const {
 void Bluefox2::RequestImages(int n) const {
   for (int i = 0; i < n; ++i) {
     fi_->imageRequestSingle();
-    int requestNr = fi_->imageRequestWaitFor(kTimeout);
+    int requestNr = fi_->imageRequestWaitFor(timeout_ms_);
     fi_->imageRequestUnlock(requestNr);
   }
 }
@@ -81,7 +81,7 @@ bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
   // http://www.matrix-vision.com/manuals/SDK_CPP/ImageAcquisition_section_capture.html
 
   int request_nr = INVALID_ID;
-  request_nr = fi_->imageRequestWaitFor(kTimeout);
+  request_nr = fi_->imageRequestWaitFor(timeout_ms_);
 
   // Check if request is valid
   if (!fi_->isRequestNrValid(request_nr)) {
@@ -146,6 +146,8 @@ void Bluefox2::Configure(Bluefox2DynConfig &config) {
   SetCpc(config.cpc);
   // Trigger Mode
   SetCtm(config.ctm);
+  // Trigger Source
+  SetCts(config.cts);
   // Request
   FillCaptureQueue(config.request);
 
@@ -300,9 +302,19 @@ void Bluefox2::SetCpc(int &cpc) const {
 
 void Bluefox2::SetCtm(int &ctm) const {
   // Do nothing when set to hard sync
-  if (ctm == -1) return;
+  if (ctm == Bluefox2Dyn_hard_sync) return;
   WriteProperty(cam_set_->triggerMode, ctm);
   ReadProperty(cam_set_->triggerMode, ctm);
+}
+
+void Bluefox2::SetCts(int &cts) const {
+  // Do nothing when trigger source is not visible
+  if (!cam_set_->triggerSource.isVisible()) {
+    cts = Bluefox2Dyn_cts_unavailable;
+    return;
+  }
+  WriteProperty(cam_set_->triggerSource, cts);
+  ReadProperty(cam_set_->triggerSource, cts);
 }
 
 bool Bluefox2::IsCtmOnDemandSupported() const {
