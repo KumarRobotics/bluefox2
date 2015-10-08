@@ -19,10 +19,9 @@ add_service_files(FILES SetExposeSrv.srv)
 generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(
-    INCLUDE_DIRS include
-    LIBRARIES bluefox2
+    INCLUDE_DIRS include ${mvIMPACT_INCLUDE_DIRS}
+    LIBRARIES ${PROJECT_NAME} ${mvIMPACT_LIBRARIES}
     CATKIN_DEPENDS message_runtime
-    #  DEPENDS system_lib
     )
 
 include_directories(
