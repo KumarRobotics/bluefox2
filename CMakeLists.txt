@@ -19,8 +19,8 @@ add_service_files(FILES SetExposeSrv.srv)
 generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(
-    #  INCLUDE_DIRS include
-    #  LIBRARIES bluefox2
+    INCLUDE_DIRS include
+    LIBRARIES bluefox2
     CATKIN_DEPENDS message_runtime
     #  DEPENDS system_lib
     )
