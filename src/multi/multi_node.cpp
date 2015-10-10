@@ -44,7 +44,7 @@ void MultiNode::Setup(Bluefox2DynConfig& config) {
     ROS_WARN(
         "%s: Not recommend to use aec (auto expose control) in a "
         "multi-camera system",
-        nh().getNamespace().c_str());
+        pnh().getNamespace().c_str());
   }
   // TODO: config is messed up here
   for (const Bluefox2RosPtr& bf2_ros : multi_ros_) {
