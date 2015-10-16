@@ -67,7 +67,7 @@ namespace acquire
 #   if !defined(MVIMPACT_ACQUIRE_H_) && !defined(NO_MVIMPACT_DEPRECATED_C_WARNINGS)
 #       if defined(__GNUC__) && (__GNUC__ >= 3) && defined(__GNUC_MINOR__) && (__GNUC_MINOR__ >= 1) // is at least GCC 3.1 compiler?
 #           define MVIMPACT_DEPRECATED_C(FUNCTION) FUNCTION __attribute__ ((deprecated))
-#       elif defined(_MSC_VER) && (_MSC_VER >= 1300) // is at least VC 2003 compiler?
+#       elif defined(_MSC_VER) && (_MSC_VER >= 1310) // is at least VC 2003 compiler?
 #           define MVIMPACT_DEPRECATED_C(FUNCTION) __declspec(deprecated) FUNCTION
 #       else
 #           define MVIMPACT_DEPRECATED_C(FUNCTION) FUNCTION
@@ -209,7 +209,7 @@ struct RequestInfo
     int exposeTime_us;
     /// \brief The time the transaction of this image has been delayed (in us) because either the bus was blocked or the CPU was busy.
     /**
-     *  Normally this value will be 0. A value larger then 0 indicates that the system
+     *  Normally this value will be 0. A value larger than 0 indicates that the system
      *  can't manage the current load.
      *
      *  \note This property is not supported by every device.
@@ -361,7 +361,7 @@ enum TImpactBufferFlag
      *  to work with a double buffering scheme.
      */
     ibfUseRequestMemory = 0x1,
-    /// \brief If an exisiting \b IPL_BUFHANDLE is passed to a function it will try to copy data in this buffer instead of freeing it.
+    /// \brief If an existing \b IPL_BUFHANDLE is passed to a function it will try to copy data in this buffer instead of freeing it.
     /**
      *  This flag can be used to allow the continuous usage of the same mvIMPACT buffer. If this
      *  flag is NOT specified whenever a valid mvIMPACT buffer handle is passed to a function
