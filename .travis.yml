@@ -1,3 +1,5 @@
+sudo: required
+dist: trusty
 language:
   - cpp
 compiler:
@@ -8,12 +10,12 @@ notifications:
       - quchao@seas.upenn.edu
 before_install: # Use this to prepare the system to install prerequisites or dependencies
   # Define some config vars
-  - export ROS_DISTRO=hydro
-  - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu precise main" > /etc/apt/sources.list.d/ros-latest.list'
+  - export ROS_DISTRO=jade
+  - sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu trusty main" > /etc/apt/sources.list.d/ros-latest.list'
   - wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
-  - sudo apt-get update -qq
+  - sudo apt-get update -q
 install: # Use this to install any prerequisites or dependencies necessary to run your build
-  - sudo apt-get install -qq -y python-catkin-pkg python-rosdep python-wstool ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-perception
+  - sudo apt-get install -q -y python-catkin-pkg python-rosdep python-wstool #ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-ros-base
   # Setup rosdep
   - sudo rosdep init
   - rosdep update
@@ -27,7 +29,9 @@ before_script: # Use this to prepare your build for testing e.g. copy database c
   - cd ~/ros/catkin_ws/src
   - catkin_init_workspace
   - ln -s $CI_SOURCE_PATH . # Link the repo we are testing to the new workspace
+  - git clone --recursive --depth=1 https://github.com/KumarRobotics/camera_base.git # camera_base dependency
   - cd ../
-  - export ROS_PARALLEL_JOBS='-j4 -l4' # Limit parallel jobs
+  - rosdep install --from-paths src --ignore-src --rosdistro $ROS_DISTRO -y
+  - export ROS_PARALLEL_JOBS='-j2 -l2' # Limit parallel jobs
 script: # All commands must exit with code 0 on success. Anything else is considered failure.
-  - catkin_make
+  - catkin_make -DCMAKE_BUILD_TYPE=Release
