@@ -15,7 +15,7 @@ before_install: # Use this to prepare the system to install prerequisites or dep
   - wget http://packages.ros.org/ros.key -O - | sudo apt-key add -
   - sudo apt-get update -q
 install: # Use this to install any prerequisites or dependencies necessary to run your build
-  - sudo apt-get install -q -y python-catkin-pkg python-rosdep python-wstool #ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-ros-base
+  - sudo apt-get install -q -y python-catkin-pkg python-rosdep python-wstool ros-$ROS_DISTRO-catkin ros-$ROS_DISTRO-ros-base
   # Setup rosdep
   - sudo rosdep init
   - rosdep update
