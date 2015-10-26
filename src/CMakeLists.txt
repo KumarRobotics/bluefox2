@@ -14,18 +14,19 @@ target_link_libraries(${PROJECT_NAME}
     )
 
 # single node
-add_executable(single_node single/single_main.cpp)
-target_link_libraries(single_node ${PROJECT_NAME})
+add_executable(${PROJECT_NAME}_single_node single/single_main.cpp)
+target_link_libraries(${PROJECT_NAME}_single_node ${PROJECT_NAME})
 
 # stereo node
-add_executable(stereo_node stereo/stereo_main.cpp)
-target_link_libraries(stereo_node ${PROJECT_NAME})
+add_executable(${PROJECT_NAME}_stereo_node stereo/stereo_main.cpp)
+target_link_libraries(${PROJECT_NAME}_stereo_node ${PROJECT_NAME})
 
 # multi node
-add_executable(multi_node multi/multi_main.cpp)
-target_link_libraries(multi_node ${PROJECT_NAME})
+add_executable(${PROJECT_NAME}_multi_node multi/multi_main.cpp)
+target_link_libraries(${PROJECT_NAME}_multi_node ${PROJECT_NAME})
 
 
 # list_mvdevice
-add_executable(list_cameras list_cameras.cpp)
-target_link_libraries(list_cameras ${PROJECT_NAME} ${Boost_LIBRARIES})
+add_executable(${PROJECT_NAME}_list_cameras list_cameras.cpp)
+target_link_libraries(${PROJECT_NAME}_list_cameras
+    ${PROJECT_NAME} ${Boost_LIBRARIES})

@@ -33,7 +33,7 @@
     <arg name="calib" default="false"/>
 
     <!-- Node -->
-    <node pkg="bluefox2" type="stereo_node" name="$(arg camera)" output="$(arg output)">
+    <node pkg="bluefox2" type="bluefox2_stereo_node" name="$(arg camera)" output="$(arg output)">
         <param name="left/camera_name" type="string" value="$(arg left_camera_name)"/>
         <param name="left/identifier" type="string" value="$(arg left)"/>
         <param name="left/calib_url" type="string" value="$(arg left_calib_url)"/>
