@@ -156,7 +156,7 @@ enum TAcquisitionStartStopBehaviour
 enum TAoiMode
 //-----------------------------------------------------------------------------
 {
-    /// \brief Use a small centred window for image processing.
+    /// \brief Use a small centered window for image processing.
     /**
      *  In this mode, a device and processing function dependent window in the middle of
      *  the AOI captured from the device will be used for the processing function.
@@ -224,7 +224,7 @@ enum TAutoControlMode
     /**
      *  \b mvBlueFOX \b specific:
      *  For mvBlueFOX devices of type 202b and 202d the operation in device specific AEC/AGC
-     *  mode is limited in (non continous)triggered-modes. AEC/AGC only works while the trigger
+     *  mode is limited in (non continuous)triggered-modes. AEC/AGC only works while the trigger
      *  signal is active. As these sensor types only support the trigger modes
      *  <b>mvIMPACT::acquire::ctmOnHighLevel</b> and <b>mvIMPACT::acquire::ctmOnLowLevel</b>
      *  'active' means that the required signal level for that mode(either \a high or \a low)
@@ -533,7 +533,7 @@ enum TBoolean
 enum TCameraAoiMode
 //-----------------------------------------------------------------------------
 {
-    /// \brief Use the complete AOI window defined by the hardware (sensor, camera).
+    /// \brief Use the complete AOI window defined by the hardware or input data (sensor, camera).
     camFull = 0,
     /// \brief Use a user defined AOI window.
     camUser
@@ -1337,9 +1337,9 @@ enum TClampMode
  *  A unique constant for each image sensor or custom selection. The following values have been
  *  assigned so far:
  *  - 0x0001: Aptina MT9V034 sensor
- *  - 0x0002: Aptina MT9M021 sensor
- *  - 0x0003: Aptina MT9M023 sensor
- *  - 0x0004: ev2 EV76C560 sensor
+ *  - 0x0002: Aptina MT9M021 and MT9M031 sensor
+ *  - 0x0003: Aptina MT9M023, MT9M024 and MT9M034 sensor
+ *  - 0x0004: e2v EV76C560 sensor
  *  - 0x0005: CMOSIS CMV4000 sensor
  *  - 0x0006: Aptina MT9P031 sensor
  *  - 0x0007: Sony ICX424 sensor
@@ -1348,18 +1348,21 @@ enum TClampMode
  *  - 0x000a: Sony ICX445 sensor
  *  - 0x000b: Sony ICX267 sensor
  *  - 0x000c: Sony ICX274 sensor
- *  - 0x000d: Sony ICX645 sensor
+ *  - 0x000d: Sony ICX655 sensor
  *  - 0x000e: Sony ICX674 sensor
  *  - 0x000f: Sony ICX694 sensor
  *  - 0x0010: Sony ICX814 sensor
  *  - 0x0011: Aptina MT9J003 sensor
- *  - 0x0012: CMOSIS CMV4000 sensor
+ *  - 0x0012: CMOSIS CMV2000 sensor
  *  - 0x0013: CMOSIS CMV4000 sensor
  *  - 0x0014: ev2 EV76C570 sensor
  *  - 0x0015: Aptina AR0331 sensor
  *  - 0x0016: Sony ICX204 sensor
  *  - 0x0017: Sony IMX174 sensor
  *  - 0x0018: Sony ICX834 and ICX834_2T sensors
+ *  - 0x0019: Sony ICX625 sensor
+ *  - 0x001a: Aptina MT9F002 sensor
+ *  - 0x001b: Sony IMX249 sensor
  *  - ...
  *  - 0x1000: User defined correction matrix
  *  - 0x2000: Driver automatically selects the matching sensor matrix if available
@@ -1378,6 +1381,8 @@ enum TColorTwistInputCorrectionMatrixMode
     cticmmDeviceSpecific            = 0x00010000 |              0x2000,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx00wC devices.
     cticmmBlueCOUGAR_Xx00wC_WPPLS   = 0x00020000 | 0x10000000 | 0x0001,
+    /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx010C devices.
+    cticmmBlueCOUGAR_Xx010C_WPPLS   = 0x00020000 | 0x10000000 | 0x0011,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx02bC devices.
     cticmmBlueCOUGAR_Xx02bC_WPPLS   = 0x00020000 | 0x10000000 | 0x0002,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx02dC devices.
@@ -1386,6 +1391,8 @@ enum TColorTwistInputCorrectionMatrixMode
     cticmmBlueCOUGAR_Xx02eC_WPPLS   = 0x00020000 | 0x10000000 | 0x0004,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx04bC and mvBlueCOUGAR-XDx04bC devices.
     cticmmBlueCOUGAR_Xx04bC_WPPLS   = 0x00020000 | 0x10000000 | 0x0005,
+    /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx04fC devices.
+    cticmmBlueCOUGAR_Xx04fC_WPPLS   = 0x00020000 | 0x10000000 | 0x001b,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx05C devices.
     cticmmBlueCOUGAR_Xx05C_WPPLS    = 0x00020000 | 0x10000000 | 0x0006,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx20aC devices.
@@ -1404,6 +1411,8 @@ enum TColorTwistInputCorrectionMatrixMode
     cticmmBlueCOUGAR_Xx24C_WPPLS    = 0x00020000 | 0x10000000 | 0x000c,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx25aC devices.
     cticmmBlueCOUGAR_Xx25aC_WPPLS   = 0x00020000 | 0x10000000 | 0x000d,
+    /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx25C devices.
+    cticmmBlueCOUGAR_Xx25C_WPPLS   = 0x00020000 | 0x10000000 | 0x0019,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx04C and mvBlueCOUGAR-XDx04C devices.
     cticmmBlueCOUGAR_Xx04C_WPPLS    = 0x00020000 | 0x10000000 | 0x0012,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-Xx04aC and mvBlueCOUGAR-XDx04aC devices.
@@ -1412,7 +1421,7 @@ enum TColorTwistInputCorrectionMatrixMode
     cticmmBlueCOUGAR_Xx04eC_WPPLS   = 0x00020000 | 0x10000000 | 0x0014,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-XDx04dC devices.
     cticmmBlueCOUGAR_XDx04dC_WPPLS = 0x00030000 | 0x10000000 | 0x0017,
-    /// \brief The WPPLS correction matrix for mvBlueCOUGAR-XDx212C devices.
+    /// \brief The WPPLS correction matrix for mvBlueCOUGAR-XDx212aC and mvBlueCOUGAR-XDx212C devices.
     cticmmBlueCOUGAR_XDx212C_WPPLS = 0x00030000 | 0x10000000 | 0x0018,
     /// \brief The WPPLS correction matrix for mvBlueCOUGAR-XDx24aC and mvBlueCOUGAR-XDx24bC devices.
     cticmmBlueCOUGAR_XDx24aC_WPPLS  = 0x00030000 | 0x10000000 | 0x000e,
@@ -1441,7 +1450,19 @@ enum TColorTwistInputCorrectionMatrixMode
     /// \brief The WPPLS correction matrix for mvBlueFOX3-x020C devices.
     cticmmBlueFOX3_x020C_WPPLS      = 0x00050000 | 0x10000000 | 0x0014,
     /// \brief The WPPLS correction matrix for mvBlueFOX3-x031C devices.
-    cticmmBlueFOX3_x031C_WPPLS      = 0x00050000 | 0x10000000 | 0x0015
+    cticmmBlueFOX3_x031C_WPPLS      = 0x00050000 | 0x10000000 | 0x0015,
+    /// \brief The WPPLS correction matrix for mvBlueFOX3-x012bC devices.
+    cticmmBlueFOX3_x012bC_WPPLS     = 0x00050000 | 0x10000000 | 0x0002,
+    /// \brief The WPPLS correction matrix for mvBlueFOX3-x012dC devices.
+    cticmmBlueFOX3_x012dC_WPPLS     = 0x00050000 | 0x10000000 | 0x0003,
+    /// \brief The WPPLS correction matrix for mvBlueFOX3-x013C devices.
+    cticmmBlueFOX3_x013C_WPPLS      = 0x00050000 | 0x10000000 | 0x0004,
+    /// \brief The WPPLS correction matrix for mvBlueFOX3-x024C devices.
+    cticmmBlueFOX3_x024C_WPPLS      = 0x00050000 | 0x10000000 | 0x0017,
+    /// \brief The WPPLS correction matrix for mvBlueFOX3-x140C devices.
+    cticmmBlueFOX3_x140C_WPPLS      = 0x00050000 | 0x10000000 | 0x001a,
+    /// \brief The WPPLS correction matrix for mvBlueFOX3-x024C devices.
+    cticmmBlueFOX3_x024aC_WPPLS      = 0x00050000 | 0x10000000 | 0x001b
 };
 
 //-----------------------------------------------------------------------------
@@ -1681,7 +1702,14 @@ enum TDeviceAdvancedOptions // flags_attribute, uint_type
      *  be with in ADC digitizer range thus an over-saturated image will contain pixels that do \b NOT contain the maximum
      *  value for the given pixel format.
     */
-    daoUseRawSensorGain = 0x80
+    daoUseRawSensorGain = 0x80,
+    /// \brief Trigger sensor column correction.
+    /**
+     * When switched on this triggers a single column correction calibration process when requesting an image.
+     * To do it again switch it off and on again. This should be done while no acquisition is running.
+     * Changing gain or AOI could make such a recalibration necessary.
+    */
+    daoTriggerSensorColumnCalibration = 0x100
 };
 
 //-----------------------------------------------------------------------------
@@ -1814,7 +1842,7 @@ enum TDeviceEventType // flags_attribute, uint_type
      *  This is currently only supported by mvTITAN/mvGAMMA devices.
      */
     detFrameStart = 0x4,
-    /// \brief An event of this type will be signalled (<b>if desired</b>) each time the the histogram is calculated.
+    /// \brief An event of this type will be signalled (<b>if desired</b>) each time the histogram is calculated.
     /**
      *  \note
      *  This is currently only supported by OEM devices.
@@ -1872,7 +1900,7 @@ enum TDeviceInterfaceLayout
      *  \deprecated
      *  This interface layout has been declared deprecated for GenICam compliant devices(mvBlueCOUGAR-P, mvBlueCOUGAR-S,
      *  mvBlueCOUGAR-X, mvBlueCOUGAR-XD and mvBlueLYNX-M7). For these products please use <b>mvIMPACT::acquire::dilGenICam</b>
-     *  instead \ref ImageAcquisition_section_genicam.
+     *  instead \ref InterfaceLayouts_Differences.
      */
     dilDeviceSpecific = 1,
     /// \brief A GenICam&trade; like interface layout shall be used.
@@ -1888,15 +1916,15 @@ enum TDeviceInterfaceLayout
      *
      *  \note This interface layout will allow to access third party devices as well.
      *
-     *  \sa \ref ImageAcquisition_section_genicam
+     *  \sa \ref AccessingAndWorkingWithPropertiesMethodsAndLists
      */
     dilGenICam = 2
 };
 
 //-----------------------------------------------------------------------------
-/// \brief Defines valid modes for the loading of settings during initialisation.
+/// \brief Defines valid modes for the loading of settings during initialization.
 /**
- *  Whenever a <b>mvIMPACT::acquire::Device</b> is initialised this enumeration type defines the mode the
+ *  Whenever a <b>mvIMPACT::acquire::Device</b> is initialized this enumeration type defines the mode the
  *  <b>mvIMPACT::acquire::Device</b> tries to restore settings from a previously stored session.
  */
 /// \ingroup CommonInterface
@@ -1905,7 +1933,7 @@ enum TDeviceLoadSettings
 {
     /// \brief Tries to load settings automatically following an internal procedure.
     /**
-     *  The load cycle at initialisation time is like this:
+     *  The load cycle at initialization time is like this:
      *
      * \code
      *  look for a setting for this particular device (via serial number)
@@ -2003,15 +2031,15 @@ enum TDeviceState
 {
     /// \brief The <b>mvIMPACT::acquire::Device</b> has been unplugged.
     /**
-     *  The <b>mvIMPACT::acquire::Device</b> has present been since the <b>mvIMPACT::acquire::DeviceManager</b> has been initialised,
+     *  The <b>mvIMPACT::acquire::Device</b> has present been since the <b>mvIMPACT::acquire::DeviceManager</b> has been initialized,
      *  but has been unplugged now and the driver has detected the unplugging of the device. Automatic detection of unplugging events
      *  is only possible for devices that support plug and play, other device drivers will only check if a device is still present
      *  if an application triggered this check.
      */
     dsAbsent = 0,
-    /// \brief The <b>mvIMPACT::acquire::Device</b> is currently connected and initialised.
+    /// \brief The <b>mvIMPACT::acquire::Device</b> is currently connected and initialized.
     dsPresent,
-    /// \brief The <b>mvIMPACT::acquire::Device</b> is connected and is currently initialising.
+    /// \brief The <b>mvIMPACT::acquire::Device</b> is connected and is currently initializing.
     dsInitializing,
     /// \brief This device is recognized, but can't be accessed currently.
     /**
@@ -2242,37 +2270,54 @@ enum TDMR_ERROR // no_property_type
 //-----------------------------------------------------------------------------
 {
     /// \brief The function call was executed successfully.
+    /**
+     *  \b [0]
+     */
     DMR_NO_ERROR = 0,
     /// \brief The specified device can't be found.
     /**
      *  This error occurs either if an invalid device ID has been passed to the
      *  device manager or if the caller tried to close a device which currently
-     *  isn't initialised.
+     *  isn't initialized.
+     *
+     *  \b [-2100]
      */
     DMR_DEV_NOT_FOUND = -2100,
-    /// \brief The device manager couldn't be initialised.
+    /// \brief The device manager couldn't be initialized.
     /**
      *  This is an internal error.
+     *
+     *  \b [-2101]
      */
     DMR_INIT_FAILED = -2101,
     /// \brief The device is already in use.
     /**
-     *  This error will occur if this or another process has initialized this
-     *  device already and an application tries to open the device once more.
+     *  This error e.g. will occur if this or another process has initialized this
+     *  device already and an application tries to open the device once more or if a
+     *  certain resource is available only once but shall be used twice.
+     *
+     *  \b [-2102]
      */
     DMR_DRV_ALREADY_IN_USE = -2102,
-    /// \brief The specified device couldn't be initialised.
+    /// \brief The specified device couldn't be initialized.
+    /**
+     *  \b [-2103]
+     */
     DMR_DEV_CANNOT_OPEN = -2103,
-    /// \brief The device manager or another module hasn't been initialised properly.
+    /// \brief The device manager or another module hasn't been initialized properly.
     /**
      *  This error occurs if the user tries e.g. to close the device manager without
-     *  having initialised it before or if a library used internally has not been initialised properly.
+     *  having initialized it before or if a library used internally or a module or device associated with that library has has not been initialized properly or if
+     *
+     *  \b [-2104]
      */
     DMR_NOT_INITIALIZED = -2104,
-    /// \brief A device could not be initialised.
+    /// \brief A device could not be initialized.
     /**
      *  In this case the log-file will contain detailed information about the source of the
      *  problem.
+     *
+     *  \b [-2105]
      */
     DMR_DRV_CANNOT_OPEN = -2105,
     /// \brief The devices request queue is empty.
@@ -2283,12 +2328,16 @@ enum TDMR_ERROR // no_property_type
      *  It might also arise when trying to trigger an image with a software trigger mechanism
      *  before the acquisition engine has been completely started. In this case a small delay and
      *  then again calling the software trigger function will succeed.
+     *
+     *  \b [-2106]
      */
     DMR_DEV_REQUEST_QUEUE_EMPTY = -2106,
     /// \brief A request object couldn't be created.
     /**
      *  The creation of a request object failed. This might e.g. happen, if the system
      *  runs extremely low on memory.
+     *
+     *  \b [-2107]
      */
     DMR_DEV_REQUEST_CREATION_FAILED = -2107,
     /// \brief An invalid parameter has been passed to a function.
@@ -2296,6 +2345,8 @@ enum TDMR_ERROR // no_property_type
      *  This might e.g. happen if a function requiring a pointer to a structure has been passed
      *  an unassigned pointer or if a value has been passed, that is either too large or too small in
      *  that context.
+     *
+     *  \b [-2108]
      */
     DMR_INVALID_PARAMETER = -2108,
     /// \brief One or more symbols needed in a detected driver library couldn't be resolved.
@@ -2304,11 +2355,19 @@ enum TDMR_ERROR // no_property_type
      *  code as a result of a call to an API function. However when the user tries to get access
      *  to an <b>IMPACT</b> buffer type while the needed <b>IMPACT Base libraries</b> are not installed
      *  on the target system this error code also might be returned to the user.
+     *
+     *  \b [-2109]
      */
     DMR_EXPORTED_SYMBOL_NOT_FOUND = -2109,
     /// \brief An unknown error occurred while processing a user called driver function.
+    /**
+     *  \b [-2110]
+     */
     DEV_UNKNOWN_ERROR = -2110,
     /// \brief A driver function has been called with an invalid device handle.
+    /**
+     *  \b [-2111]
+     */
     DEV_HANDLE_INVALID = -2111,
     /// \brief A driver function has been called but one or more of the input parameters are invalid.
     /**
@@ -2317,15 +2376,22 @@ enum TDMR_ERROR // no_property_type
      *  - one or more of the passed parameters are of an incorrect type
      *  - one or more parameters contain an invalid value (e.g. a filename that points to a file that can't
      *  be found, a value, that is larger or smaller than the allowed values.
+     *
+     *  \b [-2112]
      */
     DEV_INPUT_PARAM_INVALID = -2112,
     /// \brief A function has been called with an invalid number of input parameters.
+    /**
+     *  \b [-2113]
+     */
     DEV_WRONG_INPUT_PARAM_COUNT = -2113,
     /// \brief The creation of a setting failed.
     /**
      *  This can either happen, when a setting with the same name as the one the user
      *  tried to create already exists or if the system can't allocate memory for the
      *  new setting.
+     *
+     *  \b [-2114]
      */
     DEV_CREATE_SETTING_FAILED = -2114,
     /// \brief The unlock for a <b>mvIMPACT::acquire::Request</b> object failed.
@@ -2335,12 +2401,16 @@ enum TDMR_ERROR // no_property_type
      *  user already or this request has never been locked as the request so far has not been used to
      *  capture image data into its buffer. Another reason for this error might be that the user tries to
      *  unlock a request that is currently processed by the device driver.
+     *
+     *  \b [-2115]
      */
     DEV_REQUEST_CANT_BE_UNLOCKED = -2115,
     /// \brief The number for the <b>mvIMPACT::acquire::Request</b> object is invalid.
     /**
      *  The max. number for a <b>mvIMPACT::acquire::Request</b> object is
      *  the value of the property \a RequestCount in the <b>mvIMPACT::acquire::SystemSettings</b> list - 1.
+     *
+     *  \b [-2116]
      */
     DEV_INVALID_REQUEST_NUMBER = -2116,
     /// \brief A Request that hasn't been unlocked has been passed back to the driver.
@@ -2348,9 +2418,14 @@ enum TDMR_ERROR // no_property_type
      *  This error might occur if the user requested an image from the driver but hasn't
      *  unlocked the <b>mvIMPACT::acquire::Request</b> that will be used for this new
      *  image.
+     *
+     *  \b [-2117]
      */
     DEV_LOCKED_REQUEST_IN_QUEUE = -2117,
     /// \brief The user requested a new image, but no free <b>mvIMPACT::acquire::Request</b> object is available to process this request.
+    /**
+     *  \b [-2118]
+     */
     DEV_NO_FREE_REQUEST_AVAILABLE = -2118,
     /// \brief The wait for a request failed.
     /**
@@ -2364,42 +2439,70 @@ enum TDMR_ERROR // no_property_type
      *  - a plug and play device(e.g. an USB device) has been unplugged and therefore can't deliver
      *  images anymore. In this case the \a 'state' property should be checked to find out if the
      *  device is still present or not.
+     *
+     *  \b [-2119]
      */
     DEV_WAIT_FOR_REQUEST_FAILED = -2119,
     /// \brief The user tried to get/set a parameter, which is not supported by this device.
+    /**
+     *  \b [-2120]
+     */
     DEV_UNSUPPORTED_PARAMETER = -2120,
     /// \brief The requested real time controller is not available for this device.
+    /**
+     *  \b [-2121]
+     */
     DEV_INVALID_RTC_NUMBER = -2121,
     /// \brief Some kind of internal error occurred.
     /**
      *  More information can be found in the *.log-file or the debug output.
+     *
+     *  \b [-2122]
      */
     DMR_INTERNAL_ERROR = -2122,
-    /// \brief The user allocated input buffer is to small to accommodate the result.
+    /// \brief The user allocated input buffer is too small to accommodate the result.
+    /**
+     *  \b [-2123]
+     */
     DMR_INPUT_BUFFER_TOO_SMALL = -2123,
     /// \brief Some kind of internal error occurred in the device driver.
     /**
      *  More information can be found in the *.log-file or the debug output.
+     *
+     *  \b [-2124]
      */
     DEV_INTERNAL_ERROR = -2124,
     /// \brief One or more needed libraries are not installed on the system.
-    DMR_LIBRARY_NOT_FOUND = -2125,
-    /// \brief The called function is not available for this device.
-    DMR_FUNCTION_NOT_IMPLEMENTED = -2126,
-    /// \brief The feature in question is not available for this device or driver.
     /**
+     *  \b [-2125]
+     */
+    DMR_LIBRARY_NOT_FOUND = -2125,
+    /// \brief A called function or accessed feature is not available for this device.
+    /**
+     *  \b [-2126]
+     */
+    DMR_FUNCTION_NOT_IMPLEMENTED = -2126,
+    /// \brief The feature in question is (currently) not available for this device or driver.
+    /**
+     *  This might be because another feature currently blocks the one in question from being accessible.
      *  More information can be found in the *.log-file or the debug output.
+     *
+     *  \b [-2127]
      */
     DMR_FEATURE_NOT_AVAILABLE = -2127,
     /// \brief The user is not permitted to perform the requested operation.
     /**
      *  This e.g. might happen if the user tried to delete user data without specifying the
      *  required password.
+     *
+     *  \b [-2128]
      */
     DMR_EXECUTION_PROHIBITED = -2128,
     /// \brief The specified file can't be found.
     /**
      *  This might e.g. happen if the current working directory doesn't contain the file specified.
+     *
+     *  \b [-2129]
      */
     DMR_FILE_NOT_FOUND = -2129,
     /// \brief The licence doesn't match the device it has been assigned to.
@@ -2407,13 +2510,20 @@ enum TDMR_ERROR // no_property_type
      *  When e.g. upgrading a device feature each licence file is bound to a certain device. If the
      *  device this file has been assigned to has a different serial number then the one used
      *  to create the licence this error will occur.
+     *
+     *  \b [-2130]
      */
     DMR_INVALID_LICENCE = -2130,
     /// \brief There is no sensor found or the found sensor type is wrong or not supported.
+    /**
+     *  \b [-2131]
+     */
     DEV_SENSOR_TYPE_ERROR = -2131,
     /// \brief A function call was associated with a camera description, that is invalid.
     /**
      *  One possible reason might be, that the camera description has been deleted(driver closed?).
+     *
+     *  \b [-2132]
      */
     DMR_CAMERA_DESCRIPTION_INVALID = -2132,
     /// \brief A suitable driver library to work with the device manager has been detected, but it is too old to work with this version of the mvDeviceManager library.
@@ -2426,12 +2536,18 @@ enum TDMR_ERROR // no_property_type
      *  The latest drivers will always be available online under <b>www.matrix-vision.de</b>. There
      *  will always be an updated version of the library considered to be too old for download from
      *  here.
+     *
+     *  \b [-2133]
      */
     DMR_NEWER_LIBRARY_REQUIRED = -2133,
     /// \brief A general timeout occurred.
     /**
      *  This is the typical result of functions that wait for some condition to be met with a timeout
      *  among their parameters.
+     *
+     *  More information can be found in the *.log-file or the debug output.
+     *
+     *  \b [-2134]
      */
     DMR_TIMEOUT = -2134,
     /// \brief A wait operation has been aborted.
@@ -2439,25 +2555,36 @@ enum TDMR_ERROR // no_property_type
      *  This e.g. might occur if the user waited for some message to be returned by the driver and the
      *  device driver has been closed within another thread. In order to inform the user that this waiting operation
      *  terminated in an unusual wait, <b>mvIMPACT::acquire::DMR_WAIT_ABANDONED</b> will be returned then.
+     *
+     *  \b [-2135]
      */
     DMR_WAIT_ABANDONED = -2135,
-    /// \brief The execution of a method object failed.
+    /// \brief The execution of a method object or reading/writing to a feature failed.
     /**
      *  More information can be found in the log-file.
+     *
+     *  \b [-2136]
      */
     DMR_EXECUTION_FAILED = -2136,
     /// \brief This request is currently used by the driver
     /**
      *  This error may occur if the user tries to send a certain request object to the driver by a call to the
      *  corresponding image request function.
+     *
+     *  \b [-2137]
      */
     DEV_REQUEST_ALREADY_IN_USE = -2137,
     /// \brief A request has been configured to use a user supplied buffer, but the buffer pointer associated with the request is invalid.
+    /**
+     *  \b [-2138]
+     */
     DEV_REQUEST_BUFFER_INVALID = -2138,
     /// \brief A request has been configured to use a user supplied buffer, but the buffer pointer associated with the request has an incorrect alignment.
     /**
      *  Certain devices need aligned memory to perform efficiently thus when a user supplied buffer shall be used to
      *  capture data into this buffer must follow these alignment constraints
+     *
+     *  \b [-2139]
      */
     DEV_REQUEST_BUFFER_MISALIGNED = -2139,
     /// \brief The requested access to a device could not be granted.
@@ -2465,6 +2592,8 @@ enum TDMR_ERROR // no_property_type
      *  This might e.g. happen if an application tries to access a device exclusively that is already open in another
      *  process. This could also happen if a network device has already been opened with control access from another system
      *  and the current system also tries to establish control access to the device.
+     *
+     *  \b [-2140]
      */
     DEV_ACCESS_DENIED = -2140,
     /// \brief A preload condition for loading a device driver failed.
@@ -2474,6 +2603,8 @@ enum TDMR_ERROR // no_property_type
      *  to load a device driver it performs some basic checks to detect problems like this. When one of these checks
      *  fails the device manager will not try to load the device driver and an error message will be written
      *  to the selected log outputs.
+     *
+     *  \b [-2141]
      */
     DMR_PRELOAD_CHECK_FAILED = -2141,
     /// \brief One or more of the camera descriptions parameters are invalid for the grabber it is used with.
@@ -2488,6 +2619,8 @@ enum TDMR_ERROR // no_property_type
      *  - ...
      *
      *  This error code will be returned by frame grabbers only.
+     *
+     *  \b [-2142]
      */
     DMR_CAMERA_DESCRIPTION_INVALID_PARAMETER = -2142,
     /// \brief A general error returned whenever there has been a problem with accessing a file.
@@ -2500,12 +2633,20 @@ enum TDMR_ERROR // no_property_type
      *  - The driver tried to modify a file, for which it has no write access
      *  - The driver tried to read from a file, for which it has no read access
      *  - ...
+     *
+     *  \b [-2143]
      */
     DMR_FILE_ACCESS_ERROR = -2143,
     /// \brief An error returned when the user application attempts to operate on an invalid queue.
+    /**
+     *  \b [-2144]
+     */
     DMR_INVALID_QUEUE_SELECTION = -2144,
     /// \brief An error returned when the user application attempts to start the acquisition engine at a
     /// time, where it is already running.
+    /**
+     *  \b [-2145]
+     */
     DMR_ACQUISITION_ENGINE_BUSY = -2145,
     // If new error codes must be added this happens HERE!
     // When adding a new value here NEVER forget to update the internal string AND/OR exception table!
@@ -2516,6 +2657,9 @@ enum TDMR_ERROR // no_property_type
     DMR_LAST_ASSIGNED_ERROR_CODE = DMR_PSEUDO_LAST_ASSIGNED_ERROR_CODE - 2,
 #endif // #if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
     /// \brief Defines the last valid error code value for device and device manager related errors.
+    /**
+     *  \b [-2199]
+     */
     DMR_LAST_VALID_ERROR_CODE = -2199
 };
 
@@ -2681,6 +2825,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfRGBx888Packed = 3,
     /// \brief This is a YUV422 packed image with 32 bit for a pair of pixels.
@@ -2702,6 +2848,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Y(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfYUV422Packed = 4,
     /// \brief The image will be transferred as an RGB image in planar format.
@@ -2758,6 +2906,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfRGB888Packed = 9,
     /// \brief This is a YUV444 planar image with 24 bit per pixels.
@@ -2825,6 +2975,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first 2 bytes in memory are the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfRGB101010Packed = 13,
     /// \brief The image will be transferred as an RGB image with 36 bit of usable data per pixel.
@@ -2844,6 +2996,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first 2 bytes in memory are the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfRGB121212Packed = 14,
     /// \brief The image will be transferred as an RGB image with 42 bit of usable data per pixel.
@@ -2863,6 +3017,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first 2 bytes in memory are the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfRGB141414Packed = 15,
     /// \brief The image will be transferred as an RGB image with 48 bit of usable data per pixel.
@@ -2881,6 +3037,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first 2 bytes in memory are the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfRGB161616Packed = 16,
     /// \brief This is a YUV422 packed image with 32 bit for a pair of pixels.
@@ -2902,6 +3060,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels Cb component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Cb(1,2) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfYUV422_UYVYPacked = 17,
     /// \brief A single channel 12 bit per pixel packed format.
@@ -2953,6 +3113,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first 2 bytes in memory are the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Y(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfYUV422_10Packed = 20,
     /// \brief This is a YUV422 packed image with 64 bit for a pair of pixels.
@@ -2975,6 +3137,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first 2 bytes in memory are the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Cb(1,2) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfYUV422_UYVY_10Packed = 21,
     /// \brief The image will be transferred as an RGB image with 24 bit per pixel.
@@ -2992,6 +3156,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels red component. <b>ImageBuffer::vpData</b> will therefore
      *  point to R(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfBGR888Packed = 22,
     /// \brief A 10 bit per color component RGB packed format.
@@ -3030,6 +3196,8 @@ enum TImageBufferPixelFormat
      *    blue  = static_cast<unsigned short>(( pixel >> 20 ) & 0x3FF);
      *  }
      * \endcode
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfBGR101010Packed_V2 = 23,
     /// \brief The image will be transferred as an YUV image with 24 bit per pixel.
@@ -3047,6 +3215,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels Cb component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Cb(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfYUV444_UYVPacked = 24,
     /// \brief The image will be transferred as an YUV image with 30 bit of usable data per pixel.
@@ -3066,6 +3236,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels Cb component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Cb(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfYUV444_UYV_10Packed = 25,
     /// \brief The image will be transferred as an YUV image with 24 bit per pixel.
@@ -3083,6 +3255,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Y(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfYUV444Packed = 26,
     /// \brief The image will be transferred as an YUV image with 30 bit of usable data per pixel.
@@ -3102,6 +3276,8 @@ enum TImageBufferPixelFormat
      *
      *  So the first byte in memory is the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Y(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     ibpfYUV444_10Packed = 27,
     /// \brief A single channel 12 bit per pixel packed format.
@@ -3133,8 +3309,70 @@ enum TImageBufferPixelFormat
      * \endcode
      */
     ibpfMono12Packed_V1 = 28,
+    /// \brief This is a YUV411 packed image with 48 bits for four pixels.
+    /**
+     *  This format uses 4:1 horizontal downsampling, which means that the Y component is
+     *  sampled at each pixel, while U(Cb) and V(Cr) components are sampled every 4 pixels in
+     *  horizontal direction. If each component takes 8 bits, four pixels require 48 bits.
+     *
+     *  Four consecutive pixels (48 bit, 0xaabbccddeeff ) contain 8 bit chrominance blue of pixels 1, 2, 3 and 4(aa),
+     *  8 bit luminance of pixel 1(bb),8 bit luminance of pixel 2(cc), 8 bit chrominance red of pixels 1, 2, 3 and 4(dd),
+     *  8 bit luminance of pixel 3(ee) and finally 8 bit luminance of pixel 4(ff).
+     *
+     *  Thus in memory the data will be stored like this:
+     *
+     * \code
+     *  6 bytes                                     6 bytes                                     etc.
+     *  Cb(1,2,3,4) Y(1) Y(2) Cr(1,2,3,4) Y(3) Y(4) Cb(5,6,7,8) Y(5) Y(6) Cr(5,6,7,8) Y(7) Y(8) etc.
+     *  ..................                          Cb(n,n+1,n+2,n+3) Y(n) Y(n+1) Cr(n,n+1,n+2,n+3) Y(n+2) Y(n+3)
+     * \endcode
+     *
+     *  So the first byte in memory is the chrominance blue component. <b>ImageBuffer::vpData</b> will therefore
+     *  point to Cb when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
+     */
+    ibpfYUV411_UYYVYY_Packed = 29,
     /// \brief The driver will decide which format will be used.
     ibpfAuto = -1
+};
+
+//------------------------------------------------------------------------------
+/// \brief Valid image buffer format reinterpreter modes.
+/// \ingroup CommonInterface
+enum TImageBufferFormatReinterpreterMode // dotNETReplacement=ibpf;TImageBufferPixelFormat.ibpf
+//------------------------------------------------------------------------------
+{
+    /// \brief Reinterpret <b>mvIMPACT::acquire::ibpfMono8</b> as <b>mvIMPACT::acquire::ibpfRGB888Packed</b>.
+    /**
+     * This will effectively divide the width by 3 but preserve the original line pitch.
+     */
+    ibfrmMono8_To_RGB888Packed = ibpfMono8 << 16 | ibpfRGB888Packed,
+    /// \brief Reinterpret <b>mvIMPACT::acquire::ibpfMono8</b> as <b>mvIMPACT::acquire::ibpfBGR888Packed</b>.
+    /**
+     * This will effectively divide the width by 3 but preserve the original line pitch.
+     */
+    ibfrmMono8_To_BGR888Packed = ibpfMono8 << 16 | ibpfBGR888Packed,
+    /// \brief Reinterpret <b>mvIMPACT::acquire::ibpfMono10</b> as <b>mvIMPACT::acquire::ibpfRGB101010Packed</b>.
+    /**
+     * This will effectively divide the width by 3 but preserve the original line pitch.
+     */
+    ibfrmMono10_To_RGB101010Packed = ibpfMono10 << 16 | ibpfRGB101010Packed,
+    /// \brief Reinterpret <b>mvIMPACT::acquire::ibpfMono12</b> as <b>mvIMPACT::acquire::ibpfRGB121212Packed</b>.
+    /**
+     * This will effectively divide the width by 3 but preserve the original line pitch.
+     */
+    ibfrmMono12_To_RGB121212Packed = ibpfMono12 << 16 | ibpfRGB121212Packed,
+    /// \brief Reinterpret <b>mvIMPACT::acquire::ibpfMono14</b> as <b>mvIMPACT::acquire::ibpfRGB141414Packed</b>.
+    /**
+     * This will effectively divide the width by 3 but preserve the original line pitch.
+     */
+    ibfrmMono14_To_RGB141414Packed = ibpfMono14 << 16 | ibpfRGB141414Packed,
+    /// \brief Reinterpret <b>mvIMPACT::acquire::ibpfMono16</b> as <b>mvIMPACT::acquire::ibpfRGB161616Packed</b>.
+    /**
+     * This will effectively divide the width by 3 but preserve the original line pitch.
+     */
+    ibfrmMono16_To_RGB161616Packed = ibpfMono16 << 16 | ibpfRGB161616Packed
 };
 
 //-----------------------------------------------------------------------------
@@ -3164,6 +3402,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfRGBx888Packed = 3,
     /// \brief This is a YUV422 packed image with 32 bit for a pair of pixels.
@@ -3185,6 +3425,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Y(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfYUV422Packed = 4,
     /// \brief The image will be transferred as an RGB image in planar format.
@@ -3243,6 +3485,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfRGB888Packed = 10,
     /// \brief The image will be transferred as a YUV422 image with 16 bit per pixel.
@@ -3288,6 +3532,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfRGB101010Packed = 14,
     /// \brief The image will be transferred as an RGB image with 36 bit of usable data per pixel.
@@ -3307,6 +3553,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfRGB121212Packed = 15,
     /// \brief The image will be transferred as an RGB image with 42 bit of usable data per pixel.
@@ -3326,6 +3574,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfRGB141414Packed = 16,
     /// \brief The image will be transferred as an RGB image with 48 bit of usable data per pixel.
@@ -3344,6 +3594,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels blue component. <b>ImageBuffer::vpData</b> will therefore
      *  point to B(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfRGB161616Packed = 17,
     /// \brief This is a YUV422 packed image with 32 bit for a pair of pixels.
@@ -3365,6 +3617,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels Cb component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Cb(1,2) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfYUV422_UYVYPacked = 18,
     /// \brief A single channel 12 bit per pixel packed format.
@@ -3416,6 +3670,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first 2 bytes in memory are the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Y(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfYUV422_10Packed = 20,
     /// \brief This is a YUV422 packed image with 64 bit for a pair of pixels.
@@ -3438,6 +3694,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first 2 bytes in memory are the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Cb(1,2) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfYUV422_UYVY_10Packed = 21,
     /// \brief The image will be transferred as an RGB image with 24 bit per pixel.
@@ -3455,6 +3713,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels red component. <b>ImageBuffer::vpData</b> will therefore
      *  point to R(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfBGR888Packed = 22,
     /// \brief A 10 bit per color component RGB packed format.
@@ -3493,6 +3753,8 @@ enum TImageDestinationPixelFormat
      *    blue  = static_cast<unsigned short>(( pixel >> 20 ) & 0x3FF);
      *  }
      * \endcode
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfBGR101010Packed_V2 = 23,
     /// \brief The image will be transferred as an YUV image with 24 bit per pixel.
@@ -3510,6 +3772,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels Cb component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Cb(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfYUV444_UYVPacked = 24,
     /// \brief The image will be transferred as an YUV image with 30 bit of usable data per pixel.
@@ -3529,6 +3793,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels Cb component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Cb(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfYUV444_UYV_10Packed = 25,
     /// \brief The image will be transferred as an YUV image with 24 bit per pixel.
@@ -3546,6 +3812,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Y(1) when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfYUV444Packed = 26,
     /// \brief The image will be transferred as an YUV image with 30 bit of usable data per pixel.
@@ -3565,6 +3833,8 @@ enum TImageDestinationPixelFormat
      *
      *  So the first byte in memory is the first pixels luminance component. <b>ImageBuffer::vpData</b> will therefore
      *  point to Y(1) when using a 16 bit pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
      */
     idpfYUV444_10Packed = 27,
     /// \brief A single channel 12 bit per pixel packed format.
@@ -3595,7 +3865,31 @@ enum TImageDestinationPixelFormat
      *  }
      * \endcode
      */
-    idpfMono12Packed_V1 = 28
+    idpfMono12Packed_V1 = 28,
+    /// \brief This is a YUV411 packed image with 48 bits for four pixels.
+    /**
+     *  This format uses 4:1 horizontal downsampling, which means that the Y component is
+     *  sampled at each pixel, while U(Cb) and V(Cr) components are sampled every 4 pixels in
+     *  horizontal direction. If each component takes 8 bits, four pixels require 48 bits.
+     *
+     *  Four consecutive pixels (48 bit, 0xaabbccddeeff ) contain 8 bit chrominance blue of pixels 1, 2, 3 and 4(aa),
+     *  8 bit luminance of pixel 1(bb),8 bit luminance of pixel 2(cc), 8 bit chrominance red of pixels 1, 2, 3 and 4(dd),
+     *  8 bit luminance of pixel 3(ee) and finally 8 bit luminance of pixel 4(ff).
+     *
+     *  Thus in memory the data will be stored like this:
+     *
+     * \code
+     *  6 bytes                                     6 bytes                                     etc.
+     *  Cb(1,2,3,4) Y(1) Y(2) Cr(1,2,3,4) Y(3) Y(4) Cb(5,6,7,8) Y(5) Y(6) Cr(5,6,7,8) Y(7) Y(8) etc.
+     *  ..................                          Cb(n,n+1,n+2,n+3) Y(n) Y(n+1) Cr(n,n+1,n+2,n+3) Y(n+2) Y(n+3)
+     * \endcode
+     *
+     *  So the first byte in memory is the chrominance blue component. <b>ImageBuffer::vpData</b> will therefore
+     *  point to Cb when using a byte pointer.
+     *
+     * \sa \ref Channel_Split_PackedToPlanar
+     */
+    idpfYUV411_UYYVYY_Packed = 29
 };
 
 //-----------------------------------------------------------------------------
@@ -3608,6 +3902,23 @@ enum TImageProcessingFilter
     ipfOff = 0,
     /// \brief A sharpen filter will be applied to the image.
     ipfSharpen
+};
+
+//-----------------------------------------------------------------------------
+/// \brief Defines valid modes the internal image processing algorithms can be operated in.
+/// \ingroup CommonInterface
+enum TImageProcessingOptimization
+//-----------------------------------------------------------------------------
+{
+    /// \brief Will maximize the execution speed. This might result in a higher memory consumption.
+    ipoMaximizeSpeed = 0,
+    /// \brief Will minimize the memory footprint. This might result in a higher CPU load.
+    /**
+     *  \attention This mode will also result in a higher amount of memory allocation and freeing operations
+     *  thus if the application itself is working with heap memory a lot the long term effects of heap
+     *  fragmentation should be considered!
+     */
+    ipoMinimizeMemoryUsage = 1
 };
 
 //-----------------------------------------------------------------------------
@@ -3644,7 +3955,7 @@ enum TImageRequestControlMode
     /**
      *  This mode can be used either to find out what the image format and parameters
      *  after an image capture would be with the current settings or to prepare
-     *  the hardware before starting the first image acquisiton to save time when
+     *  the hardware before starting the first image acquisition to save time when
      *  real image data is processed.
      *
      *  In this mode, no wait function must be called. When the image request function has
@@ -3769,7 +4080,7 @@ enum TInterlacedMode
  *  will contain the overall line count.
  *
  *  <b>mvTITAN/mvGAMMA-CL</b>: The counter is implemented in the hardware. All incoming lines will be counted.
- *  A detected signal on the trigger input will reset the counter. In addition to the the result
+ *  A detected signal on the trigger input will reset the counter. In addition to the result
  *  the line count will be encoded in bit 0 of the first 32 Words (2-byte) of every line (watermark).
  *
  *  To decode the line counter from a line of image data something like this is needed(pseudo-code):
@@ -4048,7 +4359,7 @@ enum TRequestResult // uint_type
      *  If the information is available the property 'MissingData_pc' belonging to that request will contain information
      *  about the amount of data missing. Also some of the statistical properties will provide hints about how much
      *  data is lost. E.g. the properties 'MissingPacktesRecovered', 'RetransmitCount' and 'MissingDataAverage_pc' might
-     *  be or interesst here. Please note that not every property is supported by every device.
+     *  be of interest here. Please note that not every property is supported by every device.
      */
     rrFrameIncomplete = 4,
     /// \brief The access to the device has been lost.
@@ -4115,7 +4426,7 @@ enum TRequestResult // uint_type
     rrCameraNotSupported = rrUnprocessibleRequest | 5,
     // Don't recycle this value
     // rrCameraUserAOINotSupported = rrUnprocessibleRequest | 6,
-    /// \brief The device does not support capturing data in the current cofiguration.
+    /// \brief The device does not support capturing data in the current configuration.
     /**
      *  This error code will occur if a request has been sent to a device that does not
      *  support the acquisition of data. This can e.g. be the case
@@ -4202,7 +4513,7 @@ enum TRTProgOpCodes
     rtctrlProgRegisterSet,
     /// \brief Add a constant value to a register.
     rtctrlProgRegisterAdd,
-    /// \brief Substract a constant value from a register.
+    /// \brief Subtract a constant value from a register.
     rtctrlProgRegisterSub
 };
 
@@ -4411,11 +4722,28 @@ enum TVirtualDeviceImageType // flags_attribute, uint_type
 //-----------------------------------------------------------------------------
 {
     /// \brief Will capture none of the recognized image formats
-    vditNone = 0x0,
-    /// \brief Will capture BMP files only.
-    vditBMP = 0x1,
-    /// \brief Will capture PGM files only.
-    vditPGM = 0x2
+    vditNone = 0x00000000,
+    /// \brief Will capture BMP files.
+    vditBMP = 0x000000001,
+    /// \brief Will capture PGM files.
+    vditPGM = 0x000000002,
+    /// \brief Will capture PNG files.
+    ///
+    /// \note
+    /// This requires the FreeImage (see http://freeimage.sourceforge.net/) library being present on the target system.
+    vditPNG = 0x000000004,
+    /// \brief Will capture JPG files.
+    ///
+    /// \note
+    /// This requires the FreeImage (see http://freeimage.sourceforge.net/) library being present on the target system.
+    vditJPG = 0x000000008,
+    /// \brief Will capture TIFF files.
+    ///
+    /// \note
+    /// This requires the FreeImage (see http://freeimage.sourceforge.net/) library being present on the target system.
+    vditTIFF = 0x000000010,
+    /// \brief Will capture all supported image formats.
+    vditALL = vditBMP | vditPGM | vditPNG | vditJPG | vditTIFF
 };
 
 //-----------------------------------------------------------------------------
@@ -4470,14 +4798,16 @@ enum TVirtualDeviceTestMode
     vdtmMovingYUV444_UYVPackedRamp,
     /// \brief Will generate a moving test pattern with pixel format <b>mvIMPACT::acquire::ibpfBGR101010Packed_V2</b>.
     vdtmMovingBGRPacked_V2Image,
-    /// \brief Will just allocate but not initialise a mono buffer.
+    /// \brief Will just allocate but not initialize a mono buffer.
     vdtmEmptyMonoBuffer,
     /// \brief Will generate a horizontal mono ramp with pixel format <b>mvIMPACT::acquire::ibpfMono12Packed_V1</b>.
     vdtmHorizontalMono12Packed_V1Ramp,
-    /// \brief Will generate a horizontal byaer ramp with pixel format <b>mvIMPACT::acquire::ibpfMono12Packed_V1</b>.
+    /// \brief Will generate a horizontal Bayer ramp with pixel format <b>mvIMPACT::acquire::ibpfMono12Packed_V1</b>.
     vdtmHorizontalBayer12Packed_V1Ramp,
-    /// \brief Will generate a horizontal byaer ramp with pixel format <b>mvIMPACT::acquire::ibpfMono12Packed_V2</b>.
-    vdtmHorizontalBayer12Packed_V2Ramp
+    /// \brief Will generate a horizontal Bayer ramp with pixel format <b>mvIMPACT::acquire::ibpfMono12Packed_V2</b>.
+    vdtmHorizontalBayer12Packed_V2Ramp,
+    /// \brief Will generate a moving test pattern with pixel format <b>mvIMPACT::acquire::ibpfYUV411_UYYVYY_Packed</b>.
+    vdtmMovingYUV411_UYYVYY_PackedRamp
 };
 #endif // #ifndef IGNORE_MVVIRTUALDEVICE_SPECIFIC_DOCUMENTATION
 
@@ -4605,9 +4935,11 @@ typedef enum TFlatFieldFilterMode TFlatFieldFilterMode;
 typedef enum THWUpdateResult THWUpdateResult;
 typedef enum TI2COperationMode TI2COperationMode;
 typedef enum TI2COperationStatus TI2COperationStatus;
+typedef enum TImageBufferFormatReinterpreterMode TImageBufferFormatReinterpreterMode;
 typedef enum TImageBufferPixelFormat TImageBufferPixelFormat;
 typedef enum TImageDestinationPixelFormat TImageDestinationPixelFormat;
 typedef enum TImageProcessingFilter TImageProcessingFilter;
+typedef enum TImageProcessingOptimization TImageProcessingOptimization;
 typedef enum TImageRequestControlMode TImageRequestControlMode;
 typedef enum TInfoSensorColorMode TInfoSensorColorMode;
 typedef enum TInfoSensorColorPattern TInfoSensorColorPattern;

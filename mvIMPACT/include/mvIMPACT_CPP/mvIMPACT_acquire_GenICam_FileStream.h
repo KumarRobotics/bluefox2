@@ -48,7 +48,8 @@ class FileProtocolAdapter
     /**
      *  \return v aligned at i
      */
-    int64_type Align(   /// value to align
+    int64_type Align(
+        /// value to align
         int64_type v,
         /// Alignment
         const int64_type i )
@@ -73,7 +74,8 @@ public:
     /**
      *  \return true if attach was successful, false if not
      */
-    bool attach(    /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from
+    bool attach(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from
         /// a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// The name of the driver internal setting to access with this instance.
@@ -106,12 +108,13 @@ public:
     /**
      *  \return true on success, false on error
      */
-    bool openFile(  /// Name of the file to open. The filename must exist in the Enumeration FileSelector
+    bool openFile(
+        /// Name of the file to open. The filename must exist in the Enumeration FileSelector
         const char* pFileName,
         /// mode to open the file. The mode must exist in the Enunmeration FileOpenMode
         std::ios_base::openmode mode )
     {
-        if( ! m_ptrFileSelector.isValid() )
+        if( !m_ptrFileSelector.isValid() )
         {
             return false;
         }
@@ -138,7 +141,8 @@ public:
     /**
      *  \return true on success, false on error
      */
-    bool closeFile( /// Name of the file to open. The filename must exist in the Enumeration FileSelector
+    bool closeFile(
+        /// Name of the file to open. The filename must exist in the Enumeration FileSelector
         const char* pFileName )
     {
         m_ptrFileSelector.writeS( pFileName );
@@ -150,7 +154,8 @@ public:
     /**
      *  \return Number of bytes written
      */
-    std::streamsize write(  /// Source buffer
+    std::streamsize write(
+        /// Source buffer
         const char* pBuf,
         /// Offset into the device file
         int64_type offs,
@@ -196,7 +201,8 @@ public:
     /**
      *  \return number of bytes successfully read
      */
-    std::streamsize read(   /// Target buffer
+    std::streamsize read(
+        /// Target buffer
         char* pBuf,
         /// Offset in the device file to read from
         int64_type offs,
@@ -239,7 +245,8 @@ public:
     /**
      *  \return Max length of FileAccessBuffer in the given mode on the given file
      */
-    int64_type getBufSize(  /// Name of the file to open. The filename must exist in the Enumeration FileSelector
+    int64_type getBufSize(
+        /// Name of the file to open. The filename must exist in the Enumeration FileSelector
         const char* pFileName,
         /// mode to open the file. The mode must exist in the Enunmeration FileOpenMode
         std::ios_base::openmode mode )
@@ -304,7 +311,7 @@ class IDevFileStreamBuf : public std::basic_streambuf<CharType, Traits>
     using std::basic_streambuf<CharType, Traits>::setg;
 public:
     /// \brief Constructs a new \b mvIMPACT::acquire::GenICam::IDevFileStreamBuf object.
-    IDevFileStreamBuf() : m_file( 0 ), m_pAdapter( 0 ), m_fpos( 0 ) {}
+    IDevFileStreamBuf() : m_pBuffer( 0 ), m_BufSize( 0 ), m_file( 0 ), m_pAdapter( 0 ), m_fpos( 0 ) {}
     /// \brief class destructor.
     ~IDevFileStreamBuf()
     {
@@ -320,7 +327,8 @@ public:
      *  The member function calls rdbuf -> open(_Filename, _Mode | ios_base::in). If open fails,
      *  the function calls setstate(failbit), which may throw an ios_base::failure exception.
      */
-    filebuf_type* open( /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+    filebuf_type* open(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// Name of the file to open
         const char* pFileName,
@@ -328,14 +336,12 @@ public:
         std::ios_base::openmode mode = std::ios_base::in )
     {
         m_pAdapter = new FileProtocolAdapter();
-        if( !m_pAdapter || !m_pAdapter->attach( pDev ) )
+        if( !m_pAdapter )
         {
-            delete m_pAdapter;
-            m_pAdapter = 0;
             return 0;
         }
 
-        if( !m_pAdapter->openFile( pFileName, mode ) )
+        if( !m_pAdapter->attach( pDev ) || !m_pAdapter->openFile( pFileName, mode ) )
         {
             delete m_pAdapter;
             m_pAdapter = 0;
@@ -362,7 +368,7 @@ public:
      */
     bool is_open( void ) const
     {
-        return m_pAdapter != 0;
+        return ( m_pAdapter != 0 ) && ( m_file != 0 );
     }
     /// \brief Fetch the size of the file currently selected on the device.
     /**
@@ -388,11 +394,11 @@ public:
                 // no error
                 ret = this;
             }
-            delete m_pAdapter;
-            m_pAdapter = 0;
-            delete[] m_pBuffer;
-            m_pBuffer = 0;
         }
+        delete m_pAdapter;
+        m_pAdapter = 0;
+        delete[] m_pBuffer;
+        m_pBuffer = 0;
         return ret;
     }
 protected:
@@ -472,18 +478,24 @@ class ODevFileStreamBuf : public std::basic_streambuf<CharType, Traits>
     using std::basic_streambuf<CharType, Traits>::pbump;
 public:
     /// \brief Constructs a new \b mvIMPACT::acquire::GenICam::ODevFileStreamBuf object.
-    ODevFileStreamBuf() : m_file( 0 ), m_pAdapter( 0 ), m_fpos( 0 ) {}
+    ODevFileStreamBuf() : m_pBuffer( 0 ), m_file( 0 ), m_pAdapter( 0 ), m_fpos( 0 ) {}
     /// \brief class destructor.
     ~ODevFileStreamBuf()
     {
-        this->close();
+        // catch and dump all exceptions - we're in a desctructor...
+        try
+        {
+            this->close();
+        }
+        catch( ... ) {}
     }
     /// \brief Opens a file on the device.
     /**
      *  The member function calls rdbuf -> open(_Filename, _Mode | ios_base::in). If open fails,
      *  the function calls setstate(failbit), which may throw an ios_base::failure exception.
      */
-    filebuf_type* open( /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+    filebuf_type* open(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// Name of the file to open
         const char* pFileName,
@@ -491,15 +503,12 @@ public:
         std::ios_base::openmode mode )
     {
         m_pAdapter = new FileProtocolAdapter();
-        if( !m_pAdapter || !m_pAdapter->attach( pDev ) )
+        if( !m_pAdapter )
         {
-            delete m_pAdapter;
-            m_pAdapter = 0;
             return 0;
         }
 
-        // open file via Adapter
-        if( !m_pAdapter->openFile( pFileName, mode ) )
+        if( !m_pAdapter->attach( pDev ) || !m_pAdapter->openFile( pFileName, mode ) )
         {
             delete m_pAdapter;
             m_pAdapter = 0;
@@ -521,7 +530,7 @@ public:
      */
     bool is_open( void ) const
     {
-        return m_pAdapter != 0;
+        return ( m_pAdapter != 0 ) && ( m_file != 0 );
     }
     /// \brief Closes a file on the device.
     /**
@@ -543,11 +552,11 @@ public:
             {
                 ret = syncFailed ? 0 : this;
             }
-            delete m_pAdapter;
-            m_pAdapter = 0;
-            delete[] m_pBuffer;
-            m_pBuffer = 0;
         }
+        delete m_pAdapter;
+        m_pAdapter = 0;
+        delete[] m_pBuffer;
+        m_pBuffer = 0;
         return ret;
     }
 protected:
@@ -634,7 +643,8 @@ public:
         this->init( &m_streambuf );
     }
     /// \brief Constructs a new \b mvIMPACT::acquire::GenICam::ODevFileStreamBase object.
-    ODevFileStreamBase( /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+    ODevFileStreamBase(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// Name of the file to open
         const char* pFileName,
@@ -651,7 +661,8 @@ public:
         this->init( &m_streambuf );
     }
     /// \brief Constructs a new \b mvIMPACT::acquire::GenICam::ODevFileStreamBase object.
-    ODevFileStreamBase( /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+    ODevFileStreamBase(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// Name of the file to open
         const char* pFileName,
@@ -683,7 +694,8 @@ public:
         return m_streambuf.is_open();
     }
     /// \brief Open file on device in write mode
-    void open(  /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+    void open(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// Name of the file to open
         const char* pFileName,
@@ -734,7 +746,8 @@ public:
         this->init( &m_streambuf );
     }
     /// \brief Constructs a new \b mvIMPACT::acquire::GenICam::IDevFileStreamBase object.
-    IDevFileStreamBase( /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+    IDevFileStreamBase(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// Name of the file to open
         const char* pFileName,
@@ -751,7 +764,8 @@ public:
         this->init( &m_streambuf );
     }
     /// \brief Constructs a new \b mvIMPACT::acquire::GenICam::IDevFileStreamBase object.
-    IDevFileStreamBase( /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+    IDevFileStreamBase(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// Name of the file to open
         const char* pFileName,
@@ -787,7 +801,8 @@ public:
      *  The member function calls rdbuf -> open(_Filename, _Mode | ios_base::in). If open fails,
      *  the function calls setstate(failbit), which may throw an ios_base::failure exception.
      */
-    void open(  /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+    void open(
+        /// A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
         mvIMPACT::acquire::Device* pDev,
         /// name of the file to open
         const char* pFileName,

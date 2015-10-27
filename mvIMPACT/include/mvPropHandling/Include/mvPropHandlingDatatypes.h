@@ -17,19 +17,19 @@ namespace acquire
 #endif // #if defined(MVIMPACT_ACQUIRE_H_) || defined(DOXYGEN_CPP_DOCUMENTATION)
 
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
-#   ifdef _WIN32
+#   if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 typedef __int64 int64_type;
 typedef unsigned __int64 uint64_type;
 #       ifdef __BORLANDC__ // is Borland compiler?
 #           pragma option push -b // force enums to the size of integer
 #       endif // __BORLANDC__
-#   elif defined(linux)
+#   elif defined(linux) || defined(__linux) || defined(__linux__)
 #       include <stdint.h>
 typedef int64_t int64_type;
 typedef uint64_t uint64_type;
 #   else
 #       error "unsupported target environment"
-#   endif // _WIN32
+#   endif // #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 #endif // DOXYGEN_SHOULD_SKIP_THIS && WRAP_ANY
 
 //=============================================================================
@@ -334,41 +334,54 @@ enum TComponentVisibility
 };
 
 //-----------------------------------------------------------------------------
-/// \brief Errorcodes of the module handling everything related to properties.
+/// \brief Error codes of the module handling everything related to properties.
 /// \ingroup CommonInterface
 enum TPROPHANDLING_ERROR
 //-----------------------------------------------------------------------------
 {
     /// \brief The operation has been executed successfully.
+    /**
+     *  \b [0]
+     */
     PROPHANDLING_NO_ERROR = 0,
     /// \brief This component is not a list.
     /**
      *  A list operation for this component has been called but this
      *  component does not reference a list.
+     *
+     *  \b [-2000]
      */
     PROPHANDLING_NOT_A_LIST = -2000,
     /// \brief This component is not a property.
     /**
      *  A property operation for this component has been called but
      *  this component does not reference a property.
+     *
+     *  \b [-2001]
      */
     PROPHANDLING_NOT_A_PROPERTY = -2001,
     /// \brief This component is not a method.
     /**
      *  A method operation for this component has been called but
      *  this component does not reference a method.
+     *
+     *  \b [-2002]
      */
     PROPHANDLING_NOT_A_METHOD = -2002,
     /// \brief The caller has no read rights for this component.
     /**
      *  It has been tried to read data from this component, but the
      *  caller has no read rights for this component.
+     *
+     * \b [-2003]
      */
     PROPHANDLING_NO_READ_RIGHTS = -2003,
     /// \brief The caller has no write rights for this component.
     /**
      *  It has been tried to modify data of this component, but the
      *  caller has no write rights for this component.
+     *
+     *  \b [-2004]
      */
     PROPHANDLING_NO_WRITE_RIGHTS = -2004,
     /// \brief The caller can't modify the size of this component.
@@ -382,12 +395,16 @@ enum TPROPHANDLING_ERROR
      *  of values it can handle. Therefore before resizing a property
      *  check if the new size might exceeds this maximum value by calling
      *  the appropriate function.
+     *
+     *  \b [-2005]
      */
     PROPHANDLING_NO_MODIFY_SIZE_RIGHTS = -2005,
     /// \brief The two involved components are not compatible.
     /**
      *  An operation requiring two compatible components has been
      *  called with two components, which are not compatible.
+     *
+     *  \b [-2006]
      */
     PROPHANDLING_INCOMPATIBLE_COMPONENTS = -2006,
     /// \brief This property doesn't use user defined memory.
@@ -395,15 +412,22 @@ enum TPROPHANDLING_ERROR
      *  The caller tried to relocate the user defined memory for a property,
      *  that doesn't reference user defined memory but uses the internal memory
      *  management.
+     *
+     *  \b [-2007]
      */
     PROPHANDLING_NO_USER_ALLOCATED_MEMORY = -2007,
     /// \brief One or more of the specified parameters are not supported by the function.
+    /**
+     *  \b [-2008]
+     */
     PROPHANDLING_UNSUPPORTED_PARAMETER = -2008,
     /// \brief Different sized value buffers have been passed.
     /**
      *  While trying to read value pairs the caller passed two different
      *  sized value buffers to a function while one is too small to hold
      *  all the information.
+     *
+     *  \b [-2009]
      */
     PROPHANDLING_SIZE_MISMATCH = -2009,
     /// \brief A feature that is not implemented so far has been requested.
@@ -411,12 +435,16 @@ enum TPROPHANDLING_ERROR
      *  The caller requested a feature, that hasn't been implemented so
      *  far. This error code is only provided for compatibility and will be
      *  set in very rare cases only.
+     *
+     *  \b [-2010]
      */
     PROPHANDLING_IMPLEMENTATION_MISSING = -2010,
     /// \brief An access token object couldn't be created.
     /**
      *  This can either happen, because the caller has not the rights required
      *  to create an access token or because the system runs very low on memory.
+     *
+     *  \b [-2011]
      */
     PROPHANDLING_ACCESSTOKEN_CREATION_FAILED = -2011,
     /// \brief It has been tried to assign an invalid value to a property.
@@ -432,12 +460,16 @@ enum TPROPHANDLING_ERROR
      *  - check if the property defines a translation dictionary
      *  - check the allowed values within a translation dictionary if one is defined
      *  - check the min and max value for properties, that define limits
+     *
+     *  \b [-2012]
      */
     PROPHANDLING_INVALID_PROP_VALUE = -2012,
     /// \brief The properties translation table has been corrupted.
     /**
      *  The properties translation table has been corrupted for an unknown
      *  reason and can't be used anymore.
+     *
+     *  \b [-2013]
      */
     PROPHANDLING_PROP_TRANSLATION_TABLE_CORRUPTED = -2013,
     /// \brief Invalid value index.
@@ -451,12 +483,16 @@ enum TPROPHANDLING_ERROR
      *  of a property minus one for properties with the <b>mvIMPACT::acquire::cfFixedSize</b>
      *  flag set. Other properties will automatically adjust the size once the user
      *  writes to an index out of bounds.
+     *
+     *  \b [-2014]
      */
     PROPHANDLING_PROP_VAL_ID_OUT_OF_BOUNDS = -2014,
     /// \brief This property doesn't define a translation table.
     /**
      *  The caller tried to modify a translation table, that hasn't been
      *  defined for this property.
+     *
+     *  \b [-2015]
      */
     PROPHANDLING_PROP_TRANSLATION_TABLE_NOT_DEFINED = -2015,
     /// \brief An invalid value has been passed to the property.
@@ -468,31 +504,48 @@ enum TPROPHANDLING_ERROR
      *
      *  Another reason for this error might be when a user tried to access e.g. a
      *  float property with functions meant to be used for int properties.
+     *
+     *  \b [-2016]
      */
     PROPHANDLING_INVALID_PROP_VALUE_TYPE = -2016,
     /// \brief A too large value has been passed.
     /**
      *  One or more of the values the caller tried to write to the
-     *  property are larger then the max. allowed value for this property.
+     *  property are larger than the max. allowed value for this property.
+     *
+     *  \b [-2017]
      */
     PROPHANDLING_PROP_VAL_TOO_LARGE = -2017,
     /// \brief A too small value has been passed.
     /**
      *  One or more of the values the caller tried to write to the
      *  property are smaller than the min. allowed value for this property.
+     *
+     *  \b [-2018]
      */
     PROPHANDLING_PROP_VAL_TOO_SMALL = -2018,
     /// \brief The specified component could not be found.
+    /**
+     *  \b [-2019]
+     */
     PROPHANDLING_COMPONENT_NOT_FOUND = -2019,
     /// \brief An invalid list has been referenced.
+    /**
+     *  \b [-2020]
+     */
     PROPHANDLING_LIST_ID_INVALID = -2020,
     /// \brief An invalid component within a list has been referenced.
+    /**
+     *  \b [-2021]
+     */
     PROPHANDLING_COMPONENT_ID_INVALID = -2021,
     /// \brief The specified list index is occupied.
     /**
      *  During the creation of a new component the caller tried
      *  the insert the newly created component into a list at a position
      *  already used to store another component.
+     *
+     *  \b [-2022]
      */
     PROPHANDLING_LIST_ENTRY_OCCUPIED = -2022,
     /// \brief The specified component already has an owner.
@@ -500,60 +553,98 @@ enum TPROPHANDLING_ERROR
      *  The caller tried to assign an owner to a component that
      *  already has an owner. An owner once defined can't be modified
      *  anymore.
+     *
+     *  \b [-2023]
      */
     PROPHANDLING_COMPONENT_HAS_OWNER_ALREADY = -2023,
     /// \brief It has been tried to register the same component at twice in the same list.
+    /**
+     *  \b [-2024]
+     */
     PROPHANDLING_COMPONENT_ALREADY_REGISTERED = -2024,
     /// \brief The desired data can't be accessed or found.
     /**
      *  During loading or saving data this error can occur e.g.
      *  if it has been tried to import a setting from a location where
      *  the desired setting couldn't be found.
+     *
+     *  \b [-2025]
      */
     PROPHANDLING_LIST_CANT_ACCESS_DATA = -2025,
     /// \brief The function pointer of the referenced method object is invalid.
+    /**
+     *  \b [-2026]
+     */
     PROPHANDLING_METHOD_PTR_INVALID = -2026,
     /// \brief A method object has an invalid parameter list.
+    /**
+     *  \b [-2027]
+     */
     PROPHANDLING_METHOD_INVALID_PARAM_LIST = -2027,
     /// \brief This indicates an internal error occurred within the SWIG generated wrapper code, when working under Python.
+    /**
+     *  \b [-2028]
+     */
     PROPHANDLING_SWIG_ERROR = -2028,
     /// \brief A invalid input parameter has been passed to a function of this module.
     /**
      *  In most cases this might be a unassigned pointer, where a valid pointer
      *  to a user defined storage location was expected.
+     *
+     *  \b [-2029]
      */
     PROPHANDLING_INVALID_INPUT_PARAMETER = -2029,
     /// \brief The user tried to modify a registered callback, but no callback has been registered for this component.
+    /**
+     *  \b [-2030]
+     */
     PROPHANDLING_COMPONENT_NO_CALLBACK_REGISTERED = -2030,
     /// \brief The user tried to read data into a user supplied storage location, but the buffer was too small to accommodate the result.
+    /**
+     *  \b [-2031]
+     */
     PROPHANDLING_INPUT_BUFFER_TOO_SMALL = -2031,
     /// \brief The number of parameters is incorrect.
     /**
      *  This error might occur if the user called a function with a variable number of input or output
      *  parameters and the number of parameters passed to the function does not match the
      *  number of required parameters.
+     *
+     *  \b [-2032]
      */
     PROPHANDLING_WRONG_PARAM_COUNT = -2032,
     /// \brief The user tried to execute an operation, which is not supported by the component he is referring to.
+    /**
+     *  \b [-2033]
+     */
     PROPHANDLING_UNSUPPORTED_OPERATION = -2033,
     /// \brief The user tried to save(serialize) a property list without having the right to do this.
+    /**
+     *  \b [-2034]
+     */
     PROPHANDLING_CANT_SERIALIZE_DATA = -2034,
     /// \brief The user tried to use a file to update or create a component list, that does not contain valid data for this operation.
     /**
      *  This e.g. might happen, if the file does not contain valid XML data or XML data that is not
      *  well formed.
+     *
+     *  \b [-2035]
      */
     PROPHANDLING_INVALID_FILE_CONTENT = -2035,
     /// \brief This error will occur when the modules internal representation of the tree structure does not allow the allocation of a new list.
     /**
      *  In this case either new list can't be allocated. The only way to solve this problem is to delete
      *  another list.
+     *
+     *  \b [-2036]
      */
     PROPHANDLING_CANT_ALLOCATE_LIST = -2036,
     /// \brief The referenced list has no space left to register this component at the desired position.
     /**
      *  There might however be an empty space within the list where this element could be registered, but
      *  no more components can be registered at the end of this list.
+     *
+     *  \b [-2037]
      */
     PROPHANDLING_CANT_REGISTER_COMPONENT = -2037,
     /// \brief The user tried to assign a value to a property, that is invalid.
@@ -561,6 +652,8 @@ enum TPROPHANDLING_ERROR
      *  This will result in a detailed error message in the log-file. This error might
      *  arise e.g. when a string property doesn't allow the string to contain numbers. In this
      *  case trying to set the properties value to 'blabla7bla' would cause this error.
+     *
+     *  \b [-2038]
      */
     PROPHANDLING_PROP_VALIDATION_FAILED = -2038,
     // If new error codes must be added this happens HERE!
@@ -572,6 +665,9 @@ enum TPROPHANDLING_ERROR
     PROPHANDLING_LAST_ASSIGNED_ERROR_CODE = PROPHANDLING_PSEUDO_LAST_ASSIGNED_ERROR_CODE - 2,
 #endif // #ifdef DOXYGEN_SHOULD_SKIP_THIS
     /// \brief Defines the last valid error code value for the property module.
+    /**
+     *  \b [-2099]
+     */
     PROPHANDLING_LAST_VALID_ERROR_CODE = -2099
 };
 
