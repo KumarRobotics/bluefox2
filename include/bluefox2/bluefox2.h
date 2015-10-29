@@ -23,8 +23,7 @@ class Bluefox2 {
   void OpenDevice();
   void RequestSingle() const;
   void Configure(Bluefox2DynConfig &config);
-  bool GrabImage(sensor_msgs::Image &image_msg,
-                 sensor_msgs::CameraInfo &cinfo_msg);
+  bool GrabImage(sensor_msgs::Image &image_msg);
 
   void SetMM(int mm) const;
   void SetMaster() const;

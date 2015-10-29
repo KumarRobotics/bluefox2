@@ -70,8 +70,7 @@ void Bluefox2::RequestImages(int n) const {
   }
 }
 
-bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg,
-                         sensor_msgs::CameraInfo &cinfo_msg) {
+bool Bluefox2::GrabImage(sensor_msgs::Image &image_msg) {
   // NOTE: A request object is locked for the driver whenever the corresponding
   // wait function returns a valid request object.
   // All requests returned by
