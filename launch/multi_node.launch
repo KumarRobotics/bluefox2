@@ -4,7 +4,7 @@
     <arg name="num_cameras"/>
 
     <!-- Camera Settings -->
-    <arg name="camera0" default="25001340"/>
+    <arg name="camera0" default="25000804"/>
     <arg name="camera0_camera_name" default="mv_$(arg camera0)"/>
     <arg name="camera0_calib_url"
     	default="file://${ROS_HOME}/camera_info/$(arg camera0_camera_name).yaml"/>
