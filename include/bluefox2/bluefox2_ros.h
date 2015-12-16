@@ -14,7 +14,8 @@ class Bluefox2Ros : public camera_base::CameraRosBase {
   void RequestSingle() const { bluefox2_.RequestSingle(); }
   Bluefox2& camera() { return bluefox2_; }
 
-  bool Grab(const sensor_msgs::ImagePtr& image_msg) override;
+  bool Grab(const sensor_msgs::ImagePtr& image_msg,
+            const sensor_msgs::CameraInfoPtr& cinfo_msg = nullptr) override;
 
  private:
   Bluefox2 bluefox2_;
