@@ -127,6 +127,12 @@ void ReadProperty(const PropertyType& prop, ValueType& value) {
   }
 }
 
+template <typename PropertyType, typename ValueType>
+void WriteAndReadProperty(const PropertyType& prop, ValueType& value) {
+  WriteProperty(prop, value);
+  ReadProperty(prop, value);
+}
+
 }  // namespace bluefox2
 
 #endif  // BLUEFOX2_SETTING_H_

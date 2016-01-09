@@ -161,33 +161,29 @@ void Bluefox2::FillCaptureQueue(int &n) const {
   }
 }
 
-void Bluefox2::SetAoi(int &width, int &height) const {}
+void Bluefox2::SetAoi(int &width, int &height) const {
+  // FIXEM: not implemented
+}
 
 void Bluefox2::SetIdpf(int &idpf) const {
-  WriteProperty(bf_set_->imageDestination.pixelFormat, idpf);
-  ReadProperty(bf_set_->imageDestination.pixelFormat, idpf);
+  WriteAndReadProperty(bf_set_->imageDestination.pixelFormat, idpf);
 }
 
 void Bluefox2::SetCbm(int &cbm) const {
-  WriteProperty(cam_set_->binningMode, cbm);
-  ReadProperty(cam_set_->binningMode, cbm);
+  WriteAndReadProperty(cam_set_->binningMode, cbm);
 }
 
 void Bluefox2::SetAgc(bool &auto_gain, double &gain_db) const {
-  WriteProperty(cam_set_->autoGainControl, auto_gain);
-  ReadProperty(cam_set_->autoGainControl, auto_gain);
+  WriteAndReadProperty(cam_set_->autoGainControl, auto_gain);
   if (!auto_gain) {
-    WriteProperty(cam_set_->gain_dB, gain_db);
-    ReadProperty(cam_set_->gain_dB, gain_db);
+    WriteAndReadProperty(cam_set_->gain_dB, gain_db);
   }
 }
 
 void Bluefox2::SetAec(bool &auto_expose, int &expose_us) const {
-  WriteProperty(cam_set_->autoExposeControl, auto_expose);
-  ReadProperty(cam_set_->autoExposeControl, auto_expose);
+  WriteAndReadProperty(cam_set_->autoExposeControl, auto_expose);
   if (!auto_expose) {
-    WriteProperty(cam_set_->expose_us, expose_us);
-    ReadProperty(cam_set_->expose_us, expose_us);
+    WriteAndReadProperty(cam_set_->expose_us, expose_us);
   }
 }
 
@@ -202,10 +198,8 @@ void Bluefox2::SetAcs(int &acs, int &des_gray_val) const {
         WriteProperty(cam_set_->autoControlParameters.controllerSpeed, acs);
       }
       ReadProperty(cam_set_->autoControlParameters.controllerSpeed, acs);
-      WriteProperty(cam_set_->autoControlParameters.desiredAverageGreyValue,
-                    des_gray_val);
-      ReadProperty(cam_set_->autoControlParameters.desiredAverageGreyValue,
-                   des_gray_val);
+      const auto acp = cam_set_->autoControlParameters;
+      WriteAndReadProperty(acp.desiredAverageGreyValue, des_gray_val);
       return;
     }
   }
@@ -233,12 +227,9 @@ void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
   if (wbp == Bluefox2Dyn_wbp_user1) {
     WriteProperty(img_proc_->whiteBalance, wbp);
     auto wbp_set = img_proc_->getWBUserSetting(0);
-    WriteProperty(wbp_set.redGain, r_gain);
-    WriteProperty(wbp_set.greenGain, g_gain);
-    WriteProperty(wbp_set.blueGain, b_gain);
-    ReadProperty(wbp_set.redGain, r_gain);
-    ReadProperty(wbp_set.greenGain, g_gain);
-    ReadProperty(wbp_set.blueGain, b_gain);
+    WriteAndReadProperty(wbp_set.redGain, r_gain);
+    WriteAndReadProperty(wbp_set.greenGain, g_gain);
+    WriteAndReadProperty(wbp_set.blueGain, b_gain);
     return;
   }
 
@@ -251,7 +242,7 @@ void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
     // Request one image?
     RequestImages(1);
     // Set config to user1 and update gains
-    WhiteBalanceSettings wbp_set = img_proc_->getWBUserSetting(0);
+    const auto wbp_set = img_proc_->getWBUserSetting(0);
     ReadProperty(wbp_set.redGain, r_gain);
     ReadProperty(wbp_set.greenGain, g_gain);
     ReadProperty(wbp_set.blueGain, b_gain);
@@ -259,7 +250,6 @@ void Bluefox2::SetWbp(int &wbp, double &r_gain, double &g_gain,
   }
 }
 
-// TODO: provide other HDR point?
 void Bluefox2::SetHdr(bool &hdr) const {
   auto &hdr_control = cam_set_->getHDRControl();
   if (!hdr_control.isAvailable()) {
@@ -267,9 +257,9 @@ void Bluefox2::SetHdr(bool &hdr) const {
     return;
   }
 
-  WriteProperty(hdr_control.HDREnable, hdr);
-  ReadProperty(hdr_control.HDREnable, hdr);
+  WriteAndReadProperty(hdr_control.HDREnable, hdr);
   if (hdr) {
+    // TODO: provide other HDR point?
     WriteProperty(hdr_control.HDRMode, cHDRmFixed0);
   }
 }
@@ -290,20 +280,18 @@ void Bluefox2::SetDcfm(int &dcfm) const {
     WriteProperty(cam_set_->offsetAutoCalibration, aocOn);
     ReadProperty(img_proc_->darkCurrentFilterMode, dcfm);
   } else {
-    WriteProperty(img_proc_->darkCurrentFilterMode, dcfm);
+    WriteAndReadProperty(img_proc_->darkCurrentFilterMode, dcfm);
   }
 }
 
 void Bluefox2::SetCpc(int &cpc) const {
-  WriteProperty(cam_set_->pixelClock_KHz, cpc);
-  ReadProperty(cam_set_->pixelClock_KHz, cpc);
+  WriteAndReadProperty(cam_set_->pixelClock_KHz, cpc);
 }
 
 void Bluefox2::SetCtm(int &ctm) const {
   // Do nothing when set to hard sync
   if (ctm == Bluefox2Dyn_hard_sync) return;
-  WriteProperty(cam_set_->triggerMode, ctm);
-  ReadProperty(cam_set_->triggerMode, ctm);
+  WriteAndReadProperty(cam_set_->triggerMode, ctm);
 }
 
 void Bluefox2::SetCts(int &cts) const {
@@ -312,8 +300,7 @@ void Bluefox2::SetCts(int &cts) const {
     cts = Bluefox2Dyn_cts_unavailable;
     return;
   }
-  WriteProperty(cam_set_->triggerSource, cts);
-  ReadProperty(cam_set_->triggerSource, cts);
+  WriteAndReadProperty(cam_set_->triggerSource, cts);
 }
 
 bool Bluefox2::IsCtmOnDemandSupported() const {

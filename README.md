@@ -3,10 +3,6 @@
 # Bluefox2
 *This driver depends on package [`camera_base`](https://github.com/KumarRobotics/camera_base)*
 
-*This driver works with ubuntu 14.04 + ros indigo + gcc 4.8+*
-
-*This driver follows the google c++ style guide*
-
 https://github.com/KumarRobotics/bluefox2
 
 ![image](http://i.imgur.com/89Bb1hR.png)
@@ -72,57 +68,6 @@ camera calibration URL.
 **Dynamically Reconfigurable Parameters**
 
 See the [dynamic_reconfigure](http://wiki.ros.org/dynamic_reconfigure) package for details on dynamically reconfigurable parameters.
-
-`~fps` (`double`, default: `20.0`)
-
-frame per second.
-
-`~color` (`bool`, default: `false`)
-
-pixelformat, `true` will use `RGB888Packed`, `false` will use `mono8`.
-
-`~cbm` (`bool`, default: `false`)
-
-camera binning mode, `true` use `BinningHV`, which is horizontal + vertical binning.
-
-`~ctm` (`int`, default: `1`)
-
-camera trigger mode:
-
-* `0` - ctm_continuous
-* `1` - ctm_on_demand
-
-we recommend using *ctm_on_demand* for more precise timing control whenever possible. If a device does not support *ctm_on_demand*, it will be set to *ctm_continuous*.
-
-`~mm` (`int`, default: `0`)
-
-mirror mode:
-
-* `0` - mm_off, no mirroring
-* `1` - mm_topdown, resulting image will be flipped around a horizontal axis.
-* `2` - mm_leftright, resulting image will be flipped around a vertical axis.
-* `3` - resulting image will be both around a horizontal and vertical axis
-
-for now only global mirror operation mode is supported, channel based mirror operation is not.
-
-`~aec` (`int`, default: `0`)
-
-auto expose control:
-
-* `0` - aec_off, fixed exposure time
-* `1` - aec_on, auto control by driver
-* `2` - aec_fix, auto determined by driver and set to a fixed value
-* `3` - aec_clamp, auto control by driver, but clamped to expose time set by user in `expose_us`, the pid controller for auto expose controller is tuned by Frank
-
-`~expose_us` (`int`, default: `5000`)
-
-exposure time in us.
-
-`~gain_db` (`double`, default: `0.0`)
-
-gain in Db.
-
-`~wbp` (`int`, default: `0`)
 
 white balance parameter:
 
@@ -248,4 +193,4 @@ If you install the full matrix vision driver, you will have `wxPropView` install
 
 2. Camera acquisition failure after being unplugged and plugged back in
 If you are using linux kernel 3.13.0, then it's likely that you will encounter this problem.
-The solution is to install the latest kernel, eg. 3.14.17
+The solution is to install the latest kernel, eg. > 3.13
