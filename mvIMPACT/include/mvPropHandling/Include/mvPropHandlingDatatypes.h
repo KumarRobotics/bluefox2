@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 #ifndef mvPropHandlingDatatypesH
-#if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
-#define mvPropHandlingDatatypesH mvPropHandlingDatatypesH
-#endif // DOXYGEN_SHOULD_SKIP_THIS && WRAP_ANY
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#   define mvPropHandlingDatatypesH mvPropHandlingDatatypesH
+#endif // #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //-----------------------------------------------------------------------------
 
 #ifdef __cplusplus
@@ -16,7 +16,7 @@ namespace acquire
 {
 #endif // #if defined(MVIMPACT_ACQUIRE_H_) || defined(DOXYGEN_CPP_DOCUMENTATION)
 
-#if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #   if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
 typedef __int64 int64_type;
 typedef unsigned __int64 uint64_type;
@@ -24,13 +24,15 @@ typedef unsigned __int64 uint64_type;
 #           pragma option push -b // force enums to the size of integer
 #       endif // __BORLANDC__
 #   elif defined(linux) || defined(__linux) || defined(__linux__)
-#       include <stdint.h>
+#       ifndef WRAP_ANY
+#           include <stdint.h>
+#       endif // #ifndef WRAP_ANY
 typedef int64_t int64_type;
 typedef uint64_t uint64_type;
 #   else
 #       error "unsupported target environment"
 #   endif // #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__)
-#endif // DOXYGEN_SHOULD_SKIP_THIS && WRAP_ANY
+#endif // #ifndef DOXYGEN_SHOULD_SKIP_THIS
 
 //=============================================================================
 //========================= constants =========================================
@@ -40,9 +42,9 @@ typedef uint64_t uint64_type;
 const int INVALID_ID                      = -1;
 #   ifndef DOXYGEN_CPP_DOCUMENTATION
 // property limits
-/// \brief The index value to query the minimum value defined for this property.
-const int PROP_MAX_VAL                    = -1;
 /// \brief The index value to query the maximum value defined for this property.
+const int PROP_MAX_VAL                    = -1;
+/// \brief The index value to query the minimum value defined for this property.
 const int PROP_MIN_VAL                    = -2;
 /// \brief The index value to query the step width value defined for this property.
 const int PROP_STEP_WIDTH                 = -3;
@@ -110,10 +112,15 @@ enum TCallbackType
 {
     /// \brief Execute callback whenever this component has been modified.
     ctOnChanged = 0,
-    /// \brief Executed when a properties value is read. The callback is executed before the value is returned to the user. This allows i.e. a driver to determine the value for this property only if the user is interested in its data.
+    /// \brief Executed when a property's value is read. The callback is executed before the value is returned to the user.
+    /// This allows i.e. a driver to determine the value for this property only if the user is interested in its data.
     ctOnReadData = 1,
-    /// \brief Executed when a properties value is written. The callback is executed before the value is actually assigned. This allows i.e. a driver to validate if this is a valid value for the property.
-    ctOnWriteData = 2
+    /// \brief Executed when a property's value is written. The callback is executed before the value is actually assigned.
+    /// This allows i.e. a driver to validate if this is a valid value for the property.
+    ctOnWriteData = 2,
+    /// \brief Executed when a component is accessed (read or write) and some of the internal data needs to be refreshed from an external source.
+    /// The callback is executed before the component data is accessed. This allows i.e. a driver to update the data before.
+    ctOnRefreshCache = 3
 };
 
 //-----------------------------------------------------------------------------
@@ -158,23 +165,7 @@ enum TComponentFlag // flags_attribute, uint_type
      *  that the number of values stored in the property can't be modified.
      */
     cfFixedSize = 0x4,
-    /// \brief The component uses memory managed by the caller.
-    /**
-     *  If this flag is set this component uses user allocated memory for data storage (only implemented for
-     *  properties). If this is the case the property behaves slightly different:
-     *  - cloning still uses the same memory for property values instead of making its own copy
-     *    of the values
-     *  - a string property can't be assigned using other types like int or float.
-     *  - if a property is not \e <b>mvIMPACT::acquire::cfFixedSize</b> and is assigned a different
-     *    number of values no check for sufficient memory is performed and <b>NO</b> new memory is allocated.
-     *  - the memory used by the property is never free, moved or modified in size by the property.
-     *    At all times the user is responsible for this.
-     *
-     *  \note
-     *  If this flag is specified for a component, which is not a property, it will have no
-     *  effect on the behaviour of the component.
-     */
-    cfUserAllocatedMemory = 0x8,
+    //cfUserAllocatedMemory = 0x8, // no longer supported
     /// \brief The component is shadowed by other settings currently if set.
     /**
      *  This flag is used to specify that this component currently has no effect on the behaviour
@@ -218,9 +209,9 @@ enum TComponentFlag // flags_attribute, uint_type
      *  within this list and its sub-lists.
      *
      *  This will change the behaviour to that effect that changing the parent component
-     *  will no longer affect the 'derived' component. However this allows to define
+     *  will no longer affect the 'derived' component. So
      *  different default values, constants and translation dictionaries for properties
-     *  within an inheritance hierarchy.
+     *  within an inheritance hierarchy can be defined.
      *
      *  \note
      *  This feature is currently only supported for components of type
@@ -246,12 +237,15 @@ enum TComponentFlag // flags_attribute, uint_type
      *  this property is best displayed as a combo box or something similar.
      *  This flag is just meant as a hint for the user. The property module
      *  itself does <b>NOT</b> use this flag for anything.
+     *
+     *  \since 1.12.57
+     *
      */
     cfShouldBeDisplayedAsEnumeration = 0x1000,
     /// \brief This feature will \b ALWAYS execute internal update callbacks and will treat each write attempt to this feature as a value different from the current one.
     cfAlwaysForceUpdate = 0x2000
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-                          , cfLast = cfShouldBeDisplayedAsEnumeration
+    , cfLast = cfShouldBeDisplayedAsEnumeration
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 };
 
@@ -271,6 +265,38 @@ enum TValueType // flags_attribute, uint_type, internal_attribute
     vtString,
     /// \brief Defines a property for 64 bit integer types.
     vtInt64
+};
+
+//-----------------------------------------------------------------------------
+/// \brief Defines valid recommended representations for features.
+/**
+ *  These representations can be used to create a suitable GUI editor for a features.
+ *
+ * \since 2.14.0
+ */
+/// \ingroup CommonInterface
+enum TComponentRepresentation
+//-----------------------------------------------------------------------------
+{
+    crUndefined = 0,
+    /// \brief Defines a feature with linear behaviour. One possible editor would be a slider with linear behaviour.
+    crLinear,
+    /// \brief Defines a feature with logarithmic behaviour. One possible editor would be a slider with logarithmic behaviour.
+    crLogarithmic,
+    /// \brief Defines a boolean feature. This could be displayed to the user as a check box.
+    crBoolean,
+    /// \brief Defines a feature representing a pure number. This could be displayed to the user as an edit control.
+    crPureNumber,
+    /// \brief Defines a feature representing a hexadecimal number.
+    crHexNumber,
+    /// \brief Defines a feature representing an IPv4 address. This could be displayed to the user as a custom IPv4 edit control.
+    crIPv4Address,
+    /// \brief Defines a feature representing a MAC address. This could be displayed to the user as a custom MAC address edit control.
+    crMACAddress,
+    /// \brief Defines a feature representing a file name. This could be displayed to the user as a file selection dialog.
+    crFileName,
+    /// \brief Defines a feature representing a directory name. This could be displayed to the user as a directory selection dialog.
+    crDirectoryName
 };
 
 //-----------------------------------------------------------------------------
@@ -298,7 +324,7 @@ enum TComponentType // flags_attribute, uint_type
     ctList = 0x00020000,
     /// \brief A method object.
     /**
-     *  Method objects provide the possibility to organise functions in lists.
+     *  Method objects provide the possibility to organize functions in lists.
      */
     ctMeth = 0x00040000,
     /// \brief Defines a property for 32 bit integer values.
@@ -407,17 +433,12 @@ enum TPROPHANDLING_ERROR
      *  \b [-2006]
      */
     PROPHANDLING_INCOMPATIBLE_COMPONENTS = -2006,
-    /// \brief This property doesn't use user defined memory.
-    /**
-     *  The caller tried to relocate the user defined memory for a property,
-     *  that doesn't reference user defined memory but uses the internal memory
-     *  management.
-     *
-     *  \b [-2007]
-     */
-    PROPHANDLING_NO_USER_ALLOCATED_MEMORY = -2007,
+    //PROPHANDLING_NO_USER_ALLOCATED_MEMORY = -2007, // no longer supported
     /// \brief One or more of the specified parameters are not supported by the function.
     /**
+     *  This error might also be generated if a certain feature is not available on the current
+     *  platform.
+     *
      *  \b [-2008]
      */
     PROPHANDLING_UNSUPPORTED_PARAMETER = -2008,
@@ -443,6 +464,9 @@ enum TPROPHANDLING_ERROR
     /**
      *  This can either happen, because the caller has not the rights required
      *  to create an access token or because the system runs very low on memory.
+     *
+     *  \deprecated This error code currently is not used anywhere within this framework.
+     *  It might be removed in a future version.
      *
      *  \b [-2011]
      */
@@ -566,7 +590,10 @@ enum TPROPHANDLING_ERROR
     /**
      *  During loading or saving data this error can occur e.g.
      *  if it has been tried to import a setting from a location where
-     *  the desired setting couldn't be found.
+     *  the desired setting couldn't be found. Another reason for this error might
+     *  be that the current user is not allowed to perform a certain operation on the
+     *  desired data (e.g. a user tries to delete a setting that is stored with
+     *  global scope but does not have elevated access rights).
      *
      *  \b [-2025]
      */
@@ -820,6 +847,17 @@ enum TStorageFlag // flags_attribute, uint_type
      *  This flag is ignored, if <b>mvIMPACT::acquire::sfNative</b> is specified.
      */
     sfProcessDisplayName = 0x2000,
+    /// \brief Stores/loads the setting in/from RAM file
+    /**
+     *  If this flag is specified the data will be imported/exported from/to RAM. Data stored this way should be
+     *  freed when no longer needed to avoid a waste of memory. However when shutting down mvIMPACT Acquire completely
+     *  (e.g. when unloading the mvPropHandling library from memory all memory allocated by settings stored this way will be
+     *  freed automatically).
+     *
+     *  \note This flag must not be combined with <b>mvIMPACT::acquire::sfNative</b> or <b>mvIMPACT::acquire::sfFile</b>.
+     * \since 2.19.0
+     */
+    sfRAM = 0x4000,
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
     /// \brief For internal use only!
     sfReserved1 = 0x8000,
@@ -833,6 +871,61 @@ enum TStorageFlag // flags_attribute, uint_type
      *  This flag is ignored, if <b>mvIMPACT::acquire::sfNative</b> is specified.
      */
     sfDontProcessDefault = 0x20000
+};
+
+//-----------------------------------------------------------------------------
+/// \brief Defines valid storage locations for component list import, export and delete operations.
+/**
+ *  Component lists can be imported and exported from/to XML files, process RAM and
+ *  (under Windows&copy;) from/into the Registry.
+ *
+ * \since 2.19.0
+ */
+/// \ingroup CommonInterface
+enum TStorageLocation // uint_type
+{
+    /// \brief Stores/loads the setting in/from a platform dependent location
+    /**
+     *  Under Windows&copy; the Registry will be used to as a platform dependent location, while under
+     *  other platforms an XML file will be processed in the path specified as the settings name.
+     *
+     *  \note
+     *  Please note, that using this mode will introduce platform dependency. E.g. specifying this mode
+     *  under Linux will process XML data, while under Windows&copy; the Registry will be used. This is why
+     *  A call to a load function with this mode with the corresponding XML file in the applications directory
+     *  might succeed under Linux while it fails under Windows&copy;.
+     */
+    slNative = 0x1,
+    /// \brief Stores/loads the setting in/from a platform dependent location
+    /**
+     *  Under Windows&copy; the Registry will be used to as a platform dependent location, while under
+     *  other platforms an XML file will be processed in the path specified as the settings name.
+     *
+     *  \note
+     *  Please note, that using this mode will introduce platform dependency. E.g. specifying this mode
+     *  under Linux will process XML data, while under Windows&copy; the Registry will be used. This is why
+     *  A call to a load function with this mode with the corresponding XML file in the applications directory
+     *  might succeed under Linux while it fails under Windows&copy;.
+     *
+     *  \note
+     *  Under Windows&copy; with this mode an arbitrary hive from the registry can be used to create a tree of lists and
+     *  properties. This only makes sense for very special applications and therefore is not needed to
+     *  write applications, that load and store current settings.
+     */
+    slNative_Raw = 0x3,
+    /// \brief Stores/loads the setting in/from an XML file
+    /**
+     *  Setting data will be imported/exported from/to an XML file.
+     */
+    slFile = 0x1000,
+    /// \brief Stores/loads the setting in/from RAM file
+    /**
+     *  Setting data will be stored in the RAM of the current process. Data stored this way should be
+     *  freed when no longer needed to avoid a waste of memory. However when shutting down mvIMPACT Acquire completely
+     *  (e.g. when unloading the mvPropHandling library from memory all memory allocated by settings stored this way will be
+     *  freed automatically).
+     */
+    slRAM = 0x4000
 };
 
 //-----------------------------------------------------------------------------
@@ -851,14 +944,19 @@ enum TScope
 typedef enum TCallbackType TCallbackType;
 typedef enum TComponentFlag TComponentFlag;
 typedef enum TValueType TValueType;
+typedef enum TComponentRepresentation TComponentRepresentation;
 typedef enum TComponentType TComponentType;
 typedef enum TComponentVisibility TComponentVisibility;
 typedef enum TPROPHANDLING_ERROR TPROPHANDLING_ERROR;
 typedef enum TStorageFlag TStorageFlag;
+typedef enum TStorageLocation TStorageLocation;
 typedef enum TScope TScope;
-#endif // DOXYGEN_SHOULD_SKIP_THIS && WRAP_ANY
+#endif // #if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
 
 /// \brief A type to create a unique identifier for a callback.
+/**
+ * \since 1.12.18
+ */
 typedef void*       CallbackHandle;
 
 // restore Borland compiler switch 'force enums to the size of integer'
@@ -868,7 +966,7 @@ typedef void*       CallbackHandle;
 #           pragma option pop
 #       endif // __BORLANDC__
 #   endif // _WIN32
-#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
+#endif // #if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
 
 #if defined(MVIMPACT_ACQUIRE_H_) || defined(DOXYGEN_CPP_DOCUMENTATION)
 } // namespace acquire

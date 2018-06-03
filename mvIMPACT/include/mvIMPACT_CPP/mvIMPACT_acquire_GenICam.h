@@ -1,32 +1,12 @@
 //-----------------------------------------------------------------------------
 #ifndef mvIMPACT_acquire_GenICam_CPP_autogen_h
-#if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #   define mvIMPACT_acquire_GenICam_CPP_autogen_h mvIMPACT_acquire_GenICam_CPP_autogen_h
-#endif // DOXYGEN_SHOULD_SKIP_THIS && WRAP_ANY
+#endif // #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //-----------------------------------------------------------------------------
 // AUTOMATICALLY GENERATED CODE. DO NOT EDIT!!!
 
 #include <mvIMPACT_CPP/mvIMPACT_acquire.h>
-
-#ifdef SWIG
-#   ifdef SWIGPYTHON
-#       define WRAP_PYTHON
-#   endif
-#   ifdef SWIGJAVA
-#       define WRAP_JAVA
-#   endif
-#endif
-
-#ifdef WRAP_PYTHON
-#   define PYTHON_ONLY(X) X
-#   define PYTHON_CPP_SWITCH(PYTHON_WRAPPER_CODE,CPP_WRAPPER_CODE) PYTHON_WRAPPER_CODE
-#   ifndef WRAP_ANY
-#       define WRAP_ANY
-#   endif // #ifndef WRAP_ANY
-#else // #ifdef WRAP_PYTHON
-#   define PYTHON_ONLY(X)
-#   define PYTHON_CPP_SWITCH(PYTHON_WRAPPER_CODE,CPP_WRAPPER_CODE) CPP_WRAPPER_CODE
-#endif // #ifdef WRAP_PYTHON
 
 #ifdef _MSC_VER // is Microsoft compiler?
 #   pragma warning( push )
@@ -36,9 +16,6 @@
 #       pragma message( "WARNING: This header(" __FILE__ ") uses the __FUNCTION__ macro, which is not supported by this compiler. A default definition(\"" __FUNCTION__ "\") will be used!" )
 #       pragma message( "WARNING: This header(" __FILE__ ") uses inheritance for exception classes. However this compiler can't handle this correctly. Trying to catch a specific exception by writing a catch block for a base class will not work!" )
 #   endif // #if _MSC_VER < 1300
-#   if _MSC_VER >= 1400 // is at least VC 2005 compiler?
-#       include <assert.h>
-#   endif // #if _MSC_VER >= 1400
 #   pragma warning( disable : 4512 ) // 'assignment operator could not be generated' (reason: assignment operators declared 'private' but not implemented)
 #endif // #ifdef _MSC_VER
 
@@ -56,12 +33,31 @@ namespace GenICam
  *  This group contains classes and functions that will be available if the device is used
  *  with the <b>mvIMPACT::acquire::dilGenICam</b> interface layout.
  */
-/// @{
+
+/** \defgroup GenICamInterfaceDevice GenICam interface layout(device)
+ * \brief Classes and functions that will be available if the device is used
+ * with the \a GenICam interface layout
+ *
+ *  This group contains classes and functions that will be available for a device used
+ *  with the <b>mvIMPACT::acquire::dilGenICam</b> interface layout.
+ *
+ * \ingroup GenICamInterface
+ */
+
+/** \defgroup GenICamInterfaceProducer GenICam interface layout(producer)
+ * \brief Classes and functions that will be available if the device is used
+ * with the \a GenICam interface layout
+ *
+ *  This group contains classes and functions that will be available for a \a GenICam \a GenTL \a producer
+ *
+ * \ingroup GenICamInterface
+ */
 
 //-----------------------------------------------------------------------------
 /// \brief Category for device information and control.
 /**
  *  A category for device information and control.
+ * \ingroup GenICamInterfaceDevice
  */
 class DeviceControl
 //-----------------------------------------------------------------------------
@@ -85,6 +81,7 @@ public:
         deviceManufacturerInfo(),
         deviceVersion(),
         deviceFirmwareVersion(),
+        mvDeviceFirmwareBuildDate(),
         deviceSerialNumber(),
         deviceID(),
         deviceUserID(),
@@ -153,16 +150,28 @@ public:
         mvDeviceClockGranularity(),
         mvDeviceSensorName(),
         mvDeviceSensorColorMode(),
-        mvDeviceSensor(),
         mvDeviceFPGAVersion(),
         mvDeviceFirmwareSource(),
         mvDeviceProcessingUnitSelector(),
         mvDeviceProcessingUnit(),
-        mvDevicePowerMode()
+        mvDeviceStatusLEDEnable(),
+        mvDevicePowerMode(),
+        mvDeviceStandbyTimeoutEnable(),
+        mvDeviceStandbyTimeout(),
+        mvDeviceFirmwareHashCode(),
+        mvCalculateHashCode(),
+        mvDeviceFirmwareHashAlgorithm(),
+        mvDeviceLaserCurrent(),
+        mvTimestampPPSSync()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( deviceType, "DeviceType" );
+        if( !deviceType.isValid() )
+        {
+            locator.bindComponent( deviceType, "GevDeviceClass" );
+        }
         locator.bindComponent( deviceScanType, "DeviceScanType" );
         locator.bindComponent( deviceVendorName, "DeviceVendorName" );
         locator.bindComponent( deviceModelName, "DeviceModelName" );
@@ -170,7 +179,12 @@ public:
         locator.bindComponent( deviceManufacturerInfo, "DeviceManufacturerInfo" );
         locator.bindComponent( deviceVersion, "DeviceVersion" );
         locator.bindComponent( deviceFirmwareVersion, "DeviceFirmwareVersion" );
+        locator.bindComponent( mvDeviceFirmwareBuildDate, "mvDeviceFirmwareBuildDate" );
         locator.bindComponent( deviceSerialNumber, "DeviceSerialNumber" );
+        if( !deviceSerialNumber.isValid() )
+        {
+            locator.bindComponent( deviceSerialNumber, "DeviceID" );
+        }
         locator.bindComponent( deviceID, "DeviceID" );
         locator.bindComponent( deviceUserID, "DeviceUserID" );
         locator.bindComponent( deviceSFNCVersionMajor, "DeviceSFNCVersionMajor" );
@@ -186,7 +200,15 @@ public:
         locator.bindComponent( deviceManifestSecondaryURL, "DeviceManifestSecondaryURL" );
         locator.bindComponent( deviceTLType, "DeviceTLType" );
         locator.bindComponent( deviceTLVersionMajor, "DeviceTLVersionMajor" );
+        if( !deviceTLVersionMajor.isValid() )
+        {
+            locator.bindComponent( deviceTLVersionMajor, "GevVersionMajor" );
+        }
         locator.bindComponent( deviceTLVersionMinor, "DeviceTLVersionMinor" );
+        if( !deviceTLVersionMinor.isValid() )
+        {
+            locator.bindComponent( deviceTLVersionMinor, "GevVersionMinor" );
+        }
         locator.bindComponent( deviceTLVersionSubMinor, "DeviceTLVersionSubMinor" );
         locator.bindComponent( deviceGenCPVersionMajor, "DeviceGenCPVersionMajor" );
         locator.bindComponent( deviceGenCPVersionMinor, "DeviceGenCPVersionMinor" );
@@ -201,16 +223,36 @@ public:
         locator.bindComponent( deviceLinkConnectionCount, "DeviceLinkConnectionCount" );
         locator.bindComponent( deviceLinkHeartbeatMode, "DeviceLinkHeartbeatMode" );
         locator.bindComponent( deviceLinkHeartbeatTimeout, "DeviceLinkHeartbeatTimeout" );
+        if( !deviceLinkHeartbeatTimeout.isValid() )
+        {
+            locator.bindComponent( deviceLinkHeartbeatTimeout, "GevHeartbeatTimeout" );
+        }
         locator.bindComponent( deviceLinkCommandTimeout, "DeviceLinkCommandTimeout" );
         locator.bindComponent( deviceStreamChannelCount, "DeviceStreamChannelCount" );
+        if( !deviceStreamChannelCount.isValid() )
+        {
+            locator.bindComponent( deviceStreamChannelCount, "GevStreamChannelCount" );
+        }
         locator.bindComponent( deviceStreamChannelSelector, "DeviceStreamChannelSelector" );
         locator.bindComponent( deviceStreamChannelType, "DeviceStreamChannelType" );
         locator.bindComponent( deviceStreamChannelLink, "DeviceStreamChannelLink" );
         locator.bindComponent( deviceStreamChannelEndianness, "DeviceStreamChannelEndianness" );
         locator.bindComponent( deviceStreamChannelPacketSize, "DeviceStreamChannelPacketSize" );
         locator.bindComponent( deviceEventChannelCount, "DeviceEventChannelCount" );
+        if( !deviceEventChannelCount.isValid() )
+        {
+            locator.bindComponent( deviceEventChannelCount, "GevMessageChannelCount" );
+        }
         locator.bindComponent( deviceMessageChannelCount, "DeviceMessageChannelCount" );
+        if( !deviceMessageChannelCount.isValid() )
+        {
+            locator.bindComponent( deviceMessageChannelCount, "GevMessageChannelCount" );
+        }
         locator.bindComponent( deviceCharacterSet, "DeviceCharacterSet" );
+        if( !deviceCharacterSet.isValid() )
+        {
+            locator.bindComponent( deviceCharacterSet, "GevDeviceModeCharacterSet" );
+        }
         locator.bindComponent( deviceReset, "DeviceReset@i" );
         locator.bindComponent( deviceIndicatorMode, "DeviceIndicatorMode" );
         locator.bindComponent( deviceFeaturePersistenceStart, "DeviceFeaturePersistenceStart@i" );
@@ -220,6 +262,10 @@ public:
         locator.bindComponent( deviceRegistersCheck, "DeviceRegistersCheck@i" );
         locator.bindComponent( deviceRegistersValid, "DeviceRegistersValid" );
         locator.bindComponent( deviceRegistersEndianness, "DeviceRegistersEndianness" );
+        if( !deviceRegistersEndianness.isValid() )
+        {
+            locator.bindComponent( deviceRegistersEndianness, "GevDeviceModeIsBigEndian" );
+        }
         locator.bindComponent( deviceTemperatureSelector, "DeviceTemperatureSelector" );
         locator.bindComponent( deviceTemperature, "DeviceTemperature" );
         locator.bindComponent( deviceClockSelector, "DeviceClockSelector" );
@@ -228,8 +274,20 @@ public:
         locator.bindComponent( deviceSerialPortBaudRate, "DeviceSerialPortBaudRate" );
         locator.bindComponent( timestamp, "Timestamp" );
         locator.bindComponent( timestampReset, "TimestampReset@i" );
+        if( !timestampReset.isValid() )
+        {
+            locator.bindComponent( timestampReset, "GevTimestampControlReset@i" );
+        }
         locator.bindComponent( timestampLatch, "TimestampLatch@i" );
+        if( !timestampLatch.isValid() )
+        {
+            locator.bindComponent( timestampLatch, "GevTimestampControlLatch@i" );
+        }
         locator.bindComponent( timestampLatchValue, "TimestampLatchValue" );
+        if( !timestampLatchValue.isValid() )
+        {
+            locator.bindComponent( timestampLatchValue, "GevTimestampValue" );
+        }
         locator.bindComponent( mvDeviceTemperatureRaw, "mvDeviceTemperatureRaw" );
         locator.bindComponent( mvDeviceTemperatureUpperLimit, "mvDeviceTemperatureUpperLimit" );
         locator.bindComponent( mvDeviceTemperatureLowerLimit, "mvDeviceTemperatureLowerLimit" );
@@ -238,7 +296,6 @@ public:
         locator.bindComponent( mvDeviceClockGranularity, "mvDeviceClockGranularity" );
         locator.bindComponent( mvDeviceSensorName, "mvDeviceSensorName" );
         locator.bindComponent( mvDeviceSensorColorMode, "mvDeviceSensorColorMode" );
-        locator.bindComponent( mvDeviceSensor, "mvDeviceSensor" );
         locator.bindComponent( mvDeviceFPGAVersion, "mvDeviceFPGAVersion" );
         locator.bindComponent( mvDeviceFirmwareSource, "mvDeviceFirmwareSource" );
         if( !mvDeviceFirmwareSource.isValid() )
@@ -247,9 +304,23 @@ public:
         }
         locator.bindComponent( mvDeviceProcessingUnitSelector, "mvDeviceProcessingUnitSelector" );
         locator.bindComponent( mvDeviceProcessingUnit, "mvDeviceProcessingUnit" );
+        locator.bindComponent( mvDeviceStatusLEDEnable, "mvDeviceStatusLEDEnable" );
         locator.bindComponent( mvDevicePowerMode, "mvDevicePowerMode" );
+        locator.bindComponent( mvDeviceStandbyTimeoutEnable, "mvDeviceStandbyTimeoutEnable" );
+        locator.bindComponent( mvDeviceStandbyTimeout, "mvDeviceStandbyTimeout" );
+        locator.bindComponent( mvDeviceFirmwareHashCode, "mvDeviceFirmwareHashCode" );
+        locator.bindComponent( mvCalculateHashCode, "mvCalculateHashCode@i" );
+        locator.bindComponent( mvDeviceFirmwareHashAlgorithm, "mvDeviceFirmwareHashAlgorithm" );
+        locator.bindComponent( mvDeviceLaserCurrent, "mvDeviceLaserCurrent" );
+        locator.bindComponent( mvTimestampPPSSync, "mvTimestampPPSSync" );
+        if( !mvTimestampPPSSync.isValid() )
+        {
+            locator.bindComponent( mvTimestampPPSSync, "mvGevTimestampPPSSync" );
+        }
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Returns the device type.
     /**
      *  Returns the device type.
@@ -259,8 +330,12 @@ public:
      *  - \b Receiver (Display string: 'Receiver'): Data stream receiver device.
      *  - \b Transceiver (Display string: 'Transceiver'): Data stream receiver and transmitter device.
      *  - \b Peripheral (Display string: 'Peripheral'): Controllable device (with no data stream handling).
+     *  - \b Mixed (Display string: 'Mixed'): This enumeration value indicates that this is a device for a mixed protocol.
      *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is a device for a custom protocol.
      *  - \b GEV (Display string: 'GigE Vision'): This enumeration value indicates that this is a device for the GigE Vision protocol.
+     *  - \b CameraLink (Display string: 'CameraLink'): This enumeration value indicates that this is a device for the CameraLink protocol.
+     *  - \b CoaXPress (Display string: 'CoaXPress'): This enumeration value indicates that this is a device for the CoaXPress protocol.
+     *  - \b CameraLinkHS (Display string: 'CameraLink HS'): This enumeration value indicates that this is a device for the CameraLink HS protocol.
      *  - \b U3V (Display string: 'USB3 Vision'): This enumeration value indicates that this is a device for the USB3 Vision protocol.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
@@ -311,6 +386,11 @@ public:
      *  Version of the firmware in the device.
      */
     PropertyS deviceFirmwareVersion;
+    /// \brief A string property. The build time and date of the firmware
+    /**
+     *  The build time and date of the firmware
+     */
+    PropertyS mvDeviceFirmwareBuildDate;
     /// \brief A string property. Device's serial number.
     /**
      *  Device's serial number. This string is a unique identifier of the device.
@@ -531,9 +611,9 @@ public:
      *  Index of device's Link to use for streaming the specifed stream channel.
      */
     PropertyI64 deviceStreamChannelLink;
-    /// \brief An enumerated integer property. Endianess of multi-byte pixel data for this stream.
+    /// \brief An enumerated integer property. Endianness of multi-byte pixel data for this stream.
     /**
-     *  Endianess of multi-byte pixel data for this stream.
+     *  Endianness of multi-byte pixel data for this stream.
      *
      *  The following string values might be valid for this feature:
      *  - \b Big (Display string: 'Big'): Stream channel data is big Endian.
@@ -619,9 +699,9 @@ public:
      *  Returns if the current register set is valid and consistent.
      */
     PropertyIBoolean deviceRegistersValid;
-    /// \brief An enumerated integer property. Endianess of the registers of the device.
+    /// \brief An enumerated integer property. Endianness of the registers of the device.
     /**
-     *  Endianess of the registers of the device.
+     *  Endianness of the registers of the device.
      *
      *  The following string values might be valid for this feature:
      *  - \b Big (Display string: 'Big'): Device's registers are big Endian.
@@ -638,9 +718,9 @@ public:
      *  The following string values might be valid for this feature:
      *  - \b Sensor (Display string: 'Sensor'): Temperature of the image sensor of the camera.
      *  - \b Mainboard (Display string: 'Mainboard'): Temperature of the device's mainboard.
-     *  - \b XLamp (Display string: 'Device Temperature Selector')
-     *  - \b SensorCMVx000 (Display string: 'Device Temperature Selector')
-     *  - \b SensorInternal (Display string: 'Device Temperature Selector')
+     *  - \b XLamp (Display string: 'X Lamp')
+     *  - \b SensorCMVx000 (Display string: 'Sensor CM Vx 000')
+     *  - \b SensorInternal (Display string: 'Sensor Internal')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -659,7 +739,7 @@ public:
      *  - \b Sensor (Display string: 'Sensor'): Clock frequency of the image sensor of the camera.
      *  - \b SensorDigitization (Display string: 'Sensor Digitization'): Clock frequency of the camera A/D conversion stage.
      *  - \b CameraLink (Display string: 'Camera Link'): Frequency of the Camera Link clock.
-     *  - \b DeviceSpecific (Display string: 'Device Clock Selector')
+     *  - \b DeviceSpecific (Display string: 'Device Specific')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -739,10 +819,10 @@ public:
      *  Hysteresis in degrees Celsius(C) for temperature limits.
      *
      *  The following string values might be valid for this feature:
-     *  - \b deg_0p0 (Display string: 'mv Device Temperature Limit Hysteresis')
-     *  - \b deg_1p5 (Display string: 'mv Device Temperature Limit Hysteresis')
-     *  - \b deg_3p0 (Display string: 'mv Device Temperature Limit Hysteresis')
-     *  - \b deg_6p0 (Display string: 'mv Device Temperature Limit Hysteresis')
+     *  - \b deg_0p0 (Display string: 'deg 0p 0')
+     *  - \b deg_1p5 (Display string: 'deg 1p 5')
+     *  - \b deg_3p0 (Display string: 'deg 3p 0')
+     *  - \b deg_6p0 (Display string: 'deg 6p 0')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -806,27 +886,15 @@ public:
      *  Shows color mode of the sensor.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Unknown (Display string: 'mv Device Sensor Color Mode')
-     *  - \b Grey (Display string: 'mv Device Sensor Color Mode')
-     *  - \b BayerMosaic (Display string: 'mv Device Sensor Color Mode')
-     *  - \b NearInfraRed (Display string: 'mv Device Sensor Color Mode')
+     *  - \b Unknown (Display string: 'Unknown')
+     *  - \b Grey (Display string: 'Grey')
+     *  - \b BayerMosaic (Display string: 'Bayer Mosaic')
+     *  - \b NearInfraRed (Display string: 'Near Infra Red')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 mvDeviceSensorColorMode;
-    /// \brief An enumerated integer property. Selects the sensor interface.
-    /**
-     *  Selects the start-up sensor interface.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b mv3DSensor (Display string: 'mv Device Sensor')
-     *  - \b mvPreviewSensor (Display string: 'mv Device Sensor')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvDeviceSensor;
     /// \brief A string property. Shows version number of the FPGA.
     /**
      *  Shows version number of the FPGA.
@@ -837,9 +905,9 @@ public:
      *  Shows the location from where the firmware was loaded.
      *
      *  The following string values might be valid for this feature:
-     *  - \b BootSection (Display string: 'mv Device Firmware Source')
-     *  - \b ProgramSection (Display string: 'mv Device Firmware Source')
-     *  - \b Upload (Display string: 'mv Device Firmware Source')
+     *  - \b BootSection (Display string: 'Boot Section')
+     *  - \b ProgramSection (Display string: 'Program Section')
+     *  - \b Upload (Display string: 'Upload')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -855,32 +923,91 @@ public:
      *  The processing unit to activate for the selected processing unit.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvFFC (Display string: 'mv Device Processing Unit'): Selects the Flat-field correction engine for this processing unit.
-     *  - \b mvFrameAverage (Display string: 'mv Device Processing Unit'): Selects the frame average engine for this processing unit.
+     *  - \b mvFFC (Display string: 'mv FFC'): Selects the Flat-field correction engine for this processing unit.
+     *  - \b mvFrameAverage (Display string: 'mv Frame Average'): Selects the frame average engine for this processing unit.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 mvDeviceProcessingUnit;
+    /// \brief A boolean property. This feature is deprecated (See DeviceIndicatorMode). If enabled, the color of the LED changes depending on the state of the camera. Otherwise the LED is Off.
+    /**
+     *  \deprecated
+     *  This feature is deprecated (See DeviceIndicatorMode). If enabled, the color of the LED changes depending on the state of the camera. Otherwise the LED is Off.
+     */
+    PropertyIBoolean mvDeviceStatusLEDEnable;
     /// \brief An enumerated integer property. Selects the device power mode.
     /**
      *  Selects the device power mode.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvActive (Display string: 'mv Device Power Mode'): Puts the device to power-active mode. Going back to 'mvActive' will take about 10 seconds.
-     *  - \b mvStandby (Display string: 'mv Device Power Mode'): Puts the device in power-saving mode. In this mode the device will only consume up to 20 percent of its normal power consumption. Going back to 'mvActive' will take about 10 seconds.
+     *  - \b mvActive (Display string: 'mv Active'): Puts the device to power-active mode. Going back to 'mvActive' will take about 10 seconds.
+     *  - \b mvStandby (Display string: 'mv Standby'): Puts the device in power-saving mode. In this mode the device will only consume up to 20 percent of its normal power consumption. Going back to 'mvActive' will take about 10 seconds.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 mvDevicePowerMode;
+    /// \brief A boolean property. If enabled, the device switch to standby after a configurable time if no register is read.
+    /**
+     *  If enabled, the device switch to standby after a configurable time if no register is read.
+     */
+    PropertyIBoolean mvDeviceStandbyTimeoutEnable;
+    /// \brief An integer property. Defines the time in seconds after which the device automatically switches to standby if no register is read.
+    /**
+     *  Defines the time in seconds after which the device automatically switches to standby if no register is read.
+     */
+    PropertyI64 mvDeviceStandbyTimeout;
+    /// \brief A string property. Shows the hash code of the firmware.
+    /**
+     *  Shows the hash code of the firmware.
+     */
+    PropertyS mvDeviceFirmwareHashCode;
+    /// \brief A method object. Do a new calculation of the hash code. This might serve as a means to check whether the firmware has been changed in flash.
+    /**
+     *  Do a new calculation of the hash code. This might serve as a means to check whether the firmware has been changed in flash. Caution: This needs approximately 15-20 seconds!
+     */
+    Method mvCalculateHashCode;
+    /// \brief An enumerated integer property. The algorithm used for the hash calculation.
+    /**
+     *  The algorithm used for the hash calculation.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvCRC32b (Display string: 'mv CRC 32b'): CRC32b will be used.
+     *  - \b mvSHA1 (Display string: 'mv SHA 1'): SHA1 will be used.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvDeviceFirmwareHashAlgorithm;
+    /// \brief An integer property. Laser current consumption value (mA).
+    /**
+     *  Laser current consumption value (mA).
+     */
+    PropertyI64 mvDeviceLaserCurrent;
+    /// \brief An enumerated integer property. Will synchronize the internal clock to an external GPS(PPS) signal.
+    /**
+     *  Will synchronize the internal clock to an external GPS(PPS) signal.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Off (Display string: 'Off')
+     *  - \b Line4 (Display string: 'Line 4')
+     *  - \b Line5 (Display string: 'Line 5')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvTimestampPPSSync;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category for Image Format Control features.
 /**
  *  A category for Image Format Control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class ImageFormatControl
 //-----------------------------------------------------------------------------
@@ -906,12 +1033,26 @@ public:
         regionSelector(),
         regionMode(),
         regionDestination(),
+        regionIDValue(),
+        componentSelector(),
+        componentEnable(),
+        componentIDValue(),
         imageComponentSelector(),
         imageComponentEnable(),
         width(),
         height(),
         offsetX(),
         offsetY(),
+        mvMultiAreaMode(),
+        mvAreaSelector(),
+        mvAreaEnable(),
+        mvAreaWidth(),
+        mvAreaHeight(),
+        mvAreaOffsetX(),
+        mvAreaOffsetY(),
+        mvAreaResultingOffsetX(),
+        mvAreaResultingOffsetY(),
+        linePitchEnable(),
         linePitch(),
         binningSelector(),
         binningHorizontalMode(),
@@ -941,13 +1082,9 @@ public:
         imageCompressionQuality(),
         imageCompressionBitrate(),
         imageCompressionJPEGFormatOption(),
-        mvDigitizationMode(),
-        mvDebayerAlgorithm(),
-        mvOffsetYSensorB(),
-        mvSensorLineOffsetSelector(),
-        mvSensorLineOffset(),
-        mvSensorLinePeriod()
+        mvSensorDigitizationBitDepth()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( sensorWidth, "SensorWidth" );
@@ -960,12 +1097,26 @@ public:
         locator.bindComponent( regionSelector, "RegionSelector" );
         locator.bindComponent( regionMode, "RegionMode" );
         locator.bindComponent( regionDestination, "RegionDestination" );
+        locator.bindComponent( regionIDValue, "RegionIDValue" );
+        locator.bindComponent( componentSelector, "ComponentSelector" );
+        locator.bindComponent( componentEnable, "ComponentEnable" );
+        locator.bindComponent( componentIDValue, "ComponentIDValue" );
         locator.bindComponent( imageComponentSelector, "ImageComponentSelector" );
         locator.bindComponent( imageComponentEnable, "ImageComponentEnable" );
         locator.bindComponent( width, "Width" );
         locator.bindComponent( height, "Height" );
         locator.bindComponent( offsetX, "OffsetX" );
         locator.bindComponent( offsetY, "OffsetY" );
+        locator.bindComponent( mvMultiAreaMode, "mvMultiAreaMode" );
+        locator.bindComponent( mvAreaSelector, "mvAreaSelector" );
+        locator.bindComponent( mvAreaEnable, "mvAreaEnable" );
+        locator.bindComponent( mvAreaWidth, "mvAreaWidth" );
+        locator.bindComponent( mvAreaHeight, "mvAreaHeight" );
+        locator.bindComponent( mvAreaOffsetX, "mvAreaOffsetX" );
+        locator.bindComponent( mvAreaOffsetY, "mvAreaOffsetY" );
+        locator.bindComponent( mvAreaResultingOffsetX, "mvAreaResultingOffsetX" );
+        locator.bindComponent( mvAreaResultingOffsetY, "mvAreaResultingOffsetY" );
+        locator.bindComponent( linePitchEnable, "LinePitchEnable" );
         locator.bindComponent( linePitch, "LinePitch" );
         locator.bindComponent( binningSelector, "BinningSelector" );
         locator.bindComponent( binningHorizontalMode, "BinningHorizontalMode" );
@@ -988,6 +1139,10 @@ public:
         locator.bindComponent( pixelDynamicRangeMax, "PixelDynamicRangeMax" );
         locator.bindComponent( testPatternGeneratorSelector, "TestPatternGeneratorSelector" );
         locator.bindComponent( testPattern, "TestPattern" );
+        if( !testPattern.isValid() )
+        {
+            locator.bindComponent( testPattern, "TestImageSelector" );
+        }
         locator.bindComponent( testImageSelector, "TestImageSelector" );
         locator.bindComponent( deinterlacing, "Deinterlacing" );
         locator.bindComponent( imageCompressionMode, "ImageCompressionMode" );
@@ -995,14 +1150,11 @@ public:
         locator.bindComponent( imageCompressionQuality, "ImageCompressionQuality" );
         locator.bindComponent( imageCompressionBitrate, "ImageCompressionBitrate" );
         locator.bindComponent( imageCompressionJPEGFormatOption, "ImageCompressionJPEGFormatOption" );
-        locator.bindComponent( mvDigitizationMode, "mvDigitizationMode" );
-        locator.bindComponent( mvDebayerAlgorithm, "mvDebayerAlgorithm" );
-        locator.bindComponent( mvOffsetYSensorB, "mvOffsetYSensorB" );
-        locator.bindComponent( mvSensorLineOffsetSelector, "mvSensorLineOffsetSelector" );
-        locator.bindComponent( mvSensorLineOffset, "mvSensorLineOffset" );
-        locator.bindComponent( mvSensorLinePeriod, "mvSensorLinePeriod" );
+        locator.bindComponent( mvSensorDigitizationBitDepth, "mvSensorDigitizationBitDepth" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An integer property. Effective width of the sensor in pixels.
     /**
      *  Effective width of the sensor in pixels.
@@ -1065,7 +1217,7 @@ public:
     PropertyI64 widthMax;
     /// \brief An integer property. Maximum height of the image (in pixels).
     /**
-     *  Maximum height of the image (in pixels). This dimension is calculated after vertical binning, decimation or any other function changing the vertical dimension of the image
+     *  Maximum height of the image (in pixels). This dimension is calculated after vertical binning, decimation or any other function changing the vertical dimension of the image.
      */
     PropertyI64 heightMax;
     /// \brief An enumerated integer property. Selects the Region of interest to control.
@@ -1076,7 +1228,10 @@ public:
      *  - \b Region0 (Display string: 'Region 0'): Selected feature will control the region 0.
      *  - \b Region1 (Display string: 'Region 1'): Selected feature will control the region 1.
      *  - \b Region2 (Display string: 'Region 2'): Selected feature will control the region 2.
-     *  - \b Region#3# (Display string: 'Region #3#'): Selected feature will control the region #3#.
+     *  - \b Region\#3\# (Display string: 'Region \#3\#'): Selected feature will control the region \#3\#.
+     *  - \b Scan3dExtraction0 (Display string: 'Scan 3d Extraction 0'): Selected feature will control the Scan3dExtraction0 output Region.
+     *  - \b Scan3dExtraction1 (Display string: 'Scan 3d Extraction 1'): Selected feature will control the Scan3dExtraction1 output Region.
+     *  - \b Scan3dExtraction2 (Display string: 'Scan 3d Extraction 2'): Selected feature will control the Scan3dExtraction2 output Region.
      *  - \b All (Display string: 'All'): Selected features will control all the regions at the same time.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
@@ -1103,33 +1258,68 @@ public:
      *  - \b Stream0 (Display string: 'Stream 0'): The destination of the region is the data stream 0.
      *  - \b Stream1 (Display string: 'Stream 1'): The destination of the region is the data stream 1.
      *  - \b Stream2 (Display string: 'Stream 2'): The destination of the region is the data stream 2.
-     *  - \b Stream#3# (Display string: 'Stream #3#'): The destination of the region is the data stream #3#.
+     *  - \b Stream\#3\# (Display string: 'Stream \#3\#'): The destination of the region is the data stream \#3\#.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 regionDestination;
-    /// \brief An enumerated integer property. Selects a component to activate data streaming from.
+    /// \brief An integer property. Returns a unique Identifier value that correspond to the selected Region.
     /**
-     *  Selects a component to activate data streaming from.
+     *  Returns a unique Identifier value that correspond to the selected Region.
+     */
+    PropertyI64 regionIDValue;
+    /// \brief An enumerated integer property. Selects a component to activate/deactivate its data streaming.
+    /**
+     *  Selects a component to activate/deactivate its data streaming.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Intensity (Display string: 'Intensity'): The acquisition of intensity of the reflected light is controlled.
+     *  - \b Intensity (Display string: 'Intensity'): The acquisition of intensity (monochrome or color) of the visible reflected light is controlled.
+     *  - \b Infrared (Display string: 'Infrared'): The acquisition of non-visible infrared light is controlled.
+     *  - \b Ultraviolet (Display string: 'Ultraviolet'): The acquisition of non-visible ultraviolet light is controlled.
+     *  - \b Range (Display string: 'Range'): The acquisition of range (distance) data is controlled. The data produced may be only range (2.5D) or a point cloud giving the 3D coordinates depending on the Scan3dControl.
+     *  - \b Reflectance (Display string: 'Reflectance'): The reflected intensity acquired together with Range in a Linescan3D sensor acquiring a single linescan profile for each exposure of the sensor.
+     *  - \b Confidence (Display string: 'Confidence'): The acquisition of confidence map of the acquired image is controlled. Confidence data may be binary (0 - invalid) or an integer where 0 is invalid and increasing value is increased confidence in the data in the corresponding pixel. If floating point representation is used the confidence image is normalized to the range [0,1], for integer representation the maximum possible integer represents maximum confidence.
+     *  - \b Disparity (Display string: 'Disparity'): The acquisition of stereo camera disparity data is controlled. Disparity is a more specific range format approximately inversely proportional to distance. Disparity is typically given in pixel units.
+     *  - \b Scatter (Display string: 'Scatter'): The acquisition of data measuring how much light is scattered around the reflected light. In processing this is used as an additional intensity image, often together with the standard intensity or reflectance.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 componentSelector;
+    /// \brief A boolean property. Controls if the selected component streaming is active.
+    /**
+     *  Controls if the selected component streaming is active.
+     */
+    PropertyIBoolean componentEnable;
+    /// \brief An integer property. Returns a unique Identifier value that correspond to the selected Component type.
+    /**
+     *  Returns a unique Identifier value that correspond to the selected Component type.
+     */
+    PropertyI64 componentIDValue;
+    /// \brief An enumerated integer property. This feature is deprecated (See ComponentSelector).
+    /**
+     *  \deprecated
+     *  This feature is deprecated (See ComponentSelector). It was used to select a component.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Intensity (Display string: 'Intensity'): The acquisition of intensity (monochrome or color) of the visible reflected light is controlled.
      *  - \b Color (Display string: 'Color'): The acquisition of color of the reflected light is controlled
      *  - \b Infrared (Display string: 'Infrared'): The acquisition of non-visible infrared light is controlled.
      *  - \b Ultraviolet (Display string: 'Ultraviolet'): The acquisition of non-visible ultraviolet light is controlled.
      *  - \b Range (Display string: 'Range'): The acquisition of range (distance) data is controlled. The data produced may be only range (2.5D) or a point cloud 3D coordinates depending on the Scan3dControl.
-     *  - \b Disparity (Display string: 'Disparity'): The acquisition of stereo camera disparity data is controlled. Disparity is a more specific range format approximately inversely proportional to distance. Disparity is typically given in pixel units.
      *  - \b Confidence (Display string: 'Confidence'): The acquisition of confidence map of the acquired image is controlled. Confidence data may be binary (0 - invalid) or an integer where 0 is invalid and increasing value is increased confidence in the data in the corresponding pixel. If floating point representation is used the confidence image is normalized to the range [0,1], for integer representation the maximum possible integer represents maximum confidence.
+     *  - \b Disparity (Display string: 'Disparity'): The acquisition of stereo camera disparity data is controlled. Disparity is a more specific range format approximately inversely proportional to distance. Disparity is typically given in pixel units.
      *  - \b Scatter (Display string: 'Scatter'): The acquisition of data measuring how much light is scattered around the reflected light. In processing this is used as an additional intensity image, often together with the standard intensity.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 imageComponentSelector;
-    /// \brief A boolean property. Controls if the selected component streaming is active.
+    /// \brief A boolean property. This feature is deprecated (See ComponentEnable).
     /**
-     *  Controls if the selected component streaming is active.
+     *  \deprecated
+     *  This feature is deprecated (See ComponentEnable). It was used to control if the selected component streaming is active.
      */
     PropertyIBoolean imageComponentEnable;
     /// \brief An integer property. Width of the image provided by the device (in pixels).
@@ -1152,9 +1342,79 @@ public:
      *  Vertical offset from the origin to the region of interest (in pixels).
      */
     PropertyI64 offsetY;
-    /// \brief An integer property. Total number of bytes between 2 successive lines.
+    /// \brief An enumerated integer property. Selects the overall multi area mode.
     /**
-     *  Total number of bytes between 2 successive lines. This feature is used to facilitate alignment of image data.
+     *  Selects the overall multi area mode.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvOff (Display string: 'mv Off'): Multi area mode is altogether switched off. Only one single AOI as defined in Width, Height, OffsetX and OffsetY properties is used and valid.
+     *  - \b mvMultiAreasCombined (Display string: 'mv Multi Areas Combined'): Image is combined from multiple areas. The overlapping of areas is allowed. The camera decides which areas it needs to crop from the image and combines all areas into one image.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvMultiAreaMode;
+    /// \brief An enumerated integer property. Selects the area in multi area context.
+    /**
+     *  Selects the area in multi area context.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvArea0 (Display string: 'mv Area 0'): First area in multi area context.
+     *  - \b mvArea1 (Display string: 'mv Area 1'): Second area in multi area context.
+     *  - \b mvArea2 (Display string: 'mv Area 2'): Third area in multi area context.
+     *  - \b mvArea3 (Display string: 'mv Area 3'): Fourth area in multi area context.
+     *  - \b mvArea4 (Display string: 'mv Area 4'): Fifth area in multi area context.
+     *  - \b mvArea5 (Display string: 'mv Area 5'): Sixth area in multi area context.
+     *  - \b mvArea6 (Display string: 'mv Area 6'): Seventh area in multi area context.
+     *  - \b mvArea7 (Display string: 'mv Area 7'): Eighth area in multi area context.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvAreaSelector;
+    /// \brief A boolean property. This feature controls whether the selected area is active during streaming or not.
+    /**
+     *  This feature controls whether the selected area is active during streaming or not.
+     */
+    PropertyIBoolean mvAreaEnable;
+    /// \brief An integer property. Width of this area's part of the image (in pixels).
+    /**
+     *  Width of this area's part of the image (in pixels).
+     */
+    PropertyI64 mvAreaWidth;
+    /// \brief An integer property. Height of this area's part of the image (in pixels).
+    /**
+     *  Height of this area's part of the image (in pixels).
+     */
+    PropertyI64 mvAreaHeight;
+    /// \brief An integer property. Horizontal offset of this area within the image (in pixels).
+    /**
+     *  Horizontal offset of this area within the image (in pixels).
+     */
+    PropertyI64 mvAreaOffsetX;
+    /// \brief An integer property. Vertical offset of this area within the image (in pixels).
+    /**
+     *  Vertical offset of this area within the image (in pixels).
+     */
+    PropertyI64 mvAreaOffsetY;
+    /// \brief An integer property. Horizontal offset of this area within the resulting image (in pixels).
+    /**
+     *  Horizontal offset of this area within the resulting image (in pixels).
+     */
+    PropertyI64 mvAreaResultingOffsetX;
+    /// \brief An integer property. Vertical offset of this area within the resulting image (in pixels).
+    /**
+     *  Vertical offset of this area within the resulting image (in pixels).
+     */
+    PropertyI64 mvAreaResultingOffsetY;
+    /// \brief A boolean property. This feature controls whether the LinePitch feature is writable.
+    /**
+     *  This feature controls whether the LinePitch feature is writable. Otherwise LinePitch is implicitly controlled by the combination of features like Width, PixelFormat, etc...
+     */
+    PropertyIBoolean linePitchEnable;
+    /// \brief An integer property. Total number of bytes between the starts of  2 consecutive lines.
+    /**
+     *  Total number of bytes between the starts of  2 consecutive lines. This feature is used to facilitate alignment of image data.
      */
     PropertyI64 linePitch;
     /// \brief An enumerated integer property. Selects which binning engine is controlled by the BinningHorizontal and BinningVertical features.
@@ -1166,7 +1426,7 @@ public:
      *  - \b Region0 (Display string: 'Region 0'): Selected feature will control the region 0 binning.
      *  - \b Region1 (Display string: 'Region 1'): Selected feature will control the region 1 binning.
      *  - \b Region2 (Display string: 'Region 2'): Selected feature will control the region 2 binning.
-     *  - \b Region#3# (Display string: 'Region #3#'): Selected feature will control the region #3# binning.
+     *  - \b Region\#3\# (Display string: 'Region \#3\#'): Selected feature will control the region \#3\# binning.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -1212,7 +1472,7 @@ public:
      *
      *  The following string values might be valid for this feature:
      *  - \b Discard (Display string: 'Discard'): The value of every Nth pixel is kept, others are discarded.
-     *  - \b Average (Display string: 'Average'): The value of a group of N adjacents pixels are averaged.
+     *  - \b Average (Display string: 'Average'): The value of a group of N adjacent pixels are averaged.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -1229,7 +1489,7 @@ public:
      *
      *  The following string values might be valid for this feature:
      *  - \b Discard (Display string: 'Discard'): The value of every Nth pixel is kept, others are discarded.
-     *  - \b Average (Display string: 'Average'): The value of a group of N adjacents pixels are averaged.
+     *  - \b Average (Display string: 'Average'): The value of a group of N adjacent pixels are averaged.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -1261,17 +1521,9 @@ public:
      *  - \b Mono8 (Display string: 'Mono8'): Mono 8 bit packed.
      *  - \b Mono8s (Display string: 'Mono8s'): Mono 1 bit signed.
      *  - \b Mono10 (Display string: 'Mono10'): Mono 10 bit.
-     *  - \b Mono10c3a64 (Display string: 'Mono10c3a64'): Mono 10 bit in 64 bit.
-     *  - \b Mono10c3p32 (Display string: 'Mono10c3p32'): Mono 10 bit in 32bit.
-     *  - \b Mono10g12 (Display string: 'Mono10g12'): Mono 10 bit grouped in 12 bit.
-     *  - \b Mono10msb (Display string: 'Mono10msb'): Mono 10 bit packed aligned on Msb.
      *  - \b Mono10p (Display string: 'Mono10p'): Mono 10 bit packed.
-     *  - \b Mono10pmsb (Display string: 'Mono10pmsb'): Mono 10 bit packed aligned on Msb.
-     *  - \b Mono10s (Display string: 'Mono10s'): Mono 10 bit signed.
      *  - \b Mono12 (Display string: 'Mono12'): Mono 12 bit.
      *  - \b Mono12p (Display string: 'Mono12p'): Mono 12 bit packed.
-     *  - \b Mono12g (Display string: 'Mono12g'): Mono 12 bit grouped.
-     *  - \b Mono12msb (Display string: 'Mono12msb'): Mono 12 bit aligned on Msb.
      *  - \b Mono14 (Display string: 'Mono14'): Mono 14 bit.
      *  - \b Mono16 (Display string: 'Mono16'): Mono 16 bit.
      *  - \b R8 (Display string: 'R8'): Red 8 bit.
@@ -1279,14 +1531,10 @@ public:
      *  - \b B8 (Display string: 'B8'): Blue 8 bit.
      *  - \b RGB8 (Display string: 'RGB8'): Red, Green, Blue 8 bit
      *  - \b RGB8_Planar (Display string: 'RGB8_Planar'): Red, Green, Blue 8 bit planar.
-     *  - \b RGB8a32 (Display string: 'RGB8a32'): Red, Green, Blue 8 bit aligned in 32 bit pixel
      *  - \b RGBa8 (Display string: 'RGBa8'): Red, Green, Blue 8 bit aligned on 8 bit
      *  - \b RGB10 (Display string: 'RGB10'): Red, Green, Blue 10 bit.
      *  - \b RGB10_Planar (Display string: 'RGB10_Planar'): Red, Green, Blue 10 bit planar.
-     *  - \b RGB10g32 (Display string: 'RGB10g32'): Red, Green, Blue 8 bit grouped in 32 bit pixel.
-     *  - \b RGB10g32msb (Display string: 'RGB10g32msb'): Red, Green, Blue 10 bit grouped in 32 bit pixel aligned on Msb.
      *  - \b RGB10p32 (Display string: 'RGB10p32'): Red, Green, Blue 10 bit packed in 32 bit pixel.
-     *  - \b RGB10p32msb (Display string: 'RGB10p32msb'): Red, Green, Blue 10 bit packed in 32 bit pixel.
      *  - \b RGB12 (Display string: 'RGB12'): Red, Green, Blue 12 bit.
      *  - \b RGB12_Planar (Display string: 'RGB12_Planar'): Red, Green, Blue 12 bit planar.
      *  - \b RGB16 (Display string: 'RGB16'): Red, Green, Blue 16 bit.
@@ -1298,38 +1546,24 @@ public:
      *  - \b BGR565p (Display string: 'BGR565p'): Blue, Green, Red, 16 bit packet in 5, 6, 5 bits.
      *  - \b BGR8 (Display string: 'BGR8'): Blue, Green, Red, 8 bit.
      *  - \b BGRa8 (Display string: 'BGRa8'): Blue, Green, Red, Alpha 8 bit.
-     *  - \b YUV411_8 (Display string: 'YUV411_8'): YUV 411 8 bit.
      *  - \b YUV422_8 (Display string: 'YUV422_8'): YUV 422 8 bit.
-     *  - \b YUV8 (Display string: 'YUV8'): YUV 8 bit.
      *  - \b YCbCr411_8 (Display string: 'YCbCr411_8'): YCrCb 411 8 bit.
      *  - \b YCbCr422_8 (Display string: 'YCbCr422_8'): YCrCb 422 8 bit.
-     *  - \b YCbCr601_411_8 (Display string: 'YCbCr601_411_8'): YCrCb 601 411 8 bit.
      *  - \b YCbCr601_422_8 (Display string: 'YCbCr601_422_8'): YCrCb 601 422 8 bit.
-     *  - \b YCbCr601_8 (Display string: 'YCbCr601_8'): YCrCb 601 8 bit.
-     *  - \b YCbCr709_411_8 (Display string: 'YCbCr709_411_8'): YCrCb 709 411 8 bit.
      *  - \b YCbCr709_422_8 (Display string: 'YCbCr709_422_8'): YCrCb 709 422 8 bit.
-     *  - \b YCbCr709_8 (Display string: 'YCbCr709_8'): YCrCb 709 8 bit.
      *  - \b YCbCr8 (Display string: 'YCbCr8'): YCbCr 8 bit.
      *  - \b BayerBG8 (Display string: 'BayerBG8'): Bayer Blue Green 8 bit.
      *  - \b BayerGB8 (Display string: 'BayerGB8'): Bayer Green Blue 8 bit.
      *  - \b BayerGR8 (Display string: 'BayerGR8'): Bayer Green Red 8 bit.
      *  - \b BayerRG8 (Display string: 'BayerRG8'): Bayer Red Green 8 bit.
      *  - \b BayerBG10 (Display string: 'BayerBG10'): Bayer Blue Green 10 bit.
-     *  - \b BayerBG10g12 (Display string: 'BayerBG10g12'): Bayer Blue Green 8 bit grouped on 12 bit.
      *  - \b BayerGB10 (Display string: 'BayerGB10'): Bayer Green Blue 10 bit.
-     *  - \b BayerGB10g12 (Display string: 'BayerGB10g12'): Bayer Green Blue 10 bit grouped on 12 bit.
      *  - \b BayerGR10 (Display string: 'BayerGR10'): Bayer Green Red 10 bit.
-     *  - \b BayerGR10g12 (Display string: 'BayerGR10g12'): Bayer Green Red 10 bit grouped on 12 bit.
      *  - \b BayerRG10 (Display string: 'BayerRG10'): Bayer Red Green 10 bit.
-     *  - \b BayerRG10g12 (Display string: 'BayerRG10g12'): Bayer Red Green 10 bit grouped on 12 bit.
      *  - \b BayerBG12 (Display string: 'BayerBG12'): Bayer Blue Green 12 bit
-     *  - \b BayerBG12g (Display string: 'BayerBG12g'): Bayer Blue Green 12 bit grouped.
      *  - \b BayerGB12 (Display string: 'BayerGB12'): Bayer Green Blue 12 bit
-     *  - \b BayerGB12g (Display string: 'BayerGB12g'): Bayer Green Blue 12 bit grouped on 12 bit.
      *  - \b BayerGR12 (Display string: 'BayerGR12'): Bayer Green Red 12 bit.
-     *  - \b BayerGR12g (Display string: 'BayerGR12g'): Bayer Green Red 12 bit grouped on 12 bit.
      *  - \b BayerRG12 (Display string: 'BayerRG12'): Bayer Red Green 12 bit.
-     *  - \b BayerRG12g (Display string: 'BayerRG12g'): Bayer Red Green 12 bit grouped on 12 bit.
      *  - \b BayerBG16 (Display string: 'BayerBG16'): Bayer Blue Green 16 bit.
      *  - \b BayerGB16 (Display string: 'BayerGB16'): Bayer Green Blue 16 bit.
      *  - \b BayerGR16 (Display string: 'BayerGR16'): Bayer Green Red 16 bit.
@@ -1368,28 +1602,28 @@ public:
      *  - \b RGB10V1Packed (Display string: 'RGB10V1Packed'): RGB 10 bit packed (GigE Vision Specific).
      *  - \b BGR10V1Packed (Display string: 'BGR10V1Packed'): BGR 10 bit packed (GigE Vision Specific).
      *  - \b RGB12V1Packed (Display string: 'RGB12V1Packed'): RGB 12 bit packed (GigE Vision Specific).
-     *  - \b Mono8Signed (Display string: 'Pixel Format')
-     *  - \b Mono10Packed (Display string: 'Pixel Format')
-     *  - \b RGB8Packed (Display string: 'Pixel Format')
-     *  - \b BGR8Packed (Display string: 'Pixel Format')
-     *  - \b RGBA8Packed (Display string: 'Pixel Format')
-     *  - \b BGRA8Packed (Display string: 'Pixel Format')
-     *  - \b RGB10Packed (Display string: 'Pixel Format')
-     *  - \b BGR10Packed (Display string: 'Pixel Format')
-     *  - \b RGB12Packed (Display string: 'Pixel Format')
-     *  - \b BGR12Packed (Display string: 'Pixel Format')
-     *  - \b RGB16Packed (Display string: 'Pixel Format')
-     *  - \b RGB10V2Packed (Display string: 'Pixel Format')
-     *  - \b RGB565Packed (Display string: 'Pixel Format')
-     *  - \b BGR565Packed (Display string: 'Pixel Format')
-     *  - \b YUV411Packed (Display string: 'Pixel Format')
-     *  - \b YUV422Packed (Display string: 'Pixel Format')
-     *  - \b YUV444Packed (Display string: 'Pixel Format')
-     *  - \b YUYVPacked (Display string: 'Pixel Format')
-     *  - \b RGB8Planar (Display string: 'Pixel Format')
-     *  - \b RGB10Planar (Display string: 'Pixel Format')
-     *  - \b RGB12Planar (Display string: 'Pixel Format')
-     *  - \b RGB16Planar (Display string: 'Pixel Format')
+     *  - \b Mono8Signed (Display string: 'Mono 8 Signed')
+     *  - \b Mono10Packed (Display string: 'Mono 10 Packed')
+     *  - \b RGB8Packed (Display string: 'RGB 8 Packed')
+     *  - \b BGR8Packed (Display string: 'BGR 8 Packed')
+     *  - \b RGBA8Packed (Display string: 'RGBA 8 Packed')
+     *  - \b BGRA8Packed (Display string: 'BGRA 8 Packed')
+     *  - \b RGB10Packed (Display string: 'RGB 10 Packed')
+     *  - \b BGR10Packed (Display string: 'BGR 10 Packed')
+     *  - \b RGB12Packed (Display string: 'RGB 12 Packed')
+     *  - \b BGR12Packed (Display string: 'BGR 12 Packed')
+     *  - \b RGB16Packed (Display string: 'RGB 16 Packed')
+     *  - \b RGB10V2Packed (Display string: 'RGB 10 V 2 Packed')
+     *  - \b RGB565Packed (Display string: 'RGB 565 Packed')
+     *  - \b BGR565Packed (Display string: 'BGR 565 Packed')
+     *  - \b YUV411Packed (Display string: 'YUV 411 Packed')
+     *  - \b YUV422Packed (Display string: 'YUV 422 Packed')
+     *  - \b YUV444Packed (Display string: 'YUV 444 Packed')
+     *  - \b YUYVPacked (Display string: 'YUYV Packed')
+     *  - \b RGB8Planar (Display string: 'RGB 8 Planar')
+     *  - \b RGB10Planar (Display string: 'RGB 10 Planar')
+     *  - \b RGB12Planar (Display string: 'RGB 12 Planar')
+     *  - \b RGB16Planar (Display string: 'RGB 16 Planar')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -1404,8 +1638,8 @@ public:
      *  - \b Mono2p (Display string: 'Mono2p'): Mono 2 bit packed.
      *  - \b Mono4p (Display string: 'Mono4p'): Mono 4 bit packed.
      *  - \b Mono8 (Display string: 'Mono8'): Mono 8 bit packed.
-     *  - \b Mono8s (Display string: 'Mono8s'): Mono 1 bit signed.
      *  - \b Mono10 (Display string: 'Mono10'): Mono 10 bit.
+     *  - \b Mono10p (Display string: 'Mono10p'): Mono 10 bit packed.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -1501,7 +1735,7 @@ public:
      *  - \b Region0 (Display string: 'Region 0'): TestPattern feature will control the region 0 test pattern generator.
      *  - \b Region1 (Display string: 'Region 1'): TestPattern feature will control the region 1 test pattern generator.
      *  - \b Region2 (Display string: 'Region 2'): TestPattern feature will control the region 2 test pattern generator.
-     *  - \b Region#3# (Display string: 'Region #3#'): TestPattern feature will control the region #3# test pattern generator.
+     *  - \b Region\#3\# (Display string: 'Region \#3\#'): TestPattern feature will control the region \#3\# test pattern generator.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -1523,14 +1757,21 @@ public:
      *  - \b VerticalLineMoving (Display string: 'Vertical Line Moving'): A moving vertical line is superimposed on the live image.
      *  - \b ColorBar (Display string: 'Color Bar'): Image is filled with stripes of color including White, Black, Red, Green, Blue, Cyan, Magenta and Yellow.
      *  - \b FrameCounter (Display string: 'Frame Counter'): A frame counter is superimposed on the live image.
+     *  - \b HorzontalLineMoving (Display string: 'Horzontal Line Moving')
+     *  - \b mvBayerRaw (Display string: 'mv Bayer Raw')
+     *  - \b mvGreyDiagonalRamp (Display string: 'mv Grey Diagonal Ramp')
+     *  - \b mvFadeToGreyColorBar (Display string: 'mv Fade To Grey Color Bar')
+     *  - \b mvFFCImage (Display string: 'mv FFC Image')
+     *  - \b mvMovingGreyDiagonalRamp (Display string: 'mv Moving Grey Diagonal Ramp')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 testPattern;
-    /// \brief An enumerated integer property. Selects the type of test pattern that is generated by the device as image source.
+    /// \brief An enumerated integer property. This feature is deprecated (See TestPattern).
     /**
-     *  Selects the type of test pattern that is generated by the device as image source.
+     *  \deprecated
+     *  This feature is deprecated (See TestPattern). Selects the type of test image that is sent by the device.
      *
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Image is coming from the sensor.
@@ -1544,12 +1785,12 @@ public:
      *  - \b VerticalLineMoving (Display string: 'Vertical Line Moving'): A moving vertical line is superimposed on the live image.
      *  - \b ColorBar (Display string: 'Color Bar'): Image is filled with stripes of color including White, Black, Red, Green, Blue, Cyan, Magenta and Yellow.
      *  - \b FrameCounter (Display string: 'Frame Counter'): A frame counter is superimposed on the live image.
-     *  - \b HorzontalLineMoving (Display string: 'Test Image Selector')
-     *  - \b mvBayerRaw (Display string: 'Test Image Selector')
-     *  - \b mvGreyDiagonalRamp (Display string: 'Test Image Selector')
-     *  - \b mvFadeToGreyColorBar (Display string: 'Test Image Selector')
-     *  - \b mvFFCImage (Display string: 'Test Image Selector')
-     *  - \b mvMovingGreyDiagonalRamp (Display string: 'Test Image Selector')
+     *  - \b HorzontalLineMoving (Display string: 'Horzontal Line Moving')
+     *  - \b mvBayerRaw (Display string: 'mv Bayer Raw')
+     *  - \b mvGreyDiagonalRamp (Display string: 'mv Grey Diagonal Ramp')
+     *  - \b mvFadeToGreyColorBar (Display string: 'mv Fade To Grey Color Bar')
+     *  - \b mvFFCImage (Display string: 'mv FFC Image')
+     *  - \b mvMovingGreyDiagonalRamp (Display string: 'mv Moving Grey Diagonal Ramp')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -1570,7 +1811,7 @@ public:
     PropertyI64 deinterlacing;
     /// \brief An enumerated integer property. Enable a specific image compression mode as the base mode for image transfer.
     /**
-     *  Enable a specific image compression mode as the base mode for image transfer. Optionally, chunk data can be appended to the compressed image (See chunk section).
+     *  Enable a specific image compression mode as the base mode for image transfer. Optionally, chunk data can be appended to the compressed image (See the Chunk Data Control chapter).
      *
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Default value. Image compression is disabled. Images are transmitted uncompressed.
@@ -1618,69 +1859,31 @@ public:
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 imageCompressionJPEGFormatOption;
-    /// \brief An enumerated integer property. This feature allows to manually select the resolution of the device's ADC.
+    /// \brief An enumerated integer property. This feature manually selects the resolution of the device's ADC.
     /**
-     *  This feature allows to manually select the resolution of the device's ADC.
+     *  This feature manually selects the resolution of the device's ADC.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvAuto (Display string: 'mv Digitization Mode'): When the selected pixel format has 12 bits or more the ADC will work with 12 bits. Otherwise the ADC will work with 10 bits.
-     *  - \b mv08Bit (Display string: 'mv Digitization Mode'): The ADC will always work with a resolution of  8 bits no matter which pixel format has been selected.
-     *  - \b mv10Bit (Display string: 'mv Digitization Mode'): The ADC will always work with a resolution of 10 bits no matter which pixel format has been selected.
-     *  - \b mv12Bit (Display string: 'mv Digitization Mode'): The ADC will always work with a resolution of 12 bits no matter which pixel format has been selected. This will allow to achieve higher precision and thus improved quality when internal processing is done (e.g. when applying digital gain to the image).
-     *  - \b mvFixed (Display string: 'mv Digitization Mode')
+     *  - \b Auto (Display string: 'Auto'): When the selected pixel format has 12 bits or more the ADC will work with 12 bits. Otherwise the ADC will work with 10 bits.
+     *  - \b Bpp8 (Display string: 'Bpp 8'): The ADC will always work with a resolution of  8 bits no matter which pixel format has been selected.
+     *  - \b Bpp10 (Display string: 'Bpp 10'): The ADC will always work with a resolution of 10 bits no matter which pixel format has been selected.
+     *  - \b Bpp12 (Display string: 'Bpp 12'): The ADC will always work with a resolution of 12 bits no matter which pixel format has been selected. This will allow to achieve higher precision and thus improved quality when internal processing is done (e.g. when applying digital gain to the image).
+     *  - \b Fixed (Display string: 'Fixed')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
-    PropertyI64 mvDigitizationMode;
-    /// \brief An enumerated integer property. This feature allows to select the algorithm used to convert the Bayer data into RGB
-    /**
-     *  This feature allows to select the algorithm used to convert the Bayer data into RGB
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b Bilinear_1 (Display string: 'mv Debayer Algorithm')
-     *  - \b Bilinear_2 (Display string: 'mv Debayer Algorithm')
-     *  - \b Replication (Display string: 'mv Debayer Algorithm')
-     *  - \b Kernel_5x5 (Display string: 'mv Debayer Algorithm')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvDebayerAlgorithm;
-    /// \brief An integer property. Vertical offset of SensorB from the origin to the region of interest (in pixels).
-    /**
-     *  Vertical offset of SensorB from the origin to the region of interest (in pixels).
-     */
-    PropertyI64 mvOffsetYSensorB;
-    /// \brief An enumerated integer property. Selects the sensor to configure
-    /**
-     *  Selects the sensor to configure
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b SensorA (Display string: 'mv Sensor Line Offset Selector')
-     *  - \b SensorB (Display string: 'mv Sensor Line Offset Selector')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvSensorLineOffsetSelector;
-    /// \brief An integer property. Sets the offset of the sensor selected by mvSensorLineOffsetSelector.
-    /**
-     *  Sets the offset of the sensor selected by mvSensorLineOffsetSelector.
-     */
-    PropertyI64 mvSensorLineOffset;
-    /// \brief An integer property. Time in nanoseconds for one line
-    /**
-     *  Time in nanoseconds for one line
-     */
-    PropertyI64 mvSensorLinePeriod;
+    PropertyI64 mvSensorDigitizationBitDepth;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category for the acquisition and trigger control features.
 /**
  *  A category for the acquisition and trigger control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class AcquisitionControl
 //-----------------------------------------------------------------------------
@@ -1703,9 +1906,9 @@ public:
         mvSensorRegister(),
         mvSensorRegisterValue(),
         acquisitionFrameRate(),
-        acquisitionFrameRateRaw(),
+        acquisitionFrameRateEnable(),
         acquisitionLineRate(),
-        acquisitionLineRateRaw(),
+        acquisitionLineRateEnable(),
         acquisitionStatusSelector(),
         acquisitionStatus(),
         triggerSelector(),
@@ -1715,21 +1918,26 @@ public:
         triggerActivation(),
         triggerOverlap(),
         triggerDelay(),
-        triggerDelayRaw(),
         triggerDivider(),
         triggerMultiplier(),
         exposureMode(),
         exposureTimeMode(),
         exposureTimeSelector(),
         exposureTime(),
-        exposureTimeRaw(),
+        mvExposureHorizontalZoneDivider(),
         exposureAuto(),
+        multiSlopeMode(),
+        multiSlopeKneePointCount(),
+        multiSlopeKneePointSelector(),
+        multiSlopeExposureLimit(),
+        multiSlopeSaturationThreshold(),
+        multiSlopeIntensityLimit(),
+        multiSlopeExposureGradient(),
         mvAcquisitionFrameRateLimitMode(),
         mvAcquisitionFrameRateEnable(),
         mvResultingFrameRate(),
         mvShutterMode(),
         mvCompressionKneepoint(),
-        mvDefectivePixelEnable(),
         mvExposureAutoLowerLimit(),
         mvExposureAutoUpperLimit(),
         mvExposureAutoSpeed(),
@@ -1746,8 +1954,13 @@ public:
         mvAcquisitionMemoryMode(),
         mvPretriggerFrameCount(),
         mvAcquisitionMemoryMaxFrameCount(),
-        mvAcquisitionMemoryAOIParameterChanged()
+        mvAcquisitionMemoryFrameCount(),
+        mvAcquisitionMemoryAOIParameterChanged(),
+        mvFeatureMode(),
+        mvSmartFrameRecallEnable(),
+        mvLensCalibrationEnable()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( acquisitionMode, "AcquisitionMode" );
@@ -1761,13 +1974,13 @@ public:
         {
             locator.bindComponent( acquisitionFrameRate, "AcquisitionFrameRateAbs" );
         }
-        locator.bindComponent( acquisitionFrameRateRaw, "AcquisitionFrameRateRaw" );
+        locator.bindComponent( acquisitionFrameRateEnable, "AcquisitionFrameRateEnable" );
         locator.bindComponent( acquisitionLineRate, "AcquisitionLineRate" );
         if( !acquisitionLineRate.isValid() )
         {
             locator.bindComponent( acquisitionLineRate, "AcquisitionLineRateAbs" );
         }
-        locator.bindComponent( acquisitionLineRateRaw, "AcquisitionLineRateRaw" );
+        locator.bindComponent( acquisitionLineRateEnable, "AcquisitionLineRateEnable" );
         locator.bindComponent( acquisitionStatusSelector, "AcquisitionStatusSelector" );
         locator.bindComponent( acquisitionStatus, "AcquisitionStatus" );
         locator.bindComponent( triggerSelector, "TriggerSelector" );
@@ -1781,7 +1994,6 @@ public:
         {
             locator.bindComponent( triggerDelay, "TriggerDelayAbs" );
         }
-        locator.bindComponent( triggerDelayRaw, "TriggerDelayRaw" );
         locator.bindComponent( triggerDivider, "TriggerDivider" );
         locator.bindComponent( triggerMultiplier, "TriggerMultiplier" );
         locator.bindComponent( exposureMode, "ExposureMode" );
@@ -1792,14 +2004,20 @@ public:
         {
             locator.bindComponent( exposureTime, "ExposureTimeAbs" );
         }
-        locator.bindComponent( exposureTimeRaw, "ExposureTimeRaw" );
+        locator.bindComponent( mvExposureHorizontalZoneDivider, "mvExposureHorizontalZoneDivider" );
         locator.bindComponent( exposureAuto, "ExposureAuto" );
+        locator.bindComponent( multiSlopeMode, "MultiSlopeMode" );
+        locator.bindComponent( multiSlopeKneePointCount, "MultiSlopeKneePointCount" );
+        locator.bindComponent( multiSlopeKneePointSelector, "MultiSlopeKneePointSelector" );
+        locator.bindComponent( multiSlopeExposureLimit, "MultiSlopeExposureLimit" );
+        locator.bindComponent( multiSlopeSaturationThreshold, "MultiSlopeSaturationThreshold" );
+        locator.bindComponent( multiSlopeIntensityLimit, "MultiSlopeIntensityLimit" );
+        locator.bindComponent( multiSlopeExposureGradient, "MultiSlopeExposureGradient" );
         locator.bindComponent( mvAcquisitionFrameRateLimitMode, "mvAcquisitionFrameRateLimitMode" );
         locator.bindComponent( mvAcquisitionFrameRateEnable, "mvAcquisitionFrameRateEnable" );
         locator.bindComponent( mvResultingFrameRate, "mvResultingFrameRate" );
         locator.bindComponent( mvShutterMode, "mvShutterMode" );
         locator.bindComponent( mvCompressionKneepoint, "mvCompressionKneepoint" );
-        locator.bindComponent( mvDefectivePixelEnable, "mvDefectivePixelEnable" );
         locator.bindComponent( mvExposureAutoLowerLimit, "mvExposureAutoLowerLimit" );
         locator.bindComponent( mvExposureAutoUpperLimit, "mvExposureAutoUpperLimit" );
         locator.bindComponent( mvExposureAutoSpeed, "mvExposureAutoSpeed" );
@@ -1816,9 +2034,15 @@ public:
         locator.bindComponent( mvAcquisitionMemoryMode, "mvAcquisitionMemoryMode" );
         locator.bindComponent( mvPretriggerFrameCount, "mvPretriggerFrameCount" );
         locator.bindComponent( mvAcquisitionMemoryMaxFrameCount, "mvAcquisitionMemoryMaxFrameCount" );
+        locator.bindComponent( mvAcquisitionMemoryFrameCount, "mvAcquisitionMemoryFrameCount" );
         locator.bindComponent( mvAcquisitionMemoryAOIParameterChanged, "mvAcquisitionMemoryAOIParameterChanged" );
+        locator.bindComponent( mvFeatureMode, "mvFeatureMode" );
+        locator.bindComponent( mvSmartFrameRecallEnable, "mvSmartFrameRecallEnable" );
+        locator.bindComponent( mvLensCalibrationEnable, "mvLensCalibrationEnable" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Sets the acquisition mode of the device.
     /**
      *  Sets the acquisition mode of the device. It defines mainly the number of frames to capture during an acquisition and the way the acquisition stops.
@@ -1862,23 +2086,21 @@ public:
      *  Controls the acquisition rate (in Hertz) at which the frames are captured.
      */
     PropertyF acquisitionFrameRate;
-    /// \brief An integer property. This feature is deprecated.
+    /// \brief A boolean property. Controls if the AcquisitionFrameRate feature is writable and used to control the acquisition rate.
     /**
-     *  \deprecated
-     *  This feature is deprecated. It controls the rate (in device specific unit) at which the Frames are captured when TriggerMode is Off for the Frame trigger.
+     *  Controls if the AcquisitionFrameRate feature is writable and used to control the acquisition rate. Otherwise, the acquisition rate is implicitly controlled by the combination of other features like ExposureTime, etc...
      */
-    PropertyI64 acquisitionFrameRateRaw;
+    PropertyIBoolean acquisitionFrameRateEnable;
     /// \brief A floating point property. Controls the rate (in Hertz) at which the Lines in a Frame are captured.
     /**
      *  Controls the rate (in Hertz) at which the Lines in a Frame are captured.
      */
     PropertyF acquisitionLineRate;
-    /// \brief An integer property. This feature is deprecated.
+    /// \brief A boolean property. Controls if the AcquisitionLineRate feature is writable and used to control the acquisition rate.
     /**
-     *  \deprecated
-     *  This feature is deprecated. It controls the rate (in device specific unit) at which the Lines in a Frame are captured when TriggerMode is Off for the Line trigger.
+     *  Controls if the AcquisitionLineRate feature is writable and used to control the acquisition rate. Otherwise, the acquisition rate is implicitly controlled by the combination of other features like ExposureTime, etc...
      */
-    PropertyI64 acquisitionLineRateRaw;
+    PropertyIBoolean acquisitionLineRateEnable;
     /// \brief An enumerated integer property. Selects the internal acquisition signal to read using AcquisitionStatus.
     /**
      *  Selects the internal acquisition signal to read using AcquisitionStatus.
@@ -1911,19 +2133,20 @@ public:
      *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Selects a trigger that ends the Acquisition of one or many frames according to AcquisitionMode.
      *  - \b AcquisitionActive (Display string: 'Acquisition Active'): Selects a trigger that controls the duration of the Acquisition of one or many frames. The Acquisition is activated when the trigger signal becomes active and terminated when it goes back to the inactive state.
      *  - \b FrameStart (Display string: 'Frame Start'): Selects a trigger starting the capture of one frame.
-     *  - \b FrameEnd (Display string: 'Frame End'): Selects a trigger ending the capture of one frame (mainly used in line scan mode).
-     *  - \b FrameActive (Display string: 'Frame Active'): Selects a trigger controlling the duration of one frame (mainly used in line scan mode).
+     *  - \b FrameEnd (Display string: 'Frame End'): Selects a trigger ending the capture of one frame (mainly used in linescan mode).
+     *  - \b FrameActive (Display string: 'Frame Active'): Selects a trigger controlling the duration of one frame (mainly used in linescan mode).
      *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Selects a trigger starting the capture of the bursts of frames in an acquisition. AcquisitionBurstFrameCount controls the length of each burst unless a FrameBurstEnd trigger is active. The total number of frames captured is also conditioned by AcquisitionFrameCount if AcquisitionMode is MultiFrame.
      *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Selects a trigger ending the capture of the bursts of frames in an acquisition.
      *  - \b FrameBurstActive (Display string: 'Frame Burst Active'): Selects a trigger controlling the duration of the capture of the bursts of frames in an acquisition.
-     *  - \b LineStart (Display string: 'Line Start'): Selects a trigger starting the capture of one Line of a Frame (mainly used in line scan mode).
+     *  - \b LineStart (Display string: 'Line Start'): Selects a trigger starting the capture of one Line of a Frame (mainly used in linescan mode).
      *  - \b ExposureStart (Display string: 'Exposure Start'): Selects a trigger controlling the start of the exposure of one Frame (or Line).
      *  - \b ExposureEnd (Display string: 'Exposure End'): Selects a trigger controlling the end of the exposure of one Frame (or Line).
      *  - \b ExposureActive (Display string: 'Exposure Active'): Selects a trigger controlling the duration of the exposure of one frame (or Line).
-     *  - \b mvTimestampReset (Display string: 'Trigger Selector')
-     *  - \b mvLoopRecordEnd (Display string: 'Trigger Selector')
-     *  - \b mvFrameStartSensor2 (Display string: 'Trigger Selector')
-     *  - \b mvInvalidTriggerSelector (Display string: 'Trigger Selector')
+     *  - \b MultiSlopeExposureLimit1 (Display string: 'Multi Slope Exposure Limit 1'): Selects a trigger controlling the first duration of a multi-slope exposure. Exposure is continued according to the pre-defined multi-slope settings.
+     *  - \b mvTimestampReset (Display string: 'mv Timestamp Reset')
+     *  - \b mvLoopRecordEnd (Display string: 'mv Loop Record End')
+     *  - \b mvFrameStartSensor2 (Display string: 'mv Frame Start Sensor 2')
+     *  - \b mvInvalidTriggerSelector (Display string: 'mv Invalid Trigger Selector')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -1955,48 +2178,52 @@ public:
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Specifies that the trigger source will be a signal generated by software using the SoftwareSignalPulse command.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Specifies that the trigger source will be a signal generated by software using the SoftwareSignalPulse command.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Specifies that the trigger source will be a signal generated by software using the SoftwareSignalPulse command.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Specifies that the trigger source will be a signal generated by software using the SoftwareSignalPulse command.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Specifies that the trigger source will be a signal generated by software using the SoftwareSignalPulse command.
      *  - \b Line0 (Display string: 'Line 0'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the trigger signal.
      *  - \b Line1 (Display string: 'Line 1'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the trigger signal.
      *  - \b Line2 (Display string: 'Line 2'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the trigger signal.
-     *  - \b Line#3# (Display string: 'Line #3#'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the trigger signal.
-     *  - \b Counter0Start (Display string: 'Counter 0 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter1Start (Display string: 'Counter 1 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter2Start (Display string: 'Counter 2 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter#3#Start (Display string: 'Counter #3# Start'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter0End (Display string: 'Counter 0 End'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter1End (Display string: 'Counter 1 End'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter2End (Display string: 'Counter 2 End'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter#3#End (Display string: 'Counter #3# End'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Timer0Start (Display string: 'Timer 0 Start'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer1Start (Display string: 'Timer 1 Start'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer2Start (Display string: 'Timer 2 Start'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer#3#Start (Display string: 'Timer #3# Start'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer0End (Display string: 'Timer 0 End'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer1End (Display string: 'Timer 1 End'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer2End (Display string: 'Timer 2 End'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer#3#End (Display string: 'Timer #3# End'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Encoder0 (Display string: 'Encoder 0'): Specifies which Encoder signal to use as internal source for the trigger.
-     *  - \b Encoder1 (Display string: 'Encoder 1'): Specifies which Encoder signal to use as internal source for the trigger.
-     *  - \b Encoder2 (Display string: 'Encoder 2'): Specifies which Encoder signal to use as internal source for the trigger.
-     *  - \b Encoder#3# (Display string: 'Encoder #3#'): Specifies which Encoder signal to use as internal source for the trigger.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the trigger signal.
      *  - \b UserOutput0 (Display string: 'User Output 0'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput1 (Display string: 'User Output 1'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput2 (Display string: 'User Output 2'): Specifies which User Output bit signal to use as internal source for the trigger.
-     *  - \b UserOutput#3# (Display string: 'User Output #3#'): Specifies which User Output bit signal to use as internal source for the trigger.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): Specifies which User Output bit signal to use as internal source for the trigger.
+     *  - \b Counter0Start (Display string: 'Counter 0 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
+     *  - \b Counter1Start (Display string: 'Counter 1 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
+     *  - \b Counter2Start (Display string: 'Counter 2 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
+     *  - \b Counter\#3\#Start (Display string: 'Counter \#3\# Start'): Specifies which of the Counter signal to use as internal source for the trigger.
+     *  - \b Counter0End (Display string: 'Counter 0 End'): Specifies which of the Counter signal to use as internal source for the trigger.
+     *  - \b Counter1End (Display string: 'Counter 1 End'): Specifies which of the Counter signal to use as internal source for the trigger.
+     *  - \b Counter2End (Display string: 'Counter 2 End'): Specifies which of the Counter signal to use as internal source for the trigger.
+     *  - \b Counter\#3\#End (Display string: 'Counter \#3\# End'): Specifies which of the Counter signal to use as internal source for the trigger.
+     *  - \b Timer0Start (Display string: 'Timer 0 Start'): Specifies which Timer signal to use as internal source for the trigger.
+     *  - \b Timer1Start (Display string: 'Timer 1 Start'): Specifies which Timer signal to use as internal source for the trigger.
+     *  - \b Timer2Start (Display string: 'Timer 2 Start'): Specifies which Timer signal to use as internal source for the trigger.
+     *  - \b Timer\#3\#Start (Display string: 'Timer \#3\# Start'): Specifies which Timer signal to use as internal source for the trigger.
+     *  - \b Timer0End (Display string: 'Timer 0 End'): Specifies which Timer signal to use as internal source for the trigger.
+     *  - \b Timer1End (Display string: 'Timer 1 End'): Specifies which Timer signal to use as internal source for the trigger.
+     *  - \b Timer2End (Display string: 'Timer 2 End'): Specifies which Timer signal to use as internal source for the trigger.
+     *  - \b Timer\#3\#End (Display string: 'Timer \#3\# End'): Specifies which Timer signal to use as internal source for the trigger.
+     *  - \b Encoder0 (Display string: 'Encoder 0'): Specifies which Encoder signal to use as internal source for the trigger.
+     *  - \b Encoder1 (Display string: 'Encoder 1'): Specifies which Encoder signal to use as internal source for the trigger.
+     *  - \b Encoder2 (Display string: 'Encoder 2'): Specifies which Encoder signal to use as internal source for the trigger.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): Specifies which Encoder signal to use as internal source for the trigger.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Specifies which Logic Block signal to use as internal source for the trigger.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Specifies which Logic Block signal to use as internal source for the trigger.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Specifies which Logic Block signal to use as internal source for the trigger.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Specifies which Logic Block signal to use as internal source for the trigger.
      *  - \b Action0 (Display string: 'Action 0'): Specifies which Action command to use as internal source for the trigger.
      *  - \b Action1 (Display string: 'Action 1'): Specifies which Action command to use as internal source for the trigger.
      *  - \b Action2 (Display string: 'Action 2'): Specifies which Action command to use as internal source for the trigger.
-     *  - \b Action#3# (Display string: 'Action #3#'): Specifies which Action command to use as internal source for the trigger.
+     *  - \b Action\#3\# (Display string: 'Action \#3\#'): Specifies which Action command to use as internal source for the trigger.
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): Specifies which Link Trigger to use as  source for the trigger (received from the transport layer).
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): Specifies which Link Trigger to use as  source for the trigger (received from the transport layer).
      *  - \b LinkTrigger2 (Display string: 'Link Trigger 2'): Specifies which Link Trigger to use as  source for the trigger (received from the transport layer).
-     *  - \b LinkTrigger#3# (Display string: 'Link Trigger #3#'): Specifies which Link Trigger to use as  source for the trigger (received from the transport layer).
+     *  - \b LinkTrigger\#3\# (Display string: 'Link Trigger \#3\#'): Specifies which Link Trigger to use as  source for the trigger (received from the transport layer).
      *  - \b CC1 (Display string: 'CC 1'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC2 (Display string: 'CC 2'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC3 (Display string: 'CC 3'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC4 (Display string: 'CC 4'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
-     *  - \b CC#5# (Display string: 'CC #5#'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
+     *  - \b CC\#5\# (Display string: 'CC \#5\#'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b Line3 (Display string: 'Line 3'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the trigger signal.
      *  - \b Line4 (Display string: 'Line 4'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the trigger signal.
      *  - \b Line5 (Display string: 'Line 5'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the trigger signal.
@@ -2023,7 +2250,7 @@ public:
      *  - \b Timer13Start (Display string: 'Timer 13 Start'): Specifies which Timer signal to use as internal source for the trigger.
      *  - \b Timer14Start (Display string: 'Timer 14 Start'): Specifies which Timer signal to use as internal source for the trigger.
      *  - \b Timer15Start (Display string: 'Timer 15 Start'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer16Start (Display string: 'Trigger Source')
+     *  - \b Timer16Start (Display string: 'Timer 16 Start')
      *  - \b Timer3End (Display string: 'Timer 3 End'): Specifies which Timer signal to use as internal source for the trigger.
      *  - \b Timer4End (Display string: 'Timer 4 End'): Specifies which Timer signal to use as internal source for the trigger.
      *  - \b Timer5End (Display string: 'Timer 5 End'): Specifies which Timer signal to use as internal source for the trigger.
@@ -2037,7 +2264,7 @@ public:
      *  - \b Timer13End (Display string: 'Timer 13 End'): Specifies which Timer signal to use as internal source for the trigger.
      *  - \b Timer14End (Display string: 'Timer 14 End'): Specifies which Timer signal to use as internal source for the trigger.
      *  - \b Timer15End (Display string: 'Timer 15 End'): Specifies which Timer signal to use as internal source for the trigger.
-     *  - \b Timer16End (Display string: 'Trigger Source')
+     *  - \b Timer16End (Display string: 'Timer 16 End')
      *  - \b Counter3Start (Display string: 'Counter 3 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
      *  - \b Counter4Start (Display string: 'Counter 4 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
      *  - \b Counter5Start (Display string: 'Counter 5 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
@@ -2051,7 +2278,7 @@ public:
      *  - \b Counter13Start (Display string: 'Counter 13 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
      *  - \b Counter14Start (Display string: 'Counter 14 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
      *  - \b Counter15Start (Display string: 'Counter 15 Start'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter16Start (Display string: 'Trigger Source')
+     *  - \b Counter16Start (Display string: 'Counter 16 Start')
      *  - \b Counter3End (Display string: 'Counter 3 End'): Specifies which of the Counter signal to use as internal source for the trigger.
      *  - \b Counter4End (Display string: 'Counter 4 End'): Specifies which of the Counter signal to use as internal source for the trigger.
      *  - \b Counter5End (Display string: 'Counter 5 End'): Specifies which of the Counter signal to use as internal source for the trigger.
@@ -2065,11 +2292,11 @@ public:
      *  - \b Counter13End (Display string: 'Counter 13 End'): Specifies which of the Counter signal to use as internal source for the trigger.
      *  - \b Counter14End (Display string: 'Counter 14 End'): Specifies which of the Counter signal to use as internal source for the trigger.
      *  - \b Counter15End (Display string: 'Counter 15 End'): Specifies which of the Counter signal to use as internal source for the trigger.
-     *  - \b Counter16End (Display string: 'Trigger Source')
-     *  - \b mvLogicGateOR1Output (Display string: 'Trigger Source')
-     *  - \b mvLogicGateOR2Output (Display string: 'Trigger Source')
-     *  - \b mvLogicGateOR3Output (Display string: 'Trigger Source')
-     *  - \b mvLogicGateOR4Output (Display string: 'Trigger Source')
+     *  - \b Counter16End (Display string: 'Counter 16 End')
+     *  - \b mvLogicGateOR1Output (Display string: 'mv Logic Gate OR 1 Output')
+     *  - \b mvLogicGateOR2Output (Display string: 'mv Logic Gate OR 2 Output')
+     *  - \b mvLogicGateOR3Output (Display string: 'mv Logic Gate OR 3 Output')
+     *  - \b mvLogicGateOR4Output (Display string: 'mv Logic Gate OR 4 Output')
      *  - \b UserOutput3 (Display string: 'User Output 3'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput4 (Display string: 'User Output 4'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput5 (Display string: 'User Output 5'): Specifies which User Output bit signal to use as internal source for the trigger.
@@ -2096,7 +2323,7 @@ public:
      *  - \b Action13 (Display string: 'Action 13'): Specifies which Action command to use as internal source for the trigger.
      *  - \b Action14 (Display string: 'Action 14'): Specifies which Action command to use as internal source for the trigger.
      *  - \b Action15 (Display string: 'Action 15'): Specifies which Action command to use as internal source for the trigger.
-     *  - \b Action16 (Display string: 'Trigger Source')
+     *  - \b Action16 (Display string: 'Action 16')
      *  - \b CC5 (Display string: 'CC 5'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC6 (Display string: 'CC 6'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC7 (Display string: 'CC 7'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
@@ -2108,7 +2335,7 @@ public:
      *  - \b CC13 (Display string: 'CC 13'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC14 (Display string: 'CC 14'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC15 (Display string: 'CC 15'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
-     *  - \b CC16 (Display string: 'Trigger Source')
+     *  - \b CC16 (Display string: 'CC 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2124,7 +2351,7 @@ public:
      *  - \b AnyEdge (Display string: 'Any Edge'): Specifies that the trigger is considered valid on the falling or rising edge of the source signal.
      *  - \b LevelHigh (Display string: 'Level High'): Specifies that the trigger is considered valid as long as the level of the source signal is high.
      *  - \b LevelLow (Display string: 'Level Low'): Specifies that the trigger is considered valid as long as the level of the source signal is low.
-     *  - \b mvNone (Display string: 'Trigger Activation')
+     *  - \b mvNone (Display string: 'mv None')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2149,12 +2376,6 @@ public:
      *  Specifies the delay in microseconds (us) to apply after the trigger reception before activating it.
      */
     PropertyF triggerDelay;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. TriggerDelayRaw specifies the delay in device-specific unit to apply after the trigger reception before effectively activating it. TriggerDelayAbs must reflect the state of TriggerDelayRaw when they are both supported.
-     */
-    PropertyI64 triggerDelayRaw;
     /// \brief An integer property. Specifies a division factor for the incoming trigger pulses.
     /**
      *  Specifies a division factor for the incoming trigger pulses.
@@ -2171,9 +2392,10 @@ public:
      *
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Disables the Exposure and let the shutter open.
-     *  - \b Timed (Display string: 'Timed'): Timed exposure. The exposure duration time is set using the ExposureTime or ExposureAuto features and the exposure starts with the FrameStart or LineStart
+     *  - \b Timed (Display string: 'Timed'): Timed exposure. The exposure duration time is set using the ExposureTime or ExposureAuto features and the exposure starts with the FrameStart or LineStart.
      *  - \b TriggerWidth (Display string: 'Trigger Width'): Uses the width of the current Frame or Line trigger signal(s) pulse to control the exposure duration. Note that if the Frame or Line TriggerActivation is RisingEdge or LevelHigh, the exposure duration will be the time the trigger stays High. If TriggerActivation is FallingEdge or LevelLow, the exposure time will last as long as the trigger stays Low.
      *  - \b TriggerControlled (Display string: 'Trigger Controlled'): Uses one or more trigger signal(s) to control the exposure duration independently from the current Frame or Line triggers. See ExposureStart, ExposureEnd and ExposureActive of the TriggerSelector feature.
+     *  - \b mvMultiZone (Display string: 'mv Multi Zone'): The exposure duration time can be configured individually for different zones within the image by setting the 'ExposureTimeSelector' to one of the 'mvHorizontalZone' values. This mode will only have effect on the image when operating the device in a 'mvMultiAreaMode' different from 'mvOff'.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2207,7 +2429,9 @@ public:
      *  - \b Ultraviolet (Display string: 'Ultraviolet'): Selects the ultraviolet ExposureTime.
      *  - \b Stage1 (Display string: 'Stage 1'): Selects the first stage ExposureTime.
      *  - \b Stage2 (Display string: 'Stage 2'): Selects the second stage ExposureTime.
-     *  - \b Stage#3# (Display string: 'Stage #3#'): Selects the second stage ExposureTime.
+     *  - \b Stage\#3\# (Display string: 'Stage \#3\#'): Selects the second stage ExposureTime.
+     *  - \b mvHorizontalZone0 (Display string: 'mv Horizontal Zone 0'): Selects the first horizontal exposure zone used when 'ExposureMode' is set to 'mvMultiZone' and when operating the device in a 'mvMultiAreaMode' different from 'mvOff'.
+     *  - \b mvHorizontalZone1 (Display string: 'mv Horizontal Zone 1'): Selects the second horizontal exposure zone used when 'ExposureMode' is set to 'mvMultiZone' and when operating the device in a 'mvMultiAreaMode' different from 'mvOff'.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2218,12 +2442,11 @@ public:
      *  Sets the Exposure time when ExposureMode is Timed and ExposureAuto is Off. This controls the duration where the photosensitive cells are exposed to light.
      */
     PropertyF exposureTime;
-    /// \brief An integer property. This feature is deprecated.
+    /// \brief A floating point property. Defines the position(in percent of the total number of lines) within the image to switch from one exposure time to the next.
     /**
-     *  \deprecated
-     *  This feature is deprecated. It can used to set the Exposure time in device-specific unit when ExposureMode is Timed. This controls the duration where the photosensitive cells are exposed to light.
+     *  Defines the position(in percent of the total number of lines) within the image to switch from one exposure time to the next. 100% means that only one zone exists. 25% means that the upper 25% of the image are defined by the exposure time of 'mvHorizontalZone0' and the lower 75% are defined by the exposure time of 'mvHorizontalZone1'.
      */
-    PropertyI64 exposureTimeRaw;
+    PropertyF mvExposureHorizontalZoneDivider;
     /// \brief An enumerated integer property. Sets the automatic exposure mode when ExposureMode is Timed.
     /**
      *  Sets the automatic exposure mode when ExposureMode is Timed. The exact algorithm used to implement this control is device-specific.
@@ -2232,20 +2455,65 @@ public:
      *  - \b Off (Display string: 'Off'): Exposure duration is user controlled using ExposureTime.
      *  - \b Once (Display string: 'Once'): Exposure duration is adapted once by the device. Once it has converged, it returns to the Off state.
      *  - \b Continuous (Display string: 'Continuous'): Exposure duration is constantly adapted by the device to maximize the dynamic range.
-     *  - \b mvSequenced (Display string: 'Exposure Auto')
+     *  - \b mvSequenced (Display string: 'mv Sequenced')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 exposureAuto;
+    /// \brief An enumerated integer property. Controls multi-slope exposure state.
+    /**
+     *  Controls multi-slope exposure state.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Off (Display string: 'Off'): Off
+     *  - \b Manual (Display string: 'Manual'): Manual
+     *  - \b PresetSoft (Display string: 'Preset Soft'): Preset Soft
+     *  - \b PresetMedium (Display string: 'Preset Medium'): Preset Medium
+     *  - \b PresetAggressive (Display string: 'Preset Aggressive'): Preset Aggressive
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 multiSlopeMode;
+    /// \brief An integer property. The number of knee-points as well as the number of additional exposure slopes used for multi-slope exposure.
+    /**
+     *  The number of knee-points as well as the number of additional exposure slopes used for multi-slope exposure.
+     */
+    PropertyI64 multiSlopeKneePointCount;
+    /// \brief An integer property. Selects the parameters for controlling an additional slope in multi-slope exposure.
+    /**
+     *  Selects the parameters for controlling an additional slope in multi-slope exposure.
+     */
+    PropertyI64 multiSlopeKneePointSelector;
+    /// \brief A floating point property. Percent of the ExposureTime at a certain knee-point of multi-slope exposure.
+    /**
+     *  Percent of the ExposureTime at a certain knee-point of multi-slope exposure.
+     */
+    PropertyF multiSlopeExposureLimit;
+    /// \brief A floating point property. The percentage of the full saturation that is applied at a certain knee-point of a multi-slope exposure.
+    /**
+     *  The percentage of the full saturation that is applied at a certain knee-point of a multi-slope exposure.
+     */
+    PropertyF multiSlopeSaturationThreshold;
+    /// \brief A floating point property. The relative intensity which divides intensities influenced by different exposure slopes.
+    /**
+     *  The relative intensity which divides intensities influenced by different exposure slopes.
+     */
+    PropertyF multiSlopeIntensityLimit;
+    /// \brief A floating point property. The gradient of the additional slope that is defined by this knee-point.
+    /**
+     *  The gradient of the additional slope that is defined by this knee-point.
+     */
+    PropertyF multiSlopeExposureGradient;
     /// \brief An enumerated integer property. Controls the calculation of the maximum frame rate.
     /**
      *  Controls the calculation of the maximum frame rate.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvDeviceLinkThroughput (Display string: 'mv Acquisition Frame Rate Limit Mode'): Uses the highest possible frame rate depending on bandwidth and sensor settings.
-     *  - \b mvDeviceMaxSensorThroughput (Display string: 'mv Acquisition Frame Rate Limit Mode'): Maximum frame rate the sensor can provide depending on AOI and pixel clock. Note: Images might be buffered in the cameras memory. This can result in delayed images.
-     *  - \b mvLegacy (Display string: 'mv Acquisition Frame Rate Limit Mode'): Compatibility mode, not recommended.
+     *  - \b mvDeviceLinkThroughput (Display string: 'mv Device Link Throughput'): Uses the highest possible frame rate depending on bandwidth and sensor settings.
+     *  - \b mvDeviceMaxSensorThroughput (Display string: 'mv Device Max Sensor Throughput'): Maximum frame rate the sensor can provide depending on AOI and pixel clock. Note: Images might be buffered in the cameras memory. This can result in delayed images.
+     *  - \b mvLegacy (Display string: 'mv Legacy'): Compatibility mode, not recommended.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2256,8 +2524,8 @@ public:
      *  Enables the use of the 'AcquisitionFrameRate' feature.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Acquisition Frame Rate Enable'): The acquisition frame rate is set automatically to the limit, calculated according to 'mvAcquisitionFrameRateLimitMode' feature.
-     *  - \b On (Display string: 'mv Acquisition Frame Rate Enable'): The acquisition frame rate is set by the 'AcquisitionFrameRate' feature.
+     *  - \b Off (Display string: 'Off'): The acquisition frame rate is set automatically to the limit, calculated according to 'mvAcquisitionFrameRateLimitMode' feature.
+     *  - \b On (Display string: 'On'): The acquisition frame rate is set by the 'AcquisitionFrameRate' feature.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2273,10 +2541,10 @@ public:
      *  Selects the shutter mode of the sensor.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvRollingShutter (Display string: 'mv Shutter Mode')
-     *  - \b mvGlobalReset (Display string: 'mv Shutter Mode')
-     *  - \b mvGlobalShutter (Display string: 'mv Shutter Mode')
-     *  - \b mvGlobalShutterWithoutReset (Display string: 'mv Shutter Mode')
+     *  - \b mvRollingShutter (Display string: 'mv Rolling Shutter')
+     *  - \b mvGlobalReset (Display string: 'mv Global Reset')
+     *  - \b mvGlobalShutter (Display string: 'mv Global Shutter')
+     *  - \b mvGlobalShutterWithoutReset (Display string: 'mv Global Shutter Without Reset')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2287,11 +2555,6 @@ public:
      *  Knee point of 10 to 8 bit compression.
      */
     PropertyI64 mvCompressionKneepoint;
-    /// \brief A boolean property. Activates the sensor's defective pixel correction.
-    /**
-     *  Activates the sensor's defective pixel correction.
-     */
-    PropertyIBoolean mvDefectivePixelEnable;
     /// \brief A floating point property. The lower limit of the exposure time in auto exposure mode.
     /**
      *  The lower limit of the exposure time in auto exposure mode.
@@ -2307,9 +2570,9 @@ public:
      *  Determines the increment or decrement size of exposure value from frame to frame.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Slow (Display string: 'mv Exposure Auto Speed')
-     *  - \b Medium (Display string: 'mv Exposure Auto Speed')
-     *  - \b Fast (Display string: 'mv Exposure Auto Speed')
+     *  - \b Slow (Display string: 'Slow')
+     *  - \b Medium (Display string: 'Medium')
+     *  - \b Fast (Display string: 'Fast')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2330,8 +2593,8 @@ public:
      *  Highlight auto control AOI to check AOI settings. Switch off for normal operation.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Exposure Auto Highlight AOI')
-     *  - \b On (Display string: 'mv Exposure Auto Highlight AOI')
+     *  - \b Off (Display string: 'Off')
+     *  - \b On (Display string: 'On')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2342,9 +2605,9 @@ public:
      *  Common AutoControl AOI used for Auto Gain Control(AGC), Auto Exposure Control(AEC) and Auto White Balance(AWB).
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvFull (Display string: 'mv Exposure Auto AOI Mode')
-     *  - \b mvCenter (Display string: 'mv Exposure Auto AOI Mode')
-     *  - \b mvUser (Display string: 'mv Exposure Auto AOI Mode')
+     *  - \b mvFull (Display string: 'mv Full')
+     *  - \b mvCenter (Display string: 'mv Center')
+     *  - \b mvUser (Display string: 'mv User')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2375,8 +2638,8 @@ public:
      *  Selects the common auto mode for gain and exposure.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvSensor (Display string: 'mv Exposure Auto Mode'): The sensor itself will do the auto control.
-     *  - \b mvDevice (Display string: 'mv Exposure Auto Mode'): The device(firmware) will do the auto control.
+     *  - \b mvSensor (Display string: 'mv Sensor'): The sensor itself will do the auto control.
+     *  - \b mvDevice (Display string: 'mv Device'): The device(firmware) will do the auto control.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2387,9 +2650,9 @@ public:
      *  Smear reduction in triggered and non-overlapped mode.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvStandard (Display string: 'mv Smear Reduction'): Standard smear reduction.
-     *  - \b mvMedium (Display string: 'mv Smear Reduction'): Medium smear reduction.
-     *  - \b mvHighest (Display string: 'mv Smear Reduction'): Highest smear but more power consumption.
+     *  - \b mvStandard (Display string: 'mv Standard'): Standard smear reduction.
+     *  - \b mvMedium (Display string: 'mv Medium'): Medium smear reduction.
+     *  - \b mvHighest (Display string: 'mv Highest'): Highest smear but more power consumption.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2400,10 +2663,10 @@ public:
      *  mvRecord is used to store frames in memory. mvPlayback transfers stored frames. mvPretrigger stores frames in memory to be transferred after trigger.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Default (Display string: 'mv Acquisition Memory Mode'): Default memory mode.
-     *  - \b mvRecord (Display string: 'mv Acquisition Memory Mode'): Stores frames in memory.
-     *  - \b mvPlayback (Display string: 'mv Acquisition Memory Mode'): Transfers stored frames.
-     *  - \b mvPretrigger (Display string: 'mv Acquisition Memory Mode'): Stores frames in memory to be transferred after trigger.
+     *  - \b Default (Display string: 'Default'): Default memory mode.
+     *  - \b mvRecord (Display string: 'mv Record'): Stores frames in memory.
+     *  - \b mvPlayback (Display string: 'mv Playback'): Transfers stored frames.
+     *  - \b mvPretrigger (Display string: 'mv Pretrigger'): Stores frames in memory to be transferred after trigger.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2414,23 +2677,54 @@ public:
      *  Number of frames to acquire before the occurrence of an AcquisitionStart or AcquisitionActive trigger.
      */
     PropertyI64 mvPretriggerFrameCount;
-    /// \brief An integer property. Max number of frames to record.
+    /// \brief An integer property. Maximum number of frames that can be recorded in the current configuration(deprecated, use the maximum value of 'mvAcquisitionMemoryFrameCount' instead).
     /**
-     *  Max number of frames to record.
+     *  \deprecated
+     *  Maximum number of frames that can be recorded in the current configuration(deprecated, use the maximum value of 'mvAcquisitionMemoryFrameCount' instead).
      */
     PropertyI64 mvAcquisitionMemoryMaxFrameCount;
+    /// \brief An integer property. The number of frames currently stored in the frame buffer.
+    /**
+     *  The number of frames currently stored in the frame buffer. If this value keeps increasing this can indicate a bandwidth/transmission problem.
+     */
+    PropertyI64 mvAcquisitionMemoryFrameCount;
     /// \brief An integer property. AOI and/or binning parameter changed after last Acquisition.
     /**
      *  AOI and/or binning parameter changed after last Acquisition.
      */
     PropertyI64 mvAcquisitionMemoryAOIParameterChanged;
+    /// \brief An enumerated integer property. Enables feature mode.
+    /**
+     *  Enables feature mode.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Off (Display string: 'Off'): No smart feature mode is selected
+     *  - \b mvJPEGWithRaw (Display string: 'mv JPEG With Raw'): When active a binned raw image is sent together with a full resolution JPEG.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvFeatureMode;
+    /// \brief A boolean property. When active in addition to the processed image data also the unprocessed image is stored inside the devices RAM.
+    /**
+     *  When active in addition to the processed image data (e.g. after binning, decimation, de-Bayering, LUT etc. applied inside the device) also the unprocessed image is stored inside the devices RAM allowing to request the transmission of these images by an application as well. This will effectively reduce the number of images that can be stored inside the frame buffer.
+     */
+    PropertyIBoolean mvSmartFrameRecallEnable;
+    /// \brief A boolean property. Enables or disables lens calibration.
+    /**
+     *  When active lens calibration will be applied to the image. The calibration data must have been correctly calculated for the scene and loaded into device memory using, for example, the file interface with filename 'mvLensCalibrationBlocks' and 'mvLensCalibrationPixels'. This will effectively reduce the number of images that can be stored inside the frame buffer.
+     */
+    PropertyIBoolean mvLensCalibrationEnable;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the Analog control features.
 /**
  *  A category that contains the Analog control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class AnalogControl
 //-----------------------------------------------------------------------------
@@ -2446,19 +2740,19 @@ public:
         /// settings can be created with the function
         /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
         const std::string& settingName = "Base" ) :
+        mvTapBalancingMode(),
+        mvGainMode(),
         gainSelector(),
         gain(),
-        gainRaw(),
+        mvGainHorizontalZoneDivider(),
         gainAuto(),
         gainAutoBalance(),
         blackLevelSelector(),
         blackLevel(),
-        blackLevelRaw(),
         blackLevelAuto(),
         blackLevelAutoBalance(),
         whiteClipSelector(),
         whiteClip(),
-        whiteClipRaw(),
         balanceRatioSelector(),
         balanceRatio(),
         balanceWhiteAuto(),
@@ -2480,9 +2774,6 @@ public:
         mvBalanceWhiteAutoOffsetY(),
         mvBalanceWhiteAutoWidth(),
         mvBalanceWhiteAutoHeight(),
-        mvVCAL(),
-        mvVBLACK(),
-        mvVOFFSET(),
         mvLowLight(),
         mvADCGain(),
         mvVRamp(),
@@ -2490,15 +2781,18 @@ public:
         mvDigitalGainOffset(),
         mvSaveCalibrationData()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
+        locator.bindComponent( mvTapBalancingMode, "mvTapBalancingMode" );
+        locator.bindComponent( mvGainMode, "mvGainMode" );
         locator.bindComponent( gainSelector, "GainSelector" );
         locator.bindComponent( gain, "Gain" );
         if( !gain.isValid() )
         {
             locator.bindComponent( gain, "GainAbs" );
         }
-        locator.bindComponent( gainRaw, "GainRaw" );
+        locator.bindComponent( mvGainHorizontalZoneDivider, "mvGainHorizontalZoneDivider" );
         locator.bindComponent( gainAuto, "GainAuto" );
         locator.bindComponent( gainAutoBalance, "GainAutoBalance" );
         locator.bindComponent( blackLevelSelector, "BlackLevelSelector" );
@@ -2507,7 +2801,6 @@ public:
         {
             locator.bindComponent( blackLevel, "BlackLevelAbs" );
         }
-        locator.bindComponent( blackLevelRaw, "BlackLevelRaw" );
         locator.bindComponent( blackLevelAuto, "BlackLevelAuto" );
         locator.bindComponent( blackLevelAutoBalance, "BlackLevelAutoBalance" );
         locator.bindComponent( whiteClipSelector, "WhiteClipSelector" );
@@ -2516,7 +2809,6 @@ public:
         {
             locator.bindComponent( whiteClip, "WhiteClipAbs" );
         }
-        locator.bindComponent( whiteClipRaw, "WhiteClipRaw" );
         locator.bindComponent( balanceRatioSelector, "BalanceRatioSelector" );
         locator.bindComponent( balanceRatio, "BalanceRatio" );
         if( !balanceRatio.isValid() )
@@ -2542,9 +2834,6 @@ public:
         locator.bindComponent( mvBalanceWhiteAutoOffsetY, "mvBalanceWhiteAutoOffsetY" );
         locator.bindComponent( mvBalanceWhiteAutoWidth, "mvBalanceWhiteAutoWidth" );
         locator.bindComponent( mvBalanceWhiteAutoHeight, "mvBalanceWhiteAutoHeight" );
-        locator.bindComponent( mvVCAL, "mvVCAL" );
-        locator.bindComponent( mvVBLACK, "mvVBLACK" );
-        locator.bindComponent( mvVOFFSET, "mvVOFFSET" );
         locator.bindComponent( mvLowLight, "mvLowLight" );
         locator.bindComponent( mvADCGain, "mvADCGain" );
         locator.bindComponent( mvVRamp, "mvVRamp" );
@@ -2552,7 +2841,33 @@ public:
         locator.bindComponent( mvDigitalGainOffset, "mvDigitalGainOffset" );
         locator.bindComponent( mvSaveCalibrationData, "mvSaveCalibrationData@i" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
+    /// \brief An enumerated integer property. Where do the tap balancing calibration data come from?
+    /**
+     *  Where do the tap balancing calibration data come from?
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvFactory (Display string: 'mv Factory')
+     *  - \b mvUser (Display string: 'mv User')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvTapBalancingMode;
+    /// \brief An enumerated integer property. Sets the operation mode of Gain.
+    /**
+     *  Sets the operation mode of Gain
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Default (Display string: 'Default'): Default operation mode. The whole image is configured as a single zone.
+     *  - \b mvMultiZone (Display string: 'mv Multi Zone'): In this mode different gains can be applied to different zones of the image by writing them into the 'mvHorizontalZone' registers selectable via the 'GainSelector'. This mode will only have effect on the image when operating the device in a 'mvMultiAreaMode' different from 'mvOff'.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvGainMode;
     /// \brief An enumerated integer property. Selects which Gain is controlled by the various Gain features.
     /**
      *  Selects which Gain is controlled by the various Gain features.
@@ -2567,7 +2882,7 @@ public:
      *  - \b V (Display string: 'V'): Gain will be applied to V channel.
      *  - \b Tap1 (Display string: 'Tap 1'): Gain will be applied to Tap 1.
      *  - \b Tap2 (Display string: 'Tap 2'): Gain will be applied to Tap 2.
-     *  - \b Tap#3# (Display string: 'Tap #3#'): Gain will be applied to Tap #3#.
+     *  - \b Tap\#3\# (Display string: 'Tap \#3\#'): Gain will be applied to Tap \#3\#.
      *  - \b AnalogAll (Display string: 'Analog All'): Gain will be applied to all analog channels or taps.
      *  - \b AnalogRed (Display string: 'Analog Red'): Gain will be applied to the red analog channel.
      *  - \b AnalogGreen (Display string: 'Analog Green'): Gain will be applied to the green analog channel.
@@ -2577,7 +2892,7 @@ public:
      *  - \b AnalogV (Display string: 'Analog V'): Gain will be applied to V analog channel.
      *  - \b AnalogTap1 (Display string: 'Analog Tap 1'): Analog gain will be applied to Tap 1.
      *  - \b AnalogTap2 (Display string: 'Analog Tap 2'): Analog gain will be applied to Tap 2.
-     *  - \b AnalogTap#3# (Display string: 'Analog Tap #3#'): Analog gain will be applied to Tap #3#.
+     *  - \b AnalogTap\#3\# (Display string: 'Analog Tap \#3\#'): Analog gain will be applied to Tap \#3\#.
      *  - \b DigitalAll (Display string: 'Digital All'): Gain will be applied to all digital channels or taps.
      *  - \b DigitalRed (Display string: 'Digital Red'): Gain will be applied to the red digital channel.
      *  - \b DigitalGreen (Display string: 'Digital Green'): Gain will be applied to the green digital channel.
@@ -2587,7 +2902,7 @@ public:
      *  - \b DigitalV (Display string: 'Digital V'): Gain will be applied to V digital channel.
      *  - \b DigitalTap1 (Display string: 'Digital Tap 1'): Digital gain will be applied to Tap 1.
      *  - \b DigitalTap2 (Display string: 'Digital Tap 2'): Digital gain will be applied to Tap 2.
-     *  - \b DigitalTap#3# (Display string: 'Digital Tap #3#'): Digital gain will be applied to Tap #3#.
+     *  - \b DigitalTap\#3\# (Display string: 'Digital Tap \#3\#'): Digital gain will be applied to Tap \#3\#.
      *  - \b Tap3 (Display string: 'Tap 3'): Gain will be applied to Tap 3.
      *  - \b Tap4 (Display string: 'Tap 4'): Gain will be applied to Tap 4.
      *  - \b Tap5 (Display string: 'Tap 5'): Gain will be applied to Tap 5.
@@ -2601,7 +2916,7 @@ public:
      *  - \b Tap13 (Display string: 'Tap 13'): Gain will be applied to Tap 13.
      *  - \b Tap14 (Display string: 'Tap 14'): Gain will be applied to Tap 14.
      *  - \b Tap15 (Display string: 'Tap 15'): Gain will be applied to Tap 15.
-     *  - \b Tap16 (Display string: 'Gain Selector')
+     *  - \b Tap16 (Display string: 'Tap 16')
      *  - \b AnalogTap3 (Display string: 'Analog Tap 3'): Analog gain will be applied to Tap 3.
      *  - \b AnalogTap4 (Display string: 'Analog Tap 4'): Analog gain will be applied to Tap 4.
      *  - \b AnalogTap5 (Display string: 'Analog Tap 5'): Analog gain will be applied to Tap 5.
@@ -2615,7 +2930,7 @@ public:
      *  - \b AnalogTap13 (Display string: 'Analog Tap 13'): Analog gain will be applied to Tap 13.
      *  - \b AnalogTap14 (Display string: 'Analog Tap 14'): Analog gain will be applied to Tap 14.
      *  - \b AnalogTap15 (Display string: 'Analog Tap 15'): Analog gain will be applied to Tap 15.
-     *  - \b AnalogTap16 (Display string: 'Gain Selector')
+     *  - \b AnalogTap16 (Display string: 'Analog Tap 16')
      *  - \b DigitalTap3 (Display string: 'Digital Tap 3'): Digital gain will be applied to Tap 3.
      *  - \b DigitalTap4 (Display string: 'Digital Tap 4'): Digital gain will be applied to Tap 4.
      *  - \b DigitalTap5 (Display string: 'Digital Tap 5'): Digital gain will be applied to Tap 5.
@@ -2629,9 +2944,11 @@ public:
      *  - \b DigitalTap13 (Display string: 'Digital Tap 13'): Digital gain will be applied to Tap 13.
      *  - \b DigitalTap14 (Display string: 'Digital Tap 14'): Digital gain will be applied to Tap 14.
      *  - \b DigitalTap15 (Display string: 'Digital Tap 15'): Digital gain will be applied to Tap 15.
-     *  - \b DigitalTap16 (Display string: 'Gain Selector')
-     *  - \b mvAnalogSensorA (Display string: 'Gain Selector')
-     *  - \b mvAnalogSensorB (Display string: 'Gain Selector')
+     *  - \b DigitalTap16 (Display string: 'Digital Tap 16')
+     *  - \b mvAnalogSensorA (Display string: 'mv Analog Sensor A')
+     *  - \b mvAnalogSensorB (Display string: 'mv Analog Sensor B')
+     *  - \b mvHorizontalZone0 (Display string: 'mv Horizontal Zone 0'): Selects the first horizontal gain zone used when 'mvGainMode' is set to 'mvMultiZone' and when operating the device in a 'mvMultiAreaMode' different from 'mvOff'.
+     *  - \b mvHorizontalZone1 (Display string: 'mv Horizontal Zone 1'): Selects the second horizontal gain zone used when 'mvGainMode' is set to 'mvMultiZone' and when operating the device in a 'mvMultiAreaMode' different from 'mvOff'.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2642,12 +2959,11 @@ public:
      *  Controls the selected gain as an absolute physical value. This is an amplification factor applied to the video signal.
      */
     PropertyF gain;
-    /// \brief An integer property. This feature is deprecated.
+    /// \brief A floating point property. Defines the position(in percent of the total number of lines) within the image to switch from one gain value to the next.
     /**
-     *  \deprecated
-     *  This feature is deprecated. It controls the selected gain as a raw integer value. This is an amplification factor applied to the video signal.
+     *  Defines the position(in percent of the total number of lines) within the image to switch from one gain value to the next. 100% means that only one zone exists. 25% means that the upper 25% of the image are defined by the gain value of 'mvHorizontalZone0' and the lower 75% are defined by the gain value of 'mvHorizontalZone1'. Some sensors may only allow to change the gain at certain positions e.g. the last line of a defined ROI. In this case the first possible switching point above the actual line will be used.
      */
-    PropertyI64 gainRaw;
+    PropertyF mvGainHorizontalZoneDivider;
     /// \brief An enumerated integer property. Sets the automatic gain control (AGC) mode.
     /**
      *  Sets the automatic gain control (AGC) mode. The exact algorithm used to implement AGC is device-specific.
@@ -2688,7 +3004,7 @@ public:
      *  - \b V (Display string: 'V'): Black Level will be applied to V channel.
      *  - \b Tap1 (Display string: 'Tap 1'): Black Level will be applied to Tap 1.
      *  - \b Tap2 (Display string: 'Tap 2'): Black Level will be applied to Tap 2.
-     *  - \b Tap#3# (Display string: 'Tap #3#'): Black Level will be applied to Tap #3#.
+     *  - \b Tap\#3\# (Display string: 'Tap \#3\#'): Black Level will be applied to Tap \#3\#.
      *  - \b Tap3 (Display string: 'Tap 3'): Black Level will be applied to Tap 3.
      *  - \b Tap4 (Display string: 'Tap 4'): Black Level will be applied to Tap 4.
      *  - \b Tap5 (Display string: 'Tap 5'): Black Level will be applied to Tap 5.
@@ -2702,9 +3018,9 @@ public:
      *  - \b Tap13 (Display string: 'Tap 13'): Black Level will be applied to Tap 13.
      *  - \b Tap14 (Display string: 'Tap 14'): Black Level will be applied to Tap 14.
      *  - \b Tap15 (Display string: 'Tap 15'): Black Level will be applied to Tap 15.
-     *  - \b Tap16 (Display string: 'Black Level Selector')
-     *  - \b mvAnalogSensorA (Display string: 'Black Level Selector')
-     *  - \b mvAnalogSensorB (Display string: 'Black Level Selector')
+     *  - \b Tap16 (Display string: 'Tap 16')
+     *  - \b mvAnalogSensorA (Display string: 'mv Analog Sensor A')
+     *  - \b mvAnalogSensorB (Display string: 'mv Analog Sensor B')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2715,12 +3031,6 @@ public:
      *  Controls the analog black level as an absolute physical value. This represents a DC offset applied to the video signal.
      */
     PropertyF blackLevel;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. It controls the analog black level as a raw integer value. This represents a DC offset applied to the video signal.
-     */
-    PropertyI64 blackLevelRaw;
     /// \brief An enumerated integer property. Controls the mode for automatic black level adjustment.
     /**
      *  Controls the mode for automatic black level adjustment. The exact algorithm used to implement this adjustment is device-specific.
@@ -2742,10 +3052,10 @@ public:
      *  - \b Off (Display string: 'Off'): Black level tap balancing is user controlled using BlackLevel.
      *  - \b Once (Display string: 'Once'): Black level tap balancing is automatically adjusted once by the device. Once it has converged, it automatically returns to the Off state.
      *  - \b Continuous (Display string: 'Continuous'): Black level tap balancing is constantly adjusted by the device.
-     *  - \b mvRaw (Display string: 'Black Level Auto Balance')
-     *  - \b mvFixed (Display string: 'Black Level Auto Balance')
-     *  - \b mvLowerLine (Display string: 'Black Level Auto Balance')
-     *  - \b mvSlow (Display string: 'Black Level Auto Balance')
+     *  - \b mvRaw (Display string: 'mv Raw')
+     *  - \b mvFixed (Display string: 'mv Fixed')
+     *  - \b mvLowerLine (Display string: 'mv Lower Line')
+     *  - \b mvSlow (Display string: 'mv Slow')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2765,7 +3075,7 @@ public:
      *  - \b V (Display string: 'V'): White Clip will be applied to V channel.
      *  - \b Tap1 (Display string: 'Tap 1'): White Clip will be applied to Tap 1.
      *  - \b Tap2 (Display string: 'Tap 2'): White Clip will be applied to Tap 2.
-     *  - \b Tap#3# (Display string: 'Tap #3#'): White Clip will be applied to Tap #3#.
+     *  - \b Tap\#3\# (Display string: 'Tap \#3\#'): White Clip will be applied to Tap \#3\#.
      *  - \b Tap3 (Display string: 'Tap 3'): White Clip will be applied to Tap 3.
      *  - \b Tap4 (Display string: 'Tap 4'): White Clip will be applied to Tap 4.
      *  - \b Tap5 (Display string: 'Tap 5'): White Clip will be applied to Tap 5.
@@ -2779,7 +3089,7 @@ public:
      *  - \b Tap13 (Display string: 'Tap 13'): White Clip will be applied to Tap 13.
      *  - \b Tap14 (Display string: 'Tap 14'): White Clip will be applied to Tap 14.
      *  - \b Tap15 (Display string: 'Tap 15'): White Clip will be applied to Tap 15.
-     *  - \b Tap16 (Display string: 'White Clip Selector')
+     *  - \b Tap16 (Display string: 'Tap 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2790,12 +3100,6 @@ public:
      *  Controls the maximal intensity taken by the video signal before being clipped as an absolute physical value. The video signal will never exceed the white clipping point: it will saturate at that level.
      */
     PropertyF whiteClip;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. Controls the maximal intensity taken by the video signal before being clipped as a raw integer value. The video signal will never exceed the white clipping point: it will saturate at that level.
-     */
-    PropertyI64 whiteClipRaw;
     /// \brief An enumerated integer property. Selects which Balance ratio to control.
     /**
      *  Selects which Balance ratio to control.
@@ -2810,9 +3114,9 @@ public:
      *  - \b V (Display string: 'V'): Balance Ratio will be applied to V channel.
      *  - \b Tap1 (Display string: 'Tap 1'): Balance Ratio will be applied to Tap 1.
      *  - \b Tap2 (Display string: 'Tap 2'): Balance Ratio will be applied to Tap 2.
-     *  - \b Tap#3# (Display string: 'Tap #3#'): Balance Ratio will be applied to Tap #3#.
-     *  - \b Green0 (Display string: 'Balance Ratio Selector')
-     *  - \b Green1 (Display string: 'Balance Ratio Selector')
+     *  - \b Tap\#3\# (Display string: 'Tap \#3\#'): Balance Ratio will be applied to Tap \#3\#.
+     *  - \b Green0 (Display string: 'Green 0')
+     *  - \b Green1 (Display string: 'Green 1')
      *  - \b Tap3 (Display string: 'Tap 3'): Balance Ratio will be applied to Tap 3.
      *  - \b Tap4 (Display string: 'Tap 4'): Balance Ratio will be applied to Tap 4.
      *  - \b Tap5 (Display string: 'Tap 5'): Balance Ratio will be applied to Tap 5.
@@ -2826,7 +3130,7 @@ public:
      *  - \b Tap13 (Display string: 'Tap 13'): Balance Ratio will be applied to Tap 13.
      *  - \b Tap14 (Display string: 'Tap 14'): Balance Ratio will be applied to Tap 14.
      *  - \b Tap15 (Display string: 'Tap 15'): Balance Ratio will be applied to Tap 15.
-     *  - \b Tap16 (Display string: 'Balance Ratio Selector')
+     *  - \b Tap16 (Display string: 'Tap 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2875,9 +3179,9 @@ public:
      *  Determines the increment or decrement size of gain value from frame to frame.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Slow (Display string: 'mv Gain Auto Speed')
-     *  - \b Medium (Display string: 'mv Gain Auto Speed')
-     *  - \b Fast (Display string: 'mv Gain Auto Speed')
+     *  - \b Slow (Display string: 'Slow')
+     *  - \b Medium (Display string: 'Medium')
+     *  - \b Fast (Display string: 'Fast')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2893,8 +3197,8 @@ public:
      *  Highlight auto control AOI to check AOI settings. Switch off for normal operation.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Gain Auto Highlight AOI')
-     *  - \b On (Display string: 'mv Gain Auto Highlight AOI')
+     *  - \b Off (Display string: 'Off')
+     *  - \b On (Display string: 'On')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2905,9 +3209,9 @@ public:
      *  Common AutoControl AOI used for Auto Gain Control(AGC), Auto Exposure Control(AEC) and Auto White Balancing.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvFull (Display string: 'mv Gain Auto AOI Mode')
-     *  - \b mvCenter (Display string: 'mv Gain Auto AOI Mode')
-     *  - \b mvUser (Display string: 'mv Gain Auto AOI Mode')
+     *  - \b mvFull (Display string: 'mv Full')
+     *  - \b mvCenter (Display string: 'mv Center')
+     *  - \b mvUser (Display string: 'mv User')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2938,8 +3242,8 @@ public:
      *  Selects the common auto mode for gain and exposure.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvSensor (Display string: 'mv Gain Auto Mode'): The sensor itself will do the auto control.
-     *  - \b mvDevice (Display string: 'mv Gain Auto Mode'): The device(firmware) will do the auto control.
+     *  - \b mvSensor (Display string: 'mv Sensor'): The sensor itself will do the auto control.
+     *  - \b mvDevice (Display string: 'mv Device'): The device(firmware) will do the auto control.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2950,9 +3254,9 @@ public:
      *  Common AutoControl AOI used for Auto Gain Control(AGC), Auto Exposure Control(AEC) and Auto White Balance(AWB).
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvFull (Display string: 'mv Balance White Auto AOI Mode')
-     *  - \b mvCenter (Display string: 'mv Balance White Auto AOI Mode')
-     *  - \b mvUser (Display string: 'mv Balance White Auto AOI Mode')
+     *  - \b mvFull (Display string: 'mv Full')
+     *  - \b mvCenter (Display string: 'mv Center')
+     *  - \b mvUser (Display string: 'mv User')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -2978,28 +3282,13 @@ public:
      *  Common AOI Height used for Auto Gain Control(AGC), Auto Exposure Control(AEC) and Auto White Balance(AWB).
      */
     PropertyI64 mvBalanceWhiteAutoHeight;
-    /// \brief An integer property. Sets the voltage in millivolt.
-    /**
-     *  Sets the voltage in millivolt.
-     */
-    PropertyI64 mvVCAL;
-    /// \brief An integer property. Sets the voltage in millivolt.
-    /**
-     *  Sets the voltage in millivolt.
-     */
-    PropertyI64 mvVBLACK;
-    /// \brief An integer property. Sets the voltage in millivolt.
-    /**
-     *  Sets the voltage in millivolt.
-     */
-    PropertyI64 mvVOFFSET;
     /// \brief An enumerated integer property. Makes the image brighter.
     /**
      *  Makes the image brighter.
      *
      *  The following string values might be valid for this feature:
-     *  - \b On (Display string: 'mv Low Light')
-     *  - \b Off (Display string: 'mv Low Light')
+     *  - \b On (Display string: 'On')
+     *  - \b Off (Display string: 'Off')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -3030,13 +3319,16 @@ public:
      *  Saves the calibration data to non-volatile memory.
      */
     Method mvSaveCalibrationData;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that includes the LUT control features.
 /**
  *  A category that includes the LUT control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class LUTControl
 //-----------------------------------------------------------------------------
@@ -3058,6 +3350,7 @@ public:
         LUTValue(),
         LUTValueAll()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( LUTSelector, "LUTSelector" );
@@ -3066,13 +3359,15 @@ public:
         locator.bindComponent( LUTValue, "LUTValue" );
         locator.bindComponent( LUTValueAll, "LUTValueAll" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects which LUT to control.
     /**
      *  Selects which LUT to control.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Luminance (Display string: 'Luminance'): Selects the Luminace LUT.
+     *  - \b Luminance (Display string: 'Luminance'): Selects the Luminance LUT.
      *  - \b Red (Display string: 'Red'): Selects the Red LUT.
      *  - \b Green (Display string: 'Green'): Selects the Green LUT.
      *  - \b Blue (Display string: 'Blue'): Selects the Blue LUT.
@@ -3101,13 +3396,16 @@ public:
      *  Accesses all the LUT coefficients in a single access without using individual LUTIndex.
      */
     PropertyS LUTValueAll;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the Color Transformation control features.
 /**
  *  A category that contains the Color Transformation control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class ColorTransformationControl
 //-----------------------------------------------------------------------------
@@ -3128,6 +3426,7 @@ public:
         colorTransformationValueSelector(),
         colorTransformationValue()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( colorTransformationSelector, "ColorTransformationSelector" );
@@ -3135,7 +3434,9 @@ public:
         locator.bindComponent( colorTransformationValueSelector, "ColorTransformationValueSelector" );
         locator.bindComponent( colorTransformationValue, "ColorTransformationValue" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects which Color Transformation module is controlled by the various Color Transformation features.
     /**
      *  Selects which Color Transformation module is controlled by the various Color Transformation features.
@@ -3180,13 +3481,16 @@ public:
      *  Represents the value of the selected Gain factor or Offset inside the Transformation matrix.
      */
     PropertyF colorTransformationValue;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the digital input and output control features.
 /**
  *  A category that contains the digital input and output control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class DigitalIOControl
 //-----------------------------------------------------------------------------
@@ -3216,8 +3520,10 @@ public:
         mvLineDebounceTimeRisingEdge(),
         mvLineDebounceTimeFallingEdge(),
         mvRTMInputSelector(),
-        mvRTMSource()
+        mvRTMSource(),
+        mvLineLED()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( lineSelector, "LineSelector" );
@@ -3235,8 +3541,11 @@ public:
         locator.bindComponent( mvLineDebounceTimeFallingEdge, "mvLineDebounceTimeFallingEdge" );
         locator.bindComponent( mvRTMInputSelector, "mvRTMInputSelector" );
         locator.bindComponent( mvRTMSource, "mvRTMSource" );
+        locator.bindComponent( mvLineLED, "mvLineLED" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects the physical line (or pin) of the external device connector or the virtual line of the Transport Layer to configure.
     /**
      *  Selects the physical line (or pin) of the external device connector or the virtual line of the Transport Layer to configure.
@@ -3245,16 +3554,16 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Index of the physical line and associated I/O control block to use.
      *  - \b Line1 (Display string: 'Line 1'): Index of the physical line and associated I/O control block to use.
      *  - \b Line2 (Display string: 'Line 2'): Index of the physical line and associated I/O control block to use.
-     *  - \b Line#3# (Display string: 'Line #3#'): Index of the physical line and associated I/O control block to use.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Index of the physical line and associated I/O control block to use.
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): Index of the virtual line going on the Transport layer to use.
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): Index of the virtual line going on the Transport layer to use.
      *  - \b LinkTrigger2 (Display string: 'Link Trigger 2'): Index of the virtual line going on the Transport layer to use.
-     *  - \b LinkTrigger#3# (Display string: 'Link Trigger #3#'): Index of the virtual line going on the Transport layer to use.
+     *  - \b LinkTrigger\#3\# (Display string: 'Link Trigger \#3\#'): Index of the virtual line going on the Transport layer to use.
      *  - \b CC1 (Display string: 'CC 1'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
      *  - \b CC2 (Display string: 'CC 2'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
      *  - \b CC3 (Display string: 'CC 3'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
      *  - \b CC4 (Display string: 'CC 4'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
-     *  - \b CC#5# (Display string: 'CC #5#'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
+     *  - \b CC\#5\# (Display string: 'CC \#5\#'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
      *  - \b Line3 (Display string: 'Line 3'): Index of the physical line and associated I/O control block to use.
      *  - \b Line4 (Display string: 'Line 4'): Index of the physical line and associated I/O control block to use.
      *  - \b Line5 (Display string: 'Line 5'): Index of the physical line and associated I/O control block to use.
@@ -3279,7 +3588,7 @@ public:
      *  - \b CC13 (Display string: 'CC 13'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
      *  - \b CC14 (Display string: 'CC 14'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
      *  - \b CC15 (Display string: 'CC 15'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink Product only.
-     *  - \b CC16 (Display string: 'Line Selector')
+     *  - \b CC16 (Display string: 'CC 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -3388,39 +3697,59 @@ public:
      *
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Line output is disabled (Tri-State).
-     *  - \b AcquisitionTriggerWait (Display string: 'Acquisition Trigger Wait'): Device is currently waiting for a trigger for the capture of one or many Frames.
-     *  - \b AcquisitionActive (Display string: 'Acquisition Active'): Device is currently doing an acquisition of one or many Frames.
-     *  - \b FrameTriggerWait (Display string: 'Frame Trigger Wait'): Device is currently waiting for a Frame start trigger.
-     *  - \b FrameActive (Display string: 'Frame Active'): Device is currently doing the capture of a Frame.
-     *  - \b ExposureActive (Display string: 'Exposure Active'): Device is doing the exposure of a Frame (or Line).
-     *  - \b Counter0Active (Display string: 'Counter 0 Active'): The chosen counter is in active state (counting).
-     *  - \b Counter1Active (Display string: 'Counter 1 Active'): The chosen counter is in active state (counting).
-     *  - \b Counter2Active (Display string: 'Counter 2 Active'): The chosen counter is in active state (counting).
-     *  - \b Counter#3#Active (Display string: 'Counter #3# Active'): The chosen counter is in active state (counting).
-     *  - \b Timer0Active (Display string: 'Timer 0 Active'): The chosen Timer is in active state.
-     *  - \b Timer1Active (Display string: 'Timer 1 Active'): The chosen Timer is in active state.
-     *  - \b Timer2Active (Display string: 'Timer 2 Active'): The chosen Timer is in active state.
-     *  - \b Timer#3#Active (Display string: 'Timer #3# Active'): The chosen Timer is in active state.
      *  - \b UserOutput0 (Display string: 'User Output 0'): The chosen User Output Bit state as defined by its current UserOutputValue.
      *  - \b UserOutput1 (Display string: 'User Output 1'): The chosen User Output Bit state as defined by its current UserOutputValue.
      *  - \b UserOutput2 (Display string: 'User Output 2'): The chosen User Output Bit state as defined by its current UserOutputValue.
-     *  - \b UserOutput#3# (Display string: 'User Output #3#'): The chosen User Output Bit state as defined by its current UserOutputValue.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): The chosen User Output Bit state as defined by its current UserOutputValue.
+     *  - \b AcquisitionTriggerWait (Display string: 'Acquisition Trigger Wait'): Device is currently waiting for a trigger for the capture of one or many Frames.
+     *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Device is currently waiting for a trigger for the capture of one or many Frames.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Device has missed an Acquisition start trigger.
+     *  - \b AcquisitionActive (Display string: 'Acquisition Active'): Device is currently doing an acquisition of one or many Frames.
+     *  - \b FrameTriggerWait (Display string: 'Frame Trigger Wait'): Device is currently waiting for a Frame start trigger.
+     *  - \b FrameTrigger (Display string: 'Frame Trigger'): Device is currently waiting for a Frame start trigger.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Device has missed a Frame start trigger.
+     *  - \b FrameActive (Display string: 'Frame Active'): Device is currently doing the capture of a Frame.
+     *  - \b ExposureActive (Display string: 'Exposure Active'): Device is doing the exposure of a Frame (or Line).
+     *  - \b LineTriggerWait (Display string: 'Line Trigger Wait'): Device is currently waiting for a Line start trigger.
+     *  - \b LineTrigger (Display string: 'Line Trigger'): Device is currently waiting for a Line start trigger.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Device has missed a Line start trigger.
+     *  - \b LineActive (Display string: 'Line Active'): Device is currently doing the capture of a Line.
+     *  - \b Counter0Active (Display string: 'Counter 0 Active'): The chosen counter is in active state (counting).
+     *  - \b Counter1Active (Display string: 'Counter 1 Active'): The chosen counter is in active state (counting).
+     *  - \b Counter2Active (Display string: 'Counter 2 Active'): The chosen counter is in active state (counting).
+     *  - \b Counter\#3\#Active (Display string: 'Counter \#3\# Active'): The chosen counter is in active state (counting).
+     *  - \b Timer0Active (Display string: 'Timer 0 Active'): The chosen Timer is in active state.
+     *  - \b Timer1Active (Display string: 'Timer 1 Active'): The chosen Timer is in active state.
+     *  - \b Timer2Active (Display string: 'Timer 2 Active'): The chosen Timer is in active state.
+     *  - \b Timer\#3\#Active (Display string: 'Timer \#3\# Active'): The chosen Timer is in active state.
+     *  - \b Encoder0 (Display string: 'Encoder 0'): The chosen Encoder Output state.
+     *  - \b Encoder1 (Display string: 'Encoder 1'): The chosen Encoder Output state.
+     *  - \b Encoder2 (Display string: 'Encoder 2'): The chosen Encoder Output state.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): The chosen Encoder Output state.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): The choosen Logic Block output state.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): The choosen Logic Block output state.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): The choosen Logic Block output state.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): The choosen Logic Block output state.
+     *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): The choosen Software Signal output state.
+     *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): The choosen Software Signal output state.
+     *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): The choosen Software Signal output state.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): The choosen Software Signal output state.
      *  - \b Stream0TransferActive (Display string: 'Stream 0 Transfer Active'): Transfer on the stream is active.
      *  - \b Stream1TransferActive (Display string: 'Stream 1 Transfer Active'): Transfer on the stream is active.
-     *  - \b Stream#2#TransferActive (Display string: 'Stream #2# Transfer Active'): Transfer on the stream is active.
+     *  - \b Stream\#2\#TransferActive (Display string: 'Stream \#2\# Transfer Active'): Transfer on the stream is active.
      *  - \b Stream0TransferPaused (Display string: 'Stream 0 Transfer Paused'): Transfer on the stream is paused.
      *  - \b Stream1TransferPaused (Display string: 'Stream 1 Transfer Paused'): Transfer on the stream is paused.
-     *  - \b Stream#2#TransferPaused (Display string: 'Stream #2# Transfer Paused'): Transfer on the stream is paused.
+     *  - \b Stream\#2\#TransferPaused (Display string: 'Stream \#2\# Transfer Paused'): Transfer on the stream is paused.
      *  - \b Stream0TransferStopping (Display string: 'Stream 0 Transfer Stopping'): Transfer on the stream is stopping.
      *  - \b Stream1TransferStopping (Display string: 'Stream 1 Transfer Stopping'): Transfer on the stream is stopping.
-     *  - \b Stream#2#TransferStopping (Display string: 'Stream #2# Transfer Stopping'): Transfer on the stream is stopping.
+     *  - \b Stream\#2\#TransferStopping (Display string: 'Stream \#2\# Transfer Stopping'): Transfer on the stream is stopping.
      *  - \b Stream0TransferStopped (Display string: 'Stream 0 Transfer Stopped'): Transfer on the stream is stopped.
      *  - \b Stream1TransferStopped (Display string: 'Stream 1 Transfer Stopped'): Transfer on the stream is stopped.
-     *  - \b Stream#2#TransferStopped (Display string: 'Stream #2# Transfer Stopped'): Transfer on the stream is stopped.
+     *  - \b Stream\#2\#TransferStopped (Display string: 'Stream \#2\# Transfer Stopped'): Transfer on the stream is stopped.
      *  - \b Stream0TransferOverflow (Display string: 'Stream 0 Transfer Overflow'): Transfer on the stream is in overflow.
      *  - \b Stream1TransferOverflow (Display string: 'Stream 1 Transfer Overflow'): Transfer on the stream is in overflow.
-     *  - \b Stream#2#TransferOverflow (Display string: 'Stream #2# Transfer Overflow'): Transfer on the stream is in overflow.
-     *  - \b mvExposureSensor2Active (Display string: 'Line Source')
+     *  - \b Stream\#2\#TransferOverflow (Display string: 'Stream \#2\# Transfer Overflow'): Transfer on the stream is in overflow.
+     *  - \b mvExposureSensor2Active (Display string: 'mv Exposure Sensor 2 Active')
      *  - \b UserOutput3 (Display string: 'User Output 3'): The chosen User Output Bit state as defined by its current UserOutputValue.
      *  - \b UserOutput4 (Display string: 'User Output 4'): The chosen User Output Bit state as defined by its current UserOutputValue.
      *  - \b UserOutput5 (Display string: 'User Output 5'): The chosen User Output Bit state as defined by its current UserOutputValue.
@@ -3432,19 +3761,18 @@ public:
      *  - \b Counter6Active (Display string: 'Counter 6 Active'): The chosen counter is in active state (counting).
      *  - \b Counter7Active (Display string: 'Counter 7 Active'): The chosen counter is in active state (counting).
      *  - \b Counter8Active (Display string: 'Counter 8 Active'): The chosen counter is in active state (counting).
-     *  - \b mvReadOutActive (Display string: 'Line Source')
-     *  - \b LineActive (Display string: 'Line Source')
-     *  - \b mvExposureAndAcquisitionActive (Display string: 'Line Source')
-     *  - \b mvTemperatureOutOfRange (Display string: 'Line Source')
-     *  - \b mvLogicGateOR1Output (Display string: 'Line Source')
-     *  - \b mvLogicGateOR2Output (Display string: 'Line Source')
-     *  - \b mvLogicGateOR3Output (Display string: 'Line Source')
-     *  - \b mvLogicGateOR4Output (Display string: 'Line Source')
-     *  - \b mvExposureActive (Display string: 'Line Source')
-     *  - \b mvRTMOutput0 (Display string: 'Line Source')
-     *  - \b mvRTMOutput1 (Display string: 'Line Source')
-     *  - \b mvRTMOutput2 (Display string: 'Line Source')
-     *  - \b mvRTMOutput3 (Display string: 'Line Source')
+     *  - \b mvReadOutActive (Display string: 'mv Read Out Active')
+     *  - \b mvExposureAndAcquisitionActive (Display string: 'mv Exposure And Acquisition Active')
+     *  - \b mvTemperatureOutOfRange (Display string: 'mv Temperature Out Of Range')
+     *  - \b mvLogicGateOR1Output (Display string: 'mv Logic Gate OR 1 Output')
+     *  - \b mvLogicGateOR2Output (Display string: 'mv Logic Gate OR 2 Output')
+     *  - \b mvLogicGateOR3Output (Display string: 'mv Logic Gate OR 3 Output')
+     *  - \b mvLogicGateOR4Output (Display string: 'mv Logic Gate OR 4 Output')
+     *  - \b mvExposureActive (Display string: 'mv Exposure Active')
+     *  - \b mvRTMOutput0 (Display string: 'mv RTM Output 0')
+     *  - \b mvRTMOutput1 (Display string: 'mv RTM Output 1')
+     *  - \b mvRTMOutput2 (Display string: 'mv RTM Output 2')
+     *  - \b mvRTMOutput3 (Display string: 'mv RTM Output 3')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -3475,7 +3803,7 @@ public:
      *  - \b UserOutput0 (Display string: 'User Output 0'): Selects the bit 0 of the User Output register.
      *  - \b UserOutput1 (Display string: 'User Output 1'): Selects the bit 1 of the User Output register.
      *  - \b UserOutput2 (Display string: 'User Output 2'): Selects the bit 2 of the User Output register.
-     *  - \b UserOutput#3# (Display string: 'User Output #3#'): Selects the bit #3# of the User Output register.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): Selects the bit \#3\# of the User Output register.
      *  - \b UserOutput3 (Display string: 'User Output 3'): Selects the bit 3 of the User Output register.
      *  - \b UserOutput4 (Display string: 'User Output 4'): Selects the bit 4 of the User Output register.
      *  - \b UserOutput5 (Display string: 'User Output 5'): Selects the bit 5 of the User Output register.
@@ -3524,10 +3852,10 @@ public:
      *  Selects which RTM input to configure.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvRTMInput0 (Display string: 'mv RTM Input Selector')
-     *  - \b mvRTMInput1 (Display string: 'mv RTM Input Selector')
-     *  - \b mvRTMInput2 (Display string: 'mv RTM Input Selector')
-     *  - \b mvRTMInput3 (Display string: 'mv RTM Input Selector')
+     *  - \b mvRTMInput0 (Display string: 'mv RTM Input 0')
+     *  - \b mvRTMInput1 (Display string: 'mv RTM Input 1')
+     *  - \b mvRTMInput2 (Display string: 'mv RTM Input 2')
+     *  - \b mvRTMInput3 (Display string: 'mv RTM Input 3')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -3538,21 +3866,43 @@ public:
      *  Selects which signal to connect to the selected RTM input.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv RTM Source')
-     *  - \b Line4 (Display string: 'mv RTM Source')
-     *  - \b Line5 (Display string: 'mv RTM Source')
+     *  - \b Off (Display string: 'Off')
+     *  - \b Line4 (Display string: 'Line 4')
+     *  - \b Line5 (Display string: 'Line 5')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 mvRTMSource;
+    /// \brief An enumerated integer property. Selects the digital I/O line to be stated by the LED
+    /**
+     *  Selects the digital I/O line to be stated by the LED
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Off (Display string: 'Off')
+     *  - \b Line0 (Display string: 'Line 0')
+     *  - \b Line1 (Display string: 'Line 1')
+     *  - \b Line2 (Display string: 'Line 2')
+     *  - \b Line3 (Display string: 'Line 3')
+     *  - \b Line4 (Display string: 'Line 4')
+     *  - \b Line5 (Display string: 'Line 5')
+     *  - \b Line6 (Display string: 'Line 6')
+     *  - \b Line7 (Display string: 'Line 7')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvLineLED;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the Counter and Timer control features.
 /**
  *  A category that contains the Counter and Timer control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class CounterAndTimerControl
 //-----------------------------------------------------------------------------
@@ -3582,16 +3932,14 @@ public:
         counterTriggerActivation(),
         timerSelector(),
         timerDuration(),
-        timerDurationRaw(),
         timerDelay(),
-        timerDelayRaw(),
         timerReset(),
         timerValue(),
-        timerValueRaw(),
         timerStatus(),
         timerTriggerSource(),
         timerTriggerActivation()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( counterSelector, "CounterSelector" );
@@ -3612,25 +3960,24 @@ public:
         {
             locator.bindComponent( timerDuration, "TimerDurationAbs" );
         }
-        locator.bindComponent( timerDurationRaw, "TimerDurationRaw" );
         locator.bindComponent( timerDelay, "TimerDelay" );
         if( !timerDelay.isValid() )
         {
             locator.bindComponent( timerDelay, "TimerDelayAbs" );
         }
-        locator.bindComponent( timerDelayRaw, "TimerDelayRaw" );
         locator.bindComponent( timerReset, "TimerReset@i" );
         locator.bindComponent( timerValue, "TimerValue" );
         if( !timerValue.isValid() )
         {
             locator.bindComponent( timerValue, "TimerValueAbs" );
         }
-        locator.bindComponent( timerValueRaw, "TimerValueRaw" );
         locator.bindComponent( timerStatus, "TimerStatus" );
         locator.bindComponent( timerTriggerSource, "TimerTriggerSource" );
         locator.bindComponent( timerTriggerActivation, "TimerTriggerActivation" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects which Counter to configure.
     /**
      *  Selects which Counter to configure.
@@ -3639,7 +3986,7 @@ public:
      *  - \b Counter0 (Display string: 'Counter 0'): Selects the counter 0.
      *  - \b Counter1 (Display string: 'Counter 1'): Selects the counter 1.
      *  - \b Counter2 (Display string: 'Counter 2'): Selects the counter 2.
-     *  - \b Counter#3# (Display string: 'Counter #3#'): Selects the counter #3#.
+     *  - \b Counter\#3\# (Display string: 'Counter \#3\#'): Selects the counter \#3\#.
      *  - \b Counter3 (Display string: 'Counter 3'): Selects the counter 3.
      *  - \b Counter4 (Display string: 'Counter 4'): Selects the counter 4.
      *  - \b Counter5 (Display string: 'Counter 5'): Selects the counter 5.
@@ -3653,7 +4000,7 @@ public:
      *  - \b Counter13 (Display string: 'Counter 13'): Selects the counter 13.
      *  - \b Counter14 (Display string: 'Counter 14'): Selects the counter 14.
      *  - \b Counter15 (Display string: 'Counter 15'): Selects the counter 15.
-     *  - \b Counter16 (Display string: 'Counter Selector')
+     *  - \b Counter16 (Display string: 'Counter 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -3666,14 +4013,17 @@ public:
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Counter is stopped.
      *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Counts the number of Acquisition Trigger.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Counts the number of missed Acquisition Start Trigger.
      *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Counts the number of Acquisition Start.
      *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Counts the number of Acquisition End.
      *  - \b FrameTrigger (Display string: 'Frame Trigger'): Counts the number of Frame Start Trigger.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Counts the number of missed Frame Start Trigger.
      *  - \b FrameStart (Display string: 'Frame Start'): Counts the number of Frame Start.
      *  - \b FrameEnd (Display string: 'Frame End'): Counts the number of Frame End.
      *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Counts the number of Frame Burst Start.
      *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Counts the number of Frame Burst End.
      *  - \b LineTrigger (Display string: 'Line Trigger'): Counts the number of Line Start Trigger.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Counts the number of missed Line Start Trigger.
      *  - \b LineStart (Display string: 'Line Start'): Counts the number of Line Start.
      *  - \b LineEnd (Display string: 'Line End'): Counts the number of Line End.
      *  - \b ExposureStart (Display string: 'Exposure Start'): Counts the number of Exposure Start.
@@ -3681,40 +4031,44 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Counts the number of transitions on the chosen I/O Line.
      *  - \b Line1 (Display string: 'Line 1'): Counts the number of transitions on the chosen I/O Line.
      *  - \b Line2 (Display string: 'Line 2'): Counts the number of transitions on the chosen I/O Line.
-     *  - \b Line#3# (Display string: 'Line #3#'): Counts the number of transitions on the chosen I/O Line.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Counts the number of transitions on the chosen I/O Line.
      *  - \b Counter0Start (Display string: 'Counter 0 Start'): Counts the number of Counter Start.
      *  - \b Counter1Start (Display string: 'Counter 1 Start'): Counts the number of Counter Start.
      *  - \b Counter2Start (Display string: 'Counter 2 Start'): Counts the number of Counter Start.
-     *  - \b Counter#3#Start (Display string: 'Counter #3# Start'): Counts the number of Counter Start.
+     *  - \b Counter\#3\#Start (Display string: 'Counter \#3\# Start'): Counts the number of Counter Start.
      *  - \b Counter0End (Display string: 'Counter 0 End'): Counts the number of Counter End.
      *  - \b Counter1End (Display string: 'Counter 1 End'): Counts the number of Counter End.
      *  - \b Counter2End (Display string: 'Counter 2 End'): Counts the number of Counter End.
-     *  - \b Counter#3#End (Display string: 'Counter #3# End'): Counts the number of Counter End.
+     *  - \b Counter\#3\#End (Display string: 'Counter \#3\# End'): Counts the number of Counter End.
      *  - \b Timer0Start (Display string: 'Timer 0 Start'): Counts the number of Timer Start pulses generated.
      *  - \b Timer1Start (Display string: 'Timer 1 Start'): Counts the number of Timer Start pulses generated.
      *  - \b Timer2Start (Display string: 'Timer 2 Start'): Counts the number of Timer Start pulses generated.
-     *  - \b Timer#3#Start (Display string: 'Timer #3# Start'): Counts the number of Timer Start pulses generated.
+     *  - \b Timer\#3\#Start (Display string: 'Timer \#3\# Start'): Counts the number of Timer Start pulses generated.
      *  - \b Timer0End (Display string: 'Timer 0 End'): Counts the number of Timer End pulses generated.
      *  - \b Timer1End (Display string: 'Timer 1 End'): Counts the number of Timer End pulses generated.
      *  - \b Timer2End (Display string: 'Timer 2 End'): Counts the number of Timer End pulses generated.
-     *  - \b Timer#3#End (Display string: 'Timer #3# End'): Counts the number of Timer End pulses generated.
-     *  - \b Encoder0 (Display string: 'Encoder 0'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder1 (Display string: 'Encoder 1'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder2 (Display string: 'Encoder 2'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder#3# (Display string: 'Encoder #3#'): Starts with the reception of the Encoder output signal.
-     *  - \b TimestampTick (Display string: 'Timestamp Tick'): Counts the number of clock ticks of the Timestamp clock. Can be used to create a programmable timer.
+     *  - \b Timer\#3\#End (Display string: 'Timer \#3\# End'): Counts the number of Timer End pulses generated.
+     *  - \b Encoder0 (Display string: 'Encoder 0'): Counts the number of Encoder output pulses.
+     *  - \b Encoder1 (Display string: 'Encoder 1'): Counts the number of Encoder output pulses.
+     *  - \b Encoder2 (Display string: 'Encoder 2'): Counts the number of Encoder output pulses.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): Counts the number of Encoder output pulses.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Counts the number of Logic Block output pulses.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Counts the number of Logic Block output pulses.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Counts the number of Logic Block output pulses.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Counts the number of Logic Block output pulses.
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Counts the number of Software Signal.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Counts the number of Software Signal.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Counts the number of Software Signal.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Counts the number of Software Signal.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Counts the number of Software Signal.
      *  - \b Action0 (Display string: 'Action 0'): Counts the number of assertions of the chosen action signal.
      *  - \b Action1 (Display string: 'Action 1'): Counts the number of assertions of the chosen action signal.
      *  - \b Action2 (Display string: 'Action 2'): Counts the number of assertions of the chosen action signal.
-     *  - \b Action#3# (Display string: 'Action #3#'): Counts the number of assertions of the chosen action signal.
+     *  - \b Action\#3\# (Display string: 'Action \#3\#'): Counts the number of assertions of the chosen action signal.
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): Counts the number of  Link Trigger.
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): Counts the number of  Link Trigger.
      *  - \b LinkTrigger2 (Display string: 'Link Trigger 2'): Counts the number of  Link Trigger.
-     *  - \b LinkTrigger#3# (Display string: 'Link Trigger #3#'): Counts the number of  Link Trigger.
+     *  - \b LinkTrigger\#3\# (Display string: 'Link Trigger \#3\#'): Counts the number of  Link Trigger.
+     *  - \b TimestampTick (Display string: 'Timestamp Tick'): Counts the number of clock ticks of the Timestamp clock. Can be used to create a programmable timer.
      *  - \b Line3 (Display string: 'Line 3'): Counts the number of transitions on the chosen I/O Line.
      *  - \b Line4 (Display string: 'Line 4'): Counts the number of transitions on the chosen I/O Line.
      *  - \b Line5 (Display string: 'Line 5'): Counts the number of transitions on the chosen I/O Line.
@@ -3741,7 +4095,7 @@ public:
      *  - \b Counter13End (Display string: 'Counter 13 End'): Counts the number of Counter End.
      *  - \b Counter14End (Display string: 'Counter 14 End'): Counts the number of Counter End.
      *  - \b Counter15End (Display string: 'Counter 15 End'): Counts the number of Counter End.
-     *  - \b Counter16End (Display string: 'Counter Event Source')
+     *  - \b Counter16End (Display string: 'Counter 16 End')
      *  - \b Timer3End (Display string: 'Timer 3 End'): Counts the number of Timer End pulses generated.
      *  - \b Timer4End (Display string: 'Timer 4 End'): Counts the number of Timer End pulses generated.
      *  - \b Timer5End (Display string: 'Timer 5 End'): Counts the number of Timer End pulses generated.
@@ -3755,7 +4109,7 @@ public:
      *  - \b Timer13End (Display string: 'Timer 13 End'): Counts the number of Timer End pulses generated.
      *  - \b Timer14End (Display string: 'Timer 14 End'): Counts the number of Timer End pulses generated.
      *  - \b Timer15End (Display string: 'Timer 15 End'): Counts the number of Timer End pulses generated.
-     *  - \b Timer16End (Display string: 'Counter Event Source')
+     *  - \b Timer16End (Display string: 'Timer 16 End')
      *  - \b Action3 (Display string: 'Action 3'): Counts the number of assertions of the chosen action signal.
      *  - \b Action4 (Display string: 'Action 4'): Counts the number of assertions of the chosen action signal.
      *  - \b Action5 (Display string: 'Action 5'): Counts the number of assertions of the chosen action signal.
@@ -3769,28 +4123,28 @@ public:
      *  - \b Action13 (Display string: 'Action 13'): Counts the number of assertions of the chosen action signal.
      *  - \b Action14 (Display string: 'Action 14'): Counts the number of assertions of the chosen action signal.
      *  - \b Action15 (Display string: 'Action 15'): Counts the number of assertions of the chosen action signal.
-     *  - \b Action16 (Display string: 'Counter Event Source')
-     *  - \b Line0RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line1RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line2RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line3RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line4RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line5RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line6RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line7RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line8RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line9RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line10RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line11RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line12RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line13RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line14RisingEdge (Display string: 'Counter Event Source')
-     *  - \b Line15RisingEdge (Display string: 'Counter Event Source')
-     *  - \b mvTemperatureOutOfRange (Display string: 'Counter Event Source')
-     *  - \b mvLogicGateOR1Output (Display string: 'Counter Event Source')
-     *  - \b mvLogicGateOR2Output (Display string: 'Counter Event Source')
-     *  - \b mvLogicGateOR3Output (Display string: 'Counter Event Source')
-     *  - \b mvLogicGateOR4Output (Display string: 'Counter Event Source')
+     *  - \b Action16 (Display string: 'Action 16')
+     *  - \b Line0RisingEdge (Display string: 'Line 0 Rising Edge')
+     *  - \b Line1RisingEdge (Display string: 'Line 1 Rising Edge')
+     *  - \b Line2RisingEdge (Display string: 'Line 2 Rising Edge')
+     *  - \b Line3RisingEdge (Display string: 'Line 3 Rising Edge')
+     *  - \b Line4RisingEdge (Display string: 'Line 4 Rising Edge')
+     *  - \b Line5RisingEdge (Display string: 'Line 5 Rising Edge')
+     *  - \b Line6RisingEdge (Display string: 'Line 6 Rising Edge')
+     *  - \b Line7RisingEdge (Display string: 'Line 7 Rising Edge')
+     *  - \b Line8RisingEdge (Display string: 'Line 8 Rising Edge')
+     *  - \b Line9RisingEdge (Display string: 'Line 9 Rising Edge')
+     *  - \b Line10RisingEdge (Display string: 'Line 10 Rising Edge')
+     *  - \b Line11RisingEdge (Display string: 'Line 11 Rising Edge')
+     *  - \b Line12RisingEdge (Display string: 'Line 12 Rising Edge')
+     *  - \b Line13RisingEdge (Display string: 'Line 13 Rising Edge')
+     *  - \b Line14RisingEdge (Display string: 'Line 14 Rising Edge')
+     *  - \b Line15RisingEdge (Display string: 'Line 15 Rising Edge')
+     *  - \b mvTemperatureOutOfRange (Display string: 'mv Temperature Out Of Range')
+     *  - \b mvLogicGateOR1Output (Display string: 'mv Logic Gate OR 1 Output')
+     *  - \b mvLogicGateOR2Output (Display string: 'mv Logic Gate OR 2 Output')
+     *  - \b mvLogicGateOR3Output (Display string: 'mv Logic Gate OR 3 Output')
+     *  - \b mvLogicGateOR4Output (Display string: 'mv Logic Gate OR 4 Output')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -3804,8 +4158,8 @@ public:
      *  - \b RisingEdge (Display string: 'Rising Edge'): Counts on the Rising Edge of the signal.
      *  - \b FallingEdge (Display string: 'Falling Edge'): Counts on the Falling Edge of the signal.
      *  - \b AnyEdge (Display string: 'Any Edge'): Counts on the Falling or rising Edge of the selected signal.
-     *  - \b LevelHigh (Display string: 'Counter Event Activation')
-     *  - \b LevelLow (Display string: 'Counter Event Activation')
+     *  - \b LevelHigh (Display string: 'Level High')
+     *  - \b LevelLow (Display string: 'Level Low')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -3819,12 +4173,15 @@ public:
      *  - \b Off (Display string: 'Off'): Disable the Counter Reset trigger.
      *  - \b CounterTrigger (Display string: 'Counter Trigger'): Resets with the reception of a trigger on the CounterTriggerSource.
      *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Resets with the reception of the Acquisition Trigger.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Resets with the reception of the missed Acquisition start trigger.
      *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Resets with the reception of the Acquisition Start.
      *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Resets with the reception of the Acquisition End.
      *  - \b FrameTrigger (Display string: 'Frame Trigger'): Resets with the reception of the Frame Start Trigger.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Resets with the reception of the missed Frame start trigger.
      *  - \b FrameStart (Display string: 'Frame Start'): Resets with the reception of the Frame Start.
      *  - \b FrameEnd (Display string: 'Frame End'): Resets with the reception of the Frame End.
      *  - \b LineTrigger (Display string: 'Line Trigger'): Resets with the reception of the Line Start Trigger.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Resets with the reception of the missed Line start trigger.
      *  - \b LineStart (Display string: 'Line Start'): Resets with the reception of the Line Start.
      *  - \b LineEnd (Display string: 'Line End'): Resets with the reception of the Line End.
      *  - \b ExposureStart (Display string: 'Exposure Start'): Resets with the reception of the Exposure Start.
@@ -3832,43 +4189,47 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Resets by the chosen I/O Line.
      *  - \b Line1 (Display string: 'Line 1'): Resets by the chosen I/O Line.
      *  - \b Line2 (Display string: 'Line 2'): Resets by the chosen I/O Line.
-     *  - \b Line#3# (Display string: 'Line #3#'): Resets by the chosen I/O Line.
-     *  - \b Counter0Start (Display string: 'Counter 0 Start'): Resets with the reception of the Counter Start.
-     *  - \b Counter1Start (Display string: 'Counter 1 Start'): Resets with the reception of the Counter Start.
-     *  - \b Counter2Start (Display string: 'Counter 2 Start'): Resets with the reception of the Counter Start.
-     *  - \b Counter#3#Start (Display string: 'Counter #3# Start'): Resets with the reception of the Counter Start.
-     *  - \b Counter0End (Display string: 'Counter 0 End'): Resets with the reception of the Counter End.
-     *  - \b Counter1End (Display string: 'Counter 1 End'): Resets with the reception of the Counter End.
-     *  - \b Counter2End (Display string: 'Counter 2 End'): Resets with the reception of the Counter End.
-     *  - \b Counter#3#End (Display string: 'Counter #3# End'): Resets with the reception of the Counter End.
-     *  - \b Timer0Start (Display string: 'Timer 0 Start'): Resets with the reception of the Timer Start.
-     *  - \b Timer1Start (Display string: 'Timer 1 Start'): Resets with the reception of the Timer Start.
-     *  - \b Timer2Start (Display string: 'Timer 2 Start'): Resets with the reception of the Timer Start.
-     *  - \b Timer#3#Start (Display string: 'Timer #3# Start'): Resets with the reception of the Timer Start.
-     *  - \b Timer0End (Display string: 'Timer 0 End'): Resets with the reception of the Timer End.
-     *  - \b Timer1End (Display string: 'Timer 1 End'): Resets with the reception of the Timer End.
-     *  - \b Timer2End (Display string: 'Timer 2 End'): Resets with the reception of the Timer End.
-     *  - \b Timer#3#End (Display string: 'Timer #3# End'): Resets with the reception of the Timer End.
-     *  - \b Encoder0 (Display string: 'Encoder 0'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder1 (Display string: 'Encoder 1'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder2 (Display string: 'Encoder 2'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder#3# (Display string: 'Encoder #3#'): Starts with the reception of the Encoder output signal.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Resets by the chosen I/O Line.
      *  - \b UserOutput0 (Display string: 'User Output 0'): Resets by the chosen User Output bit.
      *  - \b UserOutput1 (Display string: 'User Output 1'): Resets by the chosen User Output bit.
      *  - \b UserOutput2 (Display string: 'User Output 2'): Resets by the chosen User Output bit.
-     *  - \b UserOutput#3# (Display string: 'User Output #3#'): Resets by the chosen User Output bit.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): Resets by the chosen User Output bit.
+     *  - \b Counter0Start (Display string: 'Counter 0 Start'): Resets with the reception of the Counter Start.
+     *  - \b Counter1Start (Display string: 'Counter 1 Start'): Resets with the reception of the Counter Start.
+     *  - \b Counter2Start (Display string: 'Counter 2 Start'): Resets with the reception of the Counter Start.
+     *  - \b Counter\#3\#Start (Display string: 'Counter \#3\# Start'): Resets with the reception of the Counter Start.
+     *  - \b Counter0End (Display string: 'Counter 0 End'): Resets with the reception of the Counter End.
+     *  - \b Counter1End (Display string: 'Counter 1 End'): Resets with the reception of the Counter End.
+     *  - \b Counter2End (Display string: 'Counter 2 End'): Resets with the reception of the Counter End.
+     *  - \b Counter\#3\#End (Display string: 'Counter \#3\# End'): Resets with the reception of the Counter End.
+     *  - \b Timer0Start (Display string: 'Timer 0 Start'): Resets with the reception of the Timer Start.
+     *  - \b Timer1Start (Display string: 'Timer 1 Start'): Resets with the reception of the Timer Start.
+     *  - \b Timer2Start (Display string: 'Timer 2 Start'): Resets with the reception of the Timer Start.
+     *  - \b Timer\#3\#Start (Display string: 'Timer \#3\# Start'): Resets with the reception of the Timer Start.
+     *  - \b Timer0End (Display string: 'Timer 0 End'): Resets with the reception of the Timer End.
+     *  - \b Timer1End (Display string: 'Timer 1 End'): Resets with the reception of the Timer End.
+     *  - \b Timer2End (Display string: 'Timer 2 End'): Resets with the reception of the Timer End.
+     *  - \b Timer\#3\#End (Display string: 'Timer \#3\# End'): Resets with the reception of the Timer End.
+     *  - \b Encoder0 (Display string: 'Encoder 0'): Resets with the reception of the Encoder output signal.
+     *  - \b Encoder1 (Display string: 'Encoder 1'): Resets with the reception of the Encoder output signal.
+     *  - \b Encoder2 (Display string: 'Encoder 2'): Resets with the reception of the Encoder output signal.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): Resets with the reception of the Encoder output signal.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Resets with the reception of the LogicBlock output signal.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Resets with the reception of the LogicBlock output signal.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Resets with the reception of the LogicBlock output signal.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Resets with the reception of the LogicBlock output signal.
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Resets on the reception of the Software Signal.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Resets on the reception of the Software Signal.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Resets on the reception of the Software Signal.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Resets on the reception of the Software Signal.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Resets on the reception of the Software Signal.
      *  - \b Action0 (Display string: 'Action 0'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
      *  - \b Action1 (Display string: 'Action 1'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
      *  - \b Action2 (Display string: 'Action 2'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
-     *  - \b Action#3# (Display string: 'Action #3#'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
+     *  - \b Action\#3\# (Display string: 'Action \#3\#'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
      *  - \b LinkTrigger2 (Display string: 'Link Trigger 2'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
-     *  - \b LinkTrigger#3# (Display string: 'Link Trigger #3#'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
+     *  - \b LinkTrigger\#3\# (Display string: 'Link Trigger \#3\#'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
      *  - \b Line3 (Display string: 'Line 3'): Resets by the chosen I/O Line.
      *  - \b Line4 (Display string: 'Line 4'): Resets by the chosen I/O Line.
      *  - \b Line5 (Display string: 'Line 5'): Resets by the chosen I/O Line.
@@ -3895,7 +4256,7 @@ public:
      *  - \b Counter13End (Display string: 'Counter 13 End'): Resets with the reception of the Counter End.
      *  - \b Counter14End (Display string: 'Counter 14 End'): Resets with the reception of the Counter End.
      *  - \b Counter15End (Display string: 'Counter 15 End'): Resets with the reception of the Counter End.
-     *  - \b Counter16End (Display string: 'Counter Reset Source')
+     *  - \b Counter16End (Display string: 'Counter 16 End')
      *  - \b Timer3End (Display string: 'Timer 3 End'): Resets with the reception of the Timer End.
      *  - \b Timer4End (Display string: 'Timer 4 End'): Resets with the reception of the Timer End.
      *  - \b Timer5End (Display string: 'Timer 5 End'): Resets with the reception of the Timer End.
@@ -3909,7 +4270,7 @@ public:
      *  - \b Timer13End (Display string: 'Timer 13 End'): Resets with the reception of the Timer End.
      *  - \b Timer14End (Display string: 'Timer 14 End'): Resets with the reception of the Timer End.
      *  - \b Timer15End (Display string: 'Timer 15 End'): Resets with the reception of the Timer End.
-     *  - \b Timer16End (Display string: 'Counter Reset Source')
+     *  - \b Timer16End (Display string: 'Timer 16 End')
      *  - \b UserOutput3 (Display string: 'User Output 3'): Resets by the chosen User Output bit.
      *  - \b UserOutput4 (Display string: 'User Output 4'): Resets by the chosen User Output bit.
      *  - \b UserOutput5 (Display string: 'User Output 5'): Resets by the chosen User Output bit.
@@ -3936,12 +4297,12 @@ public:
      *  - \b Action13 (Display string: 'Action 13'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
      *  - \b Action14 (Display string: 'Action 14'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
      *  - \b Action15 (Display string: 'Action 15'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
-     *  - \b Action16 (Display string: 'Counter Reset Source')
-     *  - \b mvTemperatureOutOfRange (Display string: 'Counter Reset Source')
-     *  - \b mvLogicGateOR1Output (Display string: 'Counter Reset Source')
-     *  - \b mvLogicGateOR2Output (Display string: 'Counter Reset Source')
-     *  - \b mvLogicGateOR3Output (Display string: 'Counter Reset Source')
-     *  - \b mvLogicGateOR4Output (Display string: 'Counter Reset Source')
+     *  - \b Action16 (Display string: 'Action 16')
+     *  - \b mvTemperatureOutOfRange (Display string: 'mv Temperature Out Of Range')
+     *  - \b mvLogicGateOR1Output (Display string: 'mv Logic Gate OR 1 Output')
+     *  - \b mvLogicGateOR2Output (Display string: 'mv Logic Gate OR 2 Output')
+     *  - \b mvLogicGateOR3Output (Display string: 'mv Logic Gate OR 3 Output')
+     *  - \b mvLogicGateOR4Output (Display string: 'mv Logic Gate OR 4 Output')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4004,14 +4365,17 @@ public:
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Disables the Counter trigger.
      *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Starts with the reception of the Acquisition Trigger.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Device has missed an Acquisition start trigger.
      *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Starts with the reception of the Acquisition Start.
      *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Starts with the reception of the Acquisition End.
      *  - \b FrameTrigger (Display string: 'Frame Trigger'): Starts with the reception of the Frame Start Trigger.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Device has missed a Frame start trigger.
      *  - \b FrameStart (Display string: 'Frame Start'): Starts with the reception of the Frame Start.
      *  - \b FrameEnd (Display string: 'Frame End'): Starts with the reception of the Frame End.
      *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Starts with the reception of the Frame Burst Start.
      *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Starts with the reception of the Frame Burst End.
      *  - \b LineTrigger (Display string: 'Line Trigger'): Starts with the reception of the Line Start Trigger.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Device has missed a Line start trigger.
      *  - \b LineStart (Display string: 'Line Start'): Starts with the reception of the Line Start.
      *  - \b LineEnd (Display string: 'Line End'): Starts with the reception of the Line End.
      *  - \b ExposureStart (Display string: 'Exposure Start'): Starts with the reception of the Exposure Start.
@@ -4019,43 +4383,47 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Starts when the specified CounterTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line1 (Display string: 'Line 1'): Starts when the specified CounterTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line2 (Display string: 'Line 2'): Starts when the specified CounterTriggerActivation condition is met on the chosen I/O Line.
-     *  - \b Line#3# (Display string: 'Line #3#'): Starts when the specified CounterTriggerActivation condition is met on the chosen I/O Line.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Starts when the specified CounterTriggerActivation condition is met on the chosen I/O Line.
      *  - \b UserOutput0 (Display string: 'User Output 0'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput1 (Display string: 'User Output 1'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput2 (Display string: 'User Output 2'): Specifies which User Output bit signal to use as internal source for the trigger.
-     *  - \b UserOutput#3# (Display string: 'User Output #3#'): Specifies which User Output bit signal to use as internal source for the trigger.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b Counter0Start (Display string: 'Counter 0 Start'): Starts with the reception of the Counter Start.
      *  - \b Counter1Start (Display string: 'Counter 1 Start'): Starts with the reception of the Counter Start.
      *  - \b Counter2Start (Display string: 'Counter 2 Start'): Starts with the reception of the Counter Start.
-     *  - \b Counter#3#Start (Display string: 'Counter #3# Start'): Starts with the reception of the Counter Start.
+     *  - \b Counter\#3\#Start (Display string: 'Counter \#3\# Start'): Starts with the reception of the Counter Start.
      *  - \b Counter0End (Display string: 'Counter 0 End'): Starts with the reception of the Counter End.
      *  - \b Counter1End (Display string: 'Counter 1 End'): Starts with the reception of the Counter End.
      *  - \b Counter2End (Display string: 'Counter 2 End'): Starts with the reception of the Counter End.
-     *  - \b Counter#3#End (Display string: 'Counter #3# End'): Starts with the reception of the Counter End.
+     *  - \b Counter\#3\#End (Display string: 'Counter \#3\# End'): Starts with the reception of the Counter End.
      *  - \b Timer0Start (Display string: 'Timer 0 Start'): Starts with the reception of the Timer Start.
      *  - \b Timer1Start (Display string: 'Timer 1 Start'): Starts with the reception of the Timer Start.
      *  - \b Timer2Start (Display string: 'Timer 2 Start'): Starts with the reception of the Timer Start.
-     *  - \b Timer#3#Start (Display string: 'Timer #3# Start'): Starts with the reception of the Timer Start.
+     *  - \b Timer\#3\#Start (Display string: 'Timer \#3\# Start'): Starts with the reception of the Timer Start.
      *  - \b Timer0End (Display string: 'Timer 0 End'): Starts with the reception of the Timer End.
      *  - \b Timer1End (Display string: 'Timer 1 End'): Starts with the reception of the Timer End.
      *  - \b Timer2End (Display string: 'Timer 2 End'): Starts with the reception of the Timer End.
-     *  - \b Timer#3#End (Display string: 'Timer #3# End'): Starts with the reception of the Timer End.
+     *  - \b Timer\#3\#End (Display string: 'Timer \#3\# End'): Starts with the reception of the Timer End.
      *  - \b Encoder0 (Display string: 'Encoder 0'): Starts with the reception of the Encoder output signal.
      *  - \b Encoder1 (Display string: 'Encoder 1'): Starts with the reception of the Encoder output signal.
      *  - \b Encoder2 (Display string: 'Encoder 2'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder#3# (Display string: 'Encoder #3#'): Starts with the reception of the Encoder output signal.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): Starts with the reception of the Encoder output signal.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Starts with the reception of the Logic Block output signal.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Starts with the reception of the Logic Block output signal.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Starts with the reception of the Logic Block output signal.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Starts with the reception of the Logic Block output signal.
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Starts on the reception of the Software Signal.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Starts on the reception of the Software Signal.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Starts on the reception of the Software Signal.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Starts on the reception of the Software Signal.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Starts on the reception of the Software Signal.
      *  - \b Action0 (Display string: 'Action 0'): Starts with the assertion of the chosen action signal.
      *  - \b Action1 (Display string: 'Action 1'): Starts with the assertion of the chosen action signal.
      *  - \b Action2 (Display string: 'Action 2'): Starts with the assertion of the chosen action signal.
-     *  - \b Action#3# (Display string: 'Action #3#'): Starts with the assertion of the chosen action signal.
+     *  - \b Action\#3\# (Display string: 'Action \#3\#'): Starts with the assertion of the chosen action signal.
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): Starts with the reception of the chosen Link Trigger signal.
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): Starts with the reception of the chosen Link Trigger signal.
      *  - \b LinkTrigger2 (Display string: 'Link Trigger 2'): Starts with the reception of the chosen Link Trigger signal.
-     *  - \b LinkTrigger#3# (Display string: 'Link Trigger #3#'): Starts with the reception of the chosen Link Trigger signal.
+     *  - \b LinkTrigger\#3\# (Display string: 'Link Trigger \#3\#'): Starts with the reception of the chosen Link Trigger signal.
      *  - \b Line3 (Display string: 'Line 3'): Starts when the specified CounterTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line4 (Display string: 'Line 4'): Starts when the specified CounterTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line5 (Display string: 'Line 5'): Starts when the specified CounterTriggerActivation condition is met on the chosen I/O Line.
@@ -4095,7 +4463,7 @@ public:
      *  - \b Counter13End (Display string: 'Counter 13 End'): Starts with the reception of the Counter End.
      *  - \b Counter14End (Display string: 'Counter 14 End'): Starts with the reception of the Counter End.
      *  - \b Counter15End (Display string: 'Counter 15 End'): Starts with the reception of the Counter End.
-     *  - \b Counter16End (Display string: 'Counter Trigger Source')
+     *  - \b Counter16End (Display string: 'Counter 16 End')
      *  - \b Timer3End (Display string: 'Timer 3 End'): Starts with the reception of the Timer End.
      *  - \b Timer4End (Display string: 'Timer 4 End'): Starts with the reception of the Timer End.
      *  - \b Timer5End (Display string: 'Timer 5 End'): Starts with the reception of the Timer End.
@@ -4109,7 +4477,7 @@ public:
      *  - \b Timer13End (Display string: 'Timer 13 End'): Starts with the reception of the Timer End.
      *  - \b Timer14End (Display string: 'Timer 14 End'): Starts with the reception of the Timer End.
      *  - \b Timer15End (Display string: 'Timer 15 End'): Starts with the reception of the Timer End.
-     *  - \b Timer16End (Display string: 'Counter Trigger Source')
+     *  - \b Timer16End (Display string: 'Timer 16 End')
      *  - \b Action3 (Display string: 'Action 3'): Starts with the assertion of the chosen action signal.
      *  - \b Action4 (Display string: 'Action 4'): Starts with the assertion of the chosen action signal.
      *  - \b Action5 (Display string: 'Action 5'): Starts with the assertion of the chosen action signal.
@@ -4123,12 +4491,12 @@ public:
      *  - \b Action13 (Display string: 'Action 13'): Starts with the assertion of the chosen action signal.
      *  - \b Action14 (Display string: 'Action 14'): Starts with the assertion of the chosen action signal.
      *  - \b Action15 (Display string: 'Action 15'): Starts with the assertion of the chosen action signal.
-     *  - \b Action16 (Display string: 'Counter Trigger Source')
-     *  - \b mvLogicGateOR1Output (Display string: 'Counter Trigger Source')
-     *  - \b mvLogicGateOR2Output (Display string: 'Counter Trigger Source')
-     *  - \b mvLogicGateOR3Output (Display string: 'Counter Trigger Source')
-     *  - \b mvLogicGateOR4Output (Display string: 'Counter Trigger Source')
-     *  - \b mvReadOutActive (Display string: 'Counter Trigger Source')
+     *  - \b Action16 (Display string: 'Action 16')
+     *  - \b mvLogicGateOR1Output (Display string: 'mv Logic Gate OR 1 Output')
+     *  - \b mvLogicGateOR2Output (Display string: 'mv Logic Gate OR 2 Output')
+     *  - \b mvLogicGateOR3Output (Display string: 'mv Logic Gate OR 3 Output')
+     *  - \b mvLogicGateOR4Output (Display string: 'mv Logic Gate OR 4 Output')
+     *  - \b mvReadOutActive (Display string: 'mv Read Out Active')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4157,7 +4525,7 @@ public:
      *  - \b Timer0 (Display string: 'Timer 0'): Selects the Timer 0.
      *  - \b Timer1 (Display string: 'Timer 1'): Selects the Timer 1.
      *  - \b Timer2 (Display string: 'Timer 2'): Selects the Timer 2.
-     *  - \b Timer#3# (Display string: 'Timer #3#'): Selects the Timer #3#.
+     *  - \b Timer\#3\# (Display string: 'Timer \#3\#'): Selects the Timer \#3\#.
      *  - \b Timer3 (Display string: 'Timer 3'): Selects the Timer 3.
      *  - \b Timer4 (Display string: 'Timer 4'): Selects the Timer 4.
      *  - \b Timer5 (Display string: 'Timer 5'): Selects the Timer 5.
@@ -4171,7 +4539,7 @@ public:
      *  - \b Timer13 (Display string: 'Timer 13'): Selects the Timer 13.
      *  - \b Timer14 (Display string: 'Timer 14'): Selects the Timer 14.
      *  - \b Timer15 (Display string: 'Timer 15'): Selects the Timer 15.
-     *  - \b Timer16 (Display string: 'Timer Selector')
+     *  - \b Timer16 (Display string: 'Timer 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4182,23 +4550,11 @@ public:
      *  Sets the duration (in microseconds) of the Timer pulse.
      */
     PropertyF timerDuration;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. It sets the duration in device-specific unit of the Timer pulse.
-     */
-    PropertyI64 timerDurationRaw;
     /// \brief A floating point property. Sets the duration (in microseconds) of the delay to apply at the reception of a trigger before starting the Timer.
     /**
      *  Sets the duration (in microseconds) of the delay to apply at the reception of a trigger before starting the Timer.
      */
     PropertyF timerDelay;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. It sets the duration in device-specific unit of the delay to apply after the reception of a trigger before starting the Timer.
-     */
-    PropertyI64 timerDelayRaw;
     /// \brief A method object. Does a software reset of the selected timer and starts it.
     /**
      *  Does a software reset of the selected timer and starts it. The timer starts immediately after the reset unless a timer trigger is active.
@@ -4209,12 +4565,6 @@ public:
      *  Reads or writes the current value (in microseconds) of the selected Timer.
      */
     PropertyF timerValue;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. This feature is used to read the current value in device-specific unit of the selected Timer.
-     */
-    PropertyI64 timerValueRaw;
     /// \brief An enumerated integer property. Returns the current status of the Timer.
     /**
      *  Returns the current status of the Timer.
@@ -4236,14 +4586,17 @@ public:
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Disables the Timer trigger.
      *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Starts with the reception of the Acquisition Trigger.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Starts with the reception of a missed Acquisition Trigger.
      *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Starts with the reception of the Acquisition Start.
      *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Starts with the reception of the Acquisition End.
      *  - \b FrameTrigger (Display string: 'Frame Trigger'): Starts with the reception of the Frame Start Trigger.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Starts with the reception of a missed Frame Trigger.
      *  - \b FrameStart (Display string: 'Frame Start'): Starts with the reception of the Frame Start.
      *  - \b FrameEnd (Display string: 'Frame End'): Starts with the reception of the Frame End.
      *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Starts with the reception of the Frame Burst Start.
      *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Starts with the reception of the Frame Burst End.
      *  - \b LineTrigger (Display string: 'Line Trigger'): Starts with the reception of the Line Start Trigger.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Starts with the reception of a missed Line Trigger.
      *  - \b LineStart (Display string: 'Line Start'): Starts with the reception of the Line Start.
      *  - \b LineEnd (Display string: 'Line End'): Starts with the reception of the Line End.
      *  - \b ExposureStart (Display string: 'Exposure Start'): Starts with the reception of the Exposure Start.
@@ -4251,43 +4604,47 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line1 (Display string: 'Line 1'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line2 (Display string: 'Line 2'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
-     *  - \b Line#3# (Display string: 'Line #3#'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
      *  - \b UserOutput0 (Display string: 'User Output 0'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput1 (Display string: 'User Output 1'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput2 (Display string: 'User Output 2'): Specifies which User Output bit signal to use as internal source for the trigger.
-     *  - \b UserOutput#3# (Display string: 'User Output #3#'): Specifies which User Output bit signal to use as internal source for the trigger.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b Counter0Start (Display string: 'Counter 0 Start'): Starts with the reception of the Counter Start.
      *  - \b Counter1Start (Display string: 'Counter 1 Start'): Starts with the reception of the Counter Start.
      *  - \b Counter2Start (Display string: 'Counter 2 Start'): Starts with the reception of the Counter Start.
-     *  - \b Counter#3#Start (Display string: 'Counter #3# Start'): Starts with the reception of the Counter Start.
+     *  - \b Counter\#3\#Start (Display string: 'Counter \#3\# Start'): Starts with the reception of the Counter Start.
      *  - \b Counter0End (Display string: 'Counter 0 End'): Starts with the reception of the Counter End.
      *  - \b Counter1End (Display string: 'Counter 1 End'): Starts with the reception of the Counter End.
      *  - \b Counter2End (Display string: 'Counter 2 End'): Starts with the reception of the Counter End.
-     *  - \b Counter#3#End (Display string: 'Counter #3# End'): Starts with the reception of the Counter End.
+     *  - \b Counter\#3\#End (Display string: 'Counter \#3\# End'): Starts with the reception of the Counter End.
      *  - \b Timer0Start (Display string: 'Timer 0 Start'): Starts with the reception of the Timer Start.
      *  - \b Timer1Start (Display string: 'Timer 1 Start'): Starts with the reception of the Timer Start.
      *  - \b Timer2Start (Display string: 'Timer 2 Start'): Starts with the reception of the Timer Start.
-     *  - \b Timer#3#Start (Display string: 'Timer #3# Start'): Starts with the reception of the Timer Start.
+     *  - \b Timer\#3\#Start (Display string: 'Timer \#3\# Start'): Starts with the reception of the Timer Start.
      *  - \b Timer0End (Display string: 'Timer 0 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
      *  - \b Timer1End (Display string: 'Timer 1 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
      *  - \b Timer2End (Display string: 'Timer 2 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
-     *  - \b Timer#3#End (Display string: 'Timer #3# End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
+     *  - \b Timer\#3\#End (Display string: 'Timer \#3\# End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
      *  - \b Encoder0 (Display string: 'Encoder 0'): Starts with the reception of the Encoder output signal.
      *  - \b Encoder1 (Display string: 'Encoder 1'): Starts with the reception of the Encoder output signal.
      *  - \b Encoder2 (Display string: 'Encoder 2'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder#3# (Display string: 'Encoder #3#'): Starts with the reception of the Encoder output signal.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): Starts with the reception of the Encoder output signal.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Starts with the reception of the Logic Block output signal.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Starts with the reception of the Logic Block output signal.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Starts with the reception of the Logic Block output signal.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Starts with the reception of the Logic Block output signal.
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Starts on the reception of the Software Signal.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Starts on the reception of the Software Signal.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Starts on the reception of the Software Signal.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Starts on the reception of the Software Signal.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Starts on the reception of the Software Signal.
      *  - \b Action0 (Display string: 'Action 0'): Starts with the assertion of the chosen action signal.
      *  - \b Action1 (Display string: 'Action 1'): Starts with the assertion of the chosen action signal.
      *  - \b Action2 (Display string: 'Action 2'): Starts with the assertion of the chosen action signal.
-     *  - \b Action#3# (Display string: 'Action #3#'): Starts with the assertion of the chosen action signal.
+     *  - \b Action\#3\# (Display string: 'Action \#3\#'): Starts with the assertion of the chosen action signal.
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): Starts with the reception of the chosen Link Trigger.
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): Starts with the reception of the chosen Link Trigger.
      *  - \b LinkTrigger2 (Display string: 'Link Trigger 2'): Starts with the reception of the chosen Link Trigger.
-     *  - \b LinkTrigger#3# (Display string: 'Link Trigger #3#'): Starts with the reception of the chosen Link Trigger.
+     *  - \b LinkTrigger\#3\# (Display string: 'Link Trigger \#3\#'): Starts with the reception of the chosen Link Trigger.
      *  - \b Line3 (Display string: 'Line 3'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line4 (Display string: 'Line 4'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line5 (Display string: 'Line 5'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
@@ -4319,7 +4676,7 @@ public:
      *  - \b Counter13End (Display string: 'Counter 13 End'): Starts with the reception of the Counter End.
      *  - \b Counter14End (Display string: 'Counter 14 End'): Starts with the reception of the Counter End.
      *  - \b Counter15End (Display string: 'Counter 15 End'): Starts with the reception of the Counter End.
-     *  - \b Counter16End (Display string: 'Timer Trigger Source')
+     *  - \b Counter16End (Display string: 'Counter 16 End')
      *  - \b Timer3End (Display string: 'Timer 3 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
      *  - \b Timer4End (Display string: 'Timer 4 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
      *  - \b Timer5End (Display string: 'Timer 5 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
@@ -4333,7 +4690,7 @@ public:
      *  - \b Timer13End (Display string: 'Timer 13 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
      *  - \b Timer14End (Display string: 'Timer 14 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
      *  - \b Timer15End (Display string: 'Timer 15 End'): Starts with the reception of the Timer End. Note that a timer can retrigger itself to achieve a free running Timer.
-     *  - \b Timer16End (Display string: 'Timer Trigger Source')
+     *  - \b Timer16End (Display string: 'Timer 16 End')
      *  - \b Action3 (Display string: 'Action 3'): Starts with the assertion of the chosen action signal.
      *  - \b Action4 (Display string: 'Action 4'): Starts with the assertion of the chosen action signal.
      *  - \b Action5 (Display string: 'Action 5'): Starts with the assertion of the chosen action signal.
@@ -4347,11 +4704,11 @@ public:
      *  - \b Action13 (Display string: 'Action 13'): Starts with the assertion of the chosen action signal.
      *  - \b Action14 (Display string: 'Action 14'): Starts with the assertion of the chosen action signal.
      *  - \b Action15 (Display string: 'Action 15'): Starts with the assertion of the chosen action signal.
-     *  - \b Action16 (Display string: 'Timer Trigger Source')
-     *  - \b mvLogicGateOR1Output (Display string: 'Timer Trigger Source')
-     *  - \b mvLogicGateOR2Output (Display string: 'Timer Trigger Source')
-     *  - \b mvLogicGateOR3Output (Display string: 'Timer Trigger Source')
-     *  - \b mvLogicGateOR4Output (Display string: 'Timer Trigger Source')
+     *  - \b Action16 (Display string: 'Action 16')
+     *  - \b mvLogicGateOR1Output (Display string: 'mv Logic Gate OR 1 Output')
+     *  - \b mvLogicGateOR2Output (Display string: 'mv Logic Gate OR 2 Output')
+     *  - \b mvLogicGateOR3Output (Display string: 'mv Logic Gate OR 3 Output')
+     *  - \b mvLogicGateOR4Output (Display string: 'mv Logic Gate OR 4 Output')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4372,13 +4729,16 @@ public:
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 timerTriggerActivation;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the quadrature Encoder Control features.
 /**
  *  A category that contains the quadrature Encoder Control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class EncoderControl
 //-----------------------------------------------------------------------------
@@ -4408,6 +4768,7 @@ public:
         encoderValue(),
         encoderValueAtReset()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( encoderSelector, "EncoderSelector" );
@@ -4424,7 +4785,9 @@ public:
         locator.bindComponent( encoderValue, "EncoderValue" );
         locator.bindComponent( encoderValueAtReset, "EncoderValueAtReset" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects which Encoder to configure.
     /**
      *  Selects which Encoder to configure.
@@ -4433,7 +4796,7 @@ public:
      *  - \b Encoder0 (Display string: 'Encoder 0'): Selects Encoder 0.
      *  - \b Encoder1 (Display string: 'Encoder 1'): Selects Encoder 1.
      *  - \b Encoder2 (Display string: 'Encoder 2'): Selects Encoder 2.
-     *  - \b Encoder#3# (Display string: 'Encoder #3#'): Selects Encoder #3#.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): Selects Encoder \#3\#.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4448,7 +4811,7 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Encoder Forward input is taken from the chosen I/O Line.
      *  - \b Line1 (Display string: 'Line 1'): Encoder Forward input is taken from the chosen I/O Line.
      *  - \b Line2 (Display string: 'Line 2'): Encoder Forward input is taken from the chosen I/O Line.
-     *  - \b Line#3# (Display string: 'Line #3#'): Encoder Forward input is taken from the chosen I/O Line.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Encoder Forward input is taken from the chosen I/O Line.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4460,10 +4823,10 @@ public:
      *
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Counter is stopped.
-     *  - \b Line0 (Display string: 'Line 0'): Encoder Reverse input is taken from the chosen I/O Line..
-     *  - \b Line1 (Display string: 'Line 1'): Encoder Reverse input is taken from the chosen I/O Line..
-     *  - \b Line2 (Display string: 'Line 2'): Encoder Reverse input is taken from the chosen I/O Line..
-     *  - \b Line#3# (Display string: 'Line #3#'): Encoder Reverse input is taken from the chosen I/O Line..
+     *  - \b Line0 (Display string: 'Line 0'): Encoder Reverse input is taken from the chosen I/O Line.
+     *  - \b Line1 (Display string: 'Line 1'): Encoder Reverse input is taken from the chosen I/O Line.
+     *  - \b Line2 (Display string: 'Line 2'): Encoder Reverse input is taken from the chosen I/O Line.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Encoder Reverse input is taken from the chosen I/O Line.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4481,9 +4844,9 @@ public:
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 encoderMode;
-    /// \brief An integer property. Sets how many Encoder increment/decrements that are needed generate an Encoder output pulse signal.
+    /// \brief An integer property. Sets how many Encoder increment/decrements are needed to generate an Encoder output pulse signal.
     /**
-     *  Sets how many Encoder increment/decrements that are needed generate an Encoder output pulse signal.
+     *  Sets how many Encoder increment/decrements are needed to generate an Encoder output pulse signal.
      */
     PropertyI64 encoderDivider;
     /// \brief An enumerated integer property. Selects the conditions for the Encoder interface to generate a valid Encoder output signal.
@@ -4500,6 +4863,14 @@ public:
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     *
+     *  The following figure explains the different \b encoderOutputModes
+     *
+     *  <center>
+     *     \image html EventControl.png
+     *      encoderOutputModes
+     *  </center>
+     *
      */
     PropertyI64 encoderOutputMode;
     /// \brief An enumerated integer property. Returns the motion status of the encoder.
@@ -4528,9 +4899,11 @@ public:
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Disable the Encoder Reset trigger.
      *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Resets with the reception of the Acquisition Trigger.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Resets with the reception of a missed Acquisition Trigger.
      *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Resets with the reception of the Acquisition Start.
      *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Resets with the reception of the Acquisition End.
      *  - \b FrameTrigger (Display string: 'Frame Trigger'): Resets with the reception of the Frame Start Trigger.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Resets with the reception of a missed Frame Trigger.
      *  - \b FrameStart (Display string: 'Frame Start'): Resets with the reception of the Frame Start.
      *  - \b FrameEnd (Display string: 'Frame End'): Resets with the reception of the Frame End.
      *  - \b ExposureStart (Display string: 'Exposure Start'): Resets with the reception of the Exposure Start.
@@ -4538,39 +4911,43 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Resets by the chosen I/O Line.
      *  - \b Line1 (Display string: 'Line 1'): Resets by the chosen I/O Line.
      *  - \b Line2 (Display string: 'Line 2'): Resets by the chosen I/O Line.
-     *  - \b Line#3# (Display string: 'Line #3#'): Resets by the chosen I/O Line.
-     *  - \b Counter0Start (Display string: 'Counter 0 Start'): Resets with the reception of the Counter Start.
-     *  - \b Counter1Start (Display string: 'Counter 1 Start'): Resets with the reception of the Counter Start.
-     *  - \b Counter2Start (Display string: 'Counter 2 Start'): Resets with the reception of the Counter Start.
-     *  - \b Counter#3#Start (Display string: 'Counter #3# Start'): Resets with the reception of the Counter Start.
-     *  - \b Counter0End (Display string: 'Counter 0 End'): Resets with the reception of the Counter End.
-     *  - \b Counter1End (Display string: 'Counter 1 End'): Resets with the reception of the Counter End.
-     *  - \b Counter2End (Display string: 'Counter 2 End'): Resets with the reception of the Counter End.
-     *  - \b Counter#3#End (Display string: 'Counter #3# End'): Resets with the reception of the Counter End.
-     *  - \b Timer0Start (Display string: 'Timer 0 Start'): Resets with the reception of the Timer Start.
-     *  - \b Timer1Start (Display string: 'Timer 1 Start'): Resets with the reception of the Timer Start.
-     *  - \b Timer2Start (Display string: 'Timer 2 Start'): Resets with the reception of the Timer Start.
-     *  - \b Timer#3#Start (Display string: 'Timer #3# Start'): Resets with the reception of the Timer Start.
-     *  - \b Timer0End (Display string: 'Timer 0 End'): Resets with the reception of the Timer End.
-     *  - \b Timer1End (Display string: 'Timer 1 End'): Resets with the reception of the Timer End.
-     *  - \b Timer2End (Display string: 'Timer 2 End'): Resets with the reception of the Timer End.
-     *  - \b Timer#3#End (Display string: 'Timer #3# End'): Resets with the reception of the Timer End.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Resets by the chosen I/O Line.
      *  - \b UserOutput0 (Display string: 'User Output 0'): Resets by the chosen User Output bit.
      *  - \b UserOutput1 (Display string: 'User Output 1'): Resets by the chosen User Output bit.
      *  - \b UserOutput2 (Display string: 'User Output 2'): Resets by the chosen User Output bit.
-     *  - \b UserOutput#3# (Display string: 'User Output #3#'): Resets by the chosen User Output bit.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): Resets by the chosen User Output bit.
+     *  - \b Counter0Start (Display string: 'Counter 0 Start'): Resets with the reception of the Counter Start.
+     *  - \b Counter1Start (Display string: 'Counter 1 Start'): Resets with the reception of the Counter Start.
+     *  - \b Counter2Start (Display string: 'Counter 2 Start'): Resets with the reception of the Counter Start.
+     *  - \b Counter\#3\#Start (Display string: 'Counter \#3\# Start'): Resets with the reception of the Counter Start.
+     *  - \b Counter0End (Display string: 'Counter 0 End'): Resets with the reception of the Counter End.
+     *  - \b Counter1End (Display string: 'Counter 1 End'): Resets with the reception of the Counter End.
+     *  - \b Counter2End (Display string: 'Counter 2 End'): Resets with the reception of the Counter End.
+     *  - \b Counter\#3\#End (Display string: 'Counter \#3\# End'): Resets with the reception of the Counter End.
+     *  - \b Timer0Start (Display string: 'Timer 0 Start'): Resets with the reception of the Timer Start.
+     *  - \b Timer1Start (Display string: 'Timer 1 Start'): Resets with the reception of the Timer Start.
+     *  - \b Timer2Start (Display string: 'Timer 2 Start'): Resets with the reception of the Timer Start.
+     *  - \b Timer\#3\#Start (Display string: 'Timer \#3\# Start'): Resets with the reception of the Timer Start.
+     *  - \b Timer0End (Display string: 'Timer 0 End'): Resets with the reception of the Timer End.
+     *  - \b Timer1End (Display string: 'Timer 1 End'): Resets with the reception of the Timer End.
+     *  - \b Timer2End (Display string: 'Timer 2 End'): Resets with the reception of the Timer End.
+     *  - \b Timer\#3\#End (Display string: 'Timer \#3\# End'): Resets with the reception of the Timer End.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Reset by the choosen Logic Block signal.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Reset by the choosen Logic Block signal.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Reset by the choosen Logic Block signal.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Reset by the choosen Logic Block signal.
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Resets on the reception of the Software Signal.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Resets on the reception of the Software Signal.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Resets on the reception of the Software Signal.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Resets on the reception of the Software Signal.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Resets on the reception of the Software Signal.
      *  - \b Action0 (Display string: 'Action 0'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
      *  - \b Action1 (Display string: 'Action 1'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
      *  - \b Action2 (Display string: 'Action 2'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
-     *  - \b Action#3# (Display string: 'Action #3#'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
+     *  - \b Action\#3\# (Display string: 'Action \#3\#'): Resets on assertions of the chosen action signal (Broadcasted signal on the transport layer).
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
      *  - \b LinkTrigger2 (Display string: 'Link Trigger 2'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
-     *  - \b LinkTrigger#3# (Display string: 'Link Trigger #3#'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
+     *  - \b LinkTrigger\#3\# (Display string: 'Link Trigger \#3\#'): Resets on the reception of the chosen Link Trigger (received from the transport layer).
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4606,13 +4983,207 @@ public:
      *  Reads the value of the of the position counter of the selected Encoder when it was reset by a signal or by an explicit EncoderReset command.
      */
     PropertyI64 encoderValueAtReset;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
+};
+
+//-----------------------------------------------------------------------------
+/// \brief Category that contains the Logic Block control features.
+/**
+ *  A category that contains the Logic Block control features.
+ * \ingroup GenICamInterfaceDevice
+ */
+class LogicBlockControl
+//-----------------------------------------------------------------------------
+{
+public:
+    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::LogicBlockControl</b> object.
+    explicit LogicBlockControl(
+        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+        mvIMPACT::acquire::Device* pDev,
+        /// [in] The name of the driver internal setting to access with this instance.
+        /// A list of valid setting names can be obtained by a call to
+        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
+        /// settings can be created with the function
+        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
+        const std::string& settingName = "Base" ) :
+        logicBlockSelector(),
+        logicBlockFunction(),
+        logicBlockInputNumber(),
+        logicBlockInputSelector(),
+        logicBlockInputSource(),
+        logicBlockInputInverter(),
+        logicBlockLUTIndex(),
+        logicBlockLUTValue(),
+        logicBlockLUTValueAll(),
+        logicBlockLUTSelector()
+    {
+        pDev->validateInterfaceLayout( dilGenICam );
+        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
+        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
+        locator.bindComponent( logicBlockSelector, "LogicBlockSelector" );
+        locator.bindComponent( logicBlockFunction, "LogicBlockFunction" );
+        locator.bindComponent( logicBlockInputNumber, "LogicBlockInputNumber" );
+        locator.bindComponent( logicBlockInputSelector, "LogicBlockInputSelector" );
+        locator.bindComponent( logicBlockInputSource, "LogicBlockInputSource" );
+        locator.bindComponent( logicBlockInputInverter, "LogicBlockInputInverter" );
+        locator.bindComponent( logicBlockLUTIndex, "LogicBlockLUTIndex" );
+        locator.bindComponent( logicBlockLUTValue, "LogicBlockLUTValue" );
+        locator.bindComponent( logicBlockLUTValueAll, "LogicBlockLUTValueAll" );
+        locator.bindComponent( logicBlockLUTSelector, "LogicBlockLUTSelector" );
+    }
+    // *INDENT-OFF*
+    PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
+    /// \brief An enumerated integer property. Specifies the Logic Block to configure.
+    /**
+     *  Specifies the Logic Block to configure.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Logic Block 0 is selected.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Logic Block 1 is selected.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Logic Block 2 is selected.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Logic Block \#3\# is selected.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 logicBlockSelector;
+    /// \brief An enumerated integer property. Selects the combinational logic Function of the Logic Block to configure.
+    /**
+     *  Selects the combinational logic Function of the Logic Block to configure.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b AND (Display string: 'AND'): Selects a Logic Block that does the logical AND of all the inputs.
+     *  - \b OR (Display string: 'OR'): Selects a Logic Block that does the logical OR of all the inputs.
+     *  - \b LUT (Display string: 'LUT'): Selects a Logic Block that does a Look Up Table Transformation on all the inputs.
+     *  - \b LatchedLUT (Display string: 'Latched LUT'): Selects a Logic Block with 2 LUTs as inputs to a Flip-Flop.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 logicBlockFunction;
+    /// \brief An integer property. Specifies the number of active signal inputs of the Logic Block.
+    /**
+     *  Specifies the number of active signal inputs of the Logic Block.
+     */
+    PropertyI64 logicBlockInputNumber;
+    /// \brief An integer property. Selects the Logic Block's input to configure.
+    /**
+     *  Selects the Logic Block's input to configure.
+     */
+    PropertyI64 logicBlockInputSelector;
+    /// \brief An enumerated integer property. Selects the source signal for the input into the Logic Block.
+    /**
+     *  Selects the source signal for the input into the Logic Block. True or False indicates the input is forced constant.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b True (Display string: 'True'): Logic Block input is forced to One.
+     *  - \b False (Display string: 'False'): Logic Block input is forced to Zero.
+     *  - \b AcquisitionTriggerWait (Display string: 'Acquisition Trigger Wait'): Device is currently waiting for a trigger for the capture of one or many Frames.
+     *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Device is currently waiting for a trigger for the capture of one or many Frames.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Device has missed a trigger for the capture of one or many Frames.
+     *  - \b AcquisitionActive (Display string: 'Acquisition Active'): Device is acquiring one or many Frames.
+     *  - \b FrameTriggerWait (Display string: 'Frame Trigger Wait'): Device is currently waiting for a Frame start trigger.
+     *  - \b FrameTrigger (Display string: 'Frame Trigger'): Device is currently waiting for a Frame start trigger.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Device has missed a Frame start trigger.
+     *  - \b FrameActive (Display string: 'Frame Active'): Device is currently doing the capture of a Frame.
+     *  - \b ExposureActive (Display string: 'Exposure Active'): Device is doing the exposure of a Frame (or Line).
+     *  - \b LineTriggerWait (Display string: 'Line Trigger Wait'): Device is currently waiting for a Line start trigger.
+     *  - \b LineTrigger (Display string: 'Line Trigger'): Device is currently waiting for a Line start trigger.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Device has missed a Line start trigger.
+     *  - \b LineActive (Display string: 'Line Active'): Device is currently doing the capture of a Line.
+     *  - \b Counter0Active (Display string: 'Counter 0 Active'): The chosen counter is in active state (counting).
+     *  - \b Counter1Active (Display string: 'Counter 1 Active'): The chosen counter is in active state (counting).
+     *  - \b Counter2Active (Display string: 'Counter 2 Active'): The chosen counter is in active state (counting).
+     *  - \b Counter\#3\#Active (Display string: 'Counter \#3\# Active'): The chosen counter is in active state (counting).
+     *  - \b Timer0Active (Display string: 'Timer 0 Active'): The chosen Timer is in active state.
+     *  - \b Timer1Active (Display string: 'Timer 1 Active'): The chosen Timer is in active state.
+     *  - \b Timer2Active (Display string: 'Timer 2 Active'): The chosen Timer is in active state.
+     *  - \b Timer\#3\#Active (Display string: 'Timer \#3\# Active'): The chosen Timer is in active state.
+     *  - \b Encoder0 (Display string: 'Encoder 0'): The chosen Encoder Output state.
+     *  - \b Encoder1 (Display string: 'Encoder 1'): The chosen Encoder Output state.
+     *  - \b Encoder2 (Display string: 'Encoder 2'): The chosen Encoder Output state.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): The chosen Encoder Output state.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): The choosen Logic Block output state.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): The choosen Logic Block output state.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): The choosen Logic Block output state.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): The choosen Logic Block output state.
+     *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): The choosen Software Signal output state.
+     *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): The choosen Software Signal output state.
+     *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): The choosen Software Signal output state.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): The choosen Software Signal output state.
+     *  - \b Line0 (Display string: 'Line 0'): The chosen I/OLine state.
+     *  - \b Line1 (Display string: 'Line 1'): The chosen I/OLine state.
+     *  - \b Line2 (Display string: 'Line 2'): The chosen I/OLine state.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): The chosen I/OLine state.
+     *  - \b UserOutput0 (Display string: 'User Output 0'): The chosen User Output bit state as defined by its current UserOutputValue.
+     *  - \b UserOutput1 (Display string: 'User Output 1'): The chosen User Output bit state as defined by its current UserOutputValue.
+     *  - \b UserOutput2 (Display string: 'User Output 2'): The chosen User Output bit state as defined by its current UserOutputValue.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): The chosen User Output bit state as defined by its current UserOutputValue.
+     *  - \b Stream0TransferActive (Display string: 'Stream 0 Transfer Active'): Transfer on the stream is active.
+     *  - \b Stream1TransferActive (Display string: 'Stream 1 Transfer Active'): Transfer on the stream is active.
+     *  - \b Stream\#2\#TransferActive (Display string: 'Stream \#2\# Transfer Active'): Transfer on the stream is active.
+     *  - \b Stream0TransferPaused (Display string: 'Stream 0 Transfer Paused'): Transfer on the stream is paused.
+     *  - \b Stream1TransferPaused (Display string: 'Stream 1 Transfer Paused'): Transfer on the stream is paused.
+     *  - \b Stream\#2\#TransferPaused (Display string: 'Stream \#2\# Transfer Paused'): Transfer on the stream is paused.
+     *  - \b Stream0TransferStopping (Display string: 'Stream 0 Transfer Stopping'): Transfer on the stream is stopping.
+     *  - \b Stream1TransferStopping (Display string: 'Stream 1 Transfer Stopping'): Transfer on the stream is stopping.
+     *  - \b Stream\#2\#TransferStopping (Display string: 'Stream \#2\# Transfer Stopping'): Transfer on the stream is stopping.
+     *  - \b Stream0TransferStopped (Display string: 'Stream 0 Transfer Stopped'): Transfer on the stream is stopped.
+     *  - \b Stream1TransferStopped (Display string: 'Stream 1 Transfer Stopped'): Transfer on the stream is stopped.
+     *  - \b Stream\#2\#TransferStopped (Display string: 'Stream \#2\# Transfer Stopped'): Transfer on the stream is stopped.
+     *  - \b Stream0TransferOverflow (Display string: 'Stream 0 Transfer Overflow'): Transfer on the stream is in overflow.
+     *  - \b Stream1TransferOverflow (Display string: 'Stream 1 Transfer Overflow'): Transfer on the stream is in overflow.
+     *  - \b Stream\#2\#TransferOverflow (Display string: 'Stream \#2\# Transfer Overflow'): Transfer on the stream is in overflow.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 logicBlockInputSource;
+    /// \brief A boolean property. Selects if the selected Logic Block Input source signal is inverted.
+    /**
+     *  Selects if the selected Logic Block Input source signal is inverted. This feature is not available when the LogicBlockInputSource is set to True or False.
+     */
+    PropertyIBoolean logicBlockInputInverter;
+    /// \brief An integer property. Controls the index of the truth table to access in the selected LUT.
+    /**
+     *  Controls the index of the truth table to access in the selected LUT.
+     */
+    PropertyI64 logicBlockLUTIndex;
+    /// \brief A boolean property. Read or Write the Value associated with the entry at index LogicBlockLUTIndex of the selected LUT.
+    /**
+     *  Read or Write the Value associated with the entry at index LogicBlockLUTIndex of the selected LUT.
+     */
+    PropertyIBoolean logicBlockLUTValue;
+    /// \brief An integer property. Sets the values of all the output bits of the selected LUT in one access ignoring LogicBlockLUTIndex.
+    /**
+     *  Sets the values of all the output bits of the selected LUT in one access ignoring LogicBlockLUTIndex. LogicBlockLUTValueAll value can be any binary number and each bit correspond to the output value for the corresponding index (i.e. Bit 0 = LUT Index 0 output binary value).
+     */
+    PropertyI64 logicBlockLUTValueAll;
+    /// \brief An enumerated integer property. Selects which of the two LUTs to configure when the selected Logic Block is a Latched dual LUTs (i.e: LogicalBlockFunction = LatchedLUT).
+    /**
+     *  Selects which of the two LUTs to configure when the selected Logic Block is a Latched dual LUTs (i.e: LogicalBlockFunction = LatchedLUT).
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Value (Display string: 'Value'): Selects the LUT controlling the data input of the flip-flop.
+     *  - \b Enable (Display string: 'Enable'): Selects the LUT controlling the enable input of the flip-flop.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 logicBlockLUTSelector;
+    // *INDENT-OFF*
+    PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the Software Signal Control features.
 /**
  *  A category that contains the Software Signal Control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class SoftwareSignalControl
 //-----------------------------------------------------------------------------
@@ -4631,12 +5202,15 @@ public:
         softwareSignalSelector(),
         softwareSignalPulse()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( softwareSignalSelector, "SoftwareSignalSelector" );
         locator.bindComponent( softwareSignalPulse, "SoftwareSignalPulse@i" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects which Software Signal features to control.
     /**
      *  Selects which Software Signal features to control.
@@ -4645,7 +5219,7 @@ public:
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Selects the software generated signal to control.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Selects the software generated signal to control.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Selects the software generated signal to control.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Selects the software generated signal to control.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Selects the software generated signal to control.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -4656,13 +5230,16 @@ public:
      *  Generates a pulse signal that can be used as a software trigger. This command can be used to trigger other modules that accept a SoftwareSignal as trigger source.
      */
     Method softwareSignalPulse;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the Action control features.
 /**
  *  A category that contains the Action control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class ActionControl
 //-----------------------------------------------------------------------------
@@ -4685,6 +5262,7 @@ public:
         actionGroupMask(),
         actionGroupKey()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( actionUnconditionalMode, "ActionUnconditionalMode" );
@@ -4694,7 +5272,9 @@ public:
         locator.bindComponent( actionGroupMask, "ActionGroupMask" );
         locator.bindComponent( actionGroupKey, "ActionGroupKey" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Enables the unconditional action command mode where action commands are processed even when the primary control channel is closed.
     /**
      *  Enables the unconditional action command mode where action commands are processed even when the primary control channel is closed.
@@ -4732,13 +5312,16 @@ public:
      *  Provides the key that the device will use to validate the action on reception of the action protocol message.
      */
     PropertyI64 actionGroupKey;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains Event control features.
 /**
  *  A category that contains Event control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class EventControl
 //-----------------------------------------------------------------------------
@@ -4759,6 +5342,9 @@ public:
         eventAcquisitionTrigger(),
         eventAcquisitionTriggerTimestamp(),
         eventAcquisitionTriggerFrameID(),
+        eventAcquisitionTriggerMissed(),
+        eventAcquisitionTriggerMissedTimestamp(),
+        eventAcquisitionTriggerMissedFrameID(),
         eventAcquisitionStart(),
         eventAcquisitionStartTimestamp(),
         eventAcquisitionStartFrameID(),
@@ -4774,33 +5360,56 @@ public:
         eventAcquisitionError(),
         eventAcquisitionErrorTimestamp(),
         eventAcquisitionErrorFrameID(),
-        eventFrameTrigger(),
-        eventFrameTriggerTimestamp(),
-        eventFrameTriggerFrameID(),
-        eventFrameStart(),
-        eventFrameStartTimestamp(),
-        eventFrameStartFrameID(),
-        eventFrameEnd(),
-        eventFrameEndTimestamp(),
-        eventFrameEndFrameID(),
         eventFrameBurstStart(),
         eventFrameBurstStartTimestamp(),
         eventFrameBurstStartFrameID(),
         eventFrameBurstEnd(),
         eventFrameBurstEndTimestamp(),
         eventFrameBurstEndFrameID(),
+        eventFrameTrigger(),
+        eventFrameTriggerTimestamp(),
+        eventFrameTriggerFrameID(),
+        eventFrameTriggerMissed(),
+        eventFrameTriggerMissedTimestamp(),
+        eventFrameTriggerMissedFrameID(),
+        eventFrameStart(),
+        eventFrameStartTimestamp(),
+        eventFrameStartFrameID(),
+        eventFrameEnd(),
+        eventFrameEndTimestamp(),
+        eventFrameEndFrameID(),
         eventFrameTransferStart(),
         eventFrameTransferStartTimestamp(),
         eventFrameTransferStartFrameID(),
         eventFrameTransferEnd(),
         eventFrameTransferEndTimestamp(),
         eventFrameTransferEndFrameID(),
+        eventLineTrigger(),
+        eventLineTriggerTimestamp(),
+        eventLineTriggerFrameID(),
+        eventLineTriggerMissed(),
+        eventLineTriggerMissedTimestamp(),
+        eventLineTriggerMissedFrameID(),
+        eventLineStart(),
+        eventLineStartTimestamp(),
+        eventLineStartFrameID(),
+        eventLineEnd(),
+        eventLineEndTimestamp(),
+        eventLineEndFrameID(),
         eventExposureStart(),
         eventExposureStartTimestamp(),
         eventExposureStartFrameID(),
         eventExposureEnd(),
         eventExposureEndTimestamp(),
         eventExposureEndFrameID(),
+        eventActionLate(),
+        eventActionLateTimestamp(),
+        eventActionLateFrameID(),
+        eventPrimaryApplicationSwitch(),
+        eventPrimaryApplicationSwitchTimestamp(),
+        eventPrimaryApplicationSwitchFrameID(),
+        eventTest(),
+        eventTestTimestamp(),
         eventCounter0Start(),
         eventCounter0StartTimestamp(),
         eventCounter0StartFrameID(),
@@ -5121,6 +5730,7 @@ public:
         eventErrorFrameID(),
         eventErrorCode()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( eventSelector, "EventSelector" );
@@ -5128,6 +5738,9 @@ public:
         locator.bindComponent( eventAcquisitionTrigger, "EventAcquisitionTrigger" );
         locator.bindComponent( eventAcquisitionTriggerTimestamp, "EventAcquisitionTriggerTimestamp" );
         locator.bindComponent( eventAcquisitionTriggerFrameID, "EventAcquisitionTriggerFrameID" );
+        locator.bindComponent( eventAcquisitionTriggerMissed, "EventAcquisitionTriggerMissed" );
+        locator.bindComponent( eventAcquisitionTriggerMissedTimestamp, "EventAcquisitionTriggerMissedTimestamp" );
+        locator.bindComponent( eventAcquisitionTriggerMissedFrameID, "EventAcquisitionTriggerMissedFrameID" );
         locator.bindComponent( eventAcquisitionStart, "EventAcquisitionStart" );
         locator.bindComponent( eventAcquisitionStartTimestamp, "EventAcquisitionStartTimestamp" );
         locator.bindComponent( eventAcquisitionStartFrameID, "EventAcquisitionStartFrameID" );
@@ -5143,33 +5756,56 @@ public:
         locator.bindComponent( eventAcquisitionError, "EventAcquisitionError" );
         locator.bindComponent( eventAcquisitionErrorTimestamp, "EventAcquisitionErrorTimestamp" );
         locator.bindComponent( eventAcquisitionErrorFrameID, "EventAcquisitionErrorFrameID" );
-        locator.bindComponent( eventFrameTrigger, "EventFrameTrigger" );
-        locator.bindComponent( eventFrameTriggerTimestamp, "EventFrameTriggerTimestamp" );
-        locator.bindComponent( eventFrameTriggerFrameID, "EventFrameTriggerFrameID" );
-        locator.bindComponent( eventFrameStart, "EventFrameStart" );
-        locator.bindComponent( eventFrameStartTimestamp, "EventFrameStartTimestamp" );
-        locator.bindComponent( eventFrameStartFrameID, "EventFrameStartFrameID" );
-        locator.bindComponent( eventFrameEnd, "EventFrameEnd" );
-        locator.bindComponent( eventFrameEndTimestamp, "EventFrameEndTimestamp" );
-        locator.bindComponent( eventFrameEndFrameID, "EventFrameEndFrameID" );
         locator.bindComponent( eventFrameBurstStart, "EventFrameBurstStart" );
         locator.bindComponent( eventFrameBurstStartTimestamp, "EventFrameBurstStartTimestamp" );
         locator.bindComponent( eventFrameBurstStartFrameID, "EventFrameBurstStartFrameID" );
         locator.bindComponent( eventFrameBurstEnd, "EventFrameBurstEnd" );
         locator.bindComponent( eventFrameBurstEndTimestamp, "EventFrameBurstEndTimestamp" );
         locator.bindComponent( eventFrameBurstEndFrameID, "EventFrameBurstEndFrameID" );
+        locator.bindComponent( eventFrameTrigger, "EventFrameTrigger" );
+        locator.bindComponent( eventFrameTriggerTimestamp, "EventFrameTriggerTimestamp" );
+        locator.bindComponent( eventFrameTriggerFrameID, "EventFrameTriggerFrameID" );
+        locator.bindComponent( eventFrameTriggerMissed, "EventFrameTriggerMissed" );
+        locator.bindComponent( eventFrameTriggerMissedTimestamp, "EventFrameTriggerMissedTimestamp" );
+        locator.bindComponent( eventFrameTriggerMissedFrameID, "EventFrameTriggerMissedFrameID" );
+        locator.bindComponent( eventFrameStart, "EventFrameStart" );
+        locator.bindComponent( eventFrameStartTimestamp, "EventFrameStartTimestamp" );
+        locator.bindComponent( eventFrameStartFrameID, "EventFrameStartFrameID" );
+        locator.bindComponent( eventFrameEnd, "EventFrameEnd" );
+        locator.bindComponent( eventFrameEndTimestamp, "EventFrameEndTimestamp" );
+        locator.bindComponent( eventFrameEndFrameID, "EventFrameEndFrameID" );
         locator.bindComponent( eventFrameTransferStart, "EventFrameTransferStart" );
         locator.bindComponent( eventFrameTransferStartTimestamp, "EventFrameTransferStartTimestamp" );
         locator.bindComponent( eventFrameTransferStartFrameID, "EventFrameTransferStartFrameID" );
         locator.bindComponent( eventFrameTransferEnd, "EventFrameTransferEnd" );
         locator.bindComponent( eventFrameTransferEndTimestamp, "EventFrameTransferEndTimestamp" );
         locator.bindComponent( eventFrameTransferEndFrameID, "EventFrameTransferEndFrameID" );
+        locator.bindComponent( eventLineTrigger, "EventLineTrigger" );
+        locator.bindComponent( eventLineTriggerTimestamp, "EventLineTriggerTimestamp" );
+        locator.bindComponent( eventLineTriggerFrameID, "EventLineTriggerFrameID" );
+        locator.bindComponent( eventLineTriggerMissed, "EventLineTriggerMissed" );
+        locator.bindComponent( eventLineTriggerMissedTimestamp, "EventLineTriggerMissedTimestamp" );
+        locator.bindComponent( eventLineTriggerMissedFrameID, "EventLineTriggerMissedFrameID" );
+        locator.bindComponent( eventLineStart, "EventLineStart" );
+        locator.bindComponent( eventLineStartTimestamp, "EventLineStartTimestamp" );
+        locator.bindComponent( eventLineStartFrameID, "EventLineStartFrameID" );
+        locator.bindComponent( eventLineEnd, "EventLineEnd" );
+        locator.bindComponent( eventLineEndTimestamp, "EventLineEndTimestamp" );
+        locator.bindComponent( eventLineEndFrameID, "EventLineEndFrameID" );
         locator.bindComponent( eventExposureStart, "EventExposureStart" );
         locator.bindComponent( eventExposureStartTimestamp, "EventExposureStartTimestamp" );
         locator.bindComponent( eventExposureStartFrameID, "EventExposureStartFrameID" );
         locator.bindComponent( eventExposureEnd, "EventExposureEnd" );
         locator.bindComponent( eventExposureEndTimestamp, "EventExposureEndTimestamp" );
         locator.bindComponent( eventExposureEndFrameID, "EventExposureEndFrameID" );
+        locator.bindComponent( eventActionLate, "EventActionLate" );
+        locator.bindComponent( eventActionLateTimestamp, "EventActionLateTimestamp" );
+        locator.bindComponent( eventActionLateFrameID, "EventActionLateFrameID" );
+        locator.bindComponent( eventPrimaryApplicationSwitch, "EventPrimaryApplicationSwitch" );
+        locator.bindComponent( eventPrimaryApplicationSwitchTimestamp, "EventPrimaryApplicationSwitchTimestamp" );
+        locator.bindComponent( eventPrimaryApplicationSwitchFrameID, "EventPrimaryApplicationSwitchFrameID" );
+        locator.bindComponent( eventTest, "EventTest" );
+        locator.bindComponent( eventTestTimestamp, "EventTestTimestamp" );
         locator.bindComponent( eventCounter0Start, "EventCounter0Start" );
         locator.bindComponent( eventCounter0StartTimestamp, "EventCounter0StartTimestamp" );
         locator.bindComponent( eventCounter0StartFrameID, "EventCounter0StartFrameID" );
@@ -5490,25 +6126,33 @@ public:
         locator.bindComponent( eventErrorFrameID, "EventErrorFrameID" );
         locator.bindComponent( eventErrorCode, "EventErrorCode" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects which Event to signal to the host application.
     /**
      *  Selects which Event to signal to the host application.
      *
      *  The following string values might be valid for this feature:
      *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Device just received a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Device just missed a trigger for the Acquisition of one or many Frames.
      *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Device just started the Acquisition of one or many Frames.
      *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Device just completed the Acquisition of one or many Frames.
      *  - \b AcquisitionTransferStart (Display string: 'Acquisition Transfer Start'): Device just started the transfer of one or many Frames.
      *  - \b AcquisitionTransferEnd (Display string: 'Acquisition Transfer End'): Device just completed the transfer of one or many Frames.
      *  - \b AcquisitionError (Display string: 'Acquisition Error'): Device just detected an error during the active Acquisition.
-     *  - \b FrameTrigger (Display string: 'Frame Trigger'): Device just received a trigger to start the capture of one Frame.
-     *  - \b FrameStart (Display string: 'Frame Start'): Device just started the capture of one Frame.
-     *  - \b FrameEnd (Display string: 'Frame End'): Device just completed the capture of one Frame.
      *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Device just started the capture of a burst of Frames.
      *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Device just completed the capture of a burst of Frames.
+     *  - \b FrameTrigger (Display string: 'Frame Trigger'): Device just received a trigger to start the capture of one Frame.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Device just missed a trigger to start the capture of one Frame.
+     *  - \b FrameStart (Display string: 'Frame Start'): Device just started the capture of one Frame.
+     *  - \b FrameEnd (Display string: 'Frame End'): Device just completed the capture of one Frame.
      *  - \b FrameTransferStart (Display string: 'Frame Transfer Start'): Device just started the transfer of one Frame.
      *  - \b FrameTransferEnd (Display string: 'Frame Transfer End'): Device just completed the transfer of one Frame.
+     *  - \b LineTrigger (Display string: 'Line Trigger'): Device just received a trigger to start the capture of one Line.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Device just missed a trigger to start the capture of one Line.
+     *  - \b LineStart (Display string: 'Line Start'): Device just started the capture of one Line.
+     *  - \b LineEnd (Display string: 'Line End'): Device just completed the capture of one Line.
      *  - \b ExposureStart (Display string: 'Exposure Start'): Device just started the exposure of one Frame (or Line).
      *  - \b ExposureEnd (Display string: 'Exposure End'): Device just completed the exposure of one Frame (or Line).
      *  - \b Stream0TransferStart (Display string: 'Stream 0 Transfer Start'): Device just started the transfer of one or many Blocks.
@@ -5524,39 +6168,39 @@ public:
      *  - \b SequencerSetChange (Display string: 'Sequencer Set Change'): Device sequencer set has changed.
      *  - \b Counter0Start (Display string: 'Counter 0 Start'): The event will be generated when counter 0 starts counting.
      *  - \b Counter1Start (Display string: 'Counter 1 Start'): The event will be generated when counter 1 starts counting.
-     *  - \b Counter#2#Start (Display string: 'Counter #2# Start'): The event will be generated when counter #2# starts counting.
+     *  - \b Counter\#2\#Start (Display string: 'Counter \#2\# Start'): The event will be generated when counter \#2\# starts counting.
      *  - \b Counter0End (Display string: 'Counter 0 End'): The event will be generated when counter 0 ends counting.
      *  - \b Counter1End (Display string: 'Counter 1 End'): The event will be generated when counter 1 ends counting.
-     *  - \b Counter#2#End (Display string: 'Counter #2# End'): The event will be generated when counter #2# ends counting.
+     *  - \b Counter\#2\#End (Display string: 'Counter \#2\# End'): The event will be generated when counter \#2\# ends counting.
      *  - \b Timer0Start (Display string: 'Timer 0 Start'): The event will be generated when Timer 0 starts counting.
      *  - \b Timer1Start (Display string: 'Timer 1 Start'): The event will be generated when Timer 1 starts counting.
-     *  - \b Timer#2#Start (Display string: 'Timer #2# Start'): The event will be generated when Timer #2# starts counting.
+     *  - \b Timer\#2\#Start (Display string: 'Timer \#2\# Start'): The event will be generated when Timer \#2\# starts counting.
      *  - \b Timer0End (Display string: 'Timer 0 End'): The event will be generated when Timer 0 ends counting.
      *  - \b Timer1End (Display string: 'Timer 1 End'): The event will be generated when Timer 1 ends counting.
-     *  - \b Timer#2#End (Display string: 'Timer #2# End'): The event will be generated when Timer #2# ends counting.
+     *  - \b Timer\#2\#End (Display string: 'Timer \#2\# End'): The event will be generated when Timer \#2\# ends counting.
      *  - \b Encoder0Stopped (Display string: 'Encoder 0 Stopped'): The event will be generated when the Encoder 0 stops for longer than EncoderTimeout.
      *  - \b Encoder1Stopped (Display string: 'Encoder 1 Stopped'): The event will be generated when the Encoder 1 stops for longer than EncoderTimeout.
-     *  - \b Encoder#2#Stopped (Display string: 'Encoder #2# Stopped'): The event will be generated when the Encoder #2# stops for longer than EncoderTimeout.
+     *  - \b Encoder\#2\#Stopped (Display string: 'Encoder \#2\# Stopped'): The event will be generated when the Encoder \#2\# stops for longer than EncoderTimeout.
      *  - \b Encoder0Restarted (Display string: 'Encoder 0 Restarted'): The event will be generated when the Encoder 0 restarts moving.
      *  - \b Encoder1Restarted (Display string: 'Encoder 1 Restarted'): The event will be generated when the Encoder 1 restarts moving.
-     *  - \b Encoder#2#Restarted (Display string: 'Encoder #2# Restarted'): The event will be generated when the Encoder #2# restarts moving.
+     *  - \b Encoder\#2\#Restarted (Display string: 'Encoder \#2\# Restarted'): The event will be generated when the Encoder \#2\# restarts moving.
      *  - \b Line0RisingEdge (Display string: 'Line 0 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 0.
      *  - \b Line1RisingEdge (Display string: 'Line 1 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 1.
-     *  - \b Line#2#RisingEdge (Display string: 'Line #2# Rising Edge'): The event will be generated when a Rising Edge is detected on the Line #2#.
+     *  - \b Line\#2\#RisingEdge (Display string: 'Line \#2\# Rising Edge'): The event will be generated when a Rising Edge is detected on the Line \#2\#.
      *  - \b Line0FallingEdge (Display string: 'Line 0 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 0.
      *  - \b Line1FallingEdge (Display string: 'Line 1 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 1.
-     *  - \b Line#2#FallingEdge (Display string: 'Line #2# Falling Edge'): The event will be generated when a Falling Edge is detected on the Line #2#.
+     *  - \b Line\#2\#FallingEdge (Display string: 'Line \#2\# Falling Edge'): The event will be generated when a Falling Edge is detected on the Line \#2\#.
      *  - \b Line0AnyEdge (Display string: 'Line 0 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 0.
      *  - \b Line1AnyEdge (Display string: 'Line 1 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 1.
-     *  - \b Line#2#AnyEdge (Display string: 'Line #2# Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line #2#.
+     *  - \b Line\#2\#AnyEdge (Display string: 'Line \#2\# Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line \#2\#.
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): The event will be generated when a Rising Edge is detected on the LinkTrigger 0.
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): The event will be generated when a Rising Edge is detected on the LinkTrigger 1.
-     *  - \b LinkTrigger#2# (Display string: 'Link Trigger #2#'): The event will be generated when a Rising Edge is detected on the LinkTrigger #2#.
-     *  - \b ActionLate (Display string: 'Action Late'): Then event will be generated when a valid scheduled action command is received and is scheduled to be executed at a time that is already past.
-     *  - \b LinkSpeedChange (Display string: 'Link Speed Change'): Then event will be generated when the link speed has changed.
+     *  - \b LinkTrigger\#2\# (Display string: 'Link Trigger \#2\#'): The event will be generated when a Rising Edge is detected on the LinkTrigger \#2\#.
+     *  - \b LinkSpeedChange (Display string: 'Link Speed Change'): The event will be generated when the link speed has changed.
+     *  - \b ActionLate (Display string: 'Action Late'): The event will be generated when a valid scheduled action command is received and is scheduled to be executed at a time that is already past.
+     *  - \b Test (Display string: 'Test'): The test event will be generated when the device receives the TestEventGenerate command (EventNotification for the Test event is always On).
      *  - \b Error (Display string: 'Error'): Device just detected an error during the active Acquisition.
-     *  - \b Test (Display string: 'Test'): The test event will be generated when the device receives the TestEventGenerate command(EventNotification for the Test event is always On).
-     *  - \b PrimaryApplicationSwitch (Display string: 'Primary Application Switch'): Then event will be generated when a primary application switchover has been granted.
+     *  - \b PrimaryApplicationSwitch (Display string: 'Primary Application Switch'): The event will be generated when a primary application switchover has been granted (GigE Vision Specific).
      *  - \b Counter2Start (Display string: 'Counter 2 Start'): The event will be generated when counter 2 starts counting.
      *  - \b Counter3Start (Display string: 'Counter 3 Start'): The event will be generated when counter 3 starts counting.
      *  - \b Counter4Start (Display string: 'Counter 4 Start'): The event will be generated when counter 4 starts counting.
@@ -5655,6 +6299,14 @@ public:
      *  - \b Line13AnyEdge (Display string: 'Line 13 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 13.
      *  - \b Line14AnyEdge (Display string: 'Line 14 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 14.
      *  - \b Line15AnyEdge (Display string: 'Line 15 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 15.
+     *  - \b InterfaceListChanged (Display string: 'Interface List Changed'): This enumeration value indicates an event that is fired when the list of interfaces has been updated.
+     *  - \b InterfaceLost (Display string: 'Interface Lost'): This enumeration value indicates an event that is raised when the interface connection is lost.
+     *  - \b DeviceListChanged (Display string: 'Device List Changed'): This enumeration value indicates an event that is fired when the list of devices has been updated.
+     *  - \b DeviceLost (Display string: 'Device Lost'): This enumeration value indicates an event that is raised when the local host looses connection to the physical(remote) device.
+     *  - \b BufferTooSmall (Display string: 'Buffer Too Small'): This enumeration value indicates an event that is raised when the buffer was too small to receive the expected amount of data.
+     *  - \b BuffersDiscarded (Display string: 'Buffers Discarded'): This enumeration value indicates an event that is raised when buffers discared by GenTL or device. This event could optionally carry two numeric child data fields EventBuffersDiscardedDeviceCount and EventBuffersDiscardedProducerCount.
+     *  - \b BuffersDiscardedDeviceCount (Display string: 'Buffers Discarded Device Count'): This enumeration value indicates the number of buffers discarded by the device since last fired instance of this event (the producer would get to know about this for example by observing a gap in the block_id sequence).
+     *  - \b BuffersDiscardedProducerCount (Display string: 'Buffers Discarded Producer Count'): This enumeration value indicates the number of buffers discarded by the producer since last fired instance of this event (this would happen e.g. if there are no free buffers available or if given buffer handling mode requires discarding old buffers etc.).
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -5667,7 +6319,8 @@ public:
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): The selected Event notification is disabled.
      *  - \b On (Display string: 'On'): The selected Event notification is enabled.
-     *  - \b GigEVisionEvent (Display string: 'Event Notification')
+     *  - \b Once (Display string: 'Once'): The selected Event notification is enabled for one event then return to Off state.
+     *  - \b GigEVisionEvent (Display string: 'Gig E Vision Event')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -5688,6 +6341,21 @@ public:
      *  Returns the unique Identifier of the Frame (or image) that generated the Acquisition Trigger Event.
      */
     PropertyI64 eventAcquisitionTriggerFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Acquisition Trigger Missed type of Event.
+    /**
+     *  Returns the unique Identifier of the Acquisition Trigger Missed type of Event.
+     */
+    PropertyI64 eventAcquisitionTriggerMissed;
+    /// \brief An integer property. Returns the Timestamp of the Acquisition Trigger Missed Event.
+    /**
+     *  Returns the Timestamp of the Acquisition Trigger Missed Event.
+     */
+    PropertyI64 eventAcquisitionTriggerMissedTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Acquisition Trigger Missed Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Acquisition Trigger Missed Event.
+     */
+    PropertyI64 eventAcquisitionTriggerMissedFrameID;
     /// \brief An integer property. Returns the unique Identifier of the Acquisition Start type of Event.
     /**
      *  Returns the unique Identifier of the Acquisition Start type of Event.
@@ -5763,51 +6431,6 @@ public:
      *  Returns the unique Identifier of the Frame (or image) that generated the Acquisition Error Event.
      */
     PropertyI64 eventAcquisitionErrorFrameID;
-    /// \brief An integer property. Returns the unique Identifier of the FrameTrigger type of Event.
-    /**
-     *  Returns the unique Identifier of the FrameTrigger type of Event. It can be used to register a callback function to be notified of the event occurrence. Its value uniquely identifies the type event received.
-     */
-    PropertyI64 eventFrameTrigger;
-    /// \brief An integer property. Returns the Timestamp of the FrameTrigger Event.
-    /**
-     *  Returns the Timestamp of the FrameTrigger Event. It can be used to determine precisely when the event occurred.
-     */
-    PropertyI64 eventFrameTriggerTimestamp;
-    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the FrameTrigger Event.
-    /**
-     *  Returns the unique Identifier of the Frame (or image) that generated the FrameTrigger Event.
-     */
-    PropertyI64 eventFrameTriggerFrameID;
-    /// \brief An integer property. Returns the unique Identifier of the Frame Start type of Event.
-    /**
-     *  Returns the unique Identifier of the Frame Start type of Event.
-     */
-    PropertyI64 eventFrameStart;
-    /// \brief An integer property. Returns the Timestamp of the Frame Start Event.
-    /**
-     *  Returns the Timestamp of the Frame Start Event.
-     */
-    PropertyI64 eventFrameStartTimestamp;
-    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Frame Start Event.
-    /**
-     *  Returns the unique Identifier of the Frame (or image) that generated the Frame Start Event.
-     */
-    PropertyI64 eventFrameStartFrameID;
-    /// \brief An integer property. Returns the unique Identifier of the Frame End type of Event.
-    /**
-     *  Returns the unique Identifier of the Frame End type of Event.
-     */
-    PropertyI64 eventFrameEnd;
-    /// \brief An integer property. Returns the Timestamp of the Frame End Event.
-    /**
-     *  Returns the Timestamp of the Frame End Event.
-     */
-    PropertyI64 eventFrameEndTimestamp;
-    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Frame End Event.
-    /**
-     *  Returns the unique Identifier of the Frame (or image) that generated the Frame End Event.
-     */
-    PropertyI64 eventFrameEndFrameID;
     /// \brief An integer property. Returns the unique Identifier of the Frame Burst Start type of Event.
     /**
      *  Returns the unique Identifier of the Frame Burst Start type of Event.
@@ -5838,6 +6461,66 @@ public:
      *  Returns the unique Identifier of the Frame (or image) that generated the Frame Burst End Event.
      */
     PropertyI64 eventFrameBurstEndFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the FrameTrigger type of Event.
+    /**
+     *  Returns the unique Identifier of the FrameTrigger type of Event. It can be used to register a callback function to be notified of the event occurrence. Its value uniquely identifies the type event received.
+     */
+    PropertyI64 eventFrameTrigger;
+    /// \brief An integer property. Returns the Timestamp of the FrameTrigger Event.
+    /**
+     *  Returns the Timestamp of the FrameTrigger Event. It can be used to determine precisely when the event occurred.
+     */
+    PropertyI64 eventFrameTriggerTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the FrameTrigger Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the FrameTrigger Event.
+     */
+    PropertyI64 eventFrameTriggerFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Frame Trigger Missed type of Event.
+    /**
+     *  Returns the unique Identifier of the Frame Trigger Missed type of Event.
+     */
+    PropertyI64 eventFrameTriggerMissed;
+    /// \brief An integer property. Returns the Timestamp of the Frame Trigger Missed Event.
+    /**
+     *  Returns the Timestamp of the Frame Trigger Missed Event.
+     */
+    PropertyI64 eventFrameTriggerMissedTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Frame Trigger Missed Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Frame Trigger Missed Event.
+     */
+    PropertyI64 eventFrameTriggerMissedFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Frame Start type of Event.
+    /**
+     *  Returns the unique Identifier of the Frame Start type of Event.
+     */
+    PropertyI64 eventFrameStart;
+    /// \brief An integer property. Returns the Timestamp of the Frame Start Event.
+    /**
+     *  Returns the Timestamp of the Frame Start Event.
+     */
+    PropertyI64 eventFrameStartTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Frame Start Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Frame Start Event.
+     */
+    PropertyI64 eventFrameStartFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Frame End type of Event.
+    /**
+     *  Returns the unique Identifier of the Frame End type of Event.
+     */
+    PropertyI64 eventFrameEnd;
+    /// \brief An integer property. Returns the Timestamp of the Frame End Event.
+    /**
+     *  Returns the Timestamp of the Frame End Event.
+     */
+    PropertyI64 eventFrameEndTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Frame End Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Frame End Event.
+     */
+    PropertyI64 eventFrameEndFrameID;
     /// \brief An integer property. Returns the unique Identifier of the Frame Transfer Start type of Event.
     /**
      *  Returns the unique Identifier of the Frame Transfer Start type of Event.
@@ -5868,6 +6551,66 @@ public:
      *  Returns the unique Identifier of the Frame (or image) that generated the Frame Transfer End Event.
      */
     PropertyI64 eventFrameTransferEndFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Line Trigger type of Event.
+    /**
+     *  Returns the unique Identifier of the Line Trigger type of Event.
+     */
+    PropertyI64 eventLineTrigger;
+    /// \brief An integer property. Returns the Timestamp of the Line Trigger Event.
+    /**
+     *  Returns the Timestamp of the Line Trigger Event.
+     */
+    PropertyI64 eventLineTriggerTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Line Trigger Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Line Trigger Event.
+     */
+    PropertyI64 eventLineTriggerFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Line Trigger Missed type of Event.
+    /**
+     *  Returns the unique Identifier of the Line Trigger Missed type of Event.
+     */
+    PropertyI64 eventLineTriggerMissed;
+    /// \brief An integer property. Returns the Timestamp of the Line Trigger Missed Event.
+    /**
+     *  Returns the Timestamp of the Line Trigger Missed Event.
+     */
+    PropertyI64 eventLineTriggerMissedTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Line Trigger Missed Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Line Trigger Missed Event.
+     */
+    PropertyI64 eventLineTriggerMissedFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Line Start type of Event.
+    /**
+     *  Returns the unique Identifier of the Line Start type of Event.
+     */
+    PropertyI64 eventLineStart;
+    /// \brief An integer property. Returns the Timestamp of the Line Start Event.
+    /**
+     *  Returns the Timestamp of the Line Start Event.
+     */
+    PropertyI64 eventLineStartTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Line Start Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Line Start Event.
+     */
+    PropertyI64 eventLineStartFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Line End type of Event.
+    /**
+     *  Returns the unique Identifier of the Line End type of Event.
+     */
+    PropertyI64 eventLineEnd;
+    /// \brief An integer property. Returns the Timestamp of the Line End Event.
+    /**
+     *  Returns the Timestamp of the Line End Event.
+     */
+    PropertyI64 eventLineEndTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Line End Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Line End Event.
+     */
+    PropertyI64 eventLineEndFrameID;
     /// \brief An integer property. Returns the unique Identifier of the Exposure Start type of Event.
     /**
      *  Returns the unique Identifier of the Exposure Start type of Event.
@@ -5898,6 +6641,46 @@ public:
      *  Returns the unique Identifier of the Frame (or image) that generated the ExposureEnd Event.
      */
     PropertyI64 eventExposureEndFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Action Late type of Event.
+    /**
+     *  Returns the unique Identifier of the Action Late type of Event.
+     */
+    PropertyI64 eventActionLate;
+    /// \brief An integer property. Returns the Timestamp of the Action Late Event.
+    /**
+     *  Returns the Timestamp of the Action Late Event.
+     */
+    PropertyI64 eventActionLateTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Action Late Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Action Late Event.
+     */
+    PropertyI64 eventActionLateFrameID;
+    /// \brief An integer property. Returns the unique Identifier of the Primary Application Switch type of Event.
+    /**
+     *  Returns the unique Identifier of the Primary Application Switch type of Event.
+     */
+    PropertyI64 eventPrimaryApplicationSwitch;
+    /// \brief An integer property. Returns the Timestamp of the Primary Application Switch Event.
+    /**
+     *  Returns the Timestamp of the Primary Application Switch Event.
+     */
+    PropertyI64 eventPrimaryApplicationSwitchTimestamp;
+    /// \brief An integer property. Returns the unique Identifier of the Frame (or image) that generated the Primary Application Switch Event.
+    /**
+     *  Returns the unique Identifier of the Frame (or image) that generated the Primary Application Switch Event.
+     */
+    PropertyI64 eventPrimaryApplicationSwitchFrameID;
+    /// \brief An integer property. Returns the unique identifier of the Event Test type of event generated using the TestEventGenerate command.
+    /**
+     *  Returns the unique identifier of the Event Test type of event generated using the TestEventGenerate command. It can be used to register a callback function to be notified of the EventTest event occurrence. Its value uniquely identifies that the event received was an Event Test.
+     */
+    PropertyI64 eventTest;
+    /// \brief An integer property. Returns the Timestamp of the Event Test event.
+    /**
+     *  Returns the Timestamp of the Event Test event. It can be used to determine when the event occurred.
+     */
+    PropertyI64 eventTestTimestamp;
     /// \brief An integer property. Returns the unique Identifier of the Counter 0 Start type of Event.
     /**
      *  Returns the unique Identifier of the Counter 0 Start type of Event.
@@ -7493,13 +8276,16 @@ public:
      *  Returns an error code for the error(s) that happened.
      */
     PropertyI64 eventErrorCode;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the User Set control features.
 /**
  *  A category that contains the User Set control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class UserSetControl
 //-----------------------------------------------------------------------------
@@ -7524,18 +8310,25 @@ public:
         userSetFeatureEnable(),
         mvUserData()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( userSetSelector, "UserSetSelector" );
         locator.bindComponent( userSetLoad, "UserSetLoad@i" );
         locator.bindComponent( userSetSave, "UserSetSave@i" );
         locator.bindComponent( userSetDefault, "UserSetDefault" );
+        if( !userSetDefault.isValid() )
+        {
+            locator.bindComponent( userSetDefault, "UserSetDefaultSelector" );
+        }
         locator.bindComponent( userSetDefaultSelector, "UserSetDefaultSelector" );
         locator.bindComponent( userSetFeatureSelector, "UserSetFeatureSelector" );
         locator.bindComponent( userSetFeatureEnable, "UserSetFeatureEnable" );
         locator.bindComponent( mvUserData, "mvUserData" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects the feature User Set to load, save or configure.
     /**
      *  Selects the feature User Set to load, save or configure.
@@ -7544,7 +8337,7 @@ public:
      *  - \b Default (Display string: 'Default'): Selects the factory setting user set.
      *  - \b UserSet0 (Display string: 'User Set 0'): Selects the user set 0.
      *  - \b UserSet1 (Display string: 'User Set 1'): Selects the user set 1.
-     *  - \b UserSet#2# (Display string: 'User Set #2#'): Selects the user set #2#.
+     *  - \b UserSet\#2\# (Display string: 'User Set \#2\#'): Selects the user set \#2\#.
      *  - \b UserSet2 (Display string: 'User Set 2'): Selects the user set 2.
      *  - \b UserSet3 (Display string: 'User Set 3'): Selects the user set 3.
      *  - \b UserSet4 (Display string: 'User Set 4'): Selects the user set 4.
@@ -7559,7 +8352,7 @@ public:
      *  - \b UserSet13 (Display string: 'User Set 13'): Selects the user set 13.
      *  - \b UserSet14 (Display string: 'User Set 14'): Selects the user set 14.
      *  - \b UserSet15 (Display string: 'User Set 15'): Selects the user set 15.
-     *  - \b UserSet16 (Display string: 'User Set Selector')
+     *  - \b UserSet16 (Display string: 'User Set 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -7583,22 +8376,7 @@ public:
      *  - \b Default (Display string: 'Default'): Select the factory setting user set.
      *  - \b UserSet0 (Display string: 'User Set 0'): Select the user set 0.
      *  - \b UserSet1 (Display string: 'User Set 1'): Select the user set 1.
-     *  - \b UserSet#2# (Display string: 'User Set #2#'): Select the user set #2#.
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 userSetDefault;
-    /// \brief An enumerated integer property. This feature is deprecated (See UserSetDefault).
-    /**
-     *  \deprecated
-     *  This feature is deprecated (See UserSetDefault). Selects the feature User Set to load and make active when the device is reset.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b Default (Display string: 'Default'): Select the factory setting user set.
-     *  - \b UserSet0 (Display string: 'User Set 0'): Select the user set 0.
-     *  - \b UserSet1 (Display string: 'User Set 1'): Select the user set 1.
-     *  - \b UserSet#2# (Display string: 'User Set #2#'): Select the user set #2#.
+     *  - \b UserSet\#2\# (Display string: 'User Set \#2\#'): Select the user set \#2\#.
      *  - \b UserSet2 (Display string: 'User Set 2'): Select the user set 2.
      *  - \b UserSet3 (Display string: 'User Set 3'): Select the user set 3.
      *  - \b UserSet4 (Display string: 'User Set 4'): Select the user set 4.
@@ -7613,7 +8391,37 @@ public:
      *  - \b UserSet13 (Display string: 'User Set 13'): Select the user set 13.
      *  - \b UserSet14 (Display string: 'User Set 14'): Select the user set 14.
      *  - \b UserSet15 (Display string: 'User Set 15'): Select the user set 15.
-     *  - \b UserSet16 (Display string: 'User Set Default Selector')
+     *  - \b UserSet16 (Display string: 'User Set 16')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 userSetDefault;
+    /// \brief An enumerated integer property. This feature is deprecated (See UserSetDefault).
+    /**
+     *  \deprecated
+     *  This feature is deprecated (See UserSetDefault). Selects the feature User Set to load and make active when the device is reset.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Default (Display string: 'Default'): Select the factory setting user set.
+     *  - \b UserSet0 (Display string: 'User Set 0'): Select the user set 0.
+     *  - \b UserSet1 (Display string: 'User Set 1'): Select the user set 1.
+     *  - \b UserSet\#2\# (Display string: 'User Set \#2\#'): Select the user set \#2\#.
+     *  - \b UserSet2 (Display string: 'User Set 2'): Select the user set 2.
+     *  - \b UserSet3 (Display string: 'User Set 3'): Select the user set 3.
+     *  - \b UserSet4 (Display string: 'User Set 4'): Select the user set 4.
+     *  - \b UserSet5 (Display string: 'User Set 5'): Select the user set 5.
+     *  - \b UserSet6 (Display string: 'User Set 6'): Select the user set 6.
+     *  - \b UserSet7 (Display string: 'User Set 7'): Select the user set 7.
+     *  - \b UserSet8 (Display string: 'User Set 8'): Select the user set 8.
+     *  - \b UserSet9 (Display string: 'User Set 9'): Select the user set 9.
+     *  - \b UserSet10 (Display string: 'User Set 10'): Select the user set 10.
+     *  - \b UserSet11 (Display string: 'User Set 11'): Select the user set 11.
+     *  - \b UserSet12 (Display string: 'User Set 12'): Select the user set 12.
+     *  - \b UserSet13 (Display string: 'User Set 13'): Select the user set 13.
+     *  - \b UserSet14 (Display string: 'User Set 14'): Select the user set 14.
+     *  - \b UserSet15 (Display string: 'User Set 15'): Select the user set 15.
+     *  - \b UserSet16 (Display string: 'User Set 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -7640,13 +8448,16 @@ public:
      *  A register to store arbitrary user data into the devices non-volatile memory
      */
     PropertyS mvUserData;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category for the Sequencer Control features.
 /**
  *  A category for the Sequencer Control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class SequencerControl
 //-----------------------------------------------------------------------------
@@ -7676,6 +8487,7 @@ public:
         sequencerTriggerSource(),
         sequencerTriggerActivation()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( sequencerMode, "SequencerMode" );
@@ -7692,7 +8504,9 @@ public:
         locator.bindComponent( sequencerTriggerSource, "SequencerTriggerSource" );
         locator.bindComponent( sequencerTriggerActivation, "SequencerTriggerActivation" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Controls if the sequencer mechanism is active.
     /**
      *  Controls if the sequencer mechanism is active.
@@ -7723,7 +8537,18 @@ public:
      *
      *  The following string values might be valid for this feature:
      *  - \b Device-Specific (Display string: 'Device - Specific'): Device - Specific
-     *  - \b ExposureTime (Display string: 'Sequencer Feature Selector')
+     *  - \b ExposureTime (Display string: 'Exposure Time')
+     *  - \b CounterDuration (Display string: 'Counter Duration')
+     *  - \b mvImagePositionAndSize (Display string: 'mv Image Position And Size'): This value selects whether features affecting the image position and size shall be controlled by the sequencer
+     *  - \b Width (Display string: 'Width')
+     *  - \b Height (Display string: 'Height')
+     *  - \b OffsetX (Display string: 'Offset X')
+     *  - \b OffsetY (Display string: 'Offset Y')
+     *  - \b BinningHorizontal (Display string: 'Binning Horizontal')
+     *  - \b BinningVertical (Display string: 'Binning Vertical')
+     *  - \b DecimationHorizontal (Display string: 'Decimation Horizontal')
+     *  - \b DecimationVertical (Display string: 'Decimation Vertical')
+     *  - \b Gain (Display string: 'Gain')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -7776,9 +8601,11 @@ public:
      *  The following string values might be valid for this feature:
      *  - \b Off (Display string: 'Off'): Disables the sequencer trigger.
      *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Starts with the reception of the Acquisition Trigger.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Starts with the reception of the missed Acquisition Trigger.
      *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Starts with the reception of the Acquisition Start.
      *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Starts with the reception of the Acquisition End.
      *  - \b FrameTrigger (Display string: 'Frame Trigger'): Starts with the reception of the Frame Start Trigger.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Starts with the reception of the missed Frame Trigger.
      *  - \b FrameStart (Display string: 'Frame Start'): Starts with the reception of the Frame Start.
      *  - \b FrameEnd (Display string: 'Frame End'): Starts with the reception of the Frame End.
      *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Starts with the reception of the Frame Burst Start.
@@ -7788,43 +8615,47 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line1 (Display string: 'Line 1'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
      *  - \b Line2 (Display string: 'Line 2'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
-     *  - \b Line#3# (Display string: 'Line #3#'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Starts when the specified TimerTriggerActivation condition is met on the chosen I/O Line.
      *  - \b UserOutput0 (Display string: 'User Output 0'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput1 (Display string: 'User Output 1'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b UserOutput2 (Display string: 'User Output 2'): Specifies which User Output bit signal to use as internal source for the trigger.
-     *  - \b UserOutput#3# (Display string: 'User Output #3#'): Specifies which User Output bit signal to use as internal source for the trigger.
+     *  - \b UserOutput\#3\# (Display string: 'User Output \#3\#'): Specifies which User Output bit signal to use as internal source for the trigger.
      *  - \b Counter0Start (Display string: 'Counter 0 Start'): Starts with the reception of the Counter Start.
      *  - \b Counter1Start (Display string: 'Counter 1 Start'): Starts with the reception of the Counter Start.
      *  - \b Counter2Start (Display string: 'Counter 2 Start'): Starts with the reception of the Counter Start.
-     *  - \b Counter#3#Start (Display string: 'Counter #3# Start'): Starts with the reception of the Counter Start.
+     *  - \b Counter\#3\#Start (Display string: 'Counter \#3\# Start'): Starts with the reception of the Counter Start.
      *  - \b Counter0End (Display string: 'Counter 0 End'): Starts with the reception of the Counter End.
      *  - \b Counter1End (Display string: 'Counter 1 End'): Starts with the reception of the Counter End.
      *  - \b Counter2End (Display string: 'Counter 2 End'): Starts with the reception of the Counter End.
-     *  - \b Counter#3#End (Display string: 'Counter #3# End'): Starts with the reception of the Counter End.
+     *  - \b Counter\#3\#End (Display string: 'Counter \#3\# End'): Starts with the reception of the Counter End.
      *  - \b Timer0Start (Display string: 'Timer 0 Start'): Starts with the reception of the Timer Start.
      *  - \b Timer1Start (Display string: 'Timer 1 Start'): Starts with the reception of the Timer Start.
      *  - \b Timer2Start (Display string: 'Timer 2 Start'): Starts with the reception of the Timer Start.
-     *  - \b Timer#3#Start (Display string: 'Timer #3# Start'): Starts with the reception of the Timer Start.
+     *  - \b Timer\#3\#Start (Display string: 'Timer \#3\# Start'): Starts with the reception of the Timer Start.
      *  - \b Timer0End (Display string: 'Timer 0 End'): Starts with the reception of the Timer End.
      *  - \b Timer1End (Display string: 'Timer 1 End'): Starts with the reception of the Timer End.
      *  - \b Timer2End (Display string: 'Timer 2 End'): Starts with the reception of the Timer End.
-     *  - \b Timer#3#End (Display string: 'Timer #3# End'): Starts with the reception of the Timer End.
+     *  - \b Timer\#3\#End (Display string: 'Timer \#3\# End'): Starts with the reception of the Timer End.
      *  - \b Encoder0 (Display string: 'Encoder 0'): Starts with the reception of the Encoder output signal.
      *  - \b Encoder1 (Display string: 'Encoder 1'): Starts with the reception of the Encoder output signal.
      *  - \b Encoder2 (Display string: 'Encoder 2'): Starts with the reception of the Encoder output signal.
-     *  - \b Encoder#3# (Display string: 'Encoder #3#'): Starts with the reception of the Encoder output signal.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): Starts with the reception of the Encoder output signal.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Starts with the reception of the Logioc Block output signal.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Starts with the reception of the Logioc Block output signal.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Starts with the reception of the Logioc Block output signal.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Starts with the reception of the Logioc Block output signal.
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Starts on the reception of the Software Signal.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Starts on the reception of the Software Signal.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Starts on the reception of the Software Signal.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Starts on the reception of the Software Signal.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Starts on the reception of the Software Signal.
      *  - \b Action0 (Display string: 'Action 0'): Starts with the assertion of the chosen action signal.
      *  - \b Action1 (Display string: 'Action 1'): Starts with the assertion of the chosen action signal.
      *  - \b Action2 (Display string: 'Action 2'): Starts with the assertion of the chosen action signal.
-     *  - \b Action#3# (Display string: 'Action #3#'): Starts with the assertion of the chosen action signal.
+     *  - \b Action\#3\# (Display string: 'Action \#3\#'): Starts with the assertion of the chosen action signal.
      *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): Starts with the reception of the chosen Link Trigger.
      *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): Starts with the reception of the chosen Link Trigger.
      *  - \b LinkTrigger2 (Display string: 'Link Trigger 2'): Starts with the reception of the chosen Link Trigger.
-     *  - \b LinkTrigger#3# (Display string: 'Link Trigger #3#'): Starts with the reception of the chosen Link Trigger.
+     *  - \b LinkTrigger\#3\# (Display string: 'Link Trigger \#3\#'): Starts with the reception of the chosen Link Trigger.
      *  - \b CC1 (Display string: 'CC 1'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC2 (Display string: 'CC 2'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
      *  - \b CC3 (Display string: 'CC 3'): Index of the Camera Link physical line and associated I/O control block to use. This ensures a direct mapping between the lines on the frame grabber and on the camera. Applicable to CameraLink products only.
@@ -7849,13 +8680,100 @@ public:
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 sequencerTriggerActivation;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
+};
+
+//-----------------------------------------------------------------------------
+/// \brief Contains features to control the device's defective pixel correction parameters.
+/**
+ *  Contains features to control the device's defective pixel correction parameters.
+ * \ingroup GenICamInterfaceDevice
+ */
+class mvDefectivePixelCorrectionControl : public mvIMPACT::acquire::ComponentCollection
+//-----------------------------------------------------------------------------
+{
+public:
+    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::mvDefectivePixelCorrectionControl</b> object.
+    explicit mvDefectivePixelCorrectionControl(
+        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+        mvIMPACT::acquire::Device* pDev,
+        /// [in] The name of the driver internal setting to access with this instance.
+        /// A list of valid setting names can be obtained by a call to
+        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
+        /// settings can be created with the function
+        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
+        const std::string& settingName = "Base" ) :
+        mvIMPACT::acquire::ComponentCollection( pDev ),
+        mvDefectivePixelEnable(),
+        mvDefectivePixelSelector(),
+        mvDefectivePixelOffsetX(),
+        mvDefectivePixelOffsetY(),
+        mvDefectivePixelCount(),
+        mvDefectivePixelDataLoad(),
+        mvDefectivePixelDataSave()
+    {
+        pDev->validateInterfaceLayout( dilGenICam );
+        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
+        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvDefectivePixelCorrectionControl" );
+        m_hRoot = locator.searchbase_id();
+        locator.bindComponent( mvDefectivePixelEnable, "mvDefectivePixelEnable" );
+        locator.bindComponent( mvDefectivePixelSelector, "mvDefectivePixelSelector" );
+        locator.bindComponent( mvDefectivePixelOffsetX, "mvDefectivePixelOffsetX" );
+        locator.bindComponent( mvDefectivePixelOffsetY, "mvDefectivePixelOffsetY" );
+        locator.bindComponent( mvDefectivePixelCount, "mvDefectivePixelCount" );
+        locator.bindComponent( mvDefectivePixelDataLoad, "mvDefectivePixelDataLoad@i" );
+        locator.bindComponent( mvDefectivePixelDataSave, "mvDefectivePixelDataSave@i" );
+    }
+    // *INDENT-OFF*
+    PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
+    /// \brief A boolean property. Activates the sensor's defective pixel correction.
+    /**
+     *  Activates the sensor's defective pixel correction.
+     */
+    PropertyIBoolean mvDefectivePixelEnable;
+    /// \brief An integer property. Controls the index (offset) of the defective pixel to access.
+    /**
+     *  Controls the index (offset) of the defective pixel to access. Data selected by this selector is NOT part of a user set, but must be written to non volatile memory by calling 'mvDefectivePixelDataSave' explicitly.
+     */
+    PropertyI64 mvDefectivePixelSelector;
+    /// \brief An integer property. Returns the horizontal offset of the defective pixel selected by mvDefectivePixelSelector.
+    /**
+     *  Returns the horizontal offset of the defective pixel selected by mvDefectivePixelSelector. This data is NOT part of a user set, but must be written to non volatile memory by calling 'mvDefectivePixelDataSave' explicitly.
+     */
+    PropertyI64 mvDefectivePixelOffsetX;
+    /// \brief An integer property. Returns the vertical offset of the defective pixel selected by mvDefectivePixelSelector.
+    /**
+     *  Returns the vertical offset of the defective pixel selected by mvDefectivePixelSelector. This data is NOT part of a user set, but must be written to non volatile memory by calling 'mvDefectivePixelDataSave' explicitly.
+     */
+    PropertyI64 mvDefectivePixelOffsetY;
+    /// \brief An integer property. Contains the number of valid defective pixels. Increasing this value adds a new empty entry. Decreasing this value deletes the last entry.
+    /**
+     *  Contains the number of valid defective pixels. Increasing this value adds a new empty entry. Decreasing this value deletes the last entry.
+     */
+    PropertyI64 mvDefectivePixelCount;
+    /// \brief A method object. Loads the defective pixels from device non volatile memory.
+    /**
+     *  Loads the defective pixels from device non volatile memory.
+     */
+    Method mvDefectivePixelDataLoad;
+    /// \brief A method object. Saves the defective pixels to device non volatile memory.
+    /**
+     *  Saves the defective pixels to device non volatile memory.
+     */
+    Method mvDefectivePixelDataSave;
+    // *INDENT-OFF*
+    PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the File Access control features.
 /**
  *  A category that contains the File Access control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class FileAccessControl
 //-----------------------------------------------------------------------------
@@ -7882,6 +8800,7 @@ public:
         fileOperationResult(),
         fileSize()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( fileSelector, "FileSelector" );
@@ -7895,7 +8814,9 @@ public:
         locator.bindComponent( fileOperationResult, "FileOperationResult" );
         locator.bindComponent( fileSize, "FileSize" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects the target file in the device.
     /**
      *  Selects the target file in the device.
@@ -7905,14 +8826,14 @@ public:
      *  - \b UserSet1 (Display string: 'User Set 1'): The first user set of the device.
      *  - \b UserSet2 (Display string: 'User Set 2'): The second user set of the device.
      *  - \b UserSet3 (Display string: 'User Set 3'): The third user set of the device.
-     *  - \b UserSet#4# (Display string: 'User Set #4#'): The third user set of the device.
+     *  - \b UserSet\#4\# (Display string: 'User Set \#4\#'): The third user set of the device.
      *  - \b LUTLuminance (Display string: 'LUT Luminance'): The Luminance LUT of the camera.
      *  - \b LUTRed (Display string: 'LUT Red'): The Red LUT of the camera.
      *  - \b LUTGreen (Display string: 'LUT Green'): The Green LUT of the camera.
      *  - \b LUTBlue (Display string: 'LUT Blue'): The Blue LUT of the camera.
-     *  - \b DeviceFirmware (Display string: 'File Selector')
-     *  - \b UserFile (Display string: 'File Selector')
-     *  - \b mvFFCImage (Display string: 'File Selector')
+     *  - \b DeviceFirmware (Display string: 'Device Firmware')
+     *  - \b UserFile (Display string: 'User File')
+     *  - \b mvFFCImage (Display string: 'mv FFC Image')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -7928,7 +8849,7 @@ public:
      *  - \b Read (Display string: 'Read'): Reads FileAccessLength bytes from the device storage at the file relative offset FileAccessOffset into FileAccessBuffer.
      *  - \b Write (Display string: 'Write'): Writes FileAccessLength bytes taken from the FileAccessBuffer into the device storage at the file relative offset FileAccessOffset.
      *  - \b Delete (Display string: 'Delete'): Deletes the file selected by FileSelector in the device. Note that deleting a device file should not remove the associated FileSelector entry to allow future operation on this file.
-     *  - \b MvFlashWrite (Display string: 'File Operation Selector')
+     *  - \b MvFlashWrite (Display string: 'Mv Flash Write')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -7972,7 +8893,7 @@ public:
      *  Represents the file operation execution status.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Success (Display string: 'Success'): File Operation was sucessful.
+     *  - \b Success (Display string: 'Success'): File Operation was successful.
      *  - \b Failure (Display string: 'Failure'): File Operation failed.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
@@ -7989,13 +8910,16 @@ public:
      *  Represents the size of the selected file in bytes.
      */
     PropertyI64 fileSize;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the source control features.
 /**
  *  A category that contains the source control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class SourceControl
 //-----------------------------------------------------------------------------
@@ -8012,14 +8936,19 @@ public:
         /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
         const std::string& settingName = "Base" ) :
         sourceCount(),
-        sourceSelector()
+        sourceSelector(),
+        sourceIDValue()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( sourceCount, "SourceCount" );
         locator.bindComponent( sourceSelector, "SourceSelector" );
+        locator.bindComponent( sourceIDValue, "SourceIDValue" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An integer property. Controls or returns the number of sources supported by the device.
     /**
      *  Controls or returns the number of sources supported by the device.
@@ -8033,20 +8962,28 @@ public:
      *  - \b Source0 (Display string: 'Source 0'): Selects the data source 0.
      *  - \b Source1 (Display string: 'Source 1'): Selects the data source 1.
      *  - \b Source2 (Display string: 'Source 2'): Selects the data source 2.
-     *  - \b Source#3# (Display string: 'Source #3#'): Selects the data source #3#.
+     *  - \b Source\#3\# (Display string: 'Source \#3\#'): Selects the data source \#3\#.
      *  - \b All (Display string: 'All'): Selects all the data sources.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 sourceSelector;
+    /// \brief An integer property. Returns a unique Identifier value that correspond to the selected Source.
+    /**
+     *  Returns a unique Identifier value that correspond to the selected Source.
+     */
+    PropertyI64 sourceIDValue;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category for the data Transfer Control features.
 /**
  *  A category for the data Transfer Control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class TransferControl
 //-----------------------------------------------------------------------------
@@ -8084,6 +9021,7 @@ public:
         transferComponentSelector(),
         transferStreamChannel()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( transferSelector, "TransferSelector" );
@@ -8108,7 +9046,9 @@ public:
         locator.bindComponent( transferComponentSelector, "TransferComponentSelector" );
         locator.bindComponent( transferStreamChannel, "TransferStreamChannel" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects which stream transfers are currently controlled by the selected Transfer features.
     /**
      *  Selects which stream transfers are currently controlled by the selected Transfer features.
@@ -8117,7 +9057,7 @@ public:
      *  - \b Stream0 (Display string: 'Stream 0'): The transfer features control the data stream 0.
      *  - \b Stream1 (Display string: 'Stream 1'): The transfer features control the data stream 1.
      *  - \b Stream2 (Display string: 'Stream 2'): The transfer features control the data stream 2.
-     *  - \b Stream#3# (Display string: 'Stream #3#'): The transfer features control the data stream #3#.
+     *  - \b Stream\#3\# (Display string: 'Stream \#3\#'): The transfer features control the data stream \#3\#.
      *  - \b All (Display string: 'All'): The transfer features control all the data streams simulateneously.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
@@ -8197,7 +9137,7 @@ public:
     Method transferAbort;
     /// \brief A method object. Pauses the streaming of data Block(s).
     /**
-     *  Pauses the streaming of data Block(s). Pausing the streaming will immediately suspend the ongoing data transfer even if a block is partially transferred. The device will resume its transmission at the reception of a TransferResume command.
+     *  Pauses the streaming of data Block(s). Pausing the streaming will immediately suspend the ongoing data transfer even if a block is partially transfered. The device will resume its transmission at the reception of a TransferResume command.
      */
     Method transferPause;
     /// \brief A method object. Resumes a data Blocks streaming that was previously paused by a TransferPause command.
@@ -8243,31 +9183,35 @@ public:
      *  - \b Line0 (Display string: 'Line 0'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the transfer control trigger signal.
      *  - \b Line1 (Display string: 'Line 1'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the transfer control trigger signal.
      *  - \b Line2 (Display string: 'Line 2'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the transfer control trigger signal.
-     *  - \b Line#3# (Display string: 'Line #3#'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the transfer control trigger signal.
+     *  - \b Line\#3\# (Display string: 'Line \#3\#'): Specifies which physical line (or pin) and associated I/O control block to use as external source for the transfer control trigger signal.
      *  - \b Counter0Start (Display string: 'Counter 0 Start'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
      *  - \b Counter1Start (Display string: 'Counter 1 Start'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
      *  - \b Counter2Start (Display string: 'Counter 2 Start'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
-     *  - \b Counter#3#Start (Display string: 'Counter #3# Start'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
+     *  - \b Counter\#3\#Start (Display string: 'Counter \#3\# Start'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
      *  - \b Counter0End (Display string: 'Counter 0 End'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
      *  - \b Counter1End (Display string: 'Counter 1 End'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
      *  - \b Counter2End (Display string: 'Counter 2 End'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
-     *  - \b Counter#3#End (Display string: 'Counter #3# End'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
+     *  - \b Counter\#3\#End (Display string: 'Counter \#3\# End'): Specifies which of the Counter signal to use as internal source for the transfer control trigger signal.
      *  - \b Timer0Start (Display string: 'Timer 0 Start'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
      *  - \b Timer1Start (Display string: 'Timer 1 Start'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
      *  - \b Timer2Start (Display string: 'Timer 2 Start'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
-     *  - \b Timer#3#Start (Display string: 'Timer #3# Start'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
+     *  - \b Timer\#3\#Start (Display string: 'Timer \#3\# Start'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
      *  - \b Timer0End (Display string: 'Timer 0 End'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
      *  - \b Timer1End (Display string: 'Timer 1 End'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
      *  - \b Timer2End (Display string: 'Timer 2 End'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
-     *  - \b Timer#3#End (Display string: 'Timer #3# End'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
+     *  - \b Timer\#3\#End (Display string: 'Timer \#3\# End'): Specifies which Timer signal to use as internal source for the transfer control trigger signal.
+     *  - \b LogicBlock0 (Display string: 'Logic Block 0'): Specifies which Logic Block to use as internal source for the transfer control trigger signal.
+     *  - \b LogicBlock1 (Display string: 'Logic Block 1'): Specifies which Logic Block to use as internal source for the transfer control trigger signal.
+     *  - \b LogicBlock2 (Display string: 'Logic Block 2'): Specifies which Logic Block to use as internal source for the transfer control trigger signal.
+     *  - \b LogicBlock\#3\# (Display string: 'Logic Block \#3\#'): Specifies which Logic Block to use as internal source for the transfer control trigger signal.
      *  - \b SoftwareSignal0 (Display string: 'Software Signal 0'): Specifies which Software Signal to use as internal source for the transfer control trigger signal.
      *  - \b SoftwareSignal1 (Display string: 'Software Signal 1'): Specifies which Software Signal to use as internal source for the transfer control trigger signal.
      *  - \b SoftwareSignal2 (Display string: 'Software Signal 2'): Specifies which Software Signal to use as internal source for the transfer control trigger signal.
-     *  - \b SoftwareSignal#3# (Display string: 'Software Signal #3#'): Specifies which Software Signal to use as internal source for the transfer control trigger signal.
+     *  - \b SoftwareSignal\#3\# (Display string: 'Software Signal \#3\#'): Specifies which Software Signal to use as internal source for the transfer control trigger signal.
      *  - \b Action0 (Display string: 'Action 0'): Specifies which Action command to use as internal source for the transfer control trigger signal.
      *  - \b Action1 (Display string: 'Action 1'): Specifies which Action command to use as internal source for the transfer control trigger signal.
      *  - \b Action2 (Display string: 'Action 2'): Specifies which Action command to use as internal source for the transfer control trigger signal.
-     *  - \b Action#3# (Display string: 'Action #3#'): Specifies which Action command to use as internal source for the transfer control trigger signal.
+     *  - \b Action\#3\# (Display string: 'Action \#3\#'): Specifies which Action command to use as internal source for the transfer control trigger signal.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -8327,13 +9271,16 @@ public:
      *  Selects the streaming channel that will be used to transfer the selected stream of data. In general, this feature can be omitted and the default streaming channel will be used.
      */
     PropertyI64 transferStreamChannel;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category for control of 3D camera specific features.
 /**
  *  A category for control of 3D camera specific features.
+ * \ingroup GenICamInterfaceDevice
  */
 class Scan3dControl
 //-----------------------------------------------------------------------------
@@ -8349,6 +9296,9 @@ public:
         /// settings can be created with the function
         /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
         const std::string& settingName = "Base" ) :
+        scan3dExtractionSelector(),
+        scan3dExtractionSource(),
+        scan3dExtractionMethod(),
         scan3dDistanceUnit(),
         scan3dCoordinateSystem(),
         scan3dOutputMode(),
@@ -8365,8 +9315,12 @@ public:
         scan3dCoordinateReferenceSelector(),
         scan3dCoordinateReferenceValue()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
+        locator.bindComponent( scan3dExtractionSelector, "Scan3dExtractionSelector" );
+        locator.bindComponent( scan3dExtractionSource, "Scan3dExtractionSource" );
+        locator.bindComponent( scan3dExtractionMethod, "Scan3dExtractionMethod" );
         locator.bindComponent( scan3dDistanceUnit, "Scan3dDistanceUnit" );
         locator.bindComponent( scan3dCoordinateSystem, "Scan3dCoordinateSystem" );
         locator.bindComponent( scan3dOutputMode, "Scan3dOutputMode" );
@@ -8383,14 +9337,53 @@ public:
         locator.bindComponent( scan3dCoordinateReferenceSelector, "Scan3dCoordinateReferenceSelector" );
         locator.bindComponent( scan3dCoordinateReferenceValue, "Scan3dCoordinateReferenceValue" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
-    /// \brief An enumerated integer property. Specifies the unit used when delivering calibrated distance data.
+    // *INDENT-ON*
+    /// \brief An enumerated integer property. Selects the 3DExtraction processing module to control (if multiple ones are present).
     /**
-     *  Specifies the unit used when delivering calibrated distance data.
+     *  Selects the 3DExtraction processing module to control (if multiple ones are present).
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Scan3dExtraction0 (Display string: 'Scan 3d Extraction 0'): Selects Scan3d Extraction module 0.
+     *  - \b Scan3dExtraction1 (Display string: 'Scan 3d Extraction 1'): Selects Scan3d Extraction module 1.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 scan3dExtractionSelector;
+    /// \brief An enumerated integer property. Selects the sensor's data source region for 3D Extraction module.
+    /**
+     *  Selects the sensor's data source region for 3D Extraction module.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Region0 (Display string: 'Region 0'): Data come from Sensor's Region0.
+     *  - \b Region1 (Display string: 'Region 1'): Data come from Sensor's Region1.
+     *  - \b Region\#2\# (Display string: 'Region \#2\#'): Data come from Sensor's Region\#2\#.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 scan3dExtractionSource;
+    /// \brief An enumerated integer property. Selects the method for extracting 3D from the input sensor data.
+    /**
+     *  Selects the method for extracting 3D from the input sensor data.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Default (Display string: 'Default'): Default range extraction method for the device.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 scan3dExtractionMethod;
+    /// \brief An enumerated integer property. Specifies the unit used when delivering (calibrated) distance data.
+    /**
+     *  Specifies the unit used when delivering (calibrated) distance data.
      *
      *  The following string values might be valid for this feature:
      *  - \b Millimeter (Display string: 'Millimeter'): Distance values are in millimeter units (default).
      *  - \b Inch (Display string: 'Inch'): Distance values are in inch units.
+     *  - \b Pixel (Display string: 'Pixel'): Distance values reflect pixel positions on the Sensor Array.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -8409,9 +9402,9 @@ public:
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 scan3dCoordinateSystem;
-    /// \brief An enumerated integer property. Controls the Calibration and data organization of the device, naming the coordinates transmitted.
+    /// \brief An enumerated integer property. Controls the Calibration and data organization of the device and  the coordinates transmitted.
     /**
-     *  Controls the Calibration and data organization of the device, naming the coordinates transmitted.
+     *  Controls the Calibration and data organization of the device and  the coordinates transmitted.
      *
      *  The following string values might be valid for this feature:
      *  - \b UncalibratedC (Display string: 'Uncalibrated C'): Uncalibrated 2.5D Depth map. The distance data does not represent a physical unit and may be non-linear. The data is a 2.5D range map only.
@@ -8527,13 +9520,16 @@ public:
      *  Returns the reference value selected. Reads the value of a rotation or translation value for the current (Anchor or Transformed) coordinate system transformation to the Reference system.
      */
     PropertyF scan3dCoordinateReferenceValue;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the Chunk Data control features.
 /**
  *  A category that contains the Chunk Data control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class ChunkDataControl
 //-----------------------------------------------------------------------------
@@ -8552,8 +9548,11 @@ public:
         chunkModeActive(),
         chunkSelector(),
         chunkEnable(),
-        chunkPartSelector(),
+        chunkComponentSelector(),
+        chunkComponentID(),
+        chunkComponentIDValue(),
         chunkImageComponent(),
+        chunkPartSelector(),
         chunkImage(),
         chunkOffsetX(),
         chunkOffsetY(),
@@ -8568,8 +9567,8 @@ public:
         chunkCounterSelector(),
         chunkCounterValue(),
         chunkTimerSelector(),
-        chunkEncoderSelector(),
         chunkScanLineSelector(),
+        chunkEncoderSelector(),
         chunkEncoderValue(),
         chunkEncoderStatus(),
         chunkExposureTimeSelector(),
@@ -8581,8 +9580,12 @@ public:
         chunkBlackLevel(),
         chunkLinePitch(),
         chunkFrameID(),
+        chunkSourceSelector(),
         chunkSourceID(),
+        chunkSourceIDValue(),
+        chunkRegionSelector(),
         chunkRegionID(),
+        chunkRegionIDValue(),
         chunkTransferBlockID(),
         chunkTransferStreamID(),
         chunkTransferQueueCurrentBlockCount(),
@@ -8603,15 +9606,20 @@ public:
         chunkScan3dTransformValue(),
         chunkScan3dCoordinateReferenceSelector(),
         chunkScan3dCoordinateReferenceValue(),
-        mvChunkJPEG()
+        mvChunkJPEG(),
+        chunkmvCustomIdentifier()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( chunkModeActive, "ChunkModeActive" );
         locator.bindComponent( chunkSelector, "ChunkSelector" );
         locator.bindComponent( chunkEnable, "ChunkEnable" );
-        locator.bindComponent( chunkPartSelector, "ChunkPartSelector" );
+        locator.bindComponent( chunkComponentSelector, "ChunkComponentSelector" );
+        locator.bindComponent( chunkComponentID, "ChunkComponentID" );
+        locator.bindComponent( chunkComponentIDValue, "ChunkComponentIDValue" );
         locator.bindComponent( chunkImageComponent, "ChunkImageComponent" );
+        locator.bindComponent( chunkPartSelector, "ChunkPartSelector" );
         locator.bindComponent( chunkImage, "ChunkImage" );
         locator.bindComponent( chunkOffsetX, "ChunkOffsetX" );
         locator.bindComponent( chunkOffsetY, "ChunkOffsetY" );
@@ -8638,8 +9646,8 @@ public:
             locator.bindComponent( chunkCounterValue, "ChunkCounter" );
         }
         locator.bindComponent( chunkTimerSelector, "ChunkTimerSelector" );
-        locator.bindComponent( chunkEncoderSelector, "ChunkEncoderSelector" );
         locator.bindComponent( chunkScanLineSelector, "ChunkScanLineSelector" );
+        locator.bindComponent( chunkEncoderSelector, "ChunkEncoderSelector" );
         locator.bindComponent( chunkEncoderValue, "ChunkEncoderValue" );
         locator.bindComponent( chunkEncoderStatus, "ChunkEncoderStatus" );
         locator.bindComponent( chunkExposureTimeSelector, "ChunkExposureTimeSelector" );
@@ -8655,8 +9663,12 @@ public:
         locator.bindComponent( chunkBlackLevel, "ChunkBlackLevel" );
         locator.bindComponent( chunkLinePitch, "ChunkLinePitch" );
         locator.bindComponent( chunkFrameID, "ChunkFrameID" );
+        locator.bindComponent( chunkSourceSelector, "ChunkSourceSelector" );
         locator.bindComponent( chunkSourceID, "ChunkSourceID" );
+        locator.bindComponent( chunkSourceIDValue, "ChunkSourceIDValue" );
+        locator.bindComponent( chunkRegionSelector, "ChunkRegionSelector" );
         locator.bindComponent( chunkRegionID, "ChunkRegionID" );
+        locator.bindComponent( chunkRegionIDValue, "ChunkRegionIDValue" );
         locator.bindComponent( chunkTransferBlockID, "ChunkTransferBlockID" );
         locator.bindComponent( chunkTransferStreamID, "ChunkTransferStreamID" );
         locator.bindComponent( chunkTransferQueueCurrentBlockCount, "ChunkTransferQueueCurrentBlockCount" );
@@ -8678,8 +9690,11 @@ public:
         locator.bindComponent( chunkScan3dCoordinateReferenceSelector, "ChunkScan3dCoordinateReferenceSelector" );
         locator.bindComponent( chunkScan3dCoordinateReferenceValue, "ChunkScan3dCoordinateReferenceValue" );
         locator.bindComponent( mvChunkJPEG, "mvChunkJPEG" );
+        locator.bindComponent( chunkmvCustomIdentifier, "ChunkmvCustomIdentifier" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief A boolean property. Activates the inclusion of Chunk data in the payload of the image.
     /**
      *  Activates the inclusion of Chunk data in the payload of the image.
@@ -8690,7 +9705,6 @@ public:
      *  Selects which Chunk to enable or control.
      *
      *  The following string values might be valid for this feature:
-     *  - \b ImageComponent (Display string: 'Image Component'): Image Component
      *  - \b Image (Display string: 'Image'): Image
      *  - \b OffsetX (Display string: 'Offset X'): Offset X
      *  - \b OffsetY (Display string: 'Offset Y'): Offset Y
@@ -8710,11 +9724,14 @@ public:
      *  - \b LinePitch (Display string: 'Line Pitch'): Line Pitch
      *  - \b FrameID (Display string: 'Frame ID'): Frame ID
      *  - \b SourceID (Display string: 'Source ID'): Source ID
+     *  - \b SourceIDValue (Display string: 'Source ID Value'): Source ID Value
      *  - \b RegionID (Display string: 'Region ID'): Region ID
+     *  - \b RegionIDValue (Display string: 'Region ID Value'): Region ID Value
+     *  - \b ComponentID (Display string: 'Component ID'): Component ID
+     *  - \b ComponentIDValue (Display string: 'Component ID Value'): Component ID Value
      *  - \b TransferBlockID (Display string: 'Transfer Block ID'): Transfer Block ID
      *  - \b TransferStreamID (Display string: 'Transfer Stream ID'): Transfer Stream ID
-     *  - \b TransferQueue (Display string: 'Transfer Queue'): Transfer Queue
-     *  - \b CurrentBlockCount (Display string: 'Current Block Count'): Current Block Count
+     *  - \b TransferQueueCurrentBlockCount (Display string: 'Transfer Queue Current Block Count'): Transfer Queue Current Block Count
      *  - \b StreamChannelID (Display string: 'Stream Channel ID'): Stream Channel ID
      *  - \b Scan3dDistanceUnit (Display string: 'Scan 3d Distance Unit'): Scan 3d Distance Unit
      *  - \b Scan3dOutputMode (Display string: 'Scan 3d Output Mode'): Scan 3d Output Mode
@@ -8727,8 +9744,10 @@ public:
      *  - \b Scan3dAxisMin (Display string: 'Scan 3d Axis Min'): Scan 3d Axis Min
      *  - \b Scan3dAxisMax (Display string: 'Scan 3d Axis Max'): Scan 3d Axis Max
      *  - \b Scan3dCoordinateTransformValueScan3dCoordinateReferenceValue (Display string: 'Scan 3d Coordinate Transform Value Scan 3d Coordinate Reference Value'): Scan 3d Coordinate Transform Value Scan 3d Coordinate Reference Value
-     *  - \b PixelDynamicRangeMinTimestamp (Display string: 'Chunk Selector')
-     *  - \b AdditionalInfo (Display string: 'Chunk Selector')
+     *  - \b PixelDynamicRangeMinTimestamp (Display string: 'Pixel Dynamic Range Min Timestamp')
+     *  - \b AdditionalInfo (Display string: 'Additional Info')
+     *  - \b JPEG (Display string: 'JPEG')
+     *  - \b mvCustomIdentifier (Display string: 'mv Custom Identifier')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -8739,21 +9758,16 @@ public:
      *  Enables the inclusion of the selected Chunk data in the payload of the image.
      */
     PropertyIBoolean chunkEnable;
-    /// \brief An integer property. Selects the part to access in chunk data in a multipart transmission.
+    /// \brief An enumerated integer property. Selects the Component from which to retreive data from.
     /**
-     *  Selects the part to access in chunk data in a multipart transmission.
-     */
-    PropertyI64 chunkPartSelector;
-    /// \brief An enumerated integer property. Returns the component of the payload image.
-    /**
-     *  Returns the component of the payload image. This can be used to identify the image component of a generic part in a multipart transfer.
+     *  Selects the Component from which to retreive data from.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Intensity (Display string: 'Intensity'): The image data is the intensity component.
-     *  - \b Color (Display string: 'Color'): The image data is color component.
-     *  - \b Infrared (Display string: 'Infrared'): The image data is infrared component.
+     *  - \b Intensity (Display string: 'Intensity'): The image data is the intensity component (visible).
+     *  - \b Infrared (Display string: 'Infrared'): The image data is the infrared component.
      *  - \b Ultraviolet (Display string: 'Ultraviolet'): The image data is the ultraviolet component.
-     *  - \b Range (Display string: 'Range'): The image data is the range (distance) component.
+     *  - \b Range (Display string: 'Range'): The image data is the range component (distance or depth).
+     *  - \b Reflectance (Display string: 'Reflectance'): The image data is the reflected intensity component (acquired with the Range).
      *  - \b Disparity (Display string: 'Disparity'): The image data is the disparity component.
      *  - \b Confidence (Display string: 'Confidence'): The image data is the confidence map component.
      *  - \b Scatter (Display string: 'Scatter'): The image data is the scatter component.
@@ -8761,7 +9775,55 @@ public:
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
+    PropertyI64 chunkComponentSelector;
+    /// \brief An enumerated integer property. Returns the Component Identifier of the selected Component image.
+    /**
+     *  Returns the Component Identifier of the selected Component image. This can be used to identify the image component type of a multi-component buffer.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Intensity (Display string: 'Intensity'): The image data is the intensity component (visible).
+     *  - \b Infrared (Display string: 'Infrared'): The image data is the infrared component.
+     *  - \b Ultraviolet (Display string: 'Ultraviolet'): The image data is the ultraviolet component.
+     *  - \b Range (Display string: 'Range'): The image data is the range component (distance or depth).
+     *  - \b Reflectance (Display string: 'Reflectance'): The image data is the reflected intensity component (acquired with the Range).
+     *  - \b Disparity (Display string: 'Disparity'): The image data is the disparity component.
+     *  - \b Confidence (Display string: 'Confidence'): The image data is the confidence map component.
+     *  - \b Scatter (Display string: 'Scatter'): The image data is the scatter component.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 chunkComponentID;
+    /// \brief An integer property. Returns a unique Identifier value that correspond to the selected chunk Component.
+    /**
+     *  Returns a unique Identifier value that correspond to the selected chunk Component.
+     */
+    PropertyI64 chunkComponentIDValue;
+    /// \brief An enumerated integer property. This feature is deprecated (See ChunkComponentID).
+    /**
+     *  \deprecated
+     *  This feature is deprecated (See ChunkComponentID). It was representing the Component of the payload image.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Intensity (Display string: 'Intensity'): Intensity
+     *  - \b Infrared (Display string: 'Infrared'): Infrared
+     *  - \b Ultraviolet (Display string: 'Ultraviolet'): Ultraviolet
+     *  - \b Range (Display string: 'Range'): Range
+     *  - \b Reflectance (Display string: 'Reflectance'): Reflectance
+     *  - \b Disparity (Display string: 'Disparity'): Disparity
+     *  - \b Confidence (Display string: 'Confidence'): Confidence
+     *  - \b Scatter (Display string: 'Scatter'): Scatter
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
     PropertyI64 chunkImageComponent;
+    /// \brief An integer property. This feature is deprecated (See ChunkComponentSelector).
+    /**
+     *  \deprecated
+     *  This feature is deprecated (See ChunkComponentSelector). It was selecting the individual parts of a multi-component/multi-part buffer to access.
+     */
+    PropertyI64 chunkPartSelector;
     /// \brief A string property. Returns the entire image data included in the payload.
     /**
      *  Returns the entire image data included in the payload.
@@ -8798,16 +9860,9 @@ public:
      *  - \b Mono8 (Display string: 'Mono8'): Mono 8 bit packed.
      *  - \b Mono8s (Display string: 'Mono8s'): Mono 1 bit signed.
      *  - \b Mono10 (Display string: 'Mono10'): Mono 10 bit.
-     *  - \b Mono10c3a64 (Display string: 'Mono10c3a64'): Mono 10 bit in 64 bit.
-     *  - \b Mono10c3p32 (Display string: 'Mono10c3p32'): Mono 10 bit in 32bit.
-     *  - \b Mono10g12 (Display string: 'Mono10g12'): Mono 10 bit grouped in 12 bit.
-     *  - \b Mono10msb (Display string: 'Mono10msb'): Mono 10 bit packed aligned on Msb.
      *  - \b Mono10p (Display string: 'Mono10p'): Mono 10 bit packed.
-     *  - \b Mono10pmsb (Display string: 'Mono10pmsb'): Mono 10 bit packed aligned on Msb.
-     *  - \b Mono10s (Display string: 'Mono10s'): Mono 10 bit signed.
-     *  - \b Mono12 (Display string: 'Mono12'): Mono 12 bit packed.
-     *  - \b Mono12g (Display string: 'Mono12g'): Mono 12 bit grouped.
-     *  - \b Mono12msb (Display string: 'Mono12msb'): Mono 12 bit aligned on Msb.
+     *  - \b Mono12 (Display string: 'Mono12'): Mono 12 bit.
+     *  - \b Mono12p (Display string: 'Mono12p'): Mono 12 bit packed.
      *  - \b Mono14 (Display string: 'Mono14'): Mono 14 bit.
      *  - \b Mono16 (Display string: 'Mono16'): Mono 16 bit.
      *  - \b R8 (Display string: 'R8'): Red 8 bit.
@@ -8815,57 +9870,39 @@ public:
      *  - \b B8 (Display string: 'B8'): Blue 8 bit.
      *  - \b RGB8 (Display string: 'RGB8'): Red, Green, Blue 8 bit
      *  - \b RGB8_Planar (Display string: 'RGB8_Planar'): Red, Green, Blue 8 bit planar.
-     *  - \b RGB8a32 (Display string: 'RGB8a32'): Red, Green, Blue 8 bit aligned in 32 bit pixel
      *  - \b RGBa8 (Display string: 'RGBa8'): Red, Green, Blue 8 bit aligned on 8 bit
      *  - \b RGB10 (Display string: 'RGB10'): Red, Green, Blue 10 bit.
      *  - \b RGB10_Planar (Display string: 'RGB10_Planar'): Red, Green, Blue 10 bit planar.
-     *  - \b RGB10g32 (Display string: 'RGB10g32'): Red, Green, Blue 8 bit grouped in 32 bit pixel.
-     *  - \b RGB10g32msb (Display string: 'RGB10g32msb'): Red, Green, Blue 10 bit grouped in 32 bit pixel aligned on Msb.
      *  - \b RGB10p32 (Display string: 'RGB10p32'): Red, Green, Blue 10 bit packed in 32 bit pixel.
-     *  - \b RGB10p32msb (Display string: 'RGB10p32msb'): Red, Green, Blue 10 bit packed in 32 bit pixel.
      *  - \b RGB12 (Display string: 'RGB12'): Red, Green, Blue 12 bit.
      *  - \b RGB12_Planar (Display string: 'RGB12_Planar'): Red, Green, Blue 12 bit planar.
      *  - \b RGB16 (Display string: 'RGB16'): Red, Green, Blue 16 bit.
      *  - \b RGB16_Planar (Display string: 'RGB16_Planar'): Red, Green, Blue 16 bit planar.
      *  - \b RGB565p (Display string: 'RGB565p'): Red, Green, Blue 16 bit packet in 5, 6, 5 bits.
-     *  - \b BGR10 (Display string: 'BGR10'): Blue, Green, Red 10 bit.
-     *  - \b BGR12 (Display string: 'BGR12'): Blue, Green, Red 12 bit.
-     *  - \b BGR16 (Display string: 'BGR16'): Blue, Green, Red 16 bit.
-     *  - \b BGR565p (Display string: 'BGR565p'): Blue, Green, Red 16 bit packet in 5, 6, 5 bits.
-     *  - \b BGR8 (Display string: 'BGR8'): Blue, Green, Red 8 bit.
+     *  - \b BGR10 (Display string: 'BGR10'): Blue, Green, Red, 10 bit.
+     *  - \b BGR12 (Display string: 'BGR12'): Blue, Green, Red, 12 bit.
+     *  - \b BGR16 (Display string: 'BGR16'): Blue, Green, Red, 16 bit.
+     *  - \b BGR565p (Display string: 'BGR565p'): Blue, Green, Red, 16 bit packet in 5, 6, 5 bits.
+     *  - \b BGR8 (Display string: 'BGR8'): Blue, Green, Red, 8 bit.
      *  - \b BGRa8 (Display string: 'BGRa8'): Blue, Green, Red, Alpha 8 bit.
-     *  - \b YUV411_8 (Display string: 'YUV411_8'): YUV 411, 8 bit.
      *  - \b YUV422_8 (Display string: 'YUV422_8'): YUV 422 8 bit.
-     *  - \b YUV8 (Display string: 'YUV8'): YUV 8 bit.
      *  - \b YCbCr411_8 (Display string: 'YCbCr411_8'): YCrCb 411 8 bit.
      *  - \b YCbCr422_8 (Display string: 'YCbCr422_8'): YCrCb 422 8 bit.
-     *  - \b YCbCr601_411_8 (Display string: 'YCbCr601_411_8'): YCrCb 601 411 8 bit.
      *  - \b YCbCr601_422_8 (Display string: 'YCbCr601_422_8'): YCrCb 601 422 8 bit.
-     *  - \b YCbCr601_8 (Display string: 'YCbCr601_8'): YCrCb 601 8 bit.
-     *  - \b YCbCr709_411_8 (Display string: 'YCbCr709_411_8'): YCrCb 709 411 8 bit.
      *  - \b YCbCr709_422_8 (Display string: 'YCbCr709_422_8'): YCrCb 709 422 8 bit.
-     *  - \b YCbCr709_8 (Display string: 'YCbCr709_8'): YCrCb 709 8 bit.
      *  - \b YCbCr8 (Display string: 'YCbCr8'): YCbCr 8 bit.
      *  - \b BayerBG8 (Display string: 'BayerBG8'): Bayer Blue Green 8 bit.
      *  - \b BayerGB8 (Display string: 'BayerGB8'): Bayer Green Blue 8 bit.
      *  - \b BayerGR8 (Display string: 'BayerGR8'): Bayer Green Red 8 bit.
      *  - \b BayerRG8 (Display string: 'BayerRG8'): Bayer Red Green 8 bit.
      *  - \b BayerBG10 (Display string: 'BayerBG10'): Bayer Blue Green 10 bit.
-     *  - \b BayerBG10g12 (Display string: 'BayerBG10g12'): Bayer Blue Green 8 bit grouped on 12 bit.
      *  - \b BayerGB10 (Display string: 'BayerGB10'): Bayer Green Blue 10 bit.
-     *  - \b BayerGB10g12 (Display string: 'BayerGB10g12'): Bayer Green Blue 10 bit grouped on 12 bit.
      *  - \b BayerGR10 (Display string: 'BayerGR10'): Bayer Green Red 10 bit.
-     *  - \b BayerGR10g12 (Display string: 'BayerGR10g12'): Bayer Green Red 10 bit grouped on 12 bit.
      *  - \b BayerRG10 (Display string: 'BayerRG10'): Bayer Red Green 10 bit.
-     *  - \b BayerRG10g12 (Display string: 'BayerRG10g12'): Bayer Red Green 10 bit grouped on 12 bit.
      *  - \b BayerBG12 (Display string: 'BayerBG12'): Bayer Blue Green 12 bit
-     *  - \b BayerBG12g (Display string: 'BayerBG12g'): Bayer Blue Green 12 bit grouped.
      *  - \b BayerGB12 (Display string: 'BayerGB12'): Bayer Green Blue 12 bit
-     *  - \b BayerGB12g (Display string: 'BayerGB12g'): Bayer Green Blue 12 bit grouped on 12 bit.
      *  - \b BayerGR12 (Display string: 'BayerGR12'): Bayer Green Red 12 bit.
-     *  - \b BayerGR12g (Display string: 'BayerGR12g'): Bayer Green Red 12 bit grouped on 12 bit.
      *  - \b BayerRG12 (Display string: 'BayerRG12'): Bayer Red Green 12 bit.
-     *  - \b BayerRG12g (Display string: 'BayerRG12g'): Bayer Red Green 12 bit grouped on 12 bit.
      *  - \b BayerBG16 (Display string: 'BayerBG16'): Bayer Blue Green 16 bit.
      *  - \b BayerGB16 (Display string: 'BayerGB16'): Bayer Green Blue 16 bit.
      *  - \b BayerGR16 (Display string: 'BayerGR16'): Bayer Green Red 16 bit.
@@ -8904,28 +9941,28 @@ public:
      *  - \b RGB10V1Packed (Display string: 'RGB10V1Packed'): RGB 10 bit packed (GigE Vision Specific).
      *  - \b BGR10V1Packed (Display string: 'BGR10V1Packed'): BGR 10 bit packed (GigE Vision Specific).
      *  - \b RGB12V1Packed (Display string: 'RGB12V1Packed'): RGB 12 bit packed (GigE Vision Specific).
-     *  - \b Mono8Signed (Display string: 'Chunk Pixel Format')
-     *  - \b Mono10Packed (Display string: 'Chunk Pixel Format')
-     *  - \b RGB8Packed (Display string: 'Chunk Pixel Format')
-     *  - \b BGR8Packed (Display string: 'Chunk Pixel Format')
-     *  - \b RGBA8Packed (Display string: 'Chunk Pixel Format')
-     *  - \b BGRA8Packed (Display string: 'Chunk Pixel Format')
-     *  - \b RGB10Packed (Display string: 'Chunk Pixel Format')
-     *  - \b BGR10Packed (Display string: 'Chunk Pixel Format')
-     *  - \b RGB12Packed (Display string: 'Chunk Pixel Format')
-     *  - \b BGR12Packed (Display string: 'Chunk Pixel Format')
-     *  - \b RGB16Packed (Display string: 'Chunk Pixel Format')
-     *  - \b RGB10V2Packed (Display string: 'Chunk Pixel Format')
-     *  - \b RGB565Packed (Display string: 'Chunk Pixel Format')
-     *  - \b BGR565Packed (Display string: 'Chunk Pixel Format')
-     *  - \b YUV411Packed (Display string: 'Chunk Pixel Format')
-     *  - \b YUV422Packed (Display string: 'Chunk Pixel Format')
-     *  - \b YUV444Packed (Display string: 'Chunk Pixel Format')
-     *  - \b YUYVPacked (Display string: 'Chunk Pixel Format')
-     *  - \b RGB8Planar (Display string: 'Chunk Pixel Format')
-     *  - \b RGB10Planar (Display string: 'Chunk Pixel Format')
-     *  - \b RGB12Planar (Display string: 'Chunk Pixel Format')
-     *  - \b RGB16Planar (Display string: 'Chunk Pixel Format')
+     *  - \b Mono8Signed (Display string: 'Mono 8 Signed')
+     *  - \b Mono10Packed (Display string: 'Mono 10 Packed')
+     *  - \b RGB8Packed (Display string: 'RGB 8 Packed')
+     *  - \b BGR8Packed (Display string: 'BGR 8 Packed')
+     *  - \b RGBA8Packed (Display string: 'RGBA 8 Packed')
+     *  - \b BGRA8Packed (Display string: 'BGRA 8 Packed')
+     *  - \b RGB10Packed (Display string: 'RGB 10 Packed')
+     *  - \b BGR10Packed (Display string: 'BGR 10 Packed')
+     *  - \b RGB12Packed (Display string: 'RGB 12 Packed')
+     *  - \b BGR12Packed (Display string: 'BGR 12 Packed')
+     *  - \b RGB16Packed (Display string: 'RGB 16 Packed')
+     *  - \b RGB10V2Packed (Display string: 'RGB 10 V 2 Packed')
+     *  - \b RGB565Packed (Display string: 'RGB 565 Packed')
+     *  - \b BGR565Packed (Display string: 'BGR 565 Packed')
+     *  - \b YUV411Packed (Display string: 'YUV 411 Packed')
+     *  - \b YUV422Packed (Display string: 'YUV 422 Packed')
+     *  - \b YUV444Packed (Display string: 'YUV 444 Packed')
+     *  - \b YUYVPacked (Display string: 'YUYV Packed')
+     *  - \b RGB8Planar (Display string: 'RGB 8 Planar')
+     *  - \b RGB10Planar (Display string: 'RGB 10 Planar')
+     *  - \b RGB12Planar (Display string: 'RGB 12 Planar')
+     *  - \b RGB16Planar (Display string: 'RGB 16 Planar')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -8964,7 +10001,7 @@ public:
      *  - \b Counter0 (Display string: 'Counter 0'): Selects the counter 0.
      *  - \b Counter1 (Display string: 'Counter 1'): Selects the counter 1.
      *  - \b Counter2 (Display string: 'Counter 2'): Selects the counter 2.
-     *  - \b Counter#3# (Display string: 'Counter #3#'): Selects the counter #3#.
+     *  - \b Counter\#3\# (Display string: 'Counter \#3\#'): Selects the counter \#3\#.
      *  - \b Counter3 (Display string: 'Counter 3'): Selects the counter 3.
      *  - \b Counter4 (Display string: 'Counter 4'): Selects the counter 4.
      *  - \b Counter5 (Display string: 'Counter 5'): Selects the counter 5.
@@ -8978,7 +10015,7 @@ public:
      *  - \b Counter13 (Display string: 'Counter 13'): Selects the counter 13.
      *  - \b Counter14 (Display string: 'Counter 14'): Selects the counter 14.
      *  - \b Counter15 (Display string: 'Counter 15'): Selects the counter 15.
-     *  - \b Counter16 (Display string: 'Chunk Counter Selector')
+     *  - \b Counter16 (Display string: 'Counter 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -8997,7 +10034,7 @@ public:
      *  - \b Timer0 (Display string: 'Timer 0'): Selects the first Timer.
      *  - \b Timer1 (Display string: 'Timer 1'): Selects the first Timer.
      *  - \b Timer2 (Display string: 'Timer 2'): Selects the second Timer.
-     *  - \b Timer#3# (Display string: 'Timer #3#'): Selects the second Timer.
+     *  - \b Timer\#3\# (Display string: 'Timer \#3\#'): Selects the second Timer.
      *  - \b Timer3 (Display string: 'Timer 3'): Selects the second Timer.
      *  - \b Timer4 (Display string: 'Timer 4'): Selects the second Timer.
      *  - \b Timer5 (Display string: 'Timer 5'): Selects the second Timer.
@@ -9011,12 +10048,17 @@ public:
      *  - \b Timer13 (Display string: 'Timer 13'): Selects the second Timer.
      *  - \b Timer14 (Display string: 'Timer 14'): Selects the second Timer.
      *  - \b Timer15 (Display string: 'Timer 15'): Selects the second Timer.
-     *  - \b Timer16 (Display string: 'Chunk Timer Selector')
+     *  - \b Timer16 (Display string: 'Timer 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 chunkTimerSelector;
+    /// \brief An integer property. Index for vector representation of one chunk value per line in an image.
+    /**
+     *  Index for vector representation of one chunk value per line in an image.
+     */
+    PropertyI64 chunkScanLineSelector;
     /// \brief An enumerated integer property. Selects which Encoder to retrieve data from.
     /**
      *  Selects which Encoder to retrieve data from.
@@ -9025,20 +10067,15 @@ public:
      *  - \b Encoder0 (Display string: 'Encoder 0'): Selects the first Encoder.
      *  - \b Encoder1 (Display string: 'Encoder 1'): Selects the first Encoder.
      *  - \b Encoder2 (Display string: 'Encoder 2'): Selects the second Encoder.
-     *  - \b Encoder#3# (Display string: 'Encoder #3#'): Selects the second Encoder.
+     *  - \b Encoder\#3\# (Display string: 'Encoder \#3\#'): Selects the second Encoder.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 chunkEncoderSelector;
-    /// \brief An integer property. Index for vector representation of one chunk value per line in an image.
+    /// \brief An integer property. Returns the counter's value of the selected Encoder at the time of the FrameStart in area scan mode or the counter's value at the time of the LineStart selected by ChunkScanLineSelector in Linescan mode.
     /**
-     *  Index for vector representation of one chunk value per line in an image.
-     */
-    PropertyI64 chunkScanLineSelector;
-    /// \brief An integer property. Returns the counter's value of the selected Encoder at the time of the FrameStart in area scan mode or the counter's value at the time of the LineStart selected by ChunkScanLineSelector in LineScan mode.
-    /**
-     *  Returns the counter's value of the selected Encoder at the time of the FrameStart in area scan mode or the counter's value at the time of the LineStart selected by ChunkScanLineSelector in LineScan mode.
+     *  Returns the counter's value of the selected Encoder at the time of the FrameStart in area scan mode or the counter's value at the time of the LineStart selected by ChunkScanLineSelector in Linescan mode.
      */
     PropertyI64 chunkEncoderValue;
     /// \brief An enumerated integer property. Returns the motion status of the selected encoder.
@@ -9071,7 +10108,7 @@ public:
      *  - \b Ultraviolet (Display string: 'Ultraviolet'): Selects the ultraviolet ExposureTime.
      *  - \b Stage1 (Display string: 'Stage 1'): Selects the first stage ExposureTime.
      *  - \b Stage2 (Display string: 'Stage 2'): Selects the second stage ExposureTime.
-     *  - \b Stage#3# (Display string: 'Stage #3#'): Selects the second stage ExposureTime.
+     *  - \b Stage\#3\# (Display string: 'Stage \#3\#'): Selects the second stage ExposureTime.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -9101,7 +10138,7 @@ public:
      *  - \b V (Display string: 'V'): Gain will be applied to V channel.
      *  - \b Tap1 (Display string: 'Tap 1'): Gain will be applied to Tap 1.
      *  - \b Tap2 (Display string: 'Tap 2'): Gain will be applied to Tap 2.
-     *  - \b Tap#3# (Display string: 'Tap #3#'): Gain will be applied to Tap #3#.
+     *  - \b Tap\#3\# (Display string: 'Tap \#3\#'): Gain will be applied to Tap \#3\#.
      *  - \b AnalogAll (Display string: 'Analog All'): Gain will be applied to all analog channels or taps.
      *  - \b AnalogRed (Display string: 'Analog Red'): Gain will be applied to the red analog channel.
      *  - \b AnalogGreen (Display string: 'Analog Green'): Gain will be applied to the green analog channel.
@@ -9111,7 +10148,7 @@ public:
      *  - \b AnalogV (Display string: 'Analog V'): Gain will be applied to V analog channel.
      *  - \b AnalogTap1 (Display string: 'Analog Tap 1'): Analog gain will be applied to Tap 1.
      *  - \b AnalogTap2 (Display string: 'Analog Tap 2'): Analog gain will be applied to Tap 2.
-     *  - \b AnalogTap#3# (Display string: 'Analog Tap #3#'): Analog gain will be applied to Tap #3#.
+     *  - \b AnalogTap\#3\# (Display string: 'Analog Tap \#3\#'): Analog gain will be applied to Tap \#3\#.
      *  - \b DigitalAll (Display string: 'Digital All'): Gain will be applied to all digital channels or taps.
      *  - \b DigitalRed (Display string: 'Digital Red'): Gain will be applied to the red digital channel.
      *  - \b DigitalGreen (Display string: 'Digital Green'): Gain will be applied to the green digital channel.
@@ -9121,7 +10158,7 @@ public:
      *  - \b DigitalV (Display string: 'Digital V'): Gain will be applied to V digital channel.
      *  - \b DigitalTap1 (Display string: 'Digital Tap 1'): Digital gain will be applied to Tap 1.
      *  - \b DigitalTap2 (Display string: 'Digital Tap 2'): Digital gain will be applied to Tap 2.
-     *  - \b DigitalTap#3# (Display string: 'Digital Tap #3#'): Digital gain will be applied to Tap #3#.
+     *  - \b DigitalTap\#3\# (Display string: 'Digital Tap \#3\#'): Digital gain will be applied to Tap \#3\#.
      *  - \b Tap3 (Display string: 'Tap 3'): Gain will be applied to Tap 3.
      *  - \b Tap4 (Display string: 'Tap 4'): Gain will be applied to Tap 4.
      *  - \b Tap5 (Display string: 'Tap 5'): Gain will be applied to Tap 5.
@@ -9135,7 +10172,7 @@ public:
      *  - \b Tap13 (Display string: 'Tap 13'): Gain will be applied to Tap 13.
      *  - \b Tap14 (Display string: 'Tap 14'): Gain will be applied to Tap 14.
      *  - \b Tap15 (Display string: 'Tap 15'): Gain will be applied to Tap 15.
-     *  - \b Tap16 (Display string: 'Chunk Gain Selector')
+     *  - \b Tap16 (Display string: 'Tap 16')
      *  - \b AnalogTap3 (Display string: 'Analog Tap 3'): Analog gain will be applied to Tap 3.
      *  - \b AnalogTap4 (Display string: 'Analog Tap 4'): Analog gain will be applied to Tap 4.
      *  - \b AnalogTap5 (Display string: 'Analog Tap 5'): Analog gain will be applied to Tap 5.
@@ -9149,7 +10186,7 @@ public:
      *  - \b AnalogTap13 (Display string: 'Analog Tap 13'): Analog gain will be applied to Tap 13.
      *  - \b AnalogTap14 (Display string: 'Analog Tap 14'): Analog gain will be applied to Tap 14.
      *  - \b AnalogTap15 (Display string: 'Analog Tap 15'): Analog gain will be applied to Tap 15.
-     *  - \b AnalogTap16 (Display string: 'Chunk Gain Selector')
+     *  - \b AnalogTap16 (Display string: 'Analog Tap 16')
      *  - \b DigitalTap3 (Display string: 'Digital Tap 3'): Digital gain will be applied to Tap 3.
      *  - \b DigitalTap4 (Display string: 'Digital Tap 4'): Digital gain will be applied to Tap 4.
      *  - \b DigitalTap5 (Display string: 'Digital Tap 5'): Digital gain will be applied to Tap 5.
@@ -9163,7 +10200,7 @@ public:
      *  - \b DigitalTap13 (Display string: 'Digital Tap 13'): Digital gain will be applied to Tap 13.
      *  - \b DigitalTap14 (Display string: 'Digital Tap 14'): Digital gain will be applied to Tap 14.
      *  - \b DigitalTap15 (Display string: 'Digital Tap 15'): Digital gain will be applied to Tap 15.
-     *  - \b DigitalTap16 (Display string: 'Chunk Gain Selector')
+     *  - \b DigitalTap16 (Display string: 'Digital Tap 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -9188,7 +10225,7 @@ public:
      *  - \b V (Display string: 'V'): Black Level will be applied to V channel.
      *  - \b Tap1 (Display string: 'Tap 1'): Black Level will be applied to Tap 1.
      *  - \b Tap2 (Display string: 'Tap 2'): Black Level will be applied to Tap 2.
-     *  - \b Tap#3# (Display string: 'Tap #3#'): Black Level will be applied to Tap #3#.
+     *  - \b Tap\#3\# (Display string: 'Tap \#3\#'): Black Level will be applied to Tap \#3\#.
      *  - \b Tap3 (Display string: 'Tap 3'): Black Level will be applied to Tap 3.
      *  - \b Tap4 (Display string: 'Tap 4'): Black Level will be applied to Tap 4.
      *  - \b Tap5 (Display string: 'Tap 5'): Black Level will be applied to Tap 5.
@@ -9202,7 +10239,7 @@ public:
      *  - \b Tap13 (Display string: 'Tap 13'): Black Level will be applied to Tap 13.
      *  - \b Tap14 (Display string: 'Tap 14'): Black Level will be applied to Tap 14.
      *  - \b Tap15 (Display string: 'Tap 15'): Black Level will be applied to Tap 15.
-     *  - \b Tap16 (Display string: 'Chunk Black Level Selector')
+     *  - \b Tap16 (Display string: 'Tap 16')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -9223,34 +10260,78 @@ public:
      *  Returns the unique Identifier of the frame (or image) included in the payload.
      */
     PropertyI64 chunkFrameID;
-    /// \brief An enumerated integer property. Returns the identifier of Source that the image comes from.
+    /// \brief An enumerated integer property. Selects which Source to retrieve data from.
     /**
-     *  Returns the identifier of Source that the image comes from.
+     *  Selects which Source to retrieve data from.
      *
      *  The following string values might be valid for this feature:
      *  - \b Source0 (Display string: 'Source 0'): Image comes from the Source 0.
      *  - \b Source1 (Display string: 'Source 1'): Image comes from the Source 1.
      *  - \b Source2 (Display string: 'Source 2'): Image comes from the Source 2.
-     *  - \b Source#3# (Display string: 'Source #3#'): Image comes from the Source #3#.
+     *  - \b Source\#3\# (Display string: 'Source \#3\#'): Image comes from the Source \#3\#.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 chunkSourceSelector;
+    /// \brief An enumerated integer property. Returns the Identifier of Source that the image comes from.
+    /**
+     *  Returns the Identifier of Source that the image comes from.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Source0 (Display string: 'Source 0'): Image comes from the Source 0.
+     *  - \b Source1 (Display string: 'Source 1'): Image comes from the Source 1.
+     *  - \b Source2 (Display string: 'Source 2'): Image comes from the Source 2.
+     *  - \b Source\#3\# (Display string: 'Source \#3\#'): Image comes from the Source \#3\#.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 chunkSourceID;
-    /// \brief An enumerated integer property. Returns the identifier of Region that the image comes from.
+    /// \brief An integer property. Returns the unique integer Identifier value of the Source that the image comes from.
     /**
-     *  Returns the identifier of Region that the image comes from.
+     *  Returns the unique integer Identifier value of the Source that the image comes from.
+     */
+    PropertyI64 chunkSourceIDValue;
+    /// \brief An enumerated integer property. Selects which Region to retrieve data from.
+    /**
+     *  Selects which Region to retrieve data from.
      *
      *  The following string values might be valid for this feature:
      *  - \b Region0 (Display string: 'Region 0'): Image comes from the Region 0.
      *  - \b Region1 (Display string: 'Region 1'): Image comes from the Region 1.
      *  - \b Region2 (Display string: 'Region 2'): Image comes from the Region 2.
-     *  - \b Region#3# (Display string: 'Region #3#'): Image comes from the Region #3#.
+     *  - \b Region\#3\# (Display string: 'Region \#3\#'): Image comes from the Region \#3\#.
+     *  - \b Scan3dExtraction0 (Display string: 'Scan 3d Extraction 0'): Image comes from the Scan3dExtraction output Region 0.
+     *  - \b Scan3dExtraction1 (Display string: 'Scan 3d Extraction 1'): Image comes from the Scan3dExtraction output Region 1.
+     *  - \b Scan3dExtraction2 (Display string: 'Scan 3d Extraction 2'): Image comes from the Scan3dExtraction output Region 2.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 chunkRegionSelector;
+    /// \brief An enumerated integer property. Returns the Identifier of Region that the image comes from.
+    /**
+     *  Returns the Identifier of Region that the image comes from.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Region0 (Display string: 'Region 0'): Image comes from the Region 0.
+     *  - \b Region1 (Display string: 'Region 1'): Image comes from the Region 1.
+     *  - \b Region2 (Display string: 'Region 2'): Image comes from the Region 2.
+     *  - \b Region\#3\# (Display string: 'Region \#3\#'): Image comes from the Region \#3\#.
+     *  - \b Scan3dExtraction0 (Display string: 'Scan 3d Extraction 0'): Image comes from the Scan3dExtraction output Region 0.
+     *  - \b Scan3dExtraction1 (Display string: 'Scan 3d Extraction 1'): Image comes from the Scan3dExtraction output Region 1.
+     *  - \b Scan3dExtraction2 (Display string: 'Scan 3d Extraction 2'): Image comes from the Scan3dExtraction output Region 2.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 chunkRegionID;
+    /// \brief An integer property. Returns the unique integer Identifier value of the Region that the image comes from.
+    /**
+     *  Returns the unique integer Identifier value of the Region that the image comes from.
+     */
+    PropertyI64 chunkRegionIDValue;
     /// \brief An integer property. Returns the unique identifier of the transfer block used to transport the payload.
     /**
      *  Returns the unique identifier of the transfer block used to transport the payload.
@@ -9265,7 +10346,7 @@ public:
      *  - \b Stream1 (Display string: 'Stream 1'): Data comes from Stream1.
      *  - \b Stream2 (Display string: 'Stream 2'): Data comes from Stream2.
      *  - \b Stream3 (Display string: 'Stream 3'): Data comes from Stream3.
-     *  - \b Stream#4# (Display string: 'Stream #4#'): Data comes from Stream#4#.
+     *  - \b Stream\#4\# (Display string: 'Stream \#4\#'): Data comes from Stream\#4\#.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -9429,18 +10510,26 @@ public:
      *  Reads the value of a position or pose coordinate for the anchor or transformed coordinate systems relative to the reference point.
      */
     PropertyF chunkScan3dCoordinateReferenceValue;
-    /// \brief A string property. Allows to access a JPEG image transmitted as part of the chunk data.
+    /// \brief A string property. Provides access to a JPEG image transmitted as part of the chunk data.
     /**
-     *  Allows to access a JPEG image transmitted as part of the chunk data.
+     *  Provides access to a JPEG image transmitted as part of the chunk data.
      */
     PropertyS mvChunkJPEG;
+    /// \brief An integer property. Contains a custom identifier previously specified by the user.
+    /**
+     *  Contains a custom identifier previously specified by the user.
+     */
+    PropertyI64 chunkmvCustomIdentifier;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category for Test Control features.
 /**
  *  A category for Test Control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class TestControl
 //-----------------------------------------------------------------------------
@@ -9459,12 +10548,15 @@ public:
         testPendingAck(),
         testEventGenerate()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( testPendingAck, "TestPendingAck" );
         locator.bindComponent( testEventGenerate, "TestEventGenerate@i" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An integer property. Tests the device's pending acknowledge feature.
     /**
      *  Tests the device's pending acknowledge feature. When this feature is written, the device waits a time period corresponding to the value of TestPendingAck before acknowledging the write.
@@ -9475,13 +10567,16 @@ public:
      *  Generates a Test Event.
      */
     Method testEventGenerate;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains the transport Layer control features.
 /**
  *  A category that contains the transport Layer control features.
+ * \ingroup GenICamInterfaceDevice
  */
 class TransportLayerControl
 //-----------------------------------------------------------------------------
@@ -9498,6 +10593,13 @@ public:
         /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
         const std::string& settingName = "Base" ) :
         payloadSize(),
+        mvU3VPHYErrorCount(),
+        mvU3VLNKErrorCount(),
+        mvU3VEndpointSelector(),
+        mvU3VEndpointResetEventCount(),
+        mvU3VEndpointRetryEventCount(),
+        mvU3VErrorCounterReset(),
+        mvU3VSpreadSpectrumClockingSupportDisable(),
         deviceTapGeometry(),
         gevVersionMajor(),
         gevVersionMinor(),
@@ -9507,17 +10609,13 @@ public:
         gevPhysicalLinkConfiguration(),
         gevCurrentPhysicalLinkConfiguration(),
         gevActiveLinkCount(),
+        gevSupportedOptionSelector(),
+        gevSupportedOption(),
         gevInterfaceSelector(),
         gevLinkSpeed(),
         gevMACAddress(),
-        gevSupportedOptionSelector(),
-        gevSupportedOption(),
-        gevSupportedIPConfigurationLLA(),
-        gevSupportedIPConfigurationDHCP(),
-        gevSupportedIPConfigurationPersistentIP(),
         gevPAUSEFrameReception(),
         gevPAUSEFrameTransmission(),
-        gevCurrentIPConfiguration(),
         gevCurrentIPConfigurationLLA(),
         gevCurrentIPConfigurationDHCP(),
         gevCurrentIPConfigurationPersistentIP(),
@@ -9533,13 +10631,6 @@ public:
         gevPersistentDefaultGateway(),
         gevMessageChannelCount(),
         gevStreamChannelCount(),
-        gevSupportedOptionalCommandsUserDefinedName(),
-        gevSupportedOptionalCommandsSerialNumber(),
-        gevSupportedOptionalCommandsEVENTDATA(),
-        gevSupportedOptionalCommandsEVENT(),
-        gevSupportedOptionalCommandsPACKETRESEND(),
-        gevSupportedOptionalCommandsWRITEMEM(),
-        gevSupportedOptionalCommandsConcatenation(),
         gevHeartbeatTimeout(),
         gevTimestampTickFrequency(),
         gevTimestampControlLatch(),
@@ -9582,14 +10673,6 @@ public:
         gevSCZoneCount(),
         gevSCZoneDirectionAll(),
         gevSCZoneConfigurationLock(),
-        gevManifestEntrySelector(),
-        gevManifestXMLMajorVersion(),
-        gevManifestXMLMinorVersion(),
-        gevManifestXMLSubMinorVersion(),
-        gevManifestSchemaMajorVersion(),
-        gevManifestSchemaMinorVersion(),
-        gevManifestPrimaryURL(),
-        gevManifestSecondaryURL(),
         aPAUSEMACCtrlFramesTransmitted(),
         aPAUSEMACCtrlFramesReceived(),
         clConfiguration(),
@@ -9608,9 +10691,17 @@ public:
         mvGevSCBWControl(),
         mvGevSCBW()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
         locator.bindComponent( payloadSize, "PayloadSize" );
+        locator.bindComponent( mvU3VPHYErrorCount, "mvU3VPHYErrorCount" );
+        locator.bindComponent( mvU3VLNKErrorCount, "mvU3VLNKErrorCount" );
+        locator.bindComponent( mvU3VEndpointSelector, "mvU3VEndpointSelector" );
+        locator.bindComponent( mvU3VEndpointResetEventCount, "mvU3VEndpointResetEventCount" );
+        locator.bindComponent( mvU3VEndpointRetryEventCount, "mvU3VEndpointRetryEventCount" );
+        locator.bindComponent( mvU3VErrorCounterReset, "mvU3VErrorCounterReset@i" );
+        locator.bindComponent( mvU3VSpreadSpectrumClockingSupportDisable, "mvU3VSpreadSpectrumClockingSupportDisable@i" );
         locator.bindComponent( deviceTapGeometry, "DeviceTapGeometry" );
         locator.bindComponent( gevVersionMajor, "GevVersionMajor" );
         locator.bindComponent( gevVersionMinor, "GevVersionMinor" );
@@ -9620,17 +10711,13 @@ public:
         locator.bindComponent( gevPhysicalLinkConfiguration, "GevPhysicalLinkConfiguration" );
         locator.bindComponent( gevCurrentPhysicalLinkConfiguration, "GevCurrentPhysicalLinkConfiguration" );
         locator.bindComponent( gevActiveLinkCount, "GevActiveLinkCount" );
+        locator.bindComponent( gevSupportedOptionSelector, "GevSupportedOptionSelector" );
+        locator.bindComponent( gevSupportedOption, "GevSupportedOption" );
         locator.bindComponent( gevInterfaceSelector, "GevInterfaceSelector" );
         locator.bindComponent( gevLinkSpeed, "GevLinkSpeed" );
         locator.bindComponent( gevMACAddress, "GevMACAddress" );
-        locator.bindComponent( gevSupportedOptionSelector, "GevSupportedOptionSelector" );
-        locator.bindComponent( gevSupportedOption, "GevSupportedOption" );
-        locator.bindComponent( gevSupportedIPConfigurationLLA, "GevSupportedIPConfigurationLLA" );
-        locator.bindComponent( gevSupportedIPConfigurationDHCP, "GevSupportedIPConfigurationDHCP" );
-        locator.bindComponent( gevSupportedIPConfigurationPersistentIP, "GevSupportedIPConfigurationPersistentIP" );
         locator.bindComponent( gevPAUSEFrameReception, "GevPAUSEFrameReception" );
         locator.bindComponent( gevPAUSEFrameTransmission, "GevPAUSEFrameTransmission" );
-        locator.bindComponent( gevCurrentIPConfiguration, "GevCurrentIPConfiguration" );
         locator.bindComponent( gevCurrentIPConfigurationLLA, "GevCurrentIPConfigurationLLA" );
         locator.bindComponent( gevCurrentIPConfigurationDHCP, "GevCurrentIPConfigurationDHCP" );
         locator.bindComponent( gevCurrentIPConfigurationPersistentIP, "GevCurrentIPConfigurationPersistentIP" );
@@ -9646,13 +10733,6 @@ public:
         locator.bindComponent( gevPersistentDefaultGateway, "GevPersistentDefaultGateway" );
         locator.bindComponent( gevMessageChannelCount, "GevMessageChannelCount" );
         locator.bindComponent( gevStreamChannelCount, "GevStreamChannelCount" );
-        locator.bindComponent( gevSupportedOptionalCommandsUserDefinedName, "GevSupportedOptionalCommandsUserDefinedName" );
-        locator.bindComponent( gevSupportedOptionalCommandsSerialNumber, "GevSupportedOptionalCommandsSerialNumber" );
-        locator.bindComponent( gevSupportedOptionalCommandsEVENTDATA, "GevSupportedOptionalCommandsEVENTDATA" );
-        locator.bindComponent( gevSupportedOptionalCommandsEVENT, "GevSupportedOptionalCommandsEVENT" );
-        locator.bindComponent( gevSupportedOptionalCommandsPACKETRESEND, "GevSupportedOptionalCommandsPACKETRESEND" );
-        locator.bindComponent( gevSupportedOptionalCommandsWRITEMEM, "GevSupportedOptionalCommandsWRITEMEM" );
-        locator.bindComponent( gevSupportedOptionalCommandsConcatenation, "GevSupportedOptionalCommandsConcatenation" );
         locator.bindComponent( gevHeartbeatTimeout, "GevHeartbeatTimeout" );
         locator.bindComponent( gevTimestampTickFrequency, "GevTimestampTickFrequency" );
         locator.bindComponent( gevTimestampControlLatch, "GevTimestampControlLatch@i" );
@@ -9695,14 +10775,6 @@ public:
         locator.bindComponent( gevSCZoneCount, "GevSCZoneCount" );
         locator.bindComponent( gevSCZoneDirectionAll, "GevSCZoneDirectionAll" );
         locator.bindComponent( gevSCZoneConfigurationLock, "GevSCZoneConfigurationLock" );
-        locator.bindComponent( gevManifestEntrySelector, "GevManifestEntrySelector" );
-        locator.bindComponent( gevManifestXMLMajorVersion, "GevManifestXMLMajorVersion" );
-        locator.bindComponent( gevManifestXMLMinorVersion, "GevManifestXMLMinorVersion" );
-        locator.bindComponent( gevManifestXMLSubMinorVersion, "GevManifestXMLSubMinorVersion" );
-        locator.bindComponent( gevManifestSchemaMajorVersion, "GevManifestSchemaMajorVersion" );
-        locator.bindComponent( gevManifestSchemaMinorVersion, "GevManifestSchemaMinorVersion" );
-        locator.bindComponent( gevManifestPrimaryURL, "GevManifestPrimaryURL" );
-        locator.bindComponent( gevManifestSecondaryURL, "GevManifestSecondaryURL" );
         locator.bindComponent( aPAUSEMACCtrlFramesTransmitted, "aPAUSEMACCtrlFramesTransmitted" );
         locator.bindComponent( aPAUSEMACCtrlFramesReceived, "aPAUSEMACCtrlFramesReceived" );
         locator.bindComponent( clConfiguration, "ClConfiguration" );
@@ -9721,12 +10793,60 @@ public:
         locator.bindComponent( mvGevSCBWControl, "mvGevSCBWControl" );
         locator.bindComponent( mvGevSCBW, "mvGevSCBW" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An integer property. Provides the number of bytes transferred for each image or chunk on the stream channel.
     /**
      *  Provides the number of bytes transferred for each image or chunk on the stream channel. This includes any end-of-line, end-of-frame statistics or other stamp data. This is the total size of data payload for a data block.
      */
     PropertyI64 payloadSize;
+    /// \brief An integer property. Counts the number of errors on the PHY interface.
+    /**
+     *  Counts the number of errors on the PHY interface.
+     */
+    PropertyI64 mvU3VPHYErrorCount;
+    /// \brief An integer property. Counts the number of errors on the USB3 link.
+    /**
+     *  Counts the number of errors on the USB3 link.
+     */
+    PropertyI64 mvU3VLNKErrorCount;
+    /// \brief An enumerated integer property. Selects the endpoint for the event counters.
+    /**
+     *  Selects the endpoint for the event counters.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvControl (Display string: 'mv Control'): The control endpoint of the camera.
+     *  - \b mvEvent (Display string: 'mv Event'): The event endpoint of the camera.
+     *  - \b mvStreaming (Display string: 'mv Streaming'): The streaming endpoint of the camera.
+     *  - \b mvDebug (Display string: 'mv Debug'): The debug endpoint of the camera.
+     *  - \b mvAll (Display string: 'mv All'): Sums up data from all endpoints.
+     *  - \b mvReserved (Display string: 'mv Reserved'): Reserved.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvU3VEndpointSelector;
+    /// \brief An integer property. Counts the number of reset events received on all endpoints.
+    /**
+     *  Counts the number of reset events received on all endpoints.
+     */
+    PropertyI64 mvU3VEndpointResetEventCount;
+    /// \brief An integer property. Counts the number of retry events received on all endpoints.
+    /**
+     *  Counts the number of retry events received on all endpoints.
+     */
+    PropertyI64 mvU3VEndpointRetryEventCount;
+    /// \brief A method object. Resets the 'mvU3VPHYErrorCount' and 'mvU3VLNKErrorCount' registers.
+    /**
+     *  Resets the 'mvU3VPHYErrorCount' and 'mvU3VLNKErrorCount' registers.
+     */
+    Method mvU3VErrorCounterReset;
+    /// \brief A method object. Disable the spread spectrum clocking support.
+    /**
+     *  Disable the spread spectrum clocking support.
+     */
+    Method mvU3VSpreadSpectrumClockingSupportDisable;
     /// \brief An enumerated integer property. This device tap geometry feature describes the geometrical properties characterizing the taps of a camera as presented at the output of the device.
     /**
      *  This device tap geometry feature describes the geometrical properties characterizing the taps of a camera as presented at the output of the device.
@@ -9736,7 +10856,8 @@ public:
      *  - \b Geometry_1X2_1Y (Display string: 'Geometry_1X2_1Y'): Geometry_1X2_1Y
      *  - \b Geometry_1X2_1Y2 (Display string: 'Geometry_1X2_1Y2'): Geometry_1X2_1Y2
      *  - \b Geometry_2X_1Y (Display string: 'Geometry_2X_1Y'): Geometry_2X_1Y
-     *  - \b Geometry_2X_1Y2Geometry_2XE_1Y (Display string: 'Geometry_2X_1Y2Geometry_2XE_1Y'): Geometry_2X_1Y2Geometry_2XE_1Y
+     *  - \b Geometry_2X_1Y2 (Display string: 'Geometry_2X_1Y2'): Geometry_2X_1Y2
+     *  - \b Geometry_2XE_1Y (Display string: 'Geometry_2XE_1Y'): Geometry_2XE_1Y
      *  - \b Geometry_2XE_1Y2 (Display string: 'Geometry_2XE_1Y2'): Geometry_2XE_1Y2
      *  - \b Geometry_2XM_1Y (Display string: 'Geometry_2XM_1Y'): Geometry_2XM_1Y
      *  - \b Geometry_2XM_1Y2 (Display string: 'Geometry_2XM_1Y2'): Geometry_2XM_1Y2
@@ -9754,7 +10875,8 @@ public:
      *  - \b Geometry_1X4_1Y (Display string: 'Geometry_1X4_1Y'): Geometry_1X4_1Y
      *  - \b Geometry_4X_1Y (Display string: 'Geometry_4X_1Y'): Geometry_4X_1Y
      *  - \b Geometry_2X2_1Y (Display string: 'Geometry_2X2_1Y'): Geometry_2X2_1Y
-     *  - \b Geometry_2X2E_1YGeometry_2X2M_1Y (Display string: 'Geometry_2X2E_1YGeometry_2X2M_1Y'): Geometry_2X2E_1YGeometry_2X2M_1Y
+     *  - \b Geometry_2X2E_1Y (Display string: 'Geometry_2X2E_1Y'): Geometry_2X2E_1Y
+     *  - \b Geometry_2X2M_1Y (Display string: 'Geometry_2X2M_1Y'): Geometry_2X2M_1Y
      *  - \b Geometry_1X2_2YE (Display string: 'Geometry_1X2_2YE'): Geometry_1X2_2YE
      *  - \b Geometry_2X_2YE (Display string: 'Geometry_2X_2YE'): Geometry_2X_2YE
      *  - \b Geometry_2XE_2YE (Display string: 'Geometry_2XE_2YE'): Geometry_2XE_2YE
@@ -9777,30 +10899,33 @@ public:
      *  - \b Geometry_10X_1Y (Display string: 'Geometry_10X_1Y'): Geometry_10X_1Y
      *  - \b Geometry_1X10 (Display string: 'Geometry_1X10'): Geometry_1X10
      *  - \b Geometry_10X (Display string: 'Geometry_10X'): Geometry_10X
-     *  - \b Geometry_2X2E_1Y (Display string: 'Device Tap Geometry')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 deviceTapGeometry;
-    /// \brief An integer property. Major version of the specification.
+    /// \brief An integer property. This feature is deprecated (See DeviceTLVersionMajor).
     /**
-     *  Major version of the specification.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceTLVersionMajor). It was representing the major version of the specification.
      */
     PropertyI64 gevVersionMajor;
-    /// \brief An integer property. Minor version of the specification.
+    /// \brief An integer property. This feature is deprecated (See DeviceTLVersionMinor).
     /**
-     *  Minor version of the specification.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceTLVersionMinor). It was representing the minor version of the specification.
      */
     PropertyI64 gevVersionMinor;
-    /// \brief A boolean property. Endianess of the device registers.
+    /// \brief A boolean property. This feature is deprecated (See DeviceRegistersEndianness).
     /**
-     *  Endianess of the device registers.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceRegistersEndianness). It was representing the Endianness of the device registers.
      */
     PropertyIBoolean gevDeviceModeIsBigEndian;
-    /// \brief An enumerated integer property. Returns the class of the device.
+    /// \brief An enumerated integer property. This feature is deprecated (See DeviceType).
     /**
-     *  Returns the class of the device.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceType). It was representing the class of the device.
      *
      *  The following string values might be valid for this feature:
      *  - \b Transmitter (Display string: 'Transmitter'): Transmitter
@@ -9812,9 +10937,10 @@ public:
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 gevDeviceClass;
-    /// \brief An enumerated integer property. Character set used by all the strings of the bootstrap registers.
+    /// \brief An enumerated integer property. This feature is deprecated (See DeviceCharacterSet).
     /**
-     *  Character set used by all the strings of the bootstrap registers.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceCharacterSet). It was representing the character set used by all the strings of the bootstrap registers.
      *
      *  The following string values might be valid for this feature:
      *  - \b UTF8 (Display string: 'UTF 8'): UTF 8
@@ -9856,21 +10982,6 @@ public:
      *  Indicates the current number of active logical links.
      */
     PropertyI64 gevActiveLinkCount;
-    /// \brief An integer property. Selects which logical link to control.
-    /**
-     *  Selects which logical link to control.
-     */
-    PropertyI64 gevInterfaceSelector;
-    /// \brief An integer property. Indicates the speed of transmission negotiated by the given logical link.
-    /**
-     *  Indicates the speed of transmission negotiated by the given logical link.
-     */
-    PropertyI64 gevLinkSpeed;
-    /// \brief An integer property. MAC address of the logical link.
-    /**
-     *  MAC address of the logical link.
-     */
-    PropertyI64 gevMACAddress;
     /// \brief An enumerated integer property. Selects the GEV option to interrogate for existing support.
     /**
      *  Selects the GEV option to interrogate for existing support.
@@ -9931,7 +11042,7 @@ public:
      *  - \b StreamChannel2AllInTransmission (Display string: 'Stream Channel 2 All In Transmission'): Stream Channel 2 All In Transmission
      *  - \b StreamChannel2UnconditionalStreaming (Display string: 'Stream Channel 2 Unconditional Streaming'): Stream Channel 2 Unconditional Streaming
      *  - \b StreamChannel2ExtendedChunkData (Display string: 'Stream Channel 2 Extended Chunk Data'): Stream Channel 2 Extended Chunk Data
-     *  - \b StreamChannel#3#ExtendedChunkData (Display string: 'Stream Channel #3# Extended Chunk Data'): Stream Channel #3# Extended Chunk Data
+     *  - \b StreamChannel\#3\#ExtendedChunkData (Display string: 'Stream Channel \#3\# Extended Chunk Data'): Stream Channel \#3\# Extended Chunk Data
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -9942,24 +11053,22 @@ public:
      *  Returns if the selected GEV option is supported.
      */
     PropertyIBoolean gevSupportedOption;
-    /// \brief A boolean property. This feature is deprecated.
+    /// \brief An integer property. Selects which logical link to control.
+    /**
+     *  Selects which logical link to control.
+     */
+    PropertyI64 gevInterfaceSelector;
+    /// \brief An integer property. This feature is deprecated (See DeviceLinkSpeed).
     /**
      *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if Link Local Address IP configuration scheme is supported by the given network interface.
+     *  This feature is deprecated (See DeviceLinkSpeed). It was representing the speed of transmission negotiated by the given logical link.
      */
-    PropertyIBoolean gevSupportedIPConfigurationLLA;
-    /// \brief A boolean property. This feature is deprecated.
+    PropertyI64 gevLinkSpeed;
+    /// \brief An integer property. MAC address of the logical link.
     /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if DHCP IP configuration scheme is supported by the given network interface.
+     *  MAC address of the logical link.
      */
-    PropertyIBoolean gevSupportedIPConfigurationDHCP;
-    /// \brief A boolean property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if PersistentIP configuration scheme is supported by the given network interface.
-     */
-    PropertyIBoolean gevSupportedIPConfigurationPersistentIP;
+    PropertyI64 gevMACAddress;
     /// \brief A boolean property. Controls whether incoming PAUSE Frames are handled on the given logical link.
     /**
      *  Controls whether incoming PAUSE Frames are handled on the given logical link.
@@ -9970,20 +11079,6 @@ public:
      *  Controls whether PAUSE Frames can be generated on the given logical link.
      */
     PropertyIBoolean gevPAUSEFrameTransmission;
-    /// \brief An enumerated integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It reports the current IP Configuration scheme. Note that this feature doesn't provision more that one simultaneous IP configuration and should not be used.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b PersistentIP (Display string: 'Persistent IP')
-     *  - \b DHCP (Display string: 'DHCP')
-     *  - \b LLA (Display string: 'LLA')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 gevCurrentIPConfiguration;
     /// \brief A boolean property. Controls whether the Link Local Address IP configuration scheme is activated on the given logical link.
     /**
      *  Controls whether the Link Local Address IP configuration scheme is activated on the given logical link.
@@ -10039,9 +11134,10 @@ public:
      *  Indicates the second URL to the GenICam XML device description file. This URL is an alternative if the application was unsuccessful to retrieve the device description file using the first URL.
      */
     PropertyS gevSecondURL;
-    /// \brief An integer property. Indicates the number of logical links supported by this device.
+    /// \brief An integer property. This feature is deprecated (See DeviceLinkSelector).
     /**
-     *  Indicates the number of logical links supported by this device.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceLinkSelector). It was representing the number of logical links supported by this device.
      */
     PropertyI64 gevNumberOfInterfaces;
     /// \brief An integer property. Controls the Persistent IP address for this logical link.
@@ -10056,84 +11152,49 @@ public:
     PropertyI64 gevPersistentSubnetMask;
     /// \brief An integer property. Controls the persistent default gateway for this logical link.
     /**
-     *  Controls the persistent default gateway for this logical link. It is only used when the device boots with the Persistent IP configuration scheme.Visibility
+     *  Controls the persistent default gateway for this logical link. It is only used when the device boots with the Persistent IP configuration scheme.
      */
     PropertyI64 gevPersistentDefaultGateway;
-    /// \brief An integer property. Indicates the number of message channels supported by this device.
+    /// \brief An integer property. This feature is deprecated (See DeviceEventChannelCount).
     /**
-     *  Indicates the number of message channels supported by this device.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceEventChannelCount). It was representing the number of message channels supported by this device.
      */
     PropertyI64 gevMessageChannelCount;
-    /// \brief An integer property. Indicates the number of stream channels supported by this device.
+    /// \brief An integer property. This feature is deprecated (See DeviceStreamChannelCount).
     /**
-     *  Indicates the number of stream channels supported by this device.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceStreamChannelCount). It was representing the number of stream channels supported by this device.
      */
     PropertyI64 gevStreamChannelCount;
-    /// \brief A boolean property. This feature is deprecated.
+    /// \brief An integer property. This feature is deprecated (See DeviceLinkHeartbeatTimeout).
     /**
      *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if the User-defined name register is supported.
-     */
-    PropertyIBoolean gevSupportedOptionalCommandsUserDefinedName;
-    /// \brief A boolean property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if the Serial number register is supported.
-     */
-    PropertyIBoolean gevSupportedOptionalCommandsSerialNumber;
-    /// \brief A boolean property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if the EVENTDATA_CMD and EVENTDATA_ACK are supported.
-     */
-    PropertyIBoolean gevSupportedOptionalCommandsEVENTDATA;
-    /// \brief A boolean property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if the EVENT_CMD and EVENT_ACK are supported.
-     */
-    PropertyIBoolean gevSupportedOptionalCommandsEVENT;
-    /// \brief A boolean property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if the PACKETRESEND_CMD is supported.
-     */
-    PropertyIBoolean gevSupportedOptionalCommandsPACKETRESEND;
-    /// \brief A boolean property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if the WRITEMEM_CMD and WRITEMEM_ACK are supported.
-     */
-    PropertyIBoolean gevSupportedOptionalCommandsWRITEMEM;
-    /// \brief A boolean property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. GevSupportedOption should be used instead. It indicates if the Multiple operations in a single message are supported.
-     */
-    PropertyIBoolean gevSupportedOptionalCommandsConcatenation;
-    /// \brief An integer property. Controls the current heartbeat timeout in milliseconds.
-    /**
-     *  Controls the current heartbeat timeout in milliseconds.
+     *  This feature is deprecated (See DeviceLinkHeartbeatTimeout). It was controling the current heartbeat timeout in milliseconds.
      */
     PropertyI64 gevHeartbeatTimeout;
-    /// \brief An integer property. Indicates the number of timestamp ticks in 1 second (frequency in Hz).
+    /// \brief An integer property. This feature is deprecated (See the increment of the TimestampLatchValue feature).
     /**
-     *  Indicates the number of timestamp ticks in 1 second (frequency in Hz). If IEEE 1588 is used, this feature must return 1,000,000,000 (1 GHz).
+     *  \deprecated
+     *  This feature is deprecated (See the increment of the TimestampLatchValue feature). It was used to indicate the number of timestamp ticks in 1 second (frequency in Hz). If IEEE 1588 is used, this feature must return 1,000,000,000 (1 GHz).
      */
     PropertyI64 gevTimestampTickFrequency;
-    /// \brief A method object. Latches the current timestamp counter into GevTimestampValue.
+    /// \brief A method object. This feature is deprecated (See TimestampLatch).
     /**
-     *  Latches the current timestamp counter into GevTimestampValue.
+     *  \deprecated
+     *  This feature is deprecated (See TimestampLatch). It was used to latche the current timestamp counter into GevTimestampValue.
      */
     Method gevTimestampControlLatch;
-    /// \brief A method object. Resets the timestamp counter to 0.
+    /// \brief A method object. This feature is deprecated (See TimestampReset).
     /**
-     *  Resets the timestamp counter to 0. This feature is not available or as no effect when IEEE 1588 is used.
+     *  \deprecated
+     *  This feature is deprecated (See TimestampReset). It was used to reset the timestamp counter to 0. This feature is not available or as no effect when IEEE 1588 is used.
      */
     Method gevTimestampControlReset;
-    /// \brief An integer property. Returns the latched 64-bit value of the timestamp counter.
+    /// \brief An integer property. This feature is deprecated (See TimestampLatchValue).
     /**
-     *  Returns the latched 64-bit value of the timestamp counter.
+     *  \deprecated
+     *  This feature is deprecated (See TimestampLatchValue). It was used to return the latched 64-bit value of the timestamp counter.
      */
     PropertyI64 gevTimestampValue;
     /// \brief An integer property. Indicates the maximum randomized delay the device will wait to acknowledge a discovery command.
@@ -10218,14 +11279,16 @@ public:
      *  Enables the generation of PENDING_ACK.
      */
     PropertyIBoolean gevGVCPPendingAck;
-    /// \brief A boolean property. Disables the GVCP heartbeat.
+    /// \brief A boolean property. This feature is deprecated (See DeviceHeartbeatMode).
     /**
-     *  Disables the GVCP heartbeat.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceHeartbeatMode). It was used to disable the GVCP heartbeat.
      */
     PropertyIBoolean gevGVCPHeartbeatDisable;
-    /// \brief An integer property. Indicates the longest GVCP command execution time before a device returns a PENDING_ACK.
+    /// \brief An integer property. This feature is deprecated (See DeviceLinkCommandTimeout).
     /**
-     *  Indicates the longest GVCP command execution time before a device returns a PENDING_ACK.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceLinkCommandTimeout). It was used to indicate the longest GVCP command execution time before a device returns a PENDING_ACK.
      */
     PropertyI64 gevGVCPPendingTimeout;
     /// \brief An integer property. Controls the key to use to authenticate primary application switchover requests.
@@ -10319,9 +11382,10 @@ public:
      *  Enables cameras to use the extended chunk data payload type for this stream channel.
      */
     PropertyIBoolean gevSCCFGExtendedChunkData;
-    /// \brief An enumerated integer property. Reports the direction of the stream channel.
+    /// \brief An enumerated integer property. This feature is deprecated (See DeviceStreamChannelType).
     /**
-     *  Reports the direction of the stream channel.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceStreamChannelType). It was used to report the direction of the stream channel.
      *
      *  The following string values might be valid for this feature:
      *  - \b Transmitter (Display string: 'Transmitter'): Transmitter
@@ -10351,19 +11415,20 @@ public:
      *  The state of this feature is copied into the 'do not fragment' bit of IP header of each stream packet. It can be used by the application to prevent IP fragmentation of packets on the stream channel.
      */
     PropertyIBoolean gevSCPSDoNotFragment;
-    /// \brief A boolean property. Endianess of multi-byte pixel data for this stream.
+    /// \brief A boolean property. This feature is deprecated (See DeviceStreamChannelEndianness).
     /**
-     *  Endianess of multi-byte pixel data for this stream.
+     *  \deprecated
+     *  This feature is deprecated (See DeviceStreamChannelEndianness). It was used to control the endianness of multi-byte pixel data for this stream.
      */
     PropertyIBoolean gevSCPSBigEndian;
-    /// \brief An integer property. Specifies the stream packet size, in bytes, to send on the selected channel for a GVSP transmitter or specifies the maximum packet size supported by a GVSP receiver.
+    /// \brief An integer property. This GigE Vision specific feature corresponds to DeviceStreamChannelPacketSize and should be kept in sync with it.
     /**
-     *  Specifies the stream packet size, in bytes, to send on the selected channel for a GVSP transmitter or specifies the maximum packet size supported by a GVSP receiver.
+     *  This GigE Vision specific feature corresponds to DeviceStreamChannelPacketSize and should be kept in sync with it. It specifies the stream packet size, in bytes, to send on the selected channel for a GVSP transmitter or specifies the maximum packet size supported by a GVSP receiver.
      */
     PropertyI64 gevSCPSPacketSize;
-    /// \brief An integer property. Controls the delay (in timestamp counter unit) to insert between each packet for this stream channel.
+    /// \brief An integer property. Controls the delay (in GEV timestamp counter unit) to insert between each packet for this stream channel.
     /**
-     *  Controls the delay (in timestamp counter unit) to insert between each packet for this stream channel. This can be used as a crude flow-control mechanism if the application or the network infrastructure cannot keep up with the packets coming from the device.
+     *  Controls the delay (in GEV timestamp counter unit) to insert between each packet for this stream channel. This can be used as a crude flow-control mechanism if the application or the network infrastructure cannot keep up with the packets coming from the device.
      */
     PropertyI64 gevSCPD;
     /// \brief An integer property. Controls the destination IP address of the selected stream channel to which a GVSP transmitter must send data stream or the destination IP address from which a GVSP receiver may receive data stream.
@@ -10391,54 +11456,6 @@ public:
      *  Controls whether the selected stream channel multi-zone configuration is locked. When locked, the GVSP transmitter is not allowed to change the number of zones and their direction during block acquisition and transmission.
      */
     PropertyIBoolean gevSCZoneConfigurationLock;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. See the Device Control section for an equivalent. Selects the manifest entry to reference.
-     */
-    PropertyI64 gevManifestEntrySelector;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. See the Device Control section for an equivalent. Indicates the major version number of the XML file of the selected manifest entry.
-     */
-    PropertyI64 gevManifestXMLMajorVersion;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. See the Device Control section for an equivalent. Indicates the minor version number of the XML file of the selected manifest entry.
-     */
-    PropertyI64 gevManifestXMLMinorVersion;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. See the Device Control section for an equivalent. Indicates the subminor version number of the XML file of the selected manifest entry.
-     */
-    PropertyI64 gevManifestXMLSubMinorVersion;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. See the Device Control section for an equivalent. Indicates the major version number of the schema file of the selected manifest entry.
-     */
-    PropertyI64 gevManifestSchemaMajorVersion;
-    /// \brief An integer property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. See the Device Control section for an equivalent.. Indicates the minor version number of the schema file of the selected manifest entry.
-     */
-    PropertyI64 gevManifestSchemaMinorVersion;
-    /// \brief A string property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. See the Device Control section for an equivalent. Indicates the first URL to the XML device description file of the selected manifest entry.
-     */
-    PropertyS gevManifestPrimaryURL;
-    /// \brief A string property. This feature is deprecated.
-    /**
-     *  \deprecated
-     *  This feature is deprecated. See the Device Control section for an equivalent. Indicates the second URL to the XML device description file of the selected manifest entry.
-     */
-    PropertyS gevManifestSecondaryURL;
     /// \brief An integer property. Reports the number of transmitted PAUSE frames.
     /**
      *  Reports the number of transmitted PAUSE frames.
@@ -10491,31 +11508,43 @@ public:
      *  - \b CXP3_X1 (Display string: 'CXP 3 X 1'): 1 Connection operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X1 (Display string: 'CXP 5 X 1'): 1 Connection operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X1 (Display string: 'CXP 6 X 1'): 1 Connection operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X1 (Display string: 'CXP 10 X 1'): 1 Connection operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X1 (Display string: 'CXP 12 X 1'): 1 Connection operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X2 (Display string: 'CXP 1 X 2'): 2 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X2 (Display string: 'CXP 2 X 2'): 2 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X2 (Display string: 'CXP 3 X 2'): 2 Connections operating at CXP-3 speed (3.125 Gbps).
-     *  - \b CXP5_X2 (Display string: 'CXP 5 X 2'): 2 Connections operating at CXP-4 speed (5.00 Gbps).
-     *  - \b CXP6_X2 (Display string: 'CXP 6 X 2'): 3 Connections operating at CXP-5 speed (6.25 Gbps).
+     *  - \b CXP5_X2 (Display string: 'CXP 5 X 2'): 2 Connections operating at CXP-5 speed (5.00 Gbps).
+     *  - \b CXP6_X2 (Display string: 'CXP 6 X 2'): 2 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X2 (Display string: 'CXP 10 X 2'): 2 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X2 (Display string: 'CXP 12 X 2'): 2 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X3 (Display string: 'CXP 1 X 3'): 3 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X3 (Display string: 'CXP 2 X 3'): 3 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X3 (Display string: 'CXP 3 X 3'): 3 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X3 (Display string: 'CXP 5 X 3'): 3 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X3 (Display string: 'CXP 6 X 3'): 3 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X3 (Display string: 'CXP 10 X 3'): 3 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X3 (Display string: 'CXP 12 X 3'): 3 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X4 (Display string: 'CXP 1 X 4'): 4 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X4 (Display string: 'CXP 2 X 4'): 4 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X4 (Display string: 'CXP 3 X 4'): 4 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X4 (Display string: 'CXP 5 X 4'): 4 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X4 (Display string: 'CXP 6 X 4'): 4 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X4 (Display string: 'CXP 10 X 4'): 4 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X4 (Display string: 'CXP 12 X 4'): 4 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X5 (Display string: 'CXP 1 X 5'): 5 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X5 (Display string: 'CXP 2 X 5'): 5 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X5 (Display string: 'CXP 3 X 5'): 5 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X5 (Display string: 'CXP 5 X 5'): 5 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X5 (Display string: 'CXP 6 X 5'): 5 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X5 (Display string: 'CXP 10 X 5'): 5 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X5 (Display string: 'CXP 12 X 5'): 5 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X6 (Display string: 'CXP 1 X 6'): 6 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X6 (Display string: 'CXP 2 X 6'): 6 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X6 (Display string: 'CXP 3 X 6'): 6 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X6 (Display string: 'CXP 5 X 6'): 6 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X6 (Display string: 'CXP 6 X 6'): 6 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X6 (Display string: 'CXP 10 X 6'): 6 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X6 (Display string: 'CXP 12 X 6'): 6 Connections operating at CXP-12 speed (12.50 Gbps).
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -10531,31 +11560,43 @@ public:
      *  - \b CXP3_X1 (Display string: 'CXP 3 X 1'): 1 Connection operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X1 (Display string: 'CXP 5 X 1'): 1 Connection operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X1 (Display string: 'CXP 6 X 1'): 1 Connection operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X1 (Display string: 'CXP 10 X 1'): 1 Connection operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X1 (Display string: 'CXP 12 X 1'): 1 Connection operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X2 (Display string: 'CXP 1 X 2'): 2 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X2 (Display string: 'CXP 2 X 2'): 2 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X2 (Display string: 'CXP 3 X 2'): 2 Connections operating at CXP-3 speed (3.125 Gbps).
-     *  - \b CXP5_X2 (Display string: 'CXP 5 X 2'): 2 Connections operating at CXP-4 speed (5.00 Gbps).
-     *  - \b CXP6_X2 (Display string: 'CXP 6 X 2'): 3 Connections operating at CXP-5 speed (6.25 Gbps).
+     *  - \b CXP5_X2 (Display string: 'CXP 5 X 2'): 2 Connections operating at CXP-5 speed (5.00 Gbps).
+     *  - \b CXP6_X2 (Display string: 'CXP 6 X 2'): 2 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X2 (Display string: 'CXP 10 X 2'): 2 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X2 (Display string: 'CXP 12 X 2'): 2 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X3 (Display string: 'CXP 1 X 3'): 3 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X3 (Display string: 'CXP 2 X 3'): 3 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X3 (Display string: 'CXP 3 X 3'): 3 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X3 (Display string: 'CXP 5 X 3'): 3 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X3 (Display string: 'CXP 6 X 3'): 3 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X3 (Display string: 'CXP 10 X 3'): 3 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X3 (Display string: 'CXP 12 X 3'): 3 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X4 (Display string: 'CXP 1 X 4'): 4 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X4 (Display string: 'CXP 2 X 4'): 4 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X4 (Display string: 'CXP 3 X 4'): 4 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X4 (Display string: 'CXP 5 X 4'): 4 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X4 (Display string: 'CXP 6 X 4'): 4 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X4 (Display string: 'CXP 10 X 4'): 4 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X4 (Display string: 'CXP 12 X 4'): 4 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X5 (Display string: 'CXP 1 X 5'): 5 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X5 (Display string: 'CXP 2 X 5'): 5 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X5 (Display string: 'CXP 3 X 5'): 5 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X5 (Display string: 'CXP 5 X 5'): 5 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X5 (Display string: 'CXP 6 X 5'): 5 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X5 (Display string: 'CXP 10 X 5'): 5 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X5 (Display string: 'CXP 12 X 5'): 5 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X6 (Display string: 'CXP 1 X 6'): 6 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X6 (Display string: 'CXP 2 X 6'): 6 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X6 (Display string: 'CXP 3 X 6'): 6 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X6 (Display string: 'CXP 5 X 6'): 6 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X6 (Display string: 'CXP 6 X 6'): 6 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X6 (Display string: 'CXP 10 X 6'): 6 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X6 (Display string: 'CXP 12 X 6'): 6 Connections operating at CXP-12 speed (12.50 Gbps).
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -10572,31 +11613,43 @@ public:
      *  - \b CXP3_X1 (Display string: 'CXP 3 X 1'): Force the Link to 1 Connection operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X1 (Display string: 'CXP 5 X 1'): Force the Link to 1 Connection operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X1 (Display string: 'CXP 6 X 1'): Force the Link to 1 Connection operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X1 (Display string: 'CXP 10 X 1'): Force the Link to 1 Connection operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X1 (Display string: 'CXP 12 X 1'): Force the Link to 1 Connection operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X2 (Display string: 'CXP 1 X 2'): Force the Link to 2 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X2 (Display string: 'CXP 2 X 2'): Force the Link to 2 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X2 (Display string: 'CXP 3 X 2'): Force the Link to 2 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X2 (Display string: 'CXP 5 X 2'): Force the Link to 2 Connections operating at CXP-5 speed (5.00 Gbps).
-     *  - \b CXP6_X2 (Display string: 'CXP 6 X 2'): Force the Link to 3 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP6_X2 (Display string: 'CXP 6 X 2'): Force the Link to 2 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X2 (Display string: 'CXP 10 X 2'): Force the Link to 2 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X2 (Display string: 'CXP 12 X 2'): Force the Link to 2 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X3 (Display string: 'CXP 1 X 3'): Force the Link to 3 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X3 (Display string: 'CXP 2 X 3'): Force the Link to 3 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X3 (Display string: 'CXP 3 X 3'): Force the Link to 3 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X3 (Display string: 'CXP 5 X 3'): Force the Link to 3 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X3 (Display string: 'CXP 6 X 3'): Force the Link to 3 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X3 (Display string: 'CXP 10 X 3'): Force the Link to 3 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X3 (Display string: 'CXP 12 X 3'): Force the Link to 3 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X4 (Display string: 'CXP 1 X 4'): Force the Link to 4 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X4 (Display string: 'CXP 2 X 4'): Force the Link to 4 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X4 (Display string: 'CXP 3 X 4'): Force the Link to 4 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X4 (Display string: 'CXP 5 X 4'): Force the Link to 4 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X4 (Display string: 'CXP 6 X 4'): Force the Link to 4 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X4 (Display string: 'CXP 10 X 4'): Force the Link to 4 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X4 (Display string: 'CXP 12 X 4'): Force the Link to 4 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X5 (Display string: 'CXP 1 X 5'): Force the Link to 5 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X5 (Display string: 'CXP 2 X 5'): Force the Link to 5 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X5 (Display string: 'CXP 3 X 5'): Force the Link to 5 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X5 (Display string: 'CXP 5 X 5'): Force the Link to 5 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X5 (Display string: 'CXP 6 X 5'): Force the Link to 5 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X5 (Display string: 'CXP 10 X 5'): Force the Link to 5 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X5 (Display string: 'CXP 12 X 5'): Force the Link to 5 Connections operating at CXP-12 speed (12.50 Gbps).
      *  - \b CXP1_X6 (Display string: 'CXP 1 X 6'): Force the Link to 6 Connections operating at CXP-1 speed (1.25 Gbps).
      *  - \b CXP2_X6 (Display string: 'CXP 2 X 6'): Force the Link to 6 Connections operating at CXP-2 speed (2.50 Gbps).
      *  - \b CXP3_X6 (Display string: 'CXP 3 X 6'): Force the Link to 6 Connections operating at CXP-3 speed (3.125 Gbps).
      *  - \b CXP5_X6 (Display string: 'CXP 5 X 6'): Force the Link to 6 Connections operating at CXP-5 speed (5.00 Gbps).
      *  - \b CXP6_X6 (Display string: 'CXP 6 X 6'): Force the Link to 6 Connections operating at CXP-6 speed (6.25 Gbps).
+     *  - \b CXP10_X6 (Display string: 'CXP 10 X 6'): Force the Link to 6 Connections operating at CXP-10 speed (10.00 Gbps).
+     *  - \b CXP12_X6 (Display string: 'CXP 12 X 6'): Force the Link to 6 Connections operating at CXP-12 speed (12.50 Gbps).
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -10619,14 +11672,14 @@ public:
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 cxpConnectionTestMode;
-    /// \brief An integer property. Reports the current connection error count for test packets recieved by the device on the connection selected by CxpConnectionSelector.
+    /// \brief An integer property. Reports the current connection error count for test packets received by the device on the connection selected by CxpConnectionSelector.
     /**
-     *  Reports the current connection error count for test packets recieved by the device on the connection selected by CxpConnectionSelector.
+     *  Reports the current connection error count for test packets received by the device on the connection selected by CxpConnectionSelector.
      */
     PropertyI64 cxpConnectionTestErrorCount;
-    /// \brief An integer property. Reports the current count for test packets recieved by the device on the connection selected by CxpConnectionSelector.
+    /// \brief An integer property. Reports the current count for test packets received by the device on the connection selected by CxpConnectionSelector.
     /**
-     *  Reports the current count for test packets recieved by the device on the connection selected by CxpConnectionSelector.
+     *  Reports the current count for test packets received by the device on the connection selected by CxpConnectionSelector.
      */
     PropertyI64 cxpConnectionTestPacketCount;
     /// \brief A method object. Activate automatic control of the Power over CoaXPress (PoCXP) for the Link.
@@ -10662,8 +11715,8 @@ public:
      *  This enumeration selects the bandwidth control for the selected stream channel.
      *
      *  The following string values might be valid for this feature:
-     *  - \b GevSCPD (Display string: 'mv Gev SCBW Control')
-     *  - \b mvGevSCBW (Display string: 'mv Gev SCBW Control')
+     *  - \b GevSCPD (Display string: 'Gev SCPD')
+     *  - \b mvGevSCBW (Display string: 'mv Gev SCBW')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -10674,12 +11727,15 @@ public:
      *  This value sets the stream channels max. bandwidth in KBps.
      */
     PropertyI64 mvGevSCBW;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
     /// \brief Calculates the effective number of payload packets (not including leader and trailer) per block of data (e.g. an image) for a GigE Vision data stream when transferring the payload type \a image.
     /**
      *  This will include all overhead introduced by the network protocol. The value will be correct for payload type image only, thus e.g. when
      *  transferring chunk data the result will not be 100 per cent accurate as then some packets will use a slightly different layout. However
      *  these differences are negligible when working in modes, where individual images are not smaller than roughly 64 by 64 pixels.
+     *  \since 2.5.11
      *  \return The effective number of payload packets (not including leader and trailer) per block of data (e.g. an image) transferred by a GigE Vision device with the current parameters.
      */
     static int64_type gevGetEffectivePayloadPacketsPerImage(
@@ -10692,13 +11748,14 @@ public:
         const bool boExtendedID = false )
     {
         const int64_type PacketSizeWithoutEthernet = boExtendedID ? 48LL : 36LL; // 20 (IP Header) + 8 (UDP Header) + boExtendedID ? 20 : 8 (GVSP Header)
-        const int64_type gevSCPSPacketSizeValue_effective = gevSCPSPacketSizeValue - PacketSizeWithoutEthernet; // The ethernet header is not taken into account here!
+        const int64_type gevSCPSPacketSizeValue_effective = gevSCPSPacketSizeValue - PacketSizeWithoutEthernet; // The Ethernet header is not taken into account here!
         return ( payloadSizeValue + gevSCPSPacketSizeValue_effective - 1LL ) / gevSCPSPacketSizeValue_effective;
     }
     /**
      *  This will include all overhead introduced by the network protocol. The value will be correct for payload type image only, thus e.g. when
      *  transferring chunk data the result will not be 100 per cent accurate as then some packets will use a slightly different layout. However
      *  these differences are negligible when working in modes, where individual images are not smaller than roughly 64 by 64 pixels.
+     *  \since 2.5.7
      *  \return The effective number of payload packets (not including leader and trailer) per block of data (e.g. an image) transferred by a GigE Vision device with the current parameters.
      */
     int64_type gevGetEffectivePayloadPacketsPerImage(
@@ -10715,6 +11772,7 @@ public:
      *  This will include all overhead introduced by the network protocol. The value will be correct for payload type image only, thus e.g. when
      *  transferring chunk data the result will not be 100 per cent accurate as then some packets will use a slightly different layout. However
      *  these differences are negligible when working in modes, where individual images are not smaller than roughly 64 by 64 pixels.
+     *  \since 2.5.11
      *  \return The effective bytes per block of data (e.g. an image) transferred by a GigE Vision device with the current parameters.
      */
     static int64_type gevGetEffectiveBytesPerImage(
@@ -10738,6 +11796,7 @@ public:
      *  This will include all overhead introduced by the network protocol. The value will be correct for payload type image only, thus e.g. when
      *  transferring chunk data the result will not be 100 per cent accurate as then some packets will use a slightly different layout. However
      *  these differences are negligible when working in modes, where individual images are not smaller than roughly 64 by 64 pixels.
+     *  \since 2.5.7
      *  \return The effective bytes per block of data (e.g. an image) transferred by a GigE Vision device with the current parameters.
      */
     int64_type gevGetEffectiveBytesPerImage(
@@ -10754,6 +11813,7 @@ public:
      *  This will include all overhead introduced by the network protocol. The value will be correct for payload type image only, thus e.g. when
      *  transferring chunk data the result will not be 100 per cent precise as then some packets will use a slightly different layout. However
      *  these differences are negligible when working in modes, where individual images are not smaller than roughly 64 by 64 pixels.
+     *  \since 2.5.11
      *  \return The overall resulting bandwidth (in bytes) needed for GigE Vision data streams when transferring the payload type \a image.
      */
     static int64_type gevGetResultingBandwidth(
@@ -10774,6 +11834,7 @@ public:
      *  This will include all overhead introduced by the network protocol. The value will be correct for payload type image only, thus e.g. when
      *  transferring chunk data the result will not be 100 per cent precise as then some packets will use a slightly different layout. However
      *  these differences are negligible when working in modes, where individual images are not smaller than roughly 64 by 64 pixels.
+     *  \since 2.5.7
      *  \return The overall resulting bandwidth (in bytes) needed for GigE Vision data streams when transferring the payload type \a image.
      */
     int64_type gevGetResultingBandwidth(
@@ -10787,16 +11848,17 @@ public:
     {
         return static_cast<int64_type>( static_cast<double>( gevGetEffectiveBytesPerImage( gevSCPSPacketSizeValue, boExtendedID ) ) * acquisitionFrameRateValue );
     }
-    /// \brief Calculates the inter-packet delay needed to achieve a uniform packet and thus payload distribution for for GigE Vision data streams when transferring the payload type \a image.
+    /// \brief Calculates the inter-packet delay needed to achieve a uniform packet and thus payload distribution for GigE Vision data streams when transferring the payload type \a image.
     /**
      *  This will include all overhead introduced by the network protocol. The value will be correct for payload type image only, thus e.g. when
      *  transferring chunk data the result will not be 100 per cent accurate as then some packets will use a slightly different layout. However
      *  these differences are negligible when working in modes, where individual images are not smaller than roughly 64 by 64 pixels.
      *
      *  The result of this function should be written to the property <b>mvIMPACT::acquire::TransportLayerControl::gevSCPD</b> if supported by the device.
+     *  \since 2.5.11
      *  \return The \a GevSCPD value for the given input parameters. If this value is negative, this indicates that the overall bandwidth resulting
      *  from the given input parameters is higher than stated by \a bandwidthAvailable. In such a case the inter-packet delay must be set to 0 and
-     *  it should be noted that the desired framerate cannot be reached in this configuration.
+     *  it should be noted that the desired frame rate cannot be reached in this configuration.
      */
     static int64_type gevGetResultingPacketDelay(
         /// [in] The overall current or desired frame rate.
@@ -10817,18 +11879,19 @@ public:
         const int64_type packetsPerImage = gevGetEffectivePayloadPacketsPerImage( gevSCPSPacketSizeValue, payloadSizeValue, boExtendedID ) + 2; // one leader, one trailer
         const double totalDelayTime = 1. - static_cast<double>( bandwidthNeeded ) / static_cast<double>( bandwidthAvailable );
         const double interPacketDelayTime = totalDelayTime / ( static_cast<double>( packetsPerImage ) * acquisitionFrameRateValue );
-        return static_cast<int64_type>( interPacketDelayTime * gevTimestampTickFrequencyValue );
+        return static_cast<int64_type>( ( interPacketDelayTime < 0.0 ) ? 0 : interPacketDelayTime * gevTimestampTickFrequencyValue );
     }
-    /// \brief Calculates the inter-packet delay needed to achieve a uniform packet and thus payload distribution for for GigE Vision data streams when transferring the payload type \a image.
+    /// \brief Calculates the inter-packet delay needed to achieve a uniform packet and thus payload distribution for GigE Vision data streams when transferring the payload type \a image.
     /**
      *  This will include all overhead introduced by the network protocol. The value will be correct for payload type image only, thus e.g. when
      *  transferring chunk data the result will not be 100 per cent accurate as then some packets will use a slightly different layout. However
      *  these differences are negligible when working in modes, where individual images are not smaller than roughly 64 by 64 pixels.
      *
      *  The result of this function should be written to the property <b>mvIMPACT::acquire::TransportLayerControl::gevSCPD</b> if supported by the device.
+     *  \since 2.5.7
      *  \return The \a GevSCPD value for the given input parameters. If this value is negative, this indicates that the overall bandwidth resulting
      *  from the given input parameters is higher than stated by \a bandwidthAvailable. In such a case the inter-packet delay must be set to 0 and
-     *  it should be noted that the desired framerate cannot be reached in this configuration.
+     *  it should be noted that the desired frame rate cannot be reached in this configuration.
      */
     int64_type gevGetResultingPacketDelay(
         /// [in] The overall current or desired frame rate.
@@ -10848,11 +11911,499 @@ public:
 };
 
 //-----------------------------------------------------------------------------
+/// \brief Contains features to control the serial interface.
+/**
+ *  Contains features to control the serial interface.
+ * \ingroup GenICamInterfaceDevice
+ */
+class mvSerialInterfaceControl : public mvIMPACT::acquire::ComponentCollection
+//-----------------------------------------------------------------------------
+{
+public:
+    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::mvSerialInterfaceControl</b> object.
+    explicit mvSerialInterfaceControl(
+        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+        mvIMPACT::acquire::Device* pDev,
+        /// [in] The name of the driver internal setting to access with this instance.
+        /// A list of valid setting names can be obtained by a call to
+        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
+        /// settings can be created with the function
+        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
+        const std::string& settingName = "Base" ) :
+        mvIMPACT::acquire::ComponentCollection( pDev ),
+        mvSerialInterfaceEnable(),
+        mvSerialInterfaceMode(),
+        mvSerialInterfaceBaudRate(),
+        mvSerialInterfaceDataBits(),
+        mvSerialInterfaceStopBits(),
+        mvSerialInterfaceParity(),
+        mvSerialInterfaceASCIIBuffer(),
+        mvSerialInterfaceBinaryBuffer(),
+        mvSerialInterfaceBytesToWrite(),
+        mvSerialInterfaceBytesAvailableForRead(),
+        mvSerialInterfaceReceiveStatus(),
+        mvSerialInterfaceBytesToRead(),
+        mvSerialInterfaceRead(),
+        mvSerialInterfaceWrite(),
+        mvLiquidLensFirmwareVersion(),
+        mvLiquidLensStatus(),
+        mvLiquidLensErrorCount(),
+        mvLiquidLensPowerMode(),
+        mvLiquidLensSetFocusValue(),
+        mvLiquidLensReceiveStatus(),
+        mvLiquidLensSaveFocusValue(),
+        mvStepperFirmwareVersion(),
+        mvStepperReceiveStatus(),
+        mvStepperErrorCount(),
+        mvStepperAutoSavePositionEnable(),
+        mvStepperMotorSelector(),
+        mvStepperStatus(),
+        mvStepperCurrentPosition(),
+        mvStepperDesiredPosition(),
+        mvStepperSpeed(),
+        mvStepperAcceleration(),
+        mvStepperSpeedManual(),
+        mvStepperPositionSetSelector(),
+        mvStepperPositionSetLoad(),
+        mvStepperPositionSetSave(),
+        mvStepperMoveToHomeAll(),
+        mvStepperStopAll()
+    {
+        pDev->validateInterfaceLayout( dilGenICam );
+        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
+        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvSerialInterfaceControl" );
+        m_hRoot = locator.searchbase_id();
+        locator.bindComponent( mvSerialInterfaceEnable, "mvSerialInterfaceEnable" );
+        locator.bindComponent( mvSerialInterfaceMode, "mvSerialInterfaceMode" );
+        locator.bindComponent( mvSerialInterfaceBaudRate, "mvSerialInterfaceBaudRate" );
+        locator.bindComponent( mvSerialInterfaceDataBits, "mvSerialInterfaceDataBits" );
+        locator.bindComponent( mvSerialInterfaceStopBits, "mvSerialInterfaceStopBits" );
+        locator.bindComponent( mvSerialInterfaceParity, "mvSerialInterfaceParity" );
+        locator.bindComponent( mvSerialInterfaceASCIIBuffer, "mvSerialInterfaceASCIIBuffer" );
+        locator.bindComponent( mvSerialInterfaceBinaryBuffer, "mvSerialInterfaceBinaryBuffer" );
+        locator.bindComponent( mvSerialInterfaceBytesToWrite, "mvSerialInterfaceBytesToWrite" );
+        locator.bindComponent( mvSerialInterfaceBytesAvailableForRead, "mvSerialInterfaceBytesAvailableForRead" );
+        locator.bindComponent( mvSerialInterfaceReceiveStatus, "mvSerialInterfaceReceiveStatus" );
+        locator.bindComponent( mvSerialInterfaceBytesToRead, "mvSerialInterfaceBytesToRead" );
+        locator.bindComponent( mvSerialInterfaceRead, "mvSerialInterfaceRead@i" );
+        locator.bindComponent( mvSerialInterfaceWrite, "mvSerialInterfaceWrite@i" );
+        locator.bindComponent( mvLiquidLensFirmwareVersion, "mvLiquidLensFirmwareVersion" );
+        locator.bindComponent( mvLiquidLensStatus, "mvLiquidLensStatus" );
+        locator.bindComponent( mvLiquidLensErrorCount, "mvLiquidLensErrorCount" );
+        locator.bindComponent( mvLiquidLensPowerMode, "mvLiquidLensPowerMode" );
+        locator.bindComponent( mvLiquidLensSetFocusValue, "mvLiquidLensSetFocusValue" );
+        locator.bindComponent( mvLiquidLensReceiveStatus, "mvLiquidLensReceiveStatus" );
+        locator.bindComponent( mvLiquidLensSaveFocusValue, "mvLiquidLensSaveFocusValue@i" );
+        locator.bindComponent( mvStepperFirmwareVersion, "mvStepperFirmwareVersion" );
+        locator.bindComponent( mvStepperReceiveStatus, "mvStepperReceiveStatus" );
+        locator.bindComponent( mvStepperErrorCount, "mvStepperErrorCount" );
+        locator.bindComponent( mvStepperAutoSavePositionEnable, "mvStepperAutoSavePositionEnable" );
+        locator.bindComponent( mvStepperMotorSelector, "mvStepperMotorSelector" );
+        locator.bindComponent( mvStepperStatus, "mvStepperStatus" );
+        locator.bindComponent( mvStepperCurrentPosition, "mvStepperCurrentPosition" );
+        locator.bindComponent( mvStepperDesiredPosition, "mvStepperDesiredPosition" );
+        locator.bindComponent( mvStepperSpeed, "mvStepperSpeed" );
+        locator.bindComponent( mvStepperAcceleration, "mvStepperAcceleration" );
+        locator.bindComponent( mvStepperSpeedManual, "mvStepperSpeedManual" );
+        locator.bindComponent( mvStepperPositionSetSelector, "mvStepperPositionSetSelector" );
+        locator.bindComponent( mvStepperPositionSetLoad, "mvStepperPositionSetLoad@i" );
+        locator.bindComponent( mvStepperPositionSetSave, "mvStepperPositionSetSave@i" );
+        locator.bindComponent( mvStepperMoveToHomeAll, "mvStepperMoveToHomeAll@i" );
+        locator.bindComponent( mvStepperStopAll, "mvStepperStopAll@i" );
+    }
+    // *INDENT-OFF*
+    PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
+    /// \brief A boolean property. Controls whether the serial interface is enabled or not.
+    /**
+     *  Controls whether the serial interface is enabled or not.
+     */
+    PropertyIBoolean mvSerialInterfaceEnable;
+    /// \brief An enumerated integer property. States the interface mode of the serial interface
+    /**
+     *  States the interface mode of the serial interface
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Plain (Display string: 'Plain')
+     *  - \b InveniosLiquidLens (Display string: 'Invenios Liquid Lens')
+     *  - \b OptoEngineeringStepper (Display string: 'Opto Engineering Stepper')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvSerialInterfaceMode;
+    /// \brief An enumerated integer property. Serial interface clock frequency.
+    /**
+     *  Serial interface clock frequency.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Hz_115200 (Display string: '115200 Hz')
+     *  - \b Hz_57600 (Display string: '57600 Hz')
+     *  - \b Hz_38400 (Display string: '38400 Hz')
+     *  - \b Hz_19200 (Display string: '19200 Hz')
+     *  - \b Hz_9600 (Display string: '9600 Hz')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvSerialInterfaceBaudRate;
+    /// \brief An enumerated integer property. Number of data bits.
+    /**
+     *  Number of data bits.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Seven (Display string: 'Seven')
+     *  - \b Eight (Display string: 'Eight')
+     *  - \b Nine (Display string: 'Nine')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvSerialInterfaceDataBits;
+    /// \brief An enumerated integer property. Number of stop bits.
+    /**
+     *  Number of stop bits.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b One (Display string: 'One')
+     *  - \b Two (Display string: 'Two')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvSerialInterfaceStopBits;
+    /// \brief An enumerated integer property. Serial interface parity.
+    /**
+     *  Serial interface parity.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b None (Display string: 'None')
+     *  - \b Odd (Display string: 'Odd')
+     *  - \b Even (Display string: 'Even')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvSerialInterfaceParity;
+    /// \brief A string property. Buffer for exchanging ASCII data over the serial interface. This buffer uses the same memory as 'mvSerialInterfaceBinaryBuffer'.
+    /**
+     *  Buffer for exchanging ASCII data over the serial interface. This buffer uses the same memory as 'mvSerialInterfaceBinaryBuffer'.
+     */
+    PropertyS mvSerialInterfaceASCIIBuffer;
+    /// \brief A string property. Buffer for exchanging ASCII data over the serial interface. This buffer uses the same memory as 'mvSerialInterfaceASCIIBuffer'.
+    /**
+     *  Buffer for exchanging ASCII data over the serial interface. This buffer uses the same memory as 'mvSerialInterfaceASCIIBuffer'.
+     */
+    PropertyS mvSerialInterfaceBinaryBuffer;
+    /// \brief An integer property. Length of data to write.
+    /**
+     *  Length of data to write.
+     */
+    PropertyI64 mvSerialInterfaceBytesToWrite;
+    /// \brief An integer property. Number of serial data bytes available for read.
+    /**
+     *  Number of serial data bytes available for read.
+     */
+    PropertyI64 mvSerialInterfaceBytesAvailableForRead;
+    /// \brief An integer property. Result of the serial receive error detection mechanism.
+    /**
+     *  Result of the serial receive error detection mechanism.
+     */
+    PropertyI64 mvSerialInterfaceReceiveStatus;
+    /// \brief An integer property. Number of serial bytes to read.
+    /**
+     *  Number of serial bytes to read.
+     */
+    PropertyI64 mvSerialInterfaceBytesToRead;
+    /// \brief A method object. Command to read data from serial interface.
+    /**
+     *  Command to read data from serial interface.
+     */
+    Method mvSerialInterfaceRead;
+    /// \brief A method object. Command to write data to serial interface
+    /**
+     *  Command to write data to serial interface
+     */
+    Method mvSerialInterfaceWrite;
+    /// \brief An integer property. Returns the firmware version of the Liquid Lens.
+    /**
+     *  Returns the firmware version of the Liquid Lens.
+     */
+    PropertyI64 mvLiquidLensFirmwareVersion;
+    /// \brief An enumerated integer property. Returns the current status of the Liquid Lens.
+    /**
+     *  Returns the current status of the Liquid Lens.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b NoError (Display string: 'No Error'): No Errors.
+     *  - \b VhOverload (Display string: 'Vh Overload'): Vh below 70V because Liquid Lens is taking too much current.
+     *  - \b ThermalOverload (Display string: 'Thermal Overload'): Driver shutdown because Liquid Lens is too hot.
+     *  - \b VhAndThermalOverload (Display string: 'Vh And Thermal Overload'): Vh does not reach 70V and driver shutdown because Liquid Lens is too hot.
+     *  - \b StatusReadErrorNoAnswer (Display string: 'Status Read Error No Answer'): No response from Liquid Lens.
+     *  - \b StatusReadErrorCRC (Display string: 'Status Read Error CRC'): CRC error in response from Liquid Lens.
+     *  - \b StatusReadErrorNakAnswer (Display string: 'Status Read Error Nak Answer'): NAK response from Liquid Lens.
+     *  - \b StatusReadErrorInvalidAnswer (Display string: 'Status Read Error Invalid Answer'): Invalid Size or Command in response from Liquid Lens.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvLiquidLensStatus;
+    /// \brief An integer property. This register increments whenever an error occurred while communicating with the Liquid Lens.
+    /**
+     *  This register increments whenever an error occurred while communicating with the Liquid Lens.
+     */
+    PropertyI64 mvLiquidLensErrorCount;
+    /// \brief An enumerated integer property. Selects the device power mode.
+    /**
+     *  Selects the device power mode.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvLiquidLensActive (Display string: 'mv Liquid Lens Active'): Puts the device to power-active mode.
+     *  - \b mvLiquidLensStandby (Display string: 'mv Liquid Lens Standby'): Puts the Liquid Lens in power-saving mode. In this mode the device will only consume up to 25 percent of its normal power consumption.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvLiquidLensPowerMode;
+    /// \brief An integer property. Focus position value for Liquid Lens.
+    /**
+     *  Focus position value for Liquid Lens.
+     */
+    PropertyI64 mvLiquidLensSetFocusValue;
+    /// \brief An integer property. Result of the serial receive error detection mechanism.
+    /**
+     *  Result of the serial receive error detection mechanism. This is a bit field. The bits have the following meaning: 0x1: CRC Error, 0x2: NAK received, 0x4: No response, 0x8 Incorrect answer received.
+     */
+    PropertyI64 mvLiquidLensReceiveStatus;
+    /// \brief A method object. Saves the current Focus position into LiquidLens EEPROM.
+    /**
+     *  Saves the current Focus position into LiquidLens EEPROM.
+     */
+    Method mvLiquidLensSaveFocusValue;
+    /// \brief An integer property. Returns the firmware version of the Opto Engineering Stepper.
+    /**
+     *  Returns the firmware version of the Opto Engineering Stepper.
+     */
+    PropertyI64 mvStepperFirmwareVersion;
+    /// \brief An integer property. Result of the serial receive error detection mechanism.
+    /**
+     *  Result of the serial receive error detection mechanism. This is a bit field. The bits have the following meaning: 0x1: Reserved, 0x2: Mismatch in answer detected, 0x4: No response, 0x8 Incorrect answer received.
+     */
+    PropertyI64 mvStepperReceiveStatus;
+    /// \brief An integer property. This register increments whenever an error occurred while communicating with the Opto Engineering Stepper.
+    /**
+     *  This register increments whenever an error occurred while communicating with the Opto Engineering Stepper.
+     */
+    PropertyI64 mvStepperErrorCount;
+    /// \brief A boolean property. Controls if the auto-save of motor positions is active.
+    /**
+     *  Controls if the auto-save of motor positions is active.
+     */
+    PropertyIBoolean mvStepperAutoSavePositionEnable;
+    /// \brief An enumerated integer property. Selects the stepper motor to control.
+    /**
+     *  Selects the stepper motor to control(Zoom, Iris or Focus).
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b All (Display string: 'All'): All stepper motors are selected.
+     *  - \b Zoom (Display string: 'Zoom'): Selects the stepper motor controlling the zoom.
+     *  - \b Focus (Display string: 'Focus'): Selects the stepper motor controlling the focus.
+     *  - \b Iris (Display string: 'Iris'): Selects the stepper motor controlling the iris.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvStepperMotorSelector;
+    /// \brief An enumerated integer property. Returns the current status of the stepper.
+    /**
+     *  Returns the current status of the stepper.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Unknown (Display string: 'Unknown'): The current status of the stepper is unknown.
+     *  - \b Moving (Display string: 'Moving'): The selected stepper motor is currently moving.
+     *  - \b StoppedAtLowerLimitWithTorque (Display string: 'Stopped At Lower Limit With Torque'): The selected stepper motor has stopped at its lower limit with torque(this should never happen and indicates a problem).
+     *  - \b StoppedAtLowerLimit (Display string: 'Stopped At Lower Limit'): The selected stepper motor has stopped at its lower limit.
+     *  - \b StoppedAtUpperLimitWithTorque (Display string: 'Stopped At Upper Limit With Torque'): The selected stepper motor has stopped at its upper limit with torque(this should never happen and indicates a problem).
+     *  - \b StoppedAtUpperLimit (Display string: 'Stopped At Upper Limit'): The selected stepper motor has stopped at its upper limit.
+     *  - \b StoppedWithTorque (Display string: 'Stopped With Torque'): The selected stepper motor has stopped with torque(this should never happen and indicates a problem).
+     *  - \b Stopped (Display string: 'Stopped'): The selected stepper motor has stopped.
+     *  - \b OvercurrentOrOvertemperatureError (Display string: 'Overcurrent Or Overtemperature Error'): The selected stepper motor either became too hot or is taking in too much current(this should never happen and indicates a problem).
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvStepperStatus;
+    /// \brief An integer property. Read current position from stepper.
+    /**
+     *  Read current position from stepper.
+     */
+    PropertyI64 mvStepperCurrentPosition;
+    /// \brief An integer property. The desired position of the selected stepper motor.
+    /**
+     *  The desired position of the selected stepper motor. When the motor has not yet reached this position(is moving) this value may differ from 'mvStepperCurrentPosition'.
+     */
+    PropertyI64 mvStepperDesiredPosition;
+    /// \brief A floating point property. Current speed of the selected stepper motor.
+    /**
+     *  Current speed of the selected stepper motor.
+     */
+    PropertyF mvStepperSpeed;
+    /// \brief A floating point property. Current acceleration of the selected stepper motor.
+    /**
+     *  Current acceleration of the selected stepper motor.
+     */
+    PropertyF mvStepperAcceleration;
+    /// \brief A floating point property. Manual speed of the selected stepper motor.
+    /**
+     *  Manual speed of the selected stepper motor.
+     */
+    PropertyF mvStepperSpeedManual;
+    /// \brief An integer property. Selects the stepper parameter set to load or save.
+    /**
+     *  Selects the stepper parameter set to load or save.
+     */
+    PropertyI64 mvStepperPositionSetSelector;
+    /// \brief A method object. Loads the stepper 'mvStepperDesiredPosition' specified by 'mvStepperPositionSetSelector' and makes it active for each motor.
+    /**
+     *  Loads the stepper 'mvStepperDesiredPosition' specified by 'mvStepperPositionSetSelector' and makes it active for each motor.
+     */
+    Method mvStepperPositionSetLoad;
+    /// \brief A method object. Saves the stepper 'mvStepperDesiredPosition' specified by 'mvStepperPositionSetSelector' into the steppers non-volatile memory for each motor.
+    /**
+     *  Saves the stepper 'mvStepperDesiredPosition' specified by 'mvStepperPositionSetSelector' into the steppers non-volatile memory for each motor.
+     */
+    Method mvStepperPositionSetSave;
+    /// \brief A method object. Moves all stepper motors to their home position.
+    /**
+     *  Moves all stepper motors to their home position.
+     */
+    Method mvStepperMoveToHomeAll;
+    /// \brief A method object. Stops all stepper motors.
+    /**
+     *  Stops all stepper motors.
+     */
+    Method mvStepperStopAll;
+    // *INDENT-OFF*
+    PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
+};
+
+//-----------------------------------------------------------------------------
+/// \brief Contains features to control the i2c interface.
+/**
+ *  Contains features to control the i2c interface.
+ * \ingroup GenICamInterfaceDevice
+ */
+class mvI2cInterfaceControl
+//-----------------------------------------------------------------------------
+{
+public:
+    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::mvI2cInterfaceControl</b> object.
+    explicit mvI2cInterfaceControl(
+        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
+        mvIMPACT::acquire::Device* pDev,
+        /// [in] The name of the driver internal setting to access with this instance.
+        /// A list of valid setting names can be obtained by a call to
+        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
+        /// settings can be created with the function
+        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
+        const std::string& settingName = "Base" ) :
+        mvI2cInterfaceDeviceAddress(),
+        mvI2cInterfaceDeviceSubAddress(),
+        mvI2cInterfaceASCIIBuffer(),
+        mvI2cInterfaceBinaryBuffer(),
+        mvI2cInterfaceBytesToWrite(),
+        mvI2cInterfaceBytesToRead(),
+        mvI2cInterfaceRead(),
+        mvI2cInterfaceWrite(),
+        mvI2cInterfaceFastByteWriteAndSend(),
+        mvI2cInterfaceSpeed()
+    {
+        pDev->validateInterfaceLayout( dilGenICam );
+        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
+        locator.bindComponent( mvI2cInterfaceDeviceAddress, "mvI2cInterfaceDeviceAddress" );
+        locator.bindComponent( mvI2cInterfaceDeviceSubAddress, "mvI2cInterfaceDeviceSubAddress" );
+        locator.bindComponent( mvI2cInterfaceASCIIBuffer, "mvI2cInterfaceASCIIBuffer" );
+        locator.bindComponent( mvI2cInterfaceBinaryBuffer, "mvI2cInterfaceBinaryBuffer" );
+        locator.bindComponent( mvI2cInterfaceBytesToWrite, "mvI2cInterfaceBytesToWrite" );
+        locator.bindComponent( mvI2cInterfaceBytesToRead, "mvI2cInterfaceBytesToRead" );
+        locator.bindComponent( mvI2cInterfaceRead, "mvI2cInterfaceRead@i" );
+        locator.bindComponent( mvI2cInterfaceWrite, "mvI2cInterfaceWrite@i" );
+        locator.bindComponent( mvI2cInterfaceFastByteWriteAndSend, "mvI2cInterfaceFastByteWriteAndSend" );
+        locator.bindComponent( mvI2cInterfaceSpeed, "mvI2cInterfaceSpeed" );
+    }
+    // *INDENT-OFF*
+    PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
+    /// \brief An integer property. I2c device address, must be even.
+    /**
+     *  I2c device address, must be even.
+     */
+    PropertyI64 mvI2cInterfaceDeviceAddress;
+    /// \brief An integer property. I2c device sub address ignored when set to -1, 2 byte address if bit 0x10000 is set, else 1 Byte.
+    /**
+     *  I2c device sub address ignored when set to -1, 2 byte address if bit 0x10000 is set, else 1 Byte.
+     */
+    PropertyI64 mvI2cInterfaceDeviceSubAddress;
+    /// \brief A string property. Buffer for exchanging ASCII data over the i2c interface. This buffer uses the same memory as 'mvI2cInterfaceBinaryBuffer'.
+    /**
+     *  Buffer for exchanging ASCII data over the i2c interface. This buffer uses the same memory as 'mvI2cInterfaceBinaryBuffer'.
+     */
+    PropertyS mvI2cInterfaceASCIIBuffer;
+    /// \brief A string property. Buffer for exchanging ASCII data over the i2c interface. This buffer uses the same memory as 'mvI2cInterfaceASCIIBuffer'.
+    /**
+     *  Buffer for exchanging ASCII data over the i2c interface. This buffer uses the same memory as 'mvI2cInterfaceASCIIBuffer'.
+     */
+    PropertyS mvI2cInterfaceBinaryBuffer;
+    /// \brief An integer property. Number of mvI2cInterfaceBuffer bytes to write to i2c device.
+    /**
+     *  Number of mvI2cInterfaceBuffer bytes to write to i2c device.
+     */
+    PropertyI64 mvI2cInterfaceBytesToWrite;
+    /// \brief An integer property. Number of bytes to read from i2c device.
+    /**
+     *  Number of bytes to read from i2c device.
+     */
+    PropertyI64 mvI2cInterfaceBytesToRead;
+    /// \brief A method object. Command to read data from i2c device.
+    /**
+     *  Command to read data from i2c device.
+     */
+    Method mvI2cInterfaceRead;
+    /// \brief A method object. Command to write data to i2c device
+    /**
+     *  Command to write data to i2c device
+     */
+    Method mvI2cInterfaceWrite;
+    /// \brief An integer property. Write immediately byte to mvI2cInterfaceDeviceAddress with optional mvI2cInterfaceDeviceSubAddress.
+    /**
+     *  Write immediately byte to mvI2cInterfaceDeviceAddress with optional mvI2cInterfaceDeviceSubAddress.
+     */
+    PropertyI64 mvI2cInterfaceFastByteWriteAndSend;
+    /// \brief An enumerated integer property. I2c interface clock frequency.
+    /**
+     *  I2c interface clock frequency.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b kHz_100 (Display string: '100 kHz'): default speed
+     *  - \b kHz_400 (Display string: '400 kHz'): fast speed
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvI2cInterfaceSpeed;
+    // *INDENT-OFF*
+    PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
+};
+
+//-----------------------------------------------------------------------------
 /// \brief Custom area.
 /**
  *  Custom area.
+ * \ingroup GenICamInterfaceDevice
  */
-class mvCustomData
+class mvCustomData : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
 {
 public:
@@ -10866,17 +12417,66 @@ public:
         /// settings can be created with the function
         /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
         const std::string& settingName = "Base" ) :
+        mvIMPACT::acquire::ComponentCollection( pDev ),
         mvCustomText(),
         mvWriteCustomData(),
-        mvReadCustomData()
+        mvReadCustomData(),
+        mvSensorRegister(),
+        mvSensorRegisterValue(),
+        mvInternalRegister(),
+        mvInternalRegisterValue(),
+        mvMSeqRegister(),
+        mvMSeqRegisterValue(),
+        mvStateSumRegister(),
+        mvStat2SumRegister(),
+        mvStateSumRegisterReset(),
+        mvLVDSSelection(),
+        mvLVDSAlignment(),
+        mvRunTest(),
+        mvTestNumber(),
+        mvTestMin(),
+        mvTestMax(),
+        mvCustomCommandInterpreterVersionMajor(),
+        mvCustomCommandInterpreterVersionMinor(),
+        mvCustomCommandBuffer(),
+        mvImxSensorType(),
+        mvImxSensorIdOne(),
+        mvImxGroup(),
+        mvImxSensorIdTwo()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
-        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam" );
+        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvCustomData" );
+        m_hRoot = locator.searchbase_id();
         locator.bindComponent( mvCustomText, "mvCustomText" );
         locator.bindComponent( mvWriteCustomData, "mvWriteCustomData@i" );
         locator.bindComponent( mvReadCustomData, "mvReadCustomData@i" );
+        locator.bindComponent( mvSensorRegister, "mvSensorRegister" );
+        locator.bindComponent( mvSensorRegisterValue, "mvSensorRegisterValue" );
+        locator.bindComponent( mvInternalRegister, "mvInternalRegister" );
+        locator.bindComponent( mvInternalRegisterValue, "mvInternalRegisterValue" );
+        locator.bindComponent( mvMSeqRegister, "mvMSeqRegister" );
+        locator.bindComponent( mvMSeqRegisterValue, "mvMSeqRegisterValue" );
+        locator.bindComponent( mvStateSumRegister, "mvStateSumRegister" );
+        locator.bindComponent( mvStat2SumRegister, "mvStat2SumRegister" );
+        locator.bindComponent( mvStateSumRegisterReset, "mvStateSumRegisterReset@i" );
+        locator.bindComponent( mvLVDSSelection, "mvLVDSSelection" );
+        locator.bindComponent( mvLVDSAlignment, "mvLVDSAlignment" );
+        locator.bindComponent( mvRunTest, "mvRunTest@i" );
+        locator.bindComponent( mvTestNumber, "mvTestNumber" );
+        locator.bindComponent( mvTestMin, "mvTestMin" );
+        locator.bindComponent( mvTestMax, "mvTestMax" );
+        locator.bindComponent( mvCustomCommandInterpreterVersionMajor, "mvCustomCommandInterpreterVersionMajor" );
+        locator.bindComponent( mvCustomCommandInterpreterVersionMinor, "mvCustomCommandInterpreterVersionMinor" );
+        locator.bindComponent( mvCustomCommandBuffer, "mvCustomCommandBuffer" );
+        locator.bindComponent( mvImxSensorType, "mvImxSensorType" );
+        locator.bindComponent( mvImxSensorIdOne, "mvImxSensorIdOne" );
+        locator.bindComponent( mvImxGroup, "mvImxGroup" );
+        locator.bindComponent( mvImxSensorIdTwo, "mvImxSensorIdTwo" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief A string property. Custom text.
     /**
      *  Custom text.
@@ -10892,239 +12492,161 @@ public:
      *  Function to read custom data.
      */
     Method mvReadCustomData;
+    /// \brief An integer property. Sensor register address to access.
+    /**
+     *  Sensor register address to access.
+     */
+    PropertyI64 mvSensorRegister;
+    /// \brief An integer property. Value of sensor register.
+    /**
+     *  Value of sensor register.
+     */
+    PropertyI64 mvSensorRegisterValue;
+    /// \brief An integer property. Register address to access.
+    /**
+     *  Register address to access.
+     */
+    PropertyI64 mvInternalRegister;
+    /// \brief An integer property. Value of internal register.
+    /**
+     *  Value of internal register.
+     */
+    PropertyI64 mvInternalRegisterValue;
+    /// \brief An integer property. Register address to access.
+    /**
+     *  Register address to access.
+     */
+    PropertyI64 mvMSeqRegister;
+    /// \brief An integer property. Value of mseq register.
+    /**
+     *  Value of mseq register.
+     */
+    PropertyI64 mvMSeqRegisterValue;
+    /// \brief An integer property. Indicates several states besides some other info.
+    /**
+     *  Indicates several states besides some other info.
+     */
+    PropertyI64 mvStateSumRegister;
+    /// \brief An integer property. Indicates several states besides some other info.
+    /**
+     *  Indicates several states besides some other info.
+     */
+    PropertyI64 mvStat2SumRegister;
+    /// \brief A method object. Resets the state register.
+    /**
+     *  Resets the state register.
+     */
+    Method mvStateSumRegisterReset;
+    /// \brief An integer property. Selector for LVDS lanes.
+    /**
+     *  Selector for LVDS lanes.
+     */
+    PropertyI64 mvLVDSSelection;
+    /// \brief An integer property. Alignment of LVDS lanes.
+    /**
+     *  Alignment of LVDS lanes.
+     */
+    PropertyI64 mvLVDSAlignment;
+    /// \brief A method object. Runs internal test.
+    /**
+     *  Runs internal test.
+     */
+    Method mvRunTest;
+    /// \brief An integer property. Number of test to run.
+    /**
+     *  Number of test to run.
+     */
+    PropertyI64 mvTestNumber;
+    /// \brief An integer property. Min number for test.
+    /**
+     *  Min number for test.
+     */
+    PropertyI64 mvTestMin;
+    /// \brief An integer property. Max number for test.
+    /**
+     *  Max number for test.
+     */
+    PropertyI64 mvTestMax;
+    /// \brief An integer property. Returns the major version of the custom command interpreter on the device.
+    /**
+     *  Returns the major version of the custom command interpreter on the device.
+     */
+    PropertyI64 mvCustomCommandInterpreterVersionMajor;
+    /// \brief An integer property. Returns the minor version of the custom command interpreter on the device.
+    /**
+     *  Returns the minor version of the custom command interpreter on the device.
+     */
+    PropertyI64 mvCustomCommandInterpreterVersionMinor;
+    /// \brief A string property. Command buffer for custom commands.
+    /**
+     *  Command buffer for custom commands.
+     */
+    PropertyS mvCustomCommandBuffer;
+    /// \brief An enumerated integer property. IMX sensor type from registers.
+    /**
+     *  IMX sensor type from registers.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvUnknown (Display string: 'mv Unknown'): unknown
+     *  - \b IMX250G (Display string: 'IMX 250 G'): IMX250 Grey
+     *  - \b IMX250C (Display string: 'IMX 250 C'): IMX250 Color
+     *  - \b IMX252G (Display string: 'IMX 252 G'): IMX252 Grey
+     *  - \b IMX252C (Display string: 'IMX 252 C'): IMX252 Color
+     *  - \b IMX253G (Display string: 'IMX 253 G'): IMX253 Grey
+     *  - \b IMX253C (Display string: 'IMX 253 C'): IMX253 Color
+     *  - \b IMX255G (Display string: 'IMX 255 G'): IMX255 Grey
+     *  - \b IMX255C (Display string: 'IMX 255 C'): IMX255 Color
+     *  - \b IMX264G (Display string: 'IMX 264 G'): IMX264 Grey
+     *  - \b IMX264C (Display string: 'IMX 264 C'): IMX264 Color
+     *  - \b IMX265G (Display string: 'IMX 265 G'): IMX265 Grey
+     *  - \b IMX265C (Display string: 'IMX 265 C'): IMX265 Color
+     *  - \b IMX267G (Display string: 'IMX 267 G'): IMX267 Grey
+     *  - \b IMX267C (Display string: 'IMX 267 C'): IMX267 Color
+     *  - \b IMX273G (Display string: 'IMX 273 G'): IMX273 Grey
+     *  - \b IMX273C (Display string: 'IMX 273 C'): IMX273 Color
+     *  - \b IMX287G (Display string: 'IMX 287 G'): IMX287 Grey
+     *  - \b IMX287C (Display string: 'IMX 287 C'): IMX287 Color
+     *  - \b IMX304G (Display string: 'IMX 304 G'): IMX304 Grey
+     *  - \b IMX304C (Display string: 'IMX 304 C'): IMX304 Color
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvImxSensorType;
+    /// \brief An integer property. IMX SensorID1
+    /**
+     *  IMX SensorID1
+     */
+    PropertyI64 mvImxSensorIdOne;
+    /// \brief An enumerated integer property. IMX Group
+    /**
+     *  IMX Group
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvUnknown (Display string: 'mv Unknown'): unknown
+     *  - \b TypeOneGroup (Display string: 'Type One Group'): Type 1/1 Group: IMX253/255/267/304/305
+     *  - \b TypeTwoThirdsGroup (Display string: 'Type Two Thirds Group'): Type 2/3 Group: IMX250/252/264/265
+     *  - \b TypeOneThirdGroup (Display string: 'Type One Third Group'): Type 1/3 Group: IMX273/287/296/297
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvImxGroup;
+    /// \brief An integer property. IMX SensorID2
+    /**
+     *  IMX SensorID2
+     */
+    PropertyI64 mvImxSensorIdTwo;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
-};
-
-//-----------------------------------------------------------------------------
-/// \brief Category that contains OMAP Preview Engine specific features.
-/**
- *  A category that contains OMAP Preview Engine specific features.
- */
-class mvOMAPPreviewConfig : public mvIMPACT::acquire::ComponentCollection
-//-----------------------------------------------------------------------------
-{
-public:
-    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::mvOMAPPreviewConfig</b> object.
-    explicit mvOMAPPreviewConfig(
-        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
-        mvIMPACT::acquire::Device* pDev,
-        /// [in] The name of the driver internal setting to access with this instance.
-        /// A list of valid setting names can be obtained by a call to
-        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
-        /// settings can be created with the function
-        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
-        const std::string& settingName = "Base" ) :
-        mvIMPACT::acquire::ComponentCollection( pDev ),
-        mvGain(),
-        mvBalanceWhiteAuto(),
-        mvAutoExposure()
-    {
-        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
-        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvOMAPPreviewConfig" );
-        m_hRoot = locator.searchbase_id();
-        locator.bindComponent( mvGain, "mvGain" );
-        locator.bindComponent( mvBalanceWhiteAuto, "mvBalanceWhiteAuto" );
-        locator.bindComponent( mvAutoExposure, "mvAutoExposure" );
-    }
-    PYTHON_ONLY( %immutable; )
-    /// \brief An integer property. Changes the current gain.
-    /**
-     *  Changes the current gain.
-     */
-    PropertyI64 mvGain;
-    /// \brief An enumerated integer property. Controls the white balance engine.
-    /**
-     *  Controls the white balance engine.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Balance White Auto')
-     *  - \b Once (Display string: 'mv Balance White Auto')
-     *  - \b Continuous (Display string: 'mv Balance White Auto')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvBalanceWhiteAuto;
-    /// \brief An enumerated integer property. Controls the auto exposure engine.
-    /**
-     *  Controls the auto exposure engine.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Auto Exposure')
-     *  - \b Continuous (Display string: 'mv Auto Exposure')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvAutoExposure;
-    PYTHON_ONLY( %mutable; )
-};
-
-//-----------------------------------------------------------------------------
-/// \brief Contains X-Lamp specific control parameters.
-/**
- *  Contains X-Lamp specific control parameters.
- */
-class mvXLampControl : public mvIMPACT::acquire::ComponentCollection
-//-----------------------------------------------------------------------------
-{
-public:
-    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::mvXLampControl</b> object.
-    explicit mvXLampControl(
-        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
-        mvIMPACT::acquire::Device* pDev,
-        /// [in] The name of the driver internal setting to access with this instance.
-        /// A list of valid setting names can be obtained by a call to
-        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
-        /// settings can be created with the function
-        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
-        const std::string& settingName = "Base" ) :
-        mvIMPACT::acquire::ComponentCollection( pDev ),
-        mvXLampSource(),
-        mvXLampActivationSourceSelector(),
-        mvXLampActivationSource(),
-        mvXLampLEDPairSelector(),
-        mvXLampActivationSourceModeSelector(),
-        mvXLampLEDActivationSourceMode(),
-        mvXLampLEDPairCurrent()
-    {
-        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
-        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvXLampControl" );
-        m_hRoot = locator.searchbase_id();
-        locator.bindComponent( mvXLampSource, "mvXLampSource" );
-        locator.bindComponent( mvXLampActivationSourceSelector, "mvXLampActivationSourceSelector" );
-        locator.bindComponent( mvXLampActivationSource, "mvXLampActivationSource" );
-        locator.bindComponent( mvXLampLEDPairSelector, "mvXLampLEDPairSelector" );
-        locator.bindComponent( mvXLampActivationSourceModeSelector, "mvXLampActivationSourceModeSelector" );
-        locator.bindComponent( mvXLampLEDActivationSourceMode, "mvXLampLEDActivationSourceMode" );
-        locator.bindComponent( mvXLampLEDPairCurrent, "mvXLampLEDPairCurrent" );
-    }
-    PYTHON_ONLY( %immutable; )
-    /// \brief An enumerated integer property. Chooses which signal to use for the lamps
-    /**
-     *  Chooses which signal to use for the lamps
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv X Lamp Source')
-     *  - \b mvExposureAndAcquisitionActive (Display string: 'mv X Lamp Source')
-     *  - \b Line4 (Display string: 'mv X Lamp Source')
-     *  - \b Line5 (Display string: 'mv X Lamp Source')
-     *  - \b UserOutput0 (Display string: 'mv X Lamp Source')
-     *  - \b UserOutput1 (Display string: 'mv X Lamp Source')
-     *  - \b UserOutput2 (Display string: 'mv X Lamp Source')
-     *  - \b UserOutput3 (Display string: 'mv X Lamp Source')
-     *  - \b Timer1Active (Display string: 'mv X Lamp Source')
-     *  - \b Timer2Active (Display string: 'mv X Lamp Source')
-     *  - \b Counter1Active (Display string: 'mv X Lamp Source')
-     *  - \b Counter2Active (Display string: 'mv X Lamp Source')
-     *  - \b Counter3Active (Display string: 'mv X Lamp Source')
-     *  - \b Counter4Active (Display string: 'mv X Lamp Source')
-     *  - \b ExposureActive (Display string: 'mv X Lamp Source')
-     *  - \b FrameActive (Display string: 'mv X Lamp Source')
-     *  - \b mvReadOutActive (Display string: 'mv X Lamp Source')
-     *  - \b LineActive (Display string: 'mv X Lamp Source')
-     *  - \b FrameTriggerWait (Display string: 'mv X Lamp Source')
-     *  - \b mvTemperatureOutOfRange (Display string: 'mv X Lamp Source')
-     *  - \b mvRTMOutput0 (Display string: 'mv X Lamp Source')
-     *  - \b mvRTMOutput1 (Display string: 'mv X Lamp Source')
-     *  - \b mvRTMOutput2 (Display string: 'mv X Lamp Source')
-     *  - \b mvRTMOutput3 (Display string: 'mv X Lamp Source')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvXLampSource;
-    /// \brief An enumerated integer property. Chooses which activation line is to be configured
-    /**
-     *  Chooses which activation line is to be configured
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b ActivationSource0 (Display string: 'mv X Lamp Activation Source Selector')
-     *  - \b ActivationSource1 (Display string: 'mv X Lamp Activation Source Selector')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvXLampActivationSourceSelector;
-    /// \brief An enumerated integer property. Chooses which signal to use for the activation line
-    /**
-     *  Chooses which signal to use for the activation line
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv X Lamp Activation Source')
-     *  - \b mvExposureAndAcquisitionActive (Display string: 'mv X Lamp Activation Source')
-     *  - \b Line4 (Display string: 'mv X Lamp Activation Source')
-     *  - \b Line5 (Display string: 'mv X Lamp Activation Source')
-     *  - \b UserOutput0 (Display string: 'mv X Lamp Activation Source')
-     *  - \b UserOutput1 (Display string: 'mv X Lamp Activation Source')
-     *  - \b UserOutput2 (Display string: 'mv X Lamp Activation Source')
-     *  - \b UserOutput3 (Display string: 'mv X Lamp Activation Source')
-     *  - \b Timer1Active (Display string: 'mv X Lamp Activation Source')
-     *  - \b Timer2Active (Display string: 'mv X Lamp Activation Source')
-     *  - \b Counter1Active (Display string: 'mv X Lamp Activation Source')
-     *  - \b Counter2Active (Display string: 'mv X Lamp Activation Source')
-     *  - \b Counter3Active (Display string: 'mv X Lamp Activation Source')
-     *  - \b Counter4Active (Display string: 'mv X Lamp Activation Source')
-     *  - \b ExposureActive (Display string: 'mv X Lamp Activation Source')
-     *  - \b FrameActive (Display string: 'mv X Lamp Activation Source')
-     *  - \b mvReadOutActive (Display string: 'mv X Lamp Activation Source')
-     *  - \b LineActive (Display string: 'mv X Lamp Activation Source')
-     *  - \b FrameTriggerWait (Display string: 'mv X Lamp Activation Source')
-     *  - \b mvTemperatureOutOfRange (Display string: 'mv X Lamp Activation Source')
-     *  - \b mvRTMOutput0 (Display string: 'mv X Lamp Activation Source')
-     *  - \b mvRTMOutput1 (Display string: 'mv X Lamp Activation Source')
-     *  - \b mvRTMOutput2 (Display string: 'mv X Lamp Activation Source')
-     *  - \b mvRTMOutput3 (Display string: 'mv X Lamp Activation Source')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvXLampActivationSource;
-    /// \brief An enumerated integer property. Chooses which LED pair is to be configured.
-    /**
-     *  Chooses which LED pair is to be configured.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b LEDPairA (Display string: 'mv X Lamp LED Pair Selector')
-     *  - \b LEDPairB (Display string: 'mv X Lamp LED Pair Selector')
-     *  - \b LEDPairC (Display string: 'mv X Lamp LED Pair Selector')
-     *  - \b LEDPairD (Display string: 'mv X Lamp LED Pair Selector')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvXLampLEDPairSelector;
-    /// \brief An enumerated integer property. Chooses which LED mode bit is to be configured.
-    /**
-     *  Chooses which LED mode bit is to be configured.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b ActivationSource1Low_ActivationSource0Low (Display string: 'mv X Lamp Activation Source Mode Selector')
-     *  - \b ActivationSource1Low_ActivationSource0High (Display string: 'mv X Lamp Activation Source Mode Selector')
-     *  - \b ActivationSource1High_ActivationSource0Low (Display string: 'mv X Lamp Activation Source Mode Selector')
-     *  - \b ActivationSource1High_ActivationSource0High (Display string: 'mv X Lamp Activation Source Mode Selector')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 mvXLampActivationSourceModeSelector;
-    /// \brief A boolean property. LED mode bit
-    /**
-     *  LEDD mode bit
-     */
-    PropertyIBoolean mvXLampLEDActivationSourceMode;
-    /// \brief An integer property. Current per LED pair in mA.
-    /**
-     *  Current per LED pair in mA.
-     */
-    PropertyI64 mvXLampLEDPairCurrent;
-    PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains features to control the devices Logic Gate Control parameters.
 /**
  *  A category that contains features to control the devices Logic Gate Control parameters.
+ * \ingroup GenICamInterfaceDevice
  */
 class mvLogicGateControl : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -11161,6 +12683,7 @@ public:
         mvLogicGateORTermSrc0(),
         mvLogicGateORTermSrc1()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvLogicGateControl" );
         m_hRoot = locator.searchbase_id();
@@ -11184,16 +12707,18 @@ public:
         locator.bindComponent( mvLogicGateORTermSrc0, "mvLogicGateORTermSrc0" );
         locator.bindComponent( mvLogicGateORTermSrc1, "mvLogicGateORTermSrc1" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects the AND gate to configure.
     /**
      *  This enumeration selects the AND gate to configure.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateAND1 (Display string: 'mv Logic Gate AND Selector')
-     *  - \b mvLogicGateAND2 (Display string: 'mv Logic Gate AND Selector')
-     *  - \b mvLogicGateAND3 (Display string: 'mv Logic Gate AND Selector')
-     *  - \b mvLogicGateAND4 (Display string: 'mv Logic Gate AND Selector')
+     *  - \b mvLogicGateAND1 (Display string: 'mv Logic Gate AND 1')
+     *  - \b mvLogicGateAND2 (Display string: 'mv Logic Gate AND 2')
+     *  - \b mvLogicGateAND3 (Display string: 'mv Logic Gate AND 3')
+     *  - \b mvLogicGateAND4 (Display string: 'mv Logic Gate AND 4')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11204,42 +12729,42 @@ public:
      *  This enumeration can be used to select the first input signal of the AND gate selected by mvLogicGateANDSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Line4 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Line5 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Line6 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Line7 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Line12 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Line13 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Line14 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Line15 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b ExposureActive (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b mvExposureSensor2Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b UserOutput0 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b UserOutput1 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b UserOutput2 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b UserOutput3 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b UserOutput4 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b UserOutput5 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b UserOutput6 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b UserOutput7 (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Timer1Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Timer2Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Timer3Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Counter1Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Counter2Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Counter3Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Counter4Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Counter5Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Counter6Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Counter7Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b Counter8Active (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b AcquisitionActive (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b FrameActive (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b LineActive (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b FrameTriggerWait (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b mvTemperatureOutOfRange (Display string: 'mv Logic Gate AND Source 1')
-     *  - \b mvExposureActive (Display string: 'mv Logic Gate AND Source 1')
+     *  - \b Off (Display string: 'Off')
+     *  - \b Line4 (Display string: 'Line 4')
+     *  - \b Line5 (Display string: 'Line 5')
+     *  - \b Line6 (Display string: 'Line 6')
+     *  - \b Line7 (Display string: 'Line 7')
+     *  - \b Line12 (Display string: 'Line 12')
+     *  - \b Line13 (Display string: 'Line 13')
+     *  - \b Line14 (Display string: 'Line 14')
+     *  - \b Line15 (Display string: 'Line 15')
+     *  - \b ExposureActive (Display string: 'Exposure Active')
+     *  - \b mvExposureSensor2Active (Display string: 'mv Exposure Sensor 2 Active')
+     *  - \b UserOutput0 (Display string: 'User Output 0')
+     *  - \b UserOutput1 (Display string: 'User Output 1')
+     *  - \b UserOutput2 (Display string: 'User Output 2')
+     *  - \b UserOutput3 (Display string: 'User Output 3')
+     *  - \b UserOutput4 (Display string: 'User Output 4')
+     *  - \b UserOutput5 (Display string: 'User Output 5')
+     *  - \b UserOutput6 (Display string: 'User Output 6')
+     *  - \b UserOutput7 (Display string: 'User Output 7')
+     *  - \b Timer1Active (Display string: 'Timer 1 Active')
+     *  - \b Timer2Active (Display string: 'Timer 2 Active')
+     *  - \b Timer3Active (Display string: 'Timer 3 Active')
+     *  - \b Counter1Active (Display string: 'Counter 1 Active')
+     *  - \b Counter2Active (Display string: 'Counter 2 Active')
+     *  - \b Counter3Active (Display string: 'Counter 3 Active')
+     *  - \b Counter4Active (Display string: 'Counter 4 Active')
+     *  - \b Counter5Active (Display string: 'Counter 5 Active')
+     *  - \b Counter6Active (Display string: 'Counter 6 Active')
+     *  - \b Counter7Active (Display string: 'Counter 7 Active')
+     *  - \b Counter8Active (Display string: 'Counter 8 Active')
+     *  - \b AcquisitionActive (Display string: 'Acquisition Active')
+     *  - \b FrameActive (Display string: 'Frame Active')
+     *  - \b LineActive (Display string: 'Line Active')
+     *  - \b FrameTriggerWait (Display string: 'Frame Trigger Wait')
+     *  - \b mvTemperatureOutOfRange (Display string: 'mv Temperature Out Of Range')
+     *  - \b mvExposureActive (Display string: 'mv Exposure Active')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11255,42 +12780,42 @@ public:
      *  This enumeration can be used to select the second input signal of the AND gate selected by mvLogicGateANDSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Line4 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Line5 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Line6 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Line7 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Line12 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Line13 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Line14 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Line15 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b ExposureActive (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b mvExposureSensor2Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b UserOutput0 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b UserOutput1 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b UserOutput2 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b UserOutput3 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b UserOutput4 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b UserOutput5 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b UserOutput6 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b UserOutput7 (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Timer1Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Timer2Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Timer3Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Counter1Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Counter2Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Counter3Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Counter4Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Counter5Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Counter6Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Counter7Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b Counter8Active (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b AcquisitionActive (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b FrameActive (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b LineActive (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b FrameTriggerWait (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b mvTemperatureOutOfRange (Display string: 'mv Logic Gate AND Source 2')
-     *  - \b mvExposureActive (Display string: 'mv Logic Gate AND Source 2')
+     *  - \b Off (Display string: 'Off')
+     *  - \b Line4 (Display string: 'Line 4')
+     *  - \b Line5 (Display string: 'Line 5')
+     *  - \b Line6 (Display string: 'Line 6')
+     *  - \b Line7 (Display string: 'Line 7')
+     *  - \b Line12 (Display string: 'Line 12')
+     *  - \b Line13 (Display string: 'Line 13')
+     *  - \b Line14 (Display string: 'Line 14')
+     *  - \b Line15 (Display string: 'Line 15')
+     *  - \b ExposureActive (Display string: 'Exposure Active')
+     *  - \b mvExposureSensor2Active (Display string: 'mv Exposure Sensor 2 Active')
+     *  - \b UserOutput0 (Display string: 'User Output 0')
+     *  - \b UserOutput1 (Display string: 'User Output 1')
+     *  - \b UserOutput2 (Display string: 'User Output 2')
+     *  - \b UserOutput3 (Display string: 'User Output 3')
+     *  - \b UserOutput4 (Display string: 'User Output 4')
+     *  - \b UserOutput5 (Display string: 'User Output 5')
+     *  - \b UserOutput6 (Display string: 'User Output 6')
+     *  - \b UserOutput7 (Display string: 'User Output 7')
+     *  - \b Timer1Active (Display string: 'Timer 1 Active')
+     *  - \b Timer2Active (Display string: 'Timer 2 Active')
+     *  - \b Timer3Active (Display string: 'Timer 3 Active')
+     *  - \b Counter1Active (Display string: 'Counter 1 Active')
+     *  - \b Counter2Active (Display string: 'Counter 2 Active')
+     *  - \b Counter3Active (Display string: 'Counter 3 Active')
+     *  - \b Counter4Active (Display string: 'Counter 4 Active')
+     *  - \b Counter5Active (Display string: 'Counter 5 Active')
+     *  - \b Counter6Active (Display string: 'Counter 6 Active')
+     *  - \b Counter7Active (Display string: 'Counter 7 Active')
+     *  - \b Counter8Active (Display string: 'Counter 8 Active')
+     *  - \b AcquisitionActive (Display string: 'Acquisition Active')
+     *  - \b FrameActive (Display string: 'Frame Active')
+     *  - \b LineActive (Display string: 'Line Active')
+     *  - \b FrameTriggerWait (Display string: 'Frame Trigger Wait')
+     *  - \b mvTemperatureOutOfRange (Display string: 'mv Temperature Out Of Range')
+     *  - \b mvExposureActive (Display string: 'mv Exposure Active')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11306,10 +12831,10 @@ public:
      *  This enumeration selects the OR gate to configure.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateOR1 (Display string: 'mv Logic Gate OR Selector')
-     *  - \b mvLogicGateOR2 (Display string: 'mv Logic Gate OR Selector')
-     *  - \b mvLogicGateOR3 (Display string: 'mv Logic Gate OR Selector')
-     *  - \b mvLogicGateOR4 (Display string: 'mv Logic Gate OR Selector')
+     *  - \b mvLogicGateOR1 (Display string: 'mv Logic Gate OR 1')
+     *  - \b mvLogicGateOR2 (Display string: 'mv Logic Gate OR 2')
+     *  - \b mvLogicGateOR3 (Display string: 'mv Logic Gate OR 3')
+     *  - \b mvLogicGateOR4 (Display string: 'mv Logic Gate OR 4')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11320,11 +12845,11 @@ public:
      *  This enumeration can be used to select the first input signal of the OR gate selected by mvLogicGateORSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateAND1Output (Display string: 'mv Logic Gate OR Source 1')
-     *  - \b mvLogicGateAND2Output (Display string: 'mv Logic Gate OR Source 1')
-     *  - \b mvLogicGateAND3Output (Display string: 'mv Logic Gate OR Source 1')
-     *  - \b mvLogicGateAND4Output (Display string: 'mv Logic Gate OR Source 1')
-     *  - \b Off (Display string: 'mv Logic Gate OR Source 1')
+     *  - \b mvLogicGateAND1Output (Display string: 'mv Logic Gate AND 1 Output')
+     *  - \b mvLogicGateAND2Output (Display string: 'mv Logic Gate AND 2 Output')
+     *  - \b mvLogicGateAND3Output (Display string: 'mv Logic Gate AND 3 Output')
+     *  - \b mvLogicGateAND4Output (Display string: 'mv Logic Gate AND 4 Output')
+     *  - \b Off (Display string: 'Off')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11335,11 +12860,11 @@ public:
      *  This enumeration can be used to select the second input signal of the OR gate selected by mvLogicGateORSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateAND1Output (Display string: 'mv Logic Gate OR Source 2')
-     *  - \b mvLogicGateAND2Output (Display string: 'mv Logic Gate OR Source 2')
-     *  - \b mvLogicGateAND3Output (Display string: 'mv Logic Gate OR Source 2')
-     *  - \b mvLogicGateAND4Output (Display string: 'mv Logic Gate OR Source 2')
-     *  - \b Off (Display string: 'mv Logic Gate OR Source 2')
+     *  - \b mvLogicGateAND1Output (Display string: 'mv Logic Gate AND 1 Output')
+     *  - \b mvLogicGateAND2Output (Display string: 'mv Logic Gate AND 2 Output')
+     *  - \b mvLogicGateAND3Output (Display string: 'mv Logic Gate AND 3 Output')
+     *  - \b mvLogicGateAND4Output (Display string: 'mv Logic Gate AND 4 Output')
+     *  - \b Off (Display string: 'Off')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11350,11 +12875,11 @@ public:
      *  This enumeration can be used to select the third input signal of the OR gate selected by mvLogicGateORSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateAND1Output (Display string: 'mv Logic Gate OR Source 3')
-     *  - \b mvLogicGateAND2Output (Display string: 'mv Logic Gate OR Source 3')
-     *  - \b mvLogicGateAND3Output (Display string: 'mv Logic Gate OR Source 3')
-     *  - \b mvLogicGateAND4Output (Display string: 'mv Logic Gate OR Source 3')
-     *  - \b Off (Display string: 'mv Logic Gate OR Source 3')
+     *  - \b mvLogicGateAND1Output (Display string: 'mv Logic Gate AND 1 Output')
+     *  - \b mvLogicGateAND2Output (Display string: 'mv Logic Gate AND 2 Output')
+     *  - \b mvLogicGateAND3Output (Display string: 'mv Logic Gate AND 3 Output')
+     *  - \b mvLogicGateAND4Output (Display string: 'mv Logic Gate AND 4 Output')
+     *  - \b Off (Display string: 'Off')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11365,71 +12890,71 @@ public:
      *  This enumeration can be used to select the fourth input signal of the OR gate selected by mvLogicGateORSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateAND1Output (Display string: 'mv Logic Gate OR Source 4')
-     *  - \b mvLogicGateAND2Output (Display string: 'mv Logic Gate OR Source 4')
-     *  - \b mvLogicGateAND3Output (Display string: 'mv Logic Gate OR Source 4')
-     *  - \b mvLogicGateAND4Output (Display string: 'mv Logic Gate OR Source 4')
-     *  - \b Off (Display string: 'mv Logic Gate OR Source 4')
+     *  - \b mvLogicGateAND1Output (Display string: 'mv Logic Gate AND 1 Output')
+     *  - \b mvLogicGateAND2Output (Display string: 'mv Logic Gate AND 2 Output')
+     *  - \b mvLogicGateAND3Output (Display string: 'mv Logic Gate AND 3 Output')
+     *  - \b mvLogicGateAND4Output (Display string: 'mv Logic Gate AND 4 Output')
+     *  - \b Off (Display string: 'Off')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 mvLogicGateORSource4;
-    /// \brief An enumerated integer property. Selects the LogicGateSource of the ANDORMatrix.
+    /// \brief An enumerated integer property. Selects the LogicGateSource of the AND-OR-Matrix.
     /**
-     *  Selects the LogicGateSource of the ANDORMatrix.
+     *  Selects the LogicGateSource of the AND-OR-Matrix.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateSource0 (Display string: 'mv Logic Gate Source Selector')
-     *  - \b mvLogicGateSource1 (Display string: 'mv Logic Gate Source Selector')
-     *  - \b mvLogicGateSource2 (Display string: 'mv Logic Gate Source Selector')
-     *  - \b mvLogicGateSource3 (Display string: 'mv Logic Gate Source Selector')
-     *  - \b mvLogicGateSource4 (Display string: 'mv Logic Gate Source Selector')
-     *  - \b mvLogicGateSource5 (Display string: 'mv Logic Gate Source Selector')
-     *  - \b mvLogicGateSource6 (Display string: 'mv Logic Gate Source Selector')
-     *  - \b mvLogicGateSource7 (Display string: 'mv Logic Gate Source Selector')
+     *  - \b mvLogicGateSource0 (Display string: 'mv Logic Gate Source 0')
+     *  - \b mvLogicGateSource1 (Display string: 'mv Logic Gate Source 1')
+     *  - \b mvLogicGateSource2 (Display string: 'mv Logic Gate Source 2')
+     *  - \b mvLogicGateSource3 (Display string: 'mv Logic Gate Source 3')
+     *  - \b mvLogicGateSource4 (Display string: 'mv Logic Gate Source 4')
+     *  - \b mvLogicGateSource5 (Display string: 'mv Logic Gate Source 5')
+     *  - \b mvLogicGateSource6 (Display string: 'mv Logic Gate Source 6')
+     *  - \b mvLogicGateSource7 (Display string: 'mv Logic Gate Source 7')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 mvLogicGateSourceSelector;
-    /// \brief An enumerated integer property. Selects the input signal of the ANDORMatrix selected by mvLogicGateSourceSelector.
+    /// \brief An enumerated integer property. Selects the input signal of the AND-OR-Matrix selected by mvLogicGateSourceSelector.
     /**
-     *  Selects the input signal of the ANDORMatrix selected by mvLogicGateSourceSelector.
+     *  Selects the input signal of the AND-OR-Matrix selected by mvLogicGateSourceSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Logic Gate Source')
-     *  - \b Line4 (Display string: 'mv Logic Gate Source')
-     *  - \b Line5 (Display string: 'mv Logic Gate Source')
-     *  - \b Line6 (Display string: 'mv Logic Gate Source')
-     *  - \b Line7 (Display string: 'mv Logic Gate Source')
-     *  - \b ExposureActive (Display string: 'mv Logic Gate Source')
-     *  - \b mvExposureSensor2Active (Display string: 'mv Logic Gate Source')
-     *  - \b UserOutput0 (Display string: 'mv Logic Gate Source')
-     *  - \b UserOutput1 (Display string: 'mv Logic Gate Source')
-     *  - \b UserOutput2 (Display string: 'mv Logic Gate Source')
-     *  - \b UserOutput3 (Display string: 'mv Logic Gate Source')
-     *  - \b UserOutput4 (Display string: 'mv Logic Gate Source')
-     *  - \b UserOutput5 (Display string: 'mv Logic Gate Source')
-     *  - \b UserOutput6 (Display string: 'mv Logic Gate Source')
-     *  - \b UserOutput7 (Display string: 'mv Logic Gate Source')
-     *  - \b Timer1Active (Display string: 'mv Logic Gate Source')
-     *  - \b Timer2Active (Display string: 'mv Logic Gate Source')
-     *  - \b Timer3Active (Display string: 'mv Logic Gate Source')
-     *  - \b Counter1Active (Display string: 'mv Logic Gate Source')
-     *  - \b Counter2Active (Display string: 'mv Logic Gate Source')
-     *  - \b Counter3Active (Display string: 'mv Logic Gate Source')
-     *  - \b Counter4Active (Display string: 'mv Logic Gate Source')
-     *  - \b Counter5Active (Display string: 'mv Logic Gate Source')
-     *  - \b Counter6Active (Display string: 'mv Logic Gate Source')
-     *  - \b Counter7Active (Display string: 'mv Logic Gate Source')
-     *  - \b Counter8Active (Display string: 'mv Logic Gate Source')
-     *  - \b AcquisitionActive (Display string: 'mv Logic Gate Source')
-     *  - \b FrameActive (Display string: 'mv Logic Gate Source')
-     *  - \b LineActive (Display string: 'mv Logic Gate Source')
-     *  - \b FrameTriggerWait (Display string: 'mv Logic Gate Source')
-     *  - \b mvTemperatureOutOfRange (Display string: 'mv Logic Gate Source')
-     *  - \b mvExposureActive (Display string: 'mv Logic Gate Source')
+     *  - \b Off (Display string: 'Off')
+     *  - \b Line4 (Display string: 'Line 4')
+     *  - \b Line5 (Display string: 'Line 5')
+     *  - \b Line6 (Display string: 'Line 6')
+     *  - \b Line7 (Display string: 'Line 7')
+     *  - \b ExposureActive (Display string: 'Exposure Active')
+     *  - \b mvExposureSensor2Active (Display string: 'mv Exposure Sensor 2 Active')
+     *  - \b UserOutput0 (Display string: 'User Output 0')
+     *  - \b UserOutput1 (Display string: 'User Output 1')
+     *  - \b UserOutput2 (Display string: 'User Output 2')
+     *  - \b UserOutput3 (Display string: 'User Output 3')
+     *  - \b UserOutput4 (Display string: 'User Output 4')
+     *  - \b UserOutput5 (Display string: 'User Output 5')
+     *  - \b UserOutput6 (Display string: 'User Output 6')
+     *  - \b UserOutput7 (Display string: 'User Output 7')
+     *  - \b Timer1Active (Display string: 'Timer 1 Active')
+     *  - \b Timer2Active (Display string: 'Timer 2 Active')
+     *  - \b Timer3Active (Display string: 'Timer 3 Active')
+     *  - \b Counter1Active (Display string: 'Counter 1 Active')
+     *  - \b Counter2Active (Display string: 'Counter 2 Active')
+     *  - \b Counter3Active (Display string: 'Counter 3 Active')
+     *  - \b Counter4Active (Display string: 'Counter 4 Active')
+     *  - \b Counter5Active (Display string: 'Counter 5 Active')
+     *  - \b Counter6Active (Display string: 'Counter 6 Active')
+     *  - \b Counter7Active (Display string: 'Counter 7 Active')
+     *  - \b Counter8Active (Display string: 'Counter 8 Active')
+     *  - \b AcquisitionActive (Display string: 'Acquisition Active')
+     *  - \b FrameActive (Display string: 'Frame Active')
+     *  - \b LineActive (Display string: 'Line Active')
+     *  - \b FrameTriggerWait (Display string: 'Frame Trigger Wait')
+     *  - \b mvTemperatureOutOfRange (Display string: 'mv Temperature Out Of Range')
+     *  - \b mvExposureActive (Display string: 'mv Exposure Active')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11445,14 +12970,14 @@ public:
      *  Selects the AND-term of the AND-OR-matrix.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateANDTerm0 (Display string: 'mv Logic Gate AND Term Selector')
-     *  - \b mvLogicGateANDTerm1 (Display string: 'mv Logic Gate AND Term Selector')
-     *  - \b mvLogicGateANDTerm2 (Display string: 'mv Logic Gate AND Term Selector')
-     *  - \b mvLogicGateANDTerm3 (Display string: 'mv Logic Gate AND Term Selector')
-     *  - \b mvLogicGateANDTerm4 (Display string: 'mv Logic Gate AND Term Selector')
-     *  - \b mvLogicGateANDTerm5 (Display string: 'mv Logic Gate AND Term Selector')
-     *  - \b mvLogicGateANDTerm6 (Display string: 'mv Logic Gate AND Term Selector')
-     *  - \b mvLogicGateANDTerm7 (Display string: 'mv Logic Gate AND Term Selector')
+     *  - \b mvLogicGateANDTerm0 (Display string: 'mv Logic Gate AND Term 0')
+     *  - \b mvLogicGateANDTerm1 (Display string: 'mv Logic Gate AND Term 1')
+     *  - \b mvLogicGateANDTerm2 (Display string: 'mv Logic Gate AND Term 2')
+     *  - \b mvLogicGateANDTerm3 (Display string: 'mv Logic Gate AND Term 3')
+     *  - \b mvLogicGateANDTerm4 (Display string: 'mv Logic Gate AND Term 4')
+     *  - \b mvLogicGateANDTerm5 (Display string: 'mv Logic Gate AND Term 5')
+     *  - \b mvLogicGateANDTerm6 (Display string: 'mv Logic Gate AND Term 6')
+     *  - \b mvLogicGateANDTerm7 (Display string: 'mv Logic Gate AND Term 7')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11463,15 +12988,15 @@ public:
      *  Selects the first input signal of the AND-term selected by mvLogicGateANDTermSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Logic Gate AND Term Src 0')
-     *  - \b mvLogicGateSource0 (Display string: 'mv Logic Gate AND Term Src 0')
-     *  - \b mvLogicGateSource1 (Display string: 'mv Logic Gate AND Term Src 0')
-     *  - \b mvLogicGateSource2 (Display string: 'mv Logic Gate AND Term Src 0')
-     *  - \b mvLogicGateSource3 (Display string: 'mv Logic Gate AND Term Src 0')
-     *  - \b mvLogicGateSource4 (Display string: 'mv Logic Gate AND Term Src 0')
-     *  - \b mvLogicGateSource5 (Display string: 'mv Logic Gate AND Term Src 0')
-     *  - \b mvLogicGateSource6 (Display string: 'mv Logic Gate AND Term Src 0')
-     *  - \b mvLogicGateSource7 (Display string: 'mv Logic Gate AND Term Src 0')
+     *  - \b Off (Display string: 'Off')
+     *  - \b mvLogicGateSource0 (Display string: 'mv Logic Gate Source 0')
+     *  - \b mvLogicGateSource1 (Display string: 'mv Logic Gate Source 1')
+     *  - \b mvLogicGateSource2 (Display string: 'mv Logic Gate Source 2')
+     *  - \b mvLogicGateSource3 (Display string: 'mv Logic Gate Source 3')
+     *  - \b mvLogicGateSource4 (Display string: 'mv Logic Gate Source 4')
+     *  - \b mvLogicGateSource5 (Display string: 'mv Logic Gate Source 5')
+     *  - \b mvLogicGateSource6 (Display string: 'mv Logic Gate Source 6')
+     *  - \b mvLogicGateSource7 (Display string: 'mv Logic Gate Source 7')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11482,15 +13007,15 @@ public:
      *  Selects the second input signal of the AND-term selected by mvLogicGateANDTermSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Logic Gate AND Term Src 1')
-     *  - \b mvLogicGateSource0 (Display string: 'mv Logic Gate AND Term Src 1')
-     *  - \b mvLogicGateSource1 (Display string: 'mv Logic Gate AND Term Src 1')
-     *  - \b mvLogicGateSource2 (Display string: 'mv Logic Gate AND Term Src 1')
-     *  - \b mvLogicGateSource3 (Display string: 'mv Logic Gate AND Term Src 1')
-     *  - \b mvLogicGateSource4 (Display string: 'mv Logic Gate AND Term Src 1')
-     *  - \b mvLogicGateSource5 (Display string: 'mv Logic Gate AND Term Src 1')
-     *  - \b mvLogicGateSource6 (Display string: 'mv Logic Gate AND Term Src 1')
-     *  - \b mvLogicGateSource7 (Display string: 'mv Logic Gate AND Term Src 1')
+     *  - \b Off (Display string: 'Off')
+     *  - \b mvLogicGateSource0 (Display string: 'mv Logic Gate Source 0')
+     *  - \b mvLogicGateSource1 (Display string: 'mv Logic Gate Source 1')
+     *  - \b mvLogicGateSource2 (Display string: 'mv Logic Gate Source 2')
+     *  - \b mvLogicGateSource3 (Display string: 'mv Logic Gate Source 3')
+     *  - \b mvLogicGateSource4 (Display string: 'mv Logic Gate Source 4')
+     *  - \b mvLogicGateSource5 (Display string: 'mv Logic Gate Source 5')
+     *  - \b mvLogicGateSource6 (Display string: 'mv Logic Gate Source 6')
+     *  - \b mvLogicGateSource7 (Display string: 'mv Logic Gate Source 7')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11501,14 +13026,14 @@ public:
      *  Selects the OR-term of the AND-OR-matrix.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvLogicGateORTerm0 (Display string: 'mv Logic Gate OR Term Selector')
-     *  - \b mvLogicGateORTerm1 (Display string: 'mv Logic Gate OR Term Selector')
-     *  - \b mvLogicGateORTerm2 (Display string: 'mv Logic Gate OR Term Selector')
-     *  - \b mvLogicGateORTerm3 (Display string: 'mv Logic Gate OR Term Selector')
-     *  - \b mvLogicGateORTerm4 (Display string: 'mv Logic Gate OR Term Selector')
-     *  - \b mvLogicGateORTerm5 (Display string: 'mv Logic Gate OR Term Selector')
-     *  - \b mvLogicGateORTerm6 (Display string: 'mv Logic Gate OR Term Selector')
-     *  - \b mvLogicGateORTerm7 (Display string: 'mv Logic Gate OR Term Selector')
+     *  - \b mvLogicGateORTerm0 (Display string: 'mv Logic Gate OR Term 0')
+     *  - \b mvLogicGateORTerm1 (Display string: 'mv Logic Gate OR Term 1')
+     *  - \b mvLogicGateORTerm2 (Display string: 'mv Logic Gate OR Term 2')
+     *  - \b mvLogicGateORTerm3 (Display string: 'mv Logic Gate OR Term 3')
+     *  - \b mvLogicGateORTerm4 (Display string: 'mv Logic Gate OR Term 4')
+     *  - \b mvLogicGateORTerm5 (Display string: 'mv Logic Gate OR Term 5')
+     *  - \b mvLogicGateORTerm6 (Display string: 'mv Logic Gate OR Term 6')
+     *  - \b mvLogicGateORTerm7 (Display string: 'mv Logic Gate OR Term 7')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11519,15 +13044,15 @@ public:
      *  Selects the first input signal of the ORTerm selected by mvLogicGateORTermSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Logic Gate OR Term Src 0')
-     *  - \b mvLogicGateANDTerm0 (Display string: 'mv Logic Gate OR Term Src 0')
-     *  - \b mvLogicGateANDTerm1 (Display string: 'mv Logic Gate OR Term Src 0')
-     *  - \b mvLogicGateANDTerm2 (Display string: 'mv Logic Gate OR Term Src 0')
-     *  - \b mvLogicGateANDTerm3 (Display string: 'mv Logic Gate OR Term Src 0')
-     *  - \b mvLogicGateANDTerm4 (Display string: 'mv Logic Gate OR Term Src 0')
-     *  - \b mvLogicGateANDTerm5 (Display string: 'mv Logic Gate OR Term Src 0')
-     *  - \b mvLogicGateANDTerm6 (Display string: 'mv Logic Gate OR Term Src 0')
-     *  - \b mvLogicGateANDTerm7 (Display string: 'mv Logic Gate OR Term Src 0')
+     *  - \b Off (Display string: 'Off')
+     *  - \b mvLogicGateANDTerm0 (Display string: 'mv Logic Gate AND Term 0')
+     *  - \b mvLogicGateANDTerm1 (Display string: 'mv Logic Gate AND Term 1')
+     *  - \b mvLogicGateANDTerm2 (Display string: 'mv Logic Gate AND Term 2')
+     *  - \b mvLogicGateANDTerm3 (Display string: 'mv Logic Gate AND Term 3')
+     *  - \b mvLogicGateANDTerm4 (Display string: 'mv Logic Gate AND Term 4')
+     *  - \b mvLogicGateANDTerm5 (Display string: 'mv Logic Gate AND Term 5')
+     *  - \b mvLogicGateANDTerm6 (Display string: 'mv Logic Gate AND Term 6')
+     *  - \b mvLogicGateANDTerm7 (Display string: 'mv Logic Gate AND Term 7')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11538,27 +13063,30 @@ public:
      *  Selects the second input signal of the ORTerm selected by mvLogicGateORTermSelector.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Logic Gate OR Term Src 1')
-     *  - \b mvLogicGateANDTerm0 (Display string: 'mv Logic Gate OR Term Src 1')
-     *  - \b mvLogicGateANDTerm1 (Display string: 'mv Logic Gate OR Term Src 1')
-     *  - \b mvLogicGateANDTerm2 (Display string: 'mv Logic Gate OR Term Src 1')
-     *  - \b mvLogicGateANDTerm3 (Display string: 'mv Logic Gate OR Term Src 1')
-     *  - \b mvLogicGateANDTerm4 (Display string: 'mv Logic Gate OR Term Src 1')
-     *  - \b mvLogicGateANDTerm5 (Display string: 'mv Logic Gate OR Term Src 1')
-     *  - \b mvLogicGateANDTerm6 (Display string: 'mv Logic Gate OR Term Src 1')
-     *  - \b mvLogicGateANDTerm7 (Display string: 'mv Logic Gate OR Term Src 1')
+     *  - \b Off (Display string: 'Off')
+     *  - \b mvLogicGateANDTerm0 (Display string: 'mv Logic Gate AND Term 0')
+     *  - \b mvLogicGateANDTerm1 (Display string: 'mv Logic Gate AND Term 1')
+     *  - \b mvLogicGateANDTerm2 (Display string: 'mv Logic Gate AND Term 2')
+     *  - \b mvLogicGateANDTerm3 (Display string: 'mv Logic Gate AND Term 3')
+     *  - \b mvLogicGateANDTerm4 (Display string: 'mv Logic Gate AND Term 4')
+     *  - \b mvLogicGateANDTerm5 (Display string: 'mv Logic Gate AND Term 5')
+     *  - \b mvLogicGateANDTerm6 (Display string: 'mv Logic Gate AND Term 6')
+     *  - \b mvLogicGateANDTerm7 (Display string: 'mv Logic Gate AND Term 7')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 mvLogicGateORTermSrc1;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains features to control the devices Current Control parameters.
 /**
  *  A category that contains features to control the devices Current Control parameters.
+ * \ingroup GenICamInterfaceDevice
  */
 class mvCurrentControl : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -11578,22 +13106,25 @@ public:
         mvCurrentSelector(),
         mvCurrent()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvCurrentControl" );
         m_hRoot = locator.searchbase_id();
         locator.bindComponent( mvCurrentSelector, "mvCurrentSelector" );
         locator.bindComponent( mvCurrent, "mvCurrent" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Selects the current source to configure.
     /**
      *  Selects the current source to configure.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Current0 (Display string: 'mv Current Selector')
-     *  - \b Current1 (Display string: 'mv Current Selector')
-     *  - \b Current2 (Display string: 'mv Current Selector')
-     *  - \b Current3 (Display string: 'mv Current Selector')
+     *  - \b Current0 (Display string: 'Current 0')
+     *  - \b Current1 (Display string: 'Current 1')
+     *  - \b Current2 (Display string: 'Current 2')
+     *  - \b Current3 (Display string: 'Current 3')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11604,13 +13135,16 @@ public:
      *  Sets the current value for the selected device(e.g.: LED).
      */
     PropertyI64 mvCurrent;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Contains features to control motorized lenses
 /**
  *  Contains features to control motorized lenses.
+ * \ingroup GenICamInterfaceDevice
  */
 class mvLensControl : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -11637,6 +13171,7 @@ public:
         mvDriveDuration(),
         mvDriveLevel()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvLensControl" );
         m_hRoot = locator.searchbase_id();
@@ -11650,13 +13185,15 @@ public:
         locator.bindComponent( mvDriveDuration, "mvDriveDuration" );
         locator.bindComponent( mvDriveLevel, "mvDriveLevel" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Sets the iris type.
     /**
      *  Sets the iris type.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvVideoIris (Display string: 'mv Iris Type')
+     *  - \b mvVideoIris (Display string: 'mv Video Iris')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11667,10 +13204,10 @@ public:
      *  Sets the iris operating mode.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Off (Display string: 'mv Iris Mode'): No iris adjustment will be done.
-     *  - \b mvIrisAuto (Display string: 'mv Iris Mode'): The iris adjustment will be done automatically by evaluating the current image data.
-     *  - \b mvIrisOpen (Display string: 'mv Iris Mode'): The iris is fully open.
-     *  - \b mvIrisClose (Display string: 'mv Iris Mode'): The iris is fully closed.
+     *  - \b Off (Display string: 'Off'): No iris adjustment will be done.
+     *  - \b mvIrisAuto (Display string: 'mv Iris Auto'): The iris adjustment will be done automatically by evaluating the current image data.
+     *  - \b mvIrisOpen (Display string: 'mv Iris Open'): The iris is fully open.
+     *  - \b mvIrisClose (Display string: 'mv Iris Close'): The iris is fully closed.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11691,9 +13228,9 @@ public:
      *  Selects the lens drive that should be adjusted.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvFocus (Display string: 'mv Drive Selector'): Selects the motor to control the focus.
-     *  - \b mvZoom (Display string: 'mv Drive Selector'): Selects the motor to control the zoom.
-     *  - \b mvIris (Display string: 'mv Drive Selector'): Selects the motor to control the iris.
+     *  - \b mvFocus (Display string: 'mv Focus'): Selects the motor to control the focus.
+     *  - \b mvZoom (Display string: 'mv Zoom'): Selects the motor to control the zoom.
+     *  - \b mvIris (Display string: 'mv Iris'): Selects the motor to control the iris.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11719,13 +13256,16 @@ public:
      *  Sets the voltage level of the drive command in mV.
      */
     PropertyI64 mvDriveLevel;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
-/// \brief Category that contains features to control the devices Flat Field Correction parameters.
+/// \brief Contains features to control the devices Flat Field Correction parameters.
 /**
- *  A category that contains features to control the devices Flat Field Correction parameters.
+ *  Contains features to control the devices Flat Field Correction parameters.
+ * \ingroup GenICamInterfaceDevice
  */
 class mvFFCControl : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -11744,16 +13284,25 @@ public:
         mvIMPACT::acquire::ComponentCollection( pDev ),
         mvFFCEnable(),
         mvFFCCalibrationImageCount(),
-        mvFFCCalibrate()
+        mvFFCCalibrate(),
+        mvFFCImageLoad(),
+        mvFFCImageSave(),
+        mvFFCAutoLoadMode()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvFFCControl" );
         m_hRoot = locator.searchbase_id();
         locator.bindComponent( mvFFCEnable, "mvFFCEnable" );
         locator.bindComponent( mvFFCCalibrationImageCount, "mvFFCCalibrationImageCount" );
         locator.bindComponent( mvFFCCalibrate, "mvFFCCalibrate@i" );
+        locator.bindComponent( mvFFCImageLoad, "mvFFCImageLoad@i" );
+        locator.bindComponent( mvFFCImageSave, "mvFFCImageSave@i" );
+        locator.bindComponent( mvFFCAutoLoadMode, "mvFFCAutoLoadMode" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief A boolean property. Enables the Flat Field Correction.
     /**
      *  Enables the Flat Field Correction.
@@ -11769,13 +13318,39 @@ public:
      *  Starts the Calibration of the Flat Field Correction.
      */
     Method mvFFCCalibrate;
+    /// \brief A method object. Loads the Flat Field Correction image from flash.
+    /**
+     *  Loads the Flat Field Correction image from flash.
+     */
+    Method mvFFCImageLoad;
+    /// \brief A method object. Saves the calibrated Flat Field Correction image to flash.
+    /**
+     *  Saves the calibrated Flat Field Correction image to flash.
+     */
+    Method mvFFCImageSave;
+    /// \brief An enumerated integer property. Selects whether FFC image shall be automatically loaded at camera startup.
+    /**
+     *  Selects whether FFC image shall be automatically loaded at camera startup.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b mvLegacy (Display string: 'mv Legacy'): )
+     *  - \b Off (Display string: 'Off'): FFC image will not be automatically loaded at startup. Use this for short boot times.
+     *  - \b On (Display string: 'On'): FFC image will be automatically loaded at startup. Boot time will increase accordingly.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvFFCAutoLoadMode;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains features to control the frame averaging engine.
 /**
  *  A category that contains features to control the frame averaging engine.
+ * \ingroup GenICamInterfaceDevice
  */
 class mvFrameAverageControl : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -11800,6 +13375,7 @@ public:
         mvFrameAverageNoiseGain(),
         mvFrameAverageFrameCount()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvFrameAverageControl" );
         m_hRoot = locator.searchbase_id();
@@ -11811,15 +13387,17 @@ public:
         locator.bindComponent( mvFrameAverageNoiseGain, "mvFrameAverageNoiseGain" );
         locator.bindComponent( mvFrameAverageFrameCount, "mvFrameAverageFrameCount" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief An enumerated integer property. Sets the frame average operating mode.
     /**
      *  Sets the frame average operating mode.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvPlain (Display string: 'mv Frame Average Mode')
-     *  - \b mvDynamic (Display string: 'mv Frame Average Mode')
-     *  - \b mvNTo1 (Display string: 'mv Frame Average Mode')
+     *  - \b mvPlain (Display string: 'mv Plain')
+     *  - \b mvDynamic (Display string: 'mv Dynamic')
+     *  - \b mvNTo1 (Display string: 'mv N To 1')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11840,8 +13418,8 @@ public:
      *  Sets the frame average dynamic operating mode.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvStandard (Display string: 'mv Frame Average Dynamic Mode')
-     *  - \b mvGauss (Display string: 'mv Frame Average Dynamic Mode')
+     *  - \b mvStandard (Display string: 'mv Standard')
+     *  - \b mvGauss (Display string: 'mv Gauss')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11862,13 +13440,16 @@ public:
      *  Here you specify the frame count used for the calculation of the frame average.
      */
     PropertyI64 mvFrameAverageFrameCount;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains features to control the devices High Dynamic Range parameters.
 /**
  *  A category that contains features to control the devices High Dynamic Range parameters.
+ * \ingroup GenICamInterfaceDevice
  */
 class mvHDRControl : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -11891,8 +13472,12 @@ public:
         mvHDRVoltage1(),
         mvHDRVoltage2(),
         mvHDRExposure1(),
-        mvHDRExposure2()
+        mvHDRExposure2(),
+        mvHDRExposureRatio(),
+        mvHDRMotionCompensationEnable(),
+        mvHDRAdaptiveLocalToneMappingEnable()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvHDRControl" );
         m_hRoot = locator.searchbase_id();
@@ -11903,8 +13488,13 @@ public:
         locator.bindComponent( mvHDRVoltage2, "mvHDRVoltage2" );
         locator.bindComponent( mvHDRExposure1, "mvHDRExposure1" );
         locator.bindComponent( mvHDRExposure2, "mvHDRExposure2" );
+        locator.bindComponent( mvHDRExposureRatio, "mvHDRExposureRatio" );
+        locator.bindComponent( mvHDRMotionCompensationEnable, "mvHDRMotionCompensationEnable" );
+        locator.bindComponent( mvHDRAdaptiveLocalToneMappingEnable, "mvHDRAdaptiveLocalToneMappingEnable" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief A boolean property. Enables the High Dynamic Range Feature.
     /**
      *  Enables the High Dynamic Range Feature.
@@ -11915,14 +13505,14 @@ public:
      *  Selects the HDR parameter set.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvDualKneePoint0 (Display string: 'mv HDR Preset')
-     *  - \b mvDualKneePoint1 (Display string: 'mv HDR Preset')
-     *  - \b mvDualKneePoint2 (Display string: 'mv HDR Preset')
-     *  - \b mvDualKneePoint3 (Display string: 'mv HDR Preset')
-     *  - \b mvDualKneePoint4 (Display string: 'mv HDR Preset')
-     *  - \b mvDualKneePoint5 (Display string: 'mv HDR Preset')
-     *  - \b mvDualKneePoint6 (Display string: 'mv HDR Preset')
-     *  - \b mvDualKneePointUser (Display string: 'mv HDR Preset')
+     *  - \b mvDualKneePoint0 (Display string: 'mv Dual Knee Point 0')
+     *  - \b mvDualKneePoint1 (Display string: 'mv Dual Knee Point 1')
+     *  - \b mvDualKneePoint2 (Display string: 'mv Dual Knee Point 2')
+     *  - \b mvDualKneePoint3 (Display string: 'mv Dual Knee Point 3')
+     *  - \b mvDualKneePoint4 (Display string: 'mv Dual Knee Point 4')
+     *  - \b mvDualKneePoint5 (Display string: 'mv Dual Knee Point 5')
+     *  - \b mvDualKneePoint6 (Display string: 'mv Dual Knee Point 6')
+     *  - \b mvDualKneePointUser (Display string: 'mv Dual Knee Point User')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11933,14 +13523,14 @@ public:
      *  This enumeration selects the HDR parameter set to configure.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvDualKneePoint0 (Display string: 'mv HDR Selector')
-     *  - \b mvDualKneePoint1 (Display string: 'mv HDR Selector')
-     *  - \b mvDualKneePoint2 (Display string: 'mv HDR Selector')
-     *  - \b mvDualKneePoint3 (Display string: 'mv HDR Selector')
-     *  - \b mvDualKneePoint4 (Display string: 'mv HDR Selector')
-     *  - \b mvDualKneePoint5 (Display string: 'mv HDR Selector')
-     *  - \b mvDualKneePoint6 (Display string: 'mv HDR Selector')
-     *  - \b mvDualKneePointUser (Display string: 'mv HDR Selector')
+     *  - \b mvDualKneePoint0 (Display string: 'mv Dual Knee Point 0')
+     *  - \b mvDualKneePoint1 (Display string: 'mv Dual Knee Point 1')
+     *  - \b mvDualKneePoint2 (Display string: 'mv Dual Knee Point 2')
+     *  - \b mvDualKneePoint3 (Display string: 'mv Dual Knee Point 3')
+     *  - \b mvDualKneePoint4 (Display string: 'mv Dual Knee Point 4')
+     *  - \b mvDualKneePoint5 (Display string: 'mv Dual Knee Point 5')
+     *  - \b mvDualKneePoint6 (Display string: 'mv Dual Knee Point 6')
+     *  - \b mvDualKneePointUser (Display string: 'mv Dual Knee Point User')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -11966,249 +13556,40 @@ public:
      *  Second HDR Exposure in ppm.
      */
     PropertyI64 mvHDRExposure2;
-    PYTHON_ONLY( %mutable; )
-};
-
-//-----------------------------------------------------------------------------
-/// \brief Category that contains features to access the device internal SPI bus.
-/**
- *  A category that contains features to access the device internal SPI bus.
- */
-class mvSPIControl : public mvIMPACT::acquire::ComponentCollection
-//-----------------------------------------------------------------------------
-{
-public:
-    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::mvSPIControl</b> object.
-    explicit mvSPIControl(
-        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
-        mvIMPACT::acquire::Device* pDev,
-        /// [in] The name of the driver internal setting to access with this instance.
-        /// A list of valid setting names can be obtained by a call to
-        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
-        /// settings can be created with the function
-        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
-        const std::string& settingName = "Base" ) :
-        mvIMPACT::acquire::ComponentCollection( pDev ),
-        mvSPIDeviceSelector(),
-        mvSPIOperationSelector(),
-        mvSPIOperationExecute(),
-        mvSPIAccessBuffer(),
-        mvSPIAccessLength()
-    {
-        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
-        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvSPIControl" );
-        m_hRoot = locator.searchbase_id();
-        locator.bindComponent( mvSPIDeviceSelector, "mvSPIDeviceSelector" );
-        locator.bindComponent( mvSPIOperationSelector, "mvSPIOperationSelector" );
-        locator.bindComponent( mvSPIOperationExecute, "mvSPIOperationExecute@i" );
-        locator.bindComponent( mvSPIAccessBuffer, "mvSPIAccessBuffer" );
-        locator.bindComponent( mvSPIAccessLength, "mvSPIAccessLength" );
-    }
-    PYTHON_ONLY( %immutable; )
-    /// \brief An enumerated integer property. Selects the SPI device.
+    /// \brief An enumerated integer property. T1/T2 Exposure Ratio
     /**
-     *  Selects the SPI device.
+     *  The ratio of the long exposure time to the short exposure time.
      *
      *  The following string values might be valid for this feature:
-     *  - \b mvDevice0 (Display string: 'mv SPI Device Selector')
-     *  - \b mvDevice1 (Display string: 'mv SPI Device Selector')
-     *  - \b mvDevice2 (Display string: 'mv SPI Device Selector')
-     *  - \b mvDevice3 (Display string: 'mv SPI Device Selector')
+     *  - \b mvRatio4x (Display string: 'mv Ratio 4x')
+     *  - \b mvRatio8x (Display string: 'mv Ratio 8x')
+     *  - \b mvRatio16x (Display string: 'mv Ratio 16x')
+     *  - \b mvRatio32x (Display string: 'mv Ratio 32x')
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
-    PropertyI64 mvSPIDeviceSelector;
-    /// \brief An enumerated integer property. Selects the operation. Write: mvSPIAccessLength bytes are written to SPI device. Synchronously read bytes are stored to internal buffer. Read: Reads mvSPIAccessLength from internal buffer. If mvSPIAccessLength > internal buffer size: Additional 'write zeros' will be done.
+    PropertyI64 mvHDRExposureRatio;
+    /// \brief A boolean property. Enables motion compensation
     /**
-     *  Selects the operation. Write: mvSPIAccessLength bytes are written to SPI device. Synchronously read bytes are stored to internal buffer. Read: Reads mvSPIAccessLength from internal buffer. If mvSPIAccessLength > internal buffer size: Additional 'write zeros' will be done.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b Read (Display string: 'mv SPI Operation Selector')
-     *  - \b Write (Display string: 'mv SPI Operation Selector')
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     *  Enables motion compensation. Recommended for scenes with a lot of motion.
      */
-    PropertyI64 mvSPIOperationSelector;
-    /// \brief A method object. Executes the operation selected by mvSPIOperationSelector.
+    PropertyIBoolean mvHDRMotionCompensationEnable;
+    /// \brief A boolean property. Enables Adaptive Local Tone Mapping
     /**
-     *  Executes the operation selected by mvSPIOperationSelector.
+     *  Enables Adaptive Local Tone Mapping. Recommended if mvHDRMotionCompensationEnable is enabled.
      */
-    Method mvSPIOperationExecute;
-    /// \brief A string property. Defines the intermediate access buffer that allows the exchange of data.
-    /**
-     *  Defines the intermediate access buffer that allows the exchange of data.
-     */
-    PropertyS mvSPIAccessBuffer;
-    /// \brief An integer property. Controls the length of the data.
-    /**
-     *  Controls the length of the data.
-     */
-    PropertyI64 mvSPIAccessLength;
+    PropertyIBoolean mvHDRAdaptiveLocalToneMappingEnable;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
-};
-
-//-----------------------------------------------------------------------------
-/// \brief Category that contains features to access DAC devices.
-/**
- *  A Category that contains features to access DAC devices.
- */
-class mvDACParams : public mvIMPACT::acquire::ComponentCollection
-//-----------------------------------------------------------------------------
-{
-public:
-    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::mvDACParams</b> object.
-    explicit mvDACParams(
-        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
-        mvIMPACT::acquire::Device* pDev,
-        /// [in] The name of the driver internal setting to access with this instance.
-        /// A list of valid setting names can be obtained by a call to
-        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
-        /// settings can be created with the function
-        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
-        const std::string& settingName = "Base" ) :
-        mvIMPACT::acquire::ComponentCollection( pDev ),
-        mvDACOUTA(),
-        mvDACOUTB(),
-        mvDACOUTC(),
-        mvDACOUTD(),
-        DACIndex(),
-        DACValue(),
-        DACValueAll(),
-        mvErrorDetect0(),
-        mvErrorDetect1(),
-        mvLampDetect()
-    {
-        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
-        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvDACParams" );
-        m_hRoot = locator.searchbase_id();
-        locator.bindComponent( mvDACOUTA, "mvDACOUTA" );
-        locator.bindComponent( mvDACOUTB, "mvDACOUTB" );
-        locator.bindComponent( mvDACOUTC, "mvDACOUTC" );
-        locator.bindComponent( mvDACOUTD, "mvDACOUTD" );
-        locator.bindComponent( DACIndex, "DACIndex" );
-        locator.bindComponent( DACValue, "DACValue" );
-        locator.bindComponent( DACValueAll, "DACValueAll" );
-        locator.bindComponent( mvErrorDetect0, "mvErrorDetect0" );
-        locator.bindComponent( mvErrorDetect1, "mvErrorDetect1" );
-        locator.bindComponent( mvLampDetect, "mvLampDetect" );
-    }
-    PYTHON_ONLY( %immutable; )
-    /// \brief An integer property. Changes the current of the CCDs output signal (Tap1).
-    /**
-     *  Changes the current of the CCDs output signal (Tap1).
-     */
-    PropertyI64 mvDACOUTA;
-    /// \brief An integer property. Changes the current of the CCDs output signal (Tap2).
-    /**
-     *  Changes the current of the CCDs output signal (Tap2).
-     */
-    PropertyI64 mvDACOUTB;
-    /// \brief An integer property. Currently not used
-    /**
-     *  Currently not used
-     */
-    PropertyI64 mvDACOUTC;
-    /// \brief An integer property. Sets the sensor's VSUB voltage.
-    /**
-     *  Sets the sensor's VSUB voltage.
-     */
-    PropertyI64 mvDACOUTD;
-    /// \brief An integer property. Selects the digital to analog converter(DAC) DACValue will be written to
-    /**
-     *  Selects the digital to analog converter(DAC) DACValue will be written to
-     */
-    PropertyI64 DACIndex;
-    /// \brief An integer property. Register value in hex
-    /**
-     *  Register value in hex
-     */
-    PropertyI64 DACValue;
-    /// \brief A string property. Write all DAcs with a single call.
-    /**
-     *  Write all DAcs with a single call.
-     */
-    PropertyS DACValueAll;
-    /// \brief An integer property. Result of the error detection mechanism for lamp0
-    /**
-     *  Result of the error detection mechanism for lamp0
-     */
-    PropertyI64 mvErrorDetect0;
-    /// \brief An integer property. Result of the error detection mechanism for lamp1
-    /**
-     *  Result of the error detection mechanism for lamp1
-     */
-    PropertyI64 mvErrorDetect1;
-    /// \brief A boolean property. Result of lamp detection
-    /**
-     *  Result of lamp detection
-     */
-    PropertyIBoolean mvLampDetect;
-    PYTHON_ONLY( %mutable; )
-};
-
-//-----------------------------------------------------------------------------
-/// \brief Category that contains features to access accelerometer data.
-/**
- *  A category that contains features to access accelerometer data.
- */
-class mvACCControl : public mvIMPACT::acquire::ComponentCollection
-//-----------------------------------------------------------------------------
-{
-public:
-    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::mvACCControl</b> object.
-    explicit mvACCControl(
-        /// [in] A pointer to a <b>mvIMPACT::acquire::Device</b> object obtained from a <b>mvIMPACT::acquire::DeviceManager</b> object.
-        mvIMPACT::acquire::Device* pDev,
-        /// [in] The name of the driver internal setting to access with this instance.
-        /// A list of valid setting names can be obtained by a call to
-        /// <b>mvIMPACT::acquire::FunctionInterface::getAvailableSettings</b>, new
-        /// settings can be created with the function
-        /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
-        const std::string& settingName = "Base" ) :
-        mvIMPACT::acquire::ComponentCollection( pDev ),
-        mvACCEnable(),
-        mvXAxis(),
-        mvYAxis(),
-        mvZAxis()
-    {
-        mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
-        locator.bindSearchBase( locator.searchbase_id(), "Camera/GenICam/mvACCControl" );
-        m_hRoot = locator.searchbase_id();
-        locator.bindComponent( mvACCEnable, "mvACCEnable" );
-        locator.bindComponent( mvXAxis, "mvXAxis" );
-        locator.bindComponent( mvYAxis, "mvYAxis" );
-        locator.bindComponent( mvZAxis, "mvZAxis" );
-    }
-    PYTHON_ONLY( %immutable; )
-    /// \brief A boolean property. Sets ACC in measurement mode.
-    /**
-     *  Sets ACC in measurement mode.
-     */
-    PropertyIBoolean mvACCEnable;
-    /// \brief An integer property. The position in X-direction.
-    /**
-     *  The position in X-direction.
-     */
-    PropertyI64 mvXAxis;
-    /// \brief An integer property. The position in Y-direction.
-    /**
-     *  The position in Y-direction.
-     */
-    PropertyI64 mvYAxis;
-    /// \brief An integer property. The position in Z-direction.
-    /**
-     *  The position in Z-direction.
-     */
-    PropertyI64 mvZAxis;
-    PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains items that belong to the system module of the transport layer.
 /**
  *  The System category contains items that belong to the system module of the transport layer.
+ * \ingroup GenICamInterfaceProducer
  */
 class SystemModule : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -12240,16 +13621,23 @@ public:
         u3vVersionMinor(),
         mvGevChannelDummyPacketSendEnable(),
         mvGevChannelDummyPacketSendInterval(),
+        mvInterfaceTechnologyToIgnoreSelector(),
+        mvInterfaceTechnologyToIgnoreEnable(),
         interfaceUpdateList(),
+        interfaceUpdateTimeout(),
         interfaceSelector(),
         interfaceID(),
+        interfaceDisplayName(),
         interfaceType(),
         gevInterfaceMACAddress(),
         gevInterfaceDefaultIPAddress(),
         gevInterfaceDefaultSubnetMask(),
         gevInterfaceDefaultGateway(),
         mvGevInterfaceMTU(),
-        mvGevInterfaceLinkSpeed()
+        mvGevInterfaceLinkSpeed(),
+        mvDeviceUpdateListBehaviour(),
+        eventSelector(),
+        eventNotification()
     {
         mvIMPACT::acquire::ComponentLocator locator( pDev->deviceDriverFeatureList() );
         locator.bindSearchBase( locator.searchbase_id(), "GenTL/System" );
@@ -12275,9 +13663,13 @@ public:
         locator.bindComponent( u3vVersionMinor, "U3vVersionMinor" );
         locator.bindComponent( mvGevChannelDummyPacketSendEnable, "mvGevChannelDummyPacketSendEnable" );
         locator.bindComponent( mvGevChannelDummyPacketSendInterval, "mvGevChannelDummyPacketSendInterval" );
+        locator.bindComponent( mvInterfaceTechnologyToIgnoreSelector, "mvInterfaceTechnologyToIgnoreSelector" );
+        locator.bindComponent( mvInterfaceTechnologyToIgnoreEnable, "mvInterfaceTechnologyToIgnoreEnable" );
         locator.bindComponent( interfaceUpdateList, "InterfaceUpdateList@i" );
+        locator.bindComponent( interfaceUpdateTimeout, "InterfaceUpdateTimeout" );
         locator.bindComponent( interfaceSelector, "InterfaceSelector" );
         locator.bindComponent( interfaceID, "InterfaceID" );
+        locator.bindComponent( interfaceDisplayName, "InterfaceDisplayName" );
         locator.bindComponent( interfaceType, "InterfaceType" );
         locator.bindComponent( gevInterfaceMACAddress, "GevInterfaceMACAddress" );
         locator.bindComponent( gevInterfaceDefaultIPAddress, "GevInterfaceDefaultIPAddress" );
@@ -12285,8 +13677,106 @@ public:
         locator.bindComponent( gevInterfaceDefaultGateway, "GevInterfaceDefaultGateway" );
         locator.bindComponent( mvGevInterfaceMTU, "mvGevInterfaceMTU" );
         locator.bindComponent( mvGevInterfaceLinkSpeed, "mvGevInterfaceLinkSpeed" );
+        locator.bindComponent( mvDeviceUpdateListBehaviour, "mvDeviceUpdateListBehaviour" );
+        locator.bindComponent( eventSelector, "EventSelector" );
+        locator.bindComponent( eventNotification, "EventNotification" );
     }
+    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::SystemModule</b> object.
+    /**
+     *  \since 2.17.0
+     */
+    explicit SystemModule( ) :
+        mvIMPACT::acquire::ComponentCollection( INVALID_ID ),
+        TLVendorName(),
+        TLModelName(),
+        TLID(),
+        TLVersion(),
+        TLFileName(),
+        TLDisplayName(),
+        TLPath(),
+        TLType(),
+        genTLVersionMajor(),
+        genTLVersionMinor(),
+        genTLSFNCVersionMajor(),
+        genTLSFNCVersionMinor(),
+        genTLSFNCVersionSubMinor(),
+        genCPVersionMajor(),
+        genCPVersionMinor(),
+        gevVersionMajor(),
+        gevVersionMinor(),
+        u3vVersionMajor(),
+        u3vVersionMinor(),
+        mvGevChannelDummyPacketSendEnable(),
+        mvGevChannelDummyPacketSendInterval(),
+        mvInterfaceTechnologyToIgnoreSelector(),
+        mvInterfaceTechnologyToIgnoreEnable(),
+        interfaceUpdateList(),
+        interfaceUpdateTimeout(),
+        interfaceSelector(),
+        interfaceID(),
+        interfaceDisplayName(),
+        interfaceType(),
+        gevInterfaceMACAddress(),
+        gevInterfaceDefaultIPAddress(),
+        gevInterfaceDefaultSubnetMask(),
+        gevInterfaceDefaultGateway(),
+        mvGevInterfaceMTU(),
+        mvGevInterfaceLinkSpeed(),
+        mvDeviceUpdateListBehaviour(),
+        eventSelector(),
+        eventNotification()
+    {
+        HLIST hList;
+        TDMR_ERROR result;
+        if( ( result = DMR_FindList( INVALID_ID, "mvGenTLConsumer", dmltDeviceDriverLib, 0, &hList ) ) != DMR_NO_ERROR )
+        {
+            ExceptionFactory::raiseException( MVIA_FUNCTION, __LINE__, result, "Couldn't find list 'mvGenTLConsumer'(type: dmltDeviceDriverLib)" );
+        }
+        mvIMPACT::acquire::ComponentLocator locator( hList );
+        locator.bindSearchBase( locator.searchbase_id(), "GenTL/System" );
+        m_hRoot = locator.searchbase_id();
+        locator.bindComponent( TLVendorName, "TLVendorName" );
+        locator.bindComponent( TLModelName, "TLModelName" );
+        locator.bindComponent( TLID, "TLID" );
+        locator.bindComponent( TLVersion, "TLVersion" );
+        locator.bindComponent( TLFileName, "TLFileName" );
+        locator.bindComponent( TLDisplayName, "TLDisplayName" );
+        locator.bindComponent( TLPath, "TLPath" );
+        locator.bindComponent( TLType, "TLType" );
+        locator.bindComponent( genTLVersionMajor, "GenTLVersionMajor" );
+        locator.bindComponent( genTLVersionMinor, "GenTLVersionMinor" );
+        locator.bindComponent( genTLSFNCVersionMajor, "GenTLSFNCVersionMajor" );
+        locator.bindComponent( genTLSFNCVersionMinor, "GenTLSFNCVersionMinor" );
+        locator.bindComponent( genTLSFNCVersionSubMinor, "GenTLSFNCVersionSubMinor" );
+        locator.bindComponent( genCPVersionMajor, "GenCPVersionMajor" );
+        locator.bindComponent( genCPVersionMinor, "GenCPVersionMinor" );
+        locator.bindComponent( gevVersionMajor, "GevVersionMajor" );
+        locator.bindComponent( gevVersionMinor, "GevVersionMinor" );
+        locator.bindComponent( u3vVersionMajor, "U3vVersionMajor" );
+        locator.bindComponent( u3vVersionMinor, "U3vVersionMinor" );
+        locator.bindComponent( mvGevChannelDummyPacketSendEnable, "mvGevChannelDummyPacketSendEnable" );
+        locator.bindComponent( mvGevChannelDummyPacketSendInterval, "mvGevChannelDummyPacketSendInterval" );
+        locator.bindComponent( mvInterfaceTechnologyToIgnoreSelector, "mvInterfaceTechnologyToIgnoreSelector" );
+        locator.bindComponent( mvInterfaceTechnologyToIgnoreEnable, "mvInterfaceTechnologyToIgnoreEnable" );
+        locator.bindComponent( interfaceUpdateList, "InterfaceUpdateList@i" );
+        locator.bindComponent( interfaceUpdateTimeout, "InterfaceUpdateTimeout" );
+        locator.bindComponent( interfaceSelector, "InterfaceSelector" );
+        locator.bindComponent( interfaceID, "InterfaceID" );
+        locator.bindComponent( interfaceDisplayName, "InterfaceDisplayName" );
+        locator.bindComponent( interfaceType, "InterfaceType" );
+        locator.bindComponent( gevInterfaceMACAddress, "GevInterfaceMACAddress" );
+        locator.bindComponent( gevInterfaceDefaultIPAddress, "GevInterfaceDefaultIPAddress" );
+        locator.bindComponent( gevInterfaceDefaultSubnetMask, "GevInterfaceDefaultSubnetMask" );
+        locator.bindComponent( gevInterfaceDefaultGateway, "GevInterfaceDefaultGateway" );
+        locator.bindComponent( mvGevInterfaceMTU, "mvGevInterfaceMTU" );
+        locator.bindComponent( mvGevInterfaceLinkSpeed, "mvGevInterfaceLinkSpeed" );
+        locator.bindComponent( mvDeviceUpdateListBehaviour, "mvDeviceUpdateListBehaviour" );
+        locator.bindComponent( eventSelector, "EventSelector" );
+        locator.bindComponent( eventNotification, "EventNotification" );
+    }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief A string property. Indicates the name of the transport layer vendor.
     /**
      *  This is a read only element. It is a string that indicates the name of the transport layer vendor.
@@ -12327,8 +13817,12 @@ public:
      *  This is a read only feature. This enumeration provides a value that indicates the transport layer technology of the GenTL Producer implementation.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Mixed (Display string: 'Mixed'): This enumeration value indicates that this is a transport layer for different technologies.
+     *  - \b Mixed (Display string: 'Mixed'): This enumeration value indicates that this is a transport layer for a mixed protocol.
+     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is a transport layer for a custom protocol.
      *  - \b GEV (Display string: 'GigE Vision'): This enumeration value indicates that this is a transport layer for the GigE Vision protocol.
+     *  - \b CameraLink (Display string: 'CameraLink'): This enumeration value indicates that this is a transport layer for the CameraLink protocol.
+     *  - \b CoaXPress (Display string: 'CoaXPress'): This enumeration value indicates that this is a transport layer for the CoaXPress protocol.
+     *  - \b CameraLinkHS (Display string: 'CameraLink HS'): This enumeration value indicates that this is a transport layer for the CameraLink HS protocol.
      *  - \b U3V (Display string: 'USB3 Vision'): This enumeration value indicates that this is a transport layer for the USB3 Vision protocol.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
@@ -12370,14 +13864,14 @@ public:
      *  This is a read only element. It indicates the minor version number of the GenCP specification this GenTL Producer implementation complies with.
      */
     PropertyI64 genCPVersionMinor;
-    /// \brief An integer property. Major version of the specification.
+    /// \brief An integer property. Indicates the major version number of the GigE Vision specification this GenTL Producer implementation complies with.
     /**
-     *  Major version of the specification.
+     *  This is a read only element. It indicates the major version number of the GigE Vision specification this GenTL Producer implementation complies with.
      */
     PropertyI64 gevVersionMajor;
-    /// \brief An integer property. Minor version of the specification.
+    /// \brief An integer property. Indicates the minor version number of the GigE Vision specification this GenTL Producer implementation complies with.
     /**
-     *  Minor version of the specification.
+     *  This is a read only element. It indicates the minor version number of the GigE Vision specification this GenTL Producer implementation complies with.
      */
     PropertyI64 gevVersionMinor;
     /// \brief An integer property. Indicates the major version number of the USB3 Vision specification this GenTL Producer implementation complies with.
@@ -12400,11 +13894,38 @@ public:
      *  Defines the period(in ms) for sending dummy packets to a stream or message channel source port of a GigE Vision device. This might be useful to overcome firewall related problems when working with network devices.
      */
     PropertyI64 mvGevChannelDummyPacketSendInterval;
+    /// \brief An enumerated integer property. Selects the interface technology type that should be ignored when updating the device list.
+    /**
+     *  Selects the interface technology type that should be ignored when updating the device list.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Mixed (Display string: 'Mixed')
+     *  - \b Custom (Display string: 'Custom')
+     *  - \b GEV (Display string: 'GigE Vision')
+     *  - \b CameraLink (Display string: 'CameraLink')
+     *  - \b CoaXPress (Display string: 'CoaXPress')
+     *  - \b CameraLinkHS (Display string: 'CameraLink HS')
+     *  - \b U3V (Display string: 'USB3 Vision')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvInterfaceTechnologyToIgnoreSelector;
+    /// \brief A boolean property. When enabled, the selected interface technology type is ignored when updating the device list.
+    /**
+     *  When enabled, the selected interface technology type is ignored when updating the device list.
+     */
+    PropertyIBoolean mvInterfaceTechnologyToIgnoreEnable;
     /// \brief A method object. Updates the internal interface list.
     /**
      *  This command updates the internal interface list of this transport layer.
      */
     Method interfaceUpdateList;
+    /// \brief An integer property. Specifies timeout for the InterfaceUpdateList Command.
+    /**
+     *  Specifies timeout for the InterfaceUpdateList Command.
+     */
+    PropertyI64 interfaceUpdateTimeout;
     /// \brief An integer property. Selector for the different GenTL Producer interfaces.
     /**
      *  Selector for the different GenTL Producer interfaces. Selector for the different GenTL Producer interfaces. This interface list only changes on execution of InterfaceUpdateList. The selector is 0-based in order to match the index of the C interface.
@@ -12415,13 +13936,22 @@ public:
      *  This is a read only element. It is a string that indicates a GenTL producer wide unique identifier of the selected interface.
      */
     PropertyS interfaceID;
+    /// \brief A string property. A user-friendly name of the Interface.
+    /**
+     *  This is a read only element. It is a string that indicates a  user-friendly name of the Interface.
+     */
+    PropertyS interfaceDisplayName;
     /// \brief An enumerated integer property. Identifies the interfaces technology of the GenTL Producer implementation.
     /**
      *  This is a read only feature. This enumeration provides a value that indicates interfaces technology of the GenTL Producer implementation.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is a device for a custom protocol.
+     *  - \b Mixed (Display string: 'Mixed'): This enumeration value indicates that this is an interface for a mixed protocol.
+     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is an interface for a custom protocol.
      *  - \b GEV (Display string: 'GigE Vision'): This enumeration value indicates that this is an interface for the GigE Vision protocol.
+     *  - \b CameraLink (Display string: 'CameraLink'): This enumeration value indicates that this is an interface for the CameraLink protocol.
+     *  - \b CoaXPress (Display string: 'CoaXPress'): This enumeration value indicates that this is an interface for the CoaXPress protocol.
+     *  - \b CameraLinkHS (Display string: 'CameraLink HS'): This enumeration value indicates that this is an interface for the CameraLink HS protocol.
      *  - \b U3V (Display string: 'USB3 Vision'): This enumeration value indicates that this is an interface for the USB3 Vision protocol.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
@@ -12458,13 +13988,226 @@ public:
      *  This is a read only element. It indicates the link speed(in Mbits per second) of this interface.
      */
     PropertyI64 mvGevInterfaceLinkSpeed;
+    /// \brief An enumerated integer property. Defines the behavior of the interface when the device list is being updated.
+    /**
+     *  Defines the behavior of the interface when the device list is being updated.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b NotConfigured (Display string: 'Not Configured'): Interface will enumerate devices or not according to the general enumeration behavior of this interface type(according to mvInterfaceTechnologyToIgnoreEnable setting).
+     *  - \b ForceIgnore (Display string: 'Force Ignore'): Interface will not enumerate devices, regardless of the the general enumeration behavior of this interface type(overrides mvInterfaceTechnologyToIgnoreEnable setting).
+     *  - \b ForceEnumerate (Display string: 'Force Enumerate'): Interface will forcefully enumerate devices, regardless of the the general enumeration behavior of this interface type(overrides mvInterfaceTechnologyToIgnoreEnable setting).
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 mvDeviceUpdateListBehaviour;
+    /// \brief An enumerated integer property. Selects which Event to signal to the host application.
+    /**
+     *  Selects which Event to signal to the host application.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Device just received a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Device just missed a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Device just started the Acquisition of one or many Frames.
+     *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Device just completed the Acquisition of one or many Frames.
+     *  - \b AcquisitionTransferStart (Display string: 'Acquisition Transfer Start'): Device just started the transfer of one or many Frames.
+     *  - \b AcquisitionTransferEnd (Display string: 'Acquisition Transfer End'): Device just completed the transfer of one or many Frames.
+     *  - \b AcquisitionError (Display string: 'Acquisition Error'): Device just detected an error during the active Acquisition.
+     *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Device just started the capture of a burst of Frames.
+     *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Device just completed the capture of a burst of Frames.
+     *  - \b FrameTrigger (Display string: 'Frame Trigger'): Device just received a trigger to start the capture of one Frame.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Device just missed a trigger to start the capture of one Frame.
+     *  - \b FrameStart (Display string: 'Frame Start'): Device just started the capture of one Frame.
+     *  - \b FrameEnd (Display string: 'Frame End'): Device just completed the capture of one Frame.
+     *  - \b FrameTransferStart (Display string: 'Frame Transfer Start'): Device just started the transfer of one Frame.
+     *  - \b FrameTransferEnd (Display string: 'Frame Transfer End'): Device just completed the transfer of one Frame.
+     *  - \b LineTrigger (Display string: 'Line Trigger'): Device just received a trigger to start the capture of one Line.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Device just missed a trigger to start the capture of one Line.
+     *  - \b LineStart (Display string: 'Line Start'): Device just started the capture of one Line.
+     *  - \b LineEnd (Display string: 'Line End'): Device just completed the capture of one Line.
+     *  - \b ExposureStart (Display string: 'Exposure Start'): Device just started the exposure of one Frame (or Line).
+     *  - \b ExposureEnd (Display string: 'Exposure End'): Device just completed the exposure of one Frame (or Line).
+     *  - \b Stream0TransferStart (Display string: 'Stream 0 Transfer Start'): Device just started the transfer of one or many Blocks.
+     *  - \b Stream0TransferEnd (Display string: 'Stream 0 Transfer End'): Device just completed the transfer of one or many Blocks.
+     *  - \b Stream0TransferPause (Display string: 'Stream 0 Transfer Pause'): Device just paused the transfer.
+     *  - \b Stream0TransferResume (Display string: 'Stream 0 Transfer Resume'): Device just resumed the transfer.
+     *  - \b Stream0TransferBlockStart (Display string: 'Stream 0 Transfer Block Start'): Device just started the transfer of one Block.
+     *  - \b Stream0TransferBlockEnd (Display string: 'Stream 0 Transfer Block End'): Device just completed the transfer of one Block.
+     *  - \b Stream0TransferBlockTrigger (Display string: 'Stream 0 Transfer Block Trigger'): Device just received a trigger to start the transfer of one Block.
+     *  - \b Stream0TransferBurstStart (Display string: 'Stream 0 Transfer Burst Start'): Device just started the transfer of a burst of Blocks.
+     *  - \b Stream0TransferBurstEnd (Display string: 'Stream 0 Transfer Burst End'): Device just completed the transfer of a burst of Blocks.
+     *  - \b Stream0TransferOverflow (Display string: 'Stream 0 Transfer Overflow'): Device transfer queue overflowed.
+     *  - \b SequencerSetChange (Display string: 'Sequencer Set Change'): Device sequencer set has changed.
+     *  - \b Counter0Start (Display string: 'Counter 0 Start'): The event will be generated when counter 0 starts counting.
+     *  - \b Counter1Start (Display string: 'Counter 1 Start'): The event will be generated when counter 1 starts counting.
+     *  - \b Counter\#2\#Start (Display string: 'Counter \#2\# Start'): The event will be generated when counter \#2\# starts counting.
+     *  - \b Counter0End (Display string: 'Counter 0 End'): The event will be generated when counter 0 ends counting.
+     *  - \b Counter1End (Display string: 'Counter 1 End'): The event will be generated when counter 1 ends counting.
+     *  - \b Counter\#2\#End (Display string: 'Counter \#2\# End'): The event will be generated when counter \#2\# ends counting.
+     *  - \b Timer0Start (Display string: 'Timer 0 Start'): The event will be generated when Timer 0 starts counting.
+     *  - \b Timer1Start (Display string: 'Timer 1 Start'): The event will be generated when Timer 1 starts counting.
+     *  - \b Timer\#2\#Start (Display string: 'Timer \#2\# Start'): The event will be generated when Timer \#2\# starts counting.
+     *  - \b Timer0End (Display string: 'Timer 0 End'): The event will be generated when Timer 0 ends counting.
+     *  - \b Timer1End (Display string: 'Timer 1 End'): The event will be generated when Timer 1 ends counting.
+     *  - \b Timer\#2\#End (Display string: 'Timer \#2\# End'): The event will be generated when Timer \#2\# ends counting.
+     *  - \b Encoder0Stopped (Display string: 'Encoder 0 Stopped'): The event will be generated when the Encoder 0 stops for longer than EncoderTimeout.
+     *  - \b Encoder1Stopped (Display string: 'Encoder 1 Stopped'): The event will be generated when the Encoder 1 stops for longer than EncoderTimeout.
+     *  - \b Encoder\#2\#Stopped (Display string: 'Encoder \#2\# Stopped'): The event will be generated when the Encoder \#2\# stops for longer than EncoderTimeout.
+     *  - \b Encoder0Restarted (Display string: 'Encoder 0 Restarted'): The event will be generated when the Encoder 0 restarts moving.
+     *  - \b Encoder1Restarted (Display string: 'Encoder 1 Restarted'): The event will be generated when the Encoder 1 restarts moving.
+     *  - \b Encoder\#2\#Restarted (Display string: 'Encoder \#2\# Restarted'): The event will be generated when the Encoder \#2\# restarts moving.
+     *  - \b Line0RisingEdge (Display string: 'Line 0 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 0.
+     *  - \b Line1RisingEdge (Display string: 'Line 1 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 1.
+     *  - \b Line\#2\#RisingEdge (Display string: 'Line \#2\# Rising Edge'): The event will be generated when a Rising Edge is detected on the Line \#2\#.
+     *  - \b Line0FallingEdge (Display string: 'Line 0 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 0.
+     *  - \b Line1FallingEdge (Display string: 'Line 1 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 1.
+     *  - \b Line\#2\#FallingEdge (Display string: 'Line \#2\# Falling Edge'): The event will be generated when a Falling Edge is detected on the Line \#2\#.
+     *  - \b Line0AnyEdge (Display string: 'Line 0 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 0.
+     *  - \b Line1AnyEdge (Display string: 'Line 1 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 1.
+     *  - \b Line\#2\#AnyEdge (Display string: 'Line \#2\# Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line \#2\#.
+     *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): The event will be generated when a Rising Edge is detected on the LinkTrigger 0.
+     *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): The event will be generated when a Rising Edge is detected on the LinkTrigger 1.
+     *  - \b LinkTrigger\#2\# (Display string: 'Link Trigger \#2\#'): The event will be generated when a Rising Edge is detected on the LinkTrigger \#2\#.
+     *  - \b LinkSpeedChange (Display string: 'Link Speed Change'): The event will be generated when the link speed has changed.
+     *  - \b ActionLate (Display string: 'Action Late'): The event will be generated when a valid scheduled action command is received and is scheduled to be executed at a time that is already past.
+     *  - \b Test (Display string: 'Test'): The test event will be generated when the device receives the TestEventGenerate command (EventNotification for the Test event is always On).
+     *  - \b Error (Display string: 'Error'): Device just detected an error during the active Acquisition.
+     *  - \b PrimaryApplicationSwitch (Display string: 'Primary Application Switch'): The event will be generated when a primary application switchover has been granted (GigE Vision Specific).
+     *  - \b Counter2Start (Display string: 'Counter 2 Start'): The event will be generated when counter 2 starts counting.
+     *  - \b Counter3Start (Display string: 'Counter 3 Start'): The event will be generated when counter 3 starts counting.
+     *  - \b Counter4Start (Display string: 'Counter 4 Start'): The event will be generated when counter 4 starts counting.
+     *  - \b Counter5Start (Display string: 'Counter 5 Start'): The event will be generated when counter 5 starts counting.
+     *  - \b Counter6Start (Display string: 'Counter 6 Start'): The event will be generated when counter 6 starts counting.
+     *  - \b Counter7Start (Display string: 'Counter 7 Start'): The event will be generated when counter 7 starts counting.
+     *  - \b Counter8Start (Display string: 'Counter 8 Start'): The event will be generated when counter 8 starts counting.
+     *  - \b Counter9Start (Display string: 'Counter 9 Start'): The event will be generated when counter 9 starts counting.
+     *  - \b Counter10Start (Display string: 'Counter 10 Start'): The event will be generated when counter 10 starts counting.
+     *  - \b Counter11Start (Display string: 'Counter 11 Start'): The event will be generated when counter 11 starts counting.
+     *  - \b Counter12Start (Display string: 'Counter 12 Start'): The event will be generated when counter 12 starts counting.
+     *  - \b Counter13Start (Display string: 'Counter 13 Start'): The event will be generated when counter 13 starts counting.
+     *  - \b Counter14Start (Display string: 'Counter 14 Start'): The event will be generated when counter 14 starts counting.
+     *  - \b Counter15Start (Display string: 'Counter 15 Start'): The event will be generated when counter 15 starts counting.
+     *  - \b Counter2End (Display string: 'Counter 2 End'): The event will be generated when counter 2 ends counting.
+     *  - \b Counter3End (Display string: 'Counter 3 End'): The event will be generated when counter 3 ends counting.
+     *  - \b Counter4End (Display string: 'Counter 4 End'): The event will be generated when counter 4 ends counting.
+     *  - \b Counter5End (Display string: 'Counter 5 End'): The event will be generated when counter 5 ends counting.
+     *  - \b Counter6End (Display string: 'Counter 6 End'): The event will be generated when counter 6 ends counting.
+     *  - \b Counter7End (Display string: 'Counter 7 End'): The event will be generated when counter 7 ends counting.
+     *  - \b Counter8End (Display string: 'Counter 8 End'): The event will be generated when counter 8 ends counting.
+     *  - \b Counter9End (Display string: 'Counter 9 End'): The event will be generated when counter 9 ends counting.
+     *  - \b Counter10End (Display string: 'Counter 10 End'): The event will be generated when counter 10 ends counting.
+     *  - \b Counter11End (Display string: 'Counter 11 End'): The event will be generated when counter 11 ends counting.
+     *  - \b Counter12End (Display string: 'Counter 12 End'): The event will be generated when counter 12 ends counting.
+     *  - \b Counter13End (Display string: 'Counter 13 End'): The event will be generated when counter 13 ends counting.
+     *  - \b Counter14End (Display string: 'Counter 14 End'): The event will be generated when counter 14 ends counting.
+     *  - \b Counter15End (Display string: 'Counter 15 End'): The event will be generated when counter 15 ends counting.
+     *  - \b Timer2Start (Display string: 'Timer 2 Start'): The event will be generated when Timer 2 starts counting.
+     *  - \b Timer3Start (Display string: 'Timer 3 Start'): The event will be generated when Timer 3 starts counting.
+     *  - \b Timer4Start (Display string: 'Timer 4 Start'): The event will be generated when Timer 4 starts counting.
+     *  - \b Timer5Start (Display string: 'Timer 5 Start'): The event will be generated when Timer 5 starts counting.
+     *  - \b Timer6Start (Display string: 'Timer 6 Start'): The event will be generated when Timer 6 starts counting.
+     *  - \b Timer7Start (Display string: 'Timer 7 Start'): The event will be generated when Timer 7 starts counting.
+     *  - \b Timer8Start (Display string: 'Timer 8 Start'): The event will be generated when Timer 8 starts counting.
+     *  - \b Timer9Start (Display string: 'Timer 9 Start'): The event will be generated when Timer 9 starts counting.
+     *  - \b Timer10Start (Display string: 'Timer 10 Start'): The event will be generated when Timer 10 starts counting.
+     *  - \b Timer11Start (Display string: 'Timer 11 Start'): The event will be generated when Timer 11 starts counting.
+     *  - \b Timer12Start (Display string: 'Timer 12 Start'): The event will be generated when Timer 12 starts counting.
+     *  - \b Timer13Start (Display string: 'Timer 13 Start'): The event will be generated when Timer 13 starts counting.
+     *  - \b Timer14Start (Display string: 'Timer 14 Start'): The event will be generated when Timer 14 starts counting.
+     *  - \b Timer15Start (Display string: 'Timer 15 Start'): The event will be generated when Timer 15 starts counting.
+     *  - \b Timer2End (Display string: 'Timer 2 End'): The event will be generated when Timer 2 ends counting.
+     *  - \b Timer3End (Display string: 'Timer 3 End'): The event will be generated when Timer 3 ends counting.
+     *  - \b Timer4End (Display string: 'Timer 4 End'): The event will be generated when Timer 4 ends counting.
+     *  - \b Timer5End (Display string: 'Timer 5 End'): The event will be generated when Timer 5 ends counting.
+     *  - \b Timer6End (Display string: 'Timer 6 End'): The event will be generated when Timer 6 ends counting.
+     *  - \b Timer7End (Display string: 'Timer 7 End'): The event will be generated when Timer 7 ends counting.
+     *  - \b Timer8End (Display string: 'Timer 8 End'): The event will be generated when Timer 8 ends counting.
+     *  - \b Timer9End (Display string: 'Timer 9 End'): The event will be generated when Timer 9 ends counting.
+     *  - \b Timer10End (Display string: 'Timer 10 End'): The event will be generated when Timer 10 ends counting.
+     *  - \b Timer11End (Display string: 'Timer 11 End'): The event will be generated when Timer 11 ends counting.
+     *  - \b Timer12End (Display string: 'Timer 12 End'): The event will be generated when Timer 12 ends counting.
+     *  - \b Timer13End (Display string: 'Timer 13 End'): The event will be generated when Timer 13 ends counting.
+     *  - \b Timer14End (Display string: 'Timer 14 End'): The event will be generated when Timer 14 ends counting.
+     *  - \b Timer15End (Display string: 'Timer 15 End'): The event will be generated when Timer 15 ends counting.
+     *  - \b Line2RisingEdge (Display string: 'Line 2 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 2.
+     *  - \b Line3RisingEdge (Display string: 'Line 3 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 3.
+     *  - \b Line4RisingEdge (Display string: 'Line 4 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 4.
+     *  - \b Line5RisingEdge (Display string: 'Line 5 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 5.
+     *  - \b Line6RisingEdge (Display string: 'Line 6 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 6.
+     *  - \b Line7RisingEdge (Display string: 'Line 7 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 7.
+     *  - \b Line8RisingEdge (Display string: 'Line 8 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 8.
+     *  - \b Line9RisingEdge (Display string: 'Line 9 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 9.
+     *  - \b Line10RisingEdge (Display string: 'Line 10 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 10.
+     *  - \b Line11RisingEdge (Display string: 'Line 11 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 11.
+     *  - \b Line12RisingEdge (Display string: 'Line 12 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 12.
+     *  - \b Line13RisingEdge (Display string: 'Line 13 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 13.
+     *  - \b Line14RisingEdge (Display string: 'Line 14 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 14.
+     *  - \b Line15RisingEdge (Display string: 'Line 15 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 15.
+     *  - \b Line2FallingEdge (Display string: 'Line 2 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 2.
+     *  - \b Line3FallingEdge (Display string: 'Line 3 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 3.
+     *  - \b Line4FallingEdge (Display string: 'Line 4 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 4.
+     *  - \b Line5FallingEdge (Display string: 'Line 5 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 5.
+     *  - \b Line6FallingEdge (Display string: 'Line 6 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 6.
+     *  - \b Line7FallingEdge (Display string: 'Line 7 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 7.
+     *  - \b Line8FallingEdge (Display string: 'Line 8 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 8.
+     *  - \b Line9FallingEdge (Display string: 'Line 9 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 9.
+     *  - \b Line10FallingEdge (Display string: 'Line 10 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 10.
+     *  - \b Line11FallingEdge (Display string: 'Line 11 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 11.
+     *  - \b Line12FallingEdge (Display string: 'Line 12 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 12.
+     *  - \b Line13FallingEdge (Display string: 'Line 13 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 13.
+     *  - \b Line14FallingEdge (Display string: 'Line 14 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 14.
+     *  - \b Line15FallingEdge (Display string: 'Line 15 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 15.
+     *  - \b Line2AnyEdge (Display string: 'Line 2 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 2.
+     *  - \b Line3AnyEdge (Display string: 'Line 3 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 3.
+     *  - \b Line4AnyEdge (Display string: 'Line 4 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 4.
+     *  - \b Line5AnyEdge (Display string: 'Line 5 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 5.
+     *  - \b Line6AnyEdge (Display string: 'Line 6 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 6.
+     *  - \b Line7AnyEdge (Display string: 'Line 7 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 7.
+     *  - \b Line8AnyEdge (Display string: 'Line 8 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 8.
+     *  - \b Line9AnyEdge (Display string: 'Line 9 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 9.
+     *  - \b Line10AnyEdge (Display string: 'Line 10 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 10.
+     *  - \b Line11AnyEdge (Display string: 'Line 11 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 11.
+     *  - \b Line12AnyEdge (Display string: 'Line 12 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 12.
+     *  - \b Line13AnyEdge (Display string: 'Line 13 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 13.
+     *  - \b Line14AnyEdge (Display string: 'Line 14 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 14.
+     *  - \b Line15AnyEdge (Display string: 'Line 15 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 15.
+     *  - \b InterfaceListChanged (Display string: 'Interface List Changed'): This enumeration value indicates an event that is fired when the list of interfaces has been updated.
+     *  - \b InterfaceLost (Display string: 'Interface Lost'): This enumeration value indicates an event that is raised when the interface connection is lost.
+     *  - \b DeviceListChanged (Display string: 'Device List Changed'): This enumeration value indicates an event that is fired when the list of devices has been updated.
+     *  - \b DeviceLost (Display string: 'Device Lost'): This enumeration value indicates an event that is raised when the local host looses connection to the physical(remote) device.
+     *  - \b BufferTooSmall (Display string: 'Buffer Too Small'): This enumeration value indicates an event that is raised when the buffer was too small to receive the expected amount of data.
+     *  - \b BuffersDiscarded (Display string: 'Buffers Discarded'): This enumeration value indicates an event that is raised when buffers discared by GenTL or device. This event could optionally carry two numeric child data fields EventBuffersDiscardedDeviceCount and EventBuffersDiscardedProducerCount.
+     *  - \b BuffersDiscardedDeviceCount (Display string: 'Buffers Discarded Device Count'): This enumeration value indicates the number of buffers discarded by the device since last fired instance of this event (the producer would get to know about this for example by observing a gap in the block_id sequence).
+     *  - \b BuffersDiscardedProducerCount (Display string: 'Buffers Discarded Producer Count'): This enumeration value indicates the number of buffers discarded by the producer since last fired instance of this event (this would happen e.g. if there are no free buffers available or if given buffer handling mode requires discarding old buffers etc.).
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 eventSelector;
+    /// \brief An enumerated integer property. Activate or deactivate the notification to the host application of the occurrence of the selected Event.
+    /**
+     *  Activate or deactivate the notification to the host application of the occurrence of the selected Event.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Off (Display string: 'Off'): The selected Event notification is disabled.
+     *  - \b On (Display string: 'On'): The selected Event notification is enabled.
+     *  - \b Once (Display string: 'Once'): The selected Event notification is enabled for one event then return to Off state.
+     *  - \b GigEVisionEvent (Display string: 'Gig E Vision Event')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 eventNotification;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains items that belong to the interface module of the transport layer.
 /**
  *  The Interface category contains items that belong to the interface module of the transport layer.
+ * \ingroup GenICamInterfaceProducer
  */
 class InterfaceModule : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -12480,6 +14223,8 @@ public:
         interfaceID(),
         interfaceDisplayName(),
         interfaceType(),
+        interfaceTLVersionMajor(),
+        interfaceTLVersionMinor(),
         gevInterfaceGatewaySelector(),
         gevInterfaceGateway(),
         gevInterfaceMACAddress(),
@@ -12490,6 +14235,7 @@ public:
         mvGevInterfaceLinkSpeed(),
         mvGevAdvancedDeviceDiscoveryEnable(),
         deviceUpdateList(),
+        deviceUpdateTimeout(),
         deviceSelector(),
         deviceID(),
         deviceVendorName(),
@@ -12497,6 +14243,16 @@ public:
         deviceType(),
         deviceLinkSpeed(),
         deviceAccessStatus(),
+        deviceSerialNumber(),
+        deviceUserID(),
+        deviceTLVersionMajor(),
+        deviceTLVersionMinor(),
+        gevDeviceIPAddress(),
+        gevDeviceSubnetMask(),
+        gevDeviceGateway(),
+        gevDeviceIPConfigurationStatus(),
+        gevDeviceMACAddress(),
+        gevCurrentControlMode(),
         mvDeviceCommandChannelTransmissionTimeout(),
         mvDeviceCommandChannelRetryCount(),
         gevVersionMajor(),
@@ -12507,18 +14263,21 @@ public:
         u3vVersionMinor(),
         mvDevicePrimaryApplicationSwitchoverSupported(),
         mvDevicePrimaryApplicationSwitchoverEnable(),
-        mvDevicePrimaryApplicationSwitchoverKey(),
+        gevApplicationSwitchoverKey(),
         mvDeviceNetworkInterfaceCount(),
-        gevDeviceIPAddress(),
-        gevDeviceSubnetMask(),
-        gevDeviceMACAddress(),
-        mvActionDeviceKey(),
-        mvActionGroupKey(),
-        mvActionGroupMask(),
-        mvActionScheduledTimeEnable(),
-        mvActionScheduledTime(),
-        mvActionDestinationIPAddress(),
-        mvActionSend()
+        gevDeviceForceIP(),
+        gevDeviceForceIPAddress(),
+        gevDeviceForceSubnetMask(),
+        gevDeviceForceGateway(),
+        actionCommand(),
+        actionDeviceKey(),
+        actionGroupKey(),
+        actionGroupMask(),
+        actionScheduledTimeEnable(),
+        actionScheduledTime(),
+        gevActionDestinationIPAddress(),
+        eventSelector(),
+        eventNotification()
     {
         mvIMPACT::acquire::ComponentLocator locator( pDev->deviceDriverFeatureList() );
         locator.bindSearchBase( locator.searchbase_id(), "GenTL/Interfaces" );
@@ -12529,6 +14288,8 @@ public:
         locator.bindComponent( interfaceID, "InterfaceID" );
         locator.bindComponent( interfaceDisplayName, "InterfaceDisplayName" );
         locator.bindComponent( interfaceType, "InterfaceType" );
+        locator.bindComponent( interfaceTLVersionMajor, "InterfaceTLVersionMajor" );
+        locator.bindComponent( interfaceTLVersionMinor, "InterfaceTLVersionMinor" );
         locator.bindComponent( gevInterfaceGatewaySelector, "GevInterfaceGatewaySelector" );
         locator.bindComponent( gevInterfaceGateway, "GevInterfaceGateway" );
         locator.bindComponent( gevInterfaceMACAddress, "GevInterfaceMACAddress" );
@@ -12539,6 +14300,7 @@ public:
         locator.bindComponent( mvGevInterfaceLinkSpeed, "mvGevInterfaceLinkSpeed" );
         locator.bindComponent( mvGevAdvancedDeviceDiscoveryEnable, "mvGevAdvancedDeviceDiscoveryEnable" );
         locator.bindComponent( deviceUpdateList, "DeviceUpdateList@i" );
+        locator.bindComponent( deviceUpdateTimeout, "DeviceUpdateTimeout" );
         locator.bindComponent( deviceSelector, "DeviceSelector" );
         locator.bindComponent( deviceID, "DeviceID" );
         locator.bindComponent( deviceVendorName, "DeviceVendorName" );
@@ -12546,6 +14308,16 @@ public:
         locator.bindComponent( deviceType, "DeviceType" );
         locator.bindComponent( deviceLinkSpeed, "DeviceLinkSpeed" );
         locator.bindComponent( deviceAccessStatus, "DeviceAccessStatus" );
+        locator.bindComponent( deviceSerialNumber, "DeviceSerialNumber" );
+        locator.bindComponent( deviceUserID, "DeviceUserID" );
+        locator.bindComponent( deviceTLVersionMajor, "DeviceTLVersionMajor" );
+        locator.bindComponent( deviceTLVersionMinor, "DeviceTLVersionMinor" );
+        locator.bindComponent( gevDeviceIPAddress, "GevDeviceIPAddress" );
+        locator.bindComponent( gevDeviceSubnetMask, "GevDeviceSubnetMask" );
+        locator.bindComponent( gevDeviceGateway, "GevDeviceGateway" );
+        locator.bindComponent( gevDeviceIPConfigurationStatus, "GevDeviceIPConfigurationStatus" );
+        locator.bindComponent( gevDeviceMACAddress, "GevDeviceMACAddress" );
+        locator.bindComponent( gevCurrentControlMode, "GevCurrentControlMode" );
         locator.bindComponent( mvDeviceCommandChannelTransmissionTimeout, "mvDeviceCommandChannelTransmissionTimeout" );
         locator.bindComponent( mvDeviceCommandChannelRetryCount, "mvDeviceCommandChannelRetryCount" );
         locator.bindComponent( gevVersionMajor, "GevVersionMajor" );
@@ -12556,28 +14328,235 @@ public:
         locator.bindComponent( u3vVersionMinor, "U3vVersionMinor" );
         locator.bindComponent( mvDevicePrimaryApplicationSwitchoverSupported, "mvDevicePrimaryApplicationSwitchoverSupported" );
         locator.bindComponent( mvDevicePrimaryApplicationSwitchoverEnable, "mvDevicePrimaryApplicationSwitchoverEnable" );
-        locator.bindComponent( mvDevicePrimaryApplicationSwitchoverKey, "mvDevicePrimaryApplicationSwitchoverKey" );
+        locator.bindComponent( gevApplicationSwitchoverKey, "GevApplicationSwitchoverKey" );
+        if( !gevApplicationSwitchoverKey.isValid() )
+        {
+            locator.bindComponent( gevApplicationSwitchoverKey, "mvDevicePrimaryApplicationSwitchoverKey" );
+        }
         locator.bindComponent( mvDeviceNetworkInterfaceCount, "mvDeviceNetworkInterfaceCount" );
+        locator.bindComponent( gevDeviceForceIP, "GevDeviceForceIP@i" );
+        locator.bindComponent( gevDeviceForceIPAddress, "GevDeviceForceIPAddress" );
+        locator.bindComponent( gevDeviceForceSubnetMask, "GevDeviceForceSubnetMask" );
+        locator.bindComponent( gevDeviceForceGateway, "GevDeviceForceGateway" );
+        locator.bindComponent( actionCommand, "ActionCommand@i" );
+        if( !actionCommand.isValid() )
+        {
+            locator.bindComponent( actionCommand, "mvActionSend@i" );
+        }
+        locator.bindComponent( actionDeviceKey, "ActionDeviceKey" );
+        if( !actionDeviceKey.isValid() )
+        {
+            locator.bindComponent( actionDeviceKey, "mvActionDeviceKey" );
+        }
+        locator.bindComponent( actionGroupKey, "ActionGroupKey" );
+        if( !actionGroupKey.isValid() )
+        {
+            locator.bindComponent( actionGroupKey, "mvActionGroupKey" );
+        }
+        locator.bindComponent( actionGroupMask, "ActionGroupMask" );
+        if( !actionGroupMask.isValid() )
+        {
+            locator.bindComponent( actionGroupMask, "mvActionGroupMask" );
+        }
+        locator.bindComponent( actionScheduledTimeEnable, "ActionScheduledTimeEnable" );
+        if( !actionScheduledTimeEnable.isValid() )
+        {
+            locator.bindComponent( actionScheduledTimeEnable, "mvActionScheduledTimeEnable" );
+        }
+        locator.bindComponent( actionScheduledTime, "ActionScheduledTime" );
+        if( !actionScheduledTime.isValid() )
+        {
+            locator.bindComponent( actionScheduledTime, "mvActionScheduledTime" );
+        }
+        locator.bindComponent( gevActionDestinationIPAddress, "GevActionDestinationIPAddress" );
+        if( !gevActionDestinationIPAddress.isValid() )
+        {
+            locator.bindComponent( gevActionDestinationIPAddress, "mvActionDestinationIPAddress" );
+        }
+        locator.bindComponent( eventSelector, "EventSelector" );
+        locator.bindComponent( eventNotification, "EventNotification" );
+    }
+    /// \brief Constructs a new <b>mvIMPACT::acquire::GenICam::InterfaceModule</b> object.
+    /**
+     *  \since 2.17.0
+     */
+    explicit InterfaceModule(
+        /// [in] The \a index of the instance this object shall be created for. Passing an invalid index will raise an exception.
+        int64_type index ) :
+        mvIMPACT::acquire::ComponentCollection( INVALID_ID ),
+        interfaceID(),
+        interfaceDisplayName(),
+        interfaceType(),
+        interfaceTLVersionMajor(),
+        interfaceTLVersionMinor(),
+        gevInterfaceGatewaySelector(),
+        gevInterfaceGateway(),
+        gevInterfaceMACAddress(),
+        gevInterfaceSubnetSelector(),
+        gevInterfaceSubnetIPAddress(),
+        gevInterfaceSubnetMask(),
+        mvGevInterfaceMTU(),
+        mvGevInterfaceLinkSpeed(),
+        mvGevAdvancedDeviceDiscoveryEnable(),
+        deviceUpdateList(),
+        deviceUpdateTimeout(),
+        deviceSelector(),
+        deviceID(),
+        deviceVendorName(),
+        deviceModelName(),
+        deviceType(),
+        deviceLinkSpeed(),
+        deviceAccessStatus(),
+        deviceSerialNumber(),
+        deviceUserID(),
+        deviceTLVersionMajor(),
+        deviceTLVersionMinor(),
+        gevDeviceIPAddress(),
+        gevDeviceSubnetMask(),
+        gevDeviceGateway(),
+        gevDeviceIPConfigurationStatus(),
+        gevDeviceMACAddress(),
+        gevCurrentControlMode(),
+        mvDeviceCommandChannelTransmissionTimeout(),
+        mvDeviceCommandChannelRetryCount(),
+        gevVersionMajor(),
+        gevVersionMinor(),
+        genCPVersionMajor(),
+        genCPVersionMinor(),
+        u3vVersionMajor(),
+        u3vVersionMinor(),
+        mvDevicePrimaryApplicationSwitchoverSupported(),
+        mvDevicePrimaryApplicationSwitchoverEnable(),
+        gevApplicationSwitchoverKey(),
+        mvDeviceNetworkInterfaceCount(),
+        gevDeviceForceIP(),
+        gevDeviceForceIPAddress(),
+        gevDeviceForceSubnetMask(),
+        gevDeviceForceGateway(),
+        actionCommand(),
+        actionDeviceKey(),
+        actionGroupKey(),
+        actionGroupMask(),
+        actionScheduledTimeEnable(),
+        actionScheduledTime(),
+        gevActionDestinationIPAddress(),
+        eventSelector(),
+        eventNotification()
+    {
+        HLIST hList;
+        TDMR_ERROR result;
+        if( ( result = DMR_FindList( INVALID_ID, "mvGenTLConsumer", dmltDeviceDriverLib, 0, &hList ) ) != DMR_NO_ERROR )
+        {
+            ExceptionFactory::raiseException( MVIA_FUNCTION, __LINE__, result, "Couldn't find list 'mvGenTLConsumer'(type: dmltDeviceDriverLib)" );
+        }
+        mvIMPACT::acquire::ComponentLocator locator( hList );
+        locator.bindSearchBase( locator.searchbase_id(), "GenTL/Interfaces" );
+        std::ostringstream oss;
+        oss << "Interface" << index;
+        locator = mvIMPACT::acquire::ComponentLocator( locator.findComponent( oss.str() ) );
+        m_hRoot = locator.searchbase_id();
+        locator.bindComponent( interfaceID, "InterfaceID" );
+        locator.bindComponent( interfaceDisplayName, "InterfaceDisplayName" );
+        locator.bindComponent( interfaceType, "InterfaceType" );
+        locator.bindComponent( interfaceTLVersionMajor, "InterfaceTLVersionMajor" );
+        locator.bindComponent( interfaceTLVersionMinor, "InterfaceTLVersionMinor" );
+        locator.bindComponent( gevInterfaceGatewaySelector, "GevInterfaceGatewaySelector" );
+        locator.bindComponent( gevInterfaceGateway, "GevInterfaceGateway" );
+        locator.bindComponent( gevInterfaceMACAddress, "GevInterfaceMACAddress" );
+        locator.bindComponent( gevInterfaceSubnetSelector, "GevInterfaceSubnetSelector" );
+        locator.bindComponent( gevInterfaceSubnetIPAddress, "GevInterfaceSubnetIPAddress" );
+        locator.bindComponent( gevInterfaceSubnetMask, "GevInterfaceSubnetMask" );
+        locator.bindComponent( mvGevInterfaceMTU, "mvGevInterfaceMTU" );
+        locator.bindComponent( mvGevInterfaceLinkSpeed, "mvGevInterfaceLinkSpeed" );
+        locator.bindComponent( mvGevAdvancedDeviceDiscoveryEnable, "mvGevAdvancedDeviceDiscoveryEnable" );
+        locator.bindComponent( deviceUpdateList, "DeviceUpdateList@i" );
+        locator.bindComponent( deviceUpdateTimeout, "DeviceUpdateTimeout" );
+        locator.bindComponent( deviceSelector, "DeviceSelector" );
+        locator.bindComponent( deviceID, "DeviceID" );
+        locator.bindComponent( deviceVendorName, "DeviceVendorName" );
+        locator.bindComponent( deviceModelName, "DeviceModelName" );
+        locator.bindComponent( deviceType, "DeviceType" );
+        locator.bindComponent( deviceLinkSpeed, "DeviceLinkSpeed" );
+        locator.bindComponent( deviceAccessStatus, "DeviceAccessStatus" );
+        locator.bindComponent( deviceSerialNumber, "DeviceSerialNumber" );
+        locator.bindComponent( deviceUserID, "DeviceUserID" );
+        locator.bindComponent( deviceTLVersionMajor, "DeviceTLVersionMajor" );
+        locator.bindComponent( deviceTLVersionMinor, "DeviceTLVersionMinor" );
         locator.bindComponent( gevDeviceIPAddress, "GevDeviceIPAddress" );
         locator.bindComponent( gevDeviceSubnetMask, "GevDeviceSubnetMask" );
+        locator.bindComponent( gevDeviceGateway, "GevDeviceGateway" );
+        locator.bindComponent( gevDeviceIPConfigurationStatus, "GevDeviceIPConfigurationStatus" );
         locator.bindComponent( gevDeviceMACAddress, "GevDeviceMACAddress" );
-        locator.bindComponent( mvActionDeviceKey, "mvActionDeviceKey" );
-        locator.bindComponent( mvActionGroupKey, "mvActionGroupKey" );
-        locator.bindComponent( mvActionGroupMask, "mvActionGroupMask" );
-        locator.bindComponent( mvActionScheduledTimeEnable, "mvActionScheduledTimeEnable" );
-        locator.bindComponent( mvActionScheduledTime, "mvActionScheduledTime" );
-        locator.bindComponent( mvActionDestinationIPAddress, "mvActionDestinationIPAddress" );
-        locator.bindComponent( mvActionSend, "mvActionSend@i" );
+        locator.bindComponent( gevCurrentControlMode, "GevCurrentControlMode" );
+        locator.bindComponent( mvDeviceCommandChannelTransmissionTimeout, "mvDeviceCommandChannelTransmissionTimeout" );
+        locator.bindComponent( mvDeviceCommandChannelRetryCount, "mvDeviceCommandChannelRetryCount" );
+        locator.bindComponent( gevVersionMajor, "GevVersionMajor" );
+        locator.bindComponent( gevVersionMinor, "GevVersionMinor" );
+        locator.bindComponent( genCPVersionMajor, "GenCPVersionMajor" );
+        locator.bindComponent( genCPVersionMinor, "GenCPVersionMinor" );
+        locator.bindComponent( u3vVersionMajor, "U3vVersionMajor" );
+        locator.bindComponent( u3vVersionMinor, "U3vVersionMinor" );
+        locator.bindComponent( mvDevicePrimaryApplicationSwitchoverSupported, "mvDevicePrimaryApplicationSwitchoverSupported" );
+        locator.bindComponent( mvDevicePrimaryApplicationSwitchoverEnable, "mvDevicePrimaryApplicationSwitchoverEnable" );
+        locator.bindComponent( gevApplicationSwitchoverKey, "GevApplicationSwitchoverKey" );
+        if( !gevApplicationSwitchoverKey.isValid() )
+        {
+            locator.bindComponent( gevApplicationSwitchoverKey, "mvDevicePrimaryApplicationSwitchoverKey" );
+        }
+        locator.bindComponent( mvDeviceNetworkInterfaceCount, "mvDeviceNetworkInterfaceCount" );
+        locator.bindComponent( gevDeviceForceIP, "GevDeviceForceIP@i" );
+        locator.bindComponent( gevDeviceForceIPAddress, "GevDeviceForceIPAddress" );
+        locator.bindComponent( gevDeviceForceSubnetMask, "GevDeviceForceSubnetMask" );
+        locator.bindComponent( gevDeviceForceGateway, "GevDeviceForceGateway" );
+        locator.bindComponent( actionCommand, "ActionCommand@i" );
+        if( !actionCommand.isValid() )
+        {
+            locator.bindComponent( actionCommand, "mvActionSend@i" );
+        }
+        locator.bindComponent( actionDeviceKey, "ActionDeviceKey" );
+        if( !actionDeviceKey.isValid() )
+        {
+            locator.bindComponent( actionDeviceKey, "mvActionDeviceKey" );
+        }
+        locator.bindComponent( actionGroupKey, "ActionGroupKey" );
+        if( !actionGroupKey.isValid() )
+        {
+            locator.bindComponent( actionGroupKey, "mvActionGroupKey" );
+        }
+        locator.bindComponent( actionGroupMask, "ActionGroupMask" );
+        if( !actionGroupMask.isValid() )
+        {
+            locator.bindComponent( actionGroupMask, "mvActionGroupMask" );
+        }
+        locator.bindComponent( actionScheduledTimeEnable, "ActionScheduledTimeEnable" );
+        if( !actionScheduledTimeEnable.isValid() )
+        {
+            locator.bindComponent( actionScheduledTimeEnable, "mvActionScheduledTimeEnable" );
+        }
+        locator.bindComponent( actionScheduledTime, "ActionScheduledTime" );
+        if( !actionScheduledTime.isValid() )
+        {
+            locator.bindComponent( actionScheduledTime, "mvActionScheduledTime" );
+        }
+        locator.bindComponent( gevActionDestinationIPAddress, "GevActionDestinationIPAddress" );
+        if( !gevActionDestinationIPAddress.isValid() )
+        {
+            locator.bindComponent( gevActionDestinationIPAddress, "mvActionDestinationIPAddress" );
+        }
+        locator.bindComponent( eventSelector, "EventSelector" );
+        locator.bindComponent( eventNotification, "EventNotification" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief A string property. GenTL producer wide unique identifier of the selected interface.
     /**
      *  This is a read only element. It is a string that indicates a GenTL producer wide unique identifier of the selected interface.
      */
     PropertyS interfaceID;
-    /// \brief A string property. GenTL producer wide unique user readable name for the selected interface.
+    /// \brief A string property. A user-friendly name of the Interface.
     /**
-     *  This is a read only element. It is a string that indicates a GenTL producer wide unique user readable name for the selected interface.
+     *  This is a read only element. It is a string that indicates a  user-friendly name of the Interface.
      */
     PropertyS interfaceDisplayName;
     /// \brief An enumerated integer property. Identifies the interfaces technology of the GenTL Producer implementation.
@@ -12585,14 +14564,28 @@ public:
      *  This is a read only feature. This enumeration provides a value that indicates interfaces technology of the GenTL Producer implementation.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is a device for a custom protocol.
+     *  - \b Mixed (Display string: 'Mixed'): This enumeration value indicates that this is an interface for a mixed protocol.
+     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is an interface for a custom protocol.
      *  - \b GEV (Display string: 'GigE Vision'): This enumeration value indicates that this is an interface for the GigE Vision protocol.
+     *  - \b CameraLink (Display string: 'CameraLink'): This enumeration value indicates that this is an interface for the CameraLink protocol.
+     *  - \b CoaXPress (Display string: 'CoaXPress'): This enumeration value indicates that this is an interface for the CoaXPress protocol.
+     *  - \b CameraLinkHS (Display string: 'CameraLink HS'): This enumeration value indicates that this is an interface for the CameraLink HS protocol.
      *  - \b U3V (Display string: 'USB3 Vision'): This enumeration value indicates that this is an interface for the USB3 Vision protocol.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 interfaceType;
+    /// \brief An integer property. Indicates the major version number of the transport layer specification the GenTL Producer complies with.
+    /**
+     *  This is a read only element. It indicates the major version number of the transport layer specification the GenTL Producer complies with.
+     */
+    PropertyI64 interfaceTLVersionMajor;
+    /// \brief An integer property. Indicates the minor version number of the transport layer specification the GenTL Producer complies with.
+    /**
+     *  This is a read only element. It indicates the minor version number of the transport layer specification the GenTL Producer complies with.
+     */
+    PropertyI64 interfaceTLVersionMinor;
     /// \brief An integer property. Selector for the different gateway entries for this interface.
     /**
      *  Selector for the different gateway entries for this interface. The selector is 0-based in order to match the index of the C interface.
@@ -12643,6 +14636,11 @@ public:
      *  This command updates the internal device list of this interface.
      */
     Method deviceUpdateList;
+    /// \brief An integer property. Specifies timeout for the DeviceUpdateList Command.
+    /**
+     *  Specifies timeout for the DeviceUpdateList Command.
+     */
+    PropertyI64 deviceUpdateTimeout;
     /// \brief An integer property. Selector for the different devices on this interface.
     /**
      *  Selector for the different devices on this interface. The limits of this feature might change upon execution of DeviceUpdateList.
@@ -12673,8 +14671,12 @@ public:
      *  - \b Receiver (Display string: 'Receiver'): Data stream receiver device.
      *  - \b Transceiver (Display string: 'Transceiver'): Data stream receiver and transmitter device.
      *  - \b Peripheral (Display string: 'Peripheral'): Controllable device (with no data stream handling).
+     *  - \b Mixed (Display string: 'Mixed'): This enumeration value indicates that this is a device for a mixed protocol.
      *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is a device for a custom protocol.
      *  - \b GEV (Display string: 'GigE Vision'): This enumeration value indicates that this is a device for the GigE Vision protocol.
+     *  - \b CameraLink (Display string: 'CameraLink'): This enumeration value indicates that this is a device for the CameraLink protocol.
+     *  - \b CoaXPress (Display string: 'CoaXPress'): This enumeration value indicates that this is a device for the CoaXPress protocol.
+     *  - \b CameraLinkHS (Display string: 'CameraLink HS'): This enumeration value indicates that this is a device for the CameraLink HS protocol.
      *  - \b U3V (Display string: 'USB3 Vision'): This enumeration value indicates that this is a device for the USB3 Vision protocol.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
@@ -12688,56 +14690,128 @@ public:
     PropertyI64 deviceLinkSpeed;
     /// \brief An enumerated integer property. Indicates the current access status for the device.
     /**
-     *  This is a read only feature. This enumeration provides a value that indicates the current access status for the device.
+     *  This is a read only feature. This enumeration gives the device's access status at the moment of the last execution of the DeviceUpdateList command. This value only changes on execution of the DeviceUpdateList command.
      *
      *  The following string values might be valid for this feature:
      *  - \b Unknown (Display string: 'Unknown'): This enumeration value indicates that the device accessibility is not known.
      *  - \b ReadWrite (Display string: 'Read/Write'): This enumeration value indicates that full access to the device is available.
      *  - \b ReadOnly (Display string: 'Read Only'): This enumeration value indicates that read access to the device is available.
      *  - \b NoAccess (Display string: 'No Access'): This enumeration value indicates that no access to the device is available.
+     *  - \b Busy (Display string: 'Busy'): This enumeration value indicates that the device is already opened by another entity.
+     *  - \b OpenReadWrite (Display string: 'Open Read Write'): This enumeration value indicates that the device is open in Read/Write mode by this GenTL host.
+     *  - \b OpenReadOnly (Display string: 'Open Read Only'): This enumeration value indicates that the device is open in Read only mode by this GenTL host.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 deviceAccessStatus;
-    /// \brief An integer property. Defines the maximum time in milli-seconds the host driver will wait for an ACK from the device to a previously sent command.
+    /// \brief A string property. Device's serial number.
     /**
-     *  Defines the maximum time in milli-seconds the host driver will wait for an ACK from the device to a previously sent command.
+     *  Device's serial number. This string is a unique identifier of the device.
+     */
+    PropertyS deviceSerialNumber;
+    /// \brief A string property. User-programmable device identifier.
+    /**
+     *  User-programmable device identifier.
+     */
+    PropertyS deviceUserID;
+    /// \brief An integer property. Major version of the Transport Layer of the device.
+    /**
+     *  Major version of the Transport Layer of the device.
+     */
+    PropertyI64 deviceTLVersionMajor;
+    /// \brief An integer property. Minor version of the Transport Layer of the device.
+    /**
+     *  Minor version of the Transport Layer of the device.
+     */
+    PropertyI64 deviceTLVersionMinor;
+    /// \brief An integer property. Indicates the current IP address of the GVCP interface of the selected remote device.
+    /**
+     *  This is a read only element. It indicates the current IP address of the GVCP interface of the selected remote device.
+     */
+    PropertyI64 gevDeviceIPAddress;
+    /// \brief An integer property. Indicates the current subnet mask of the GVCP interface of the selected remote device.
+    /**
+     *  This is a read only element. It indicates the current subnet mask of the GVCP interface of the selected remote device.
+     */
+    PropertyI64 gevDeviceSubnetMask;
+    /// \brief An integer property. Indicates the current gateway of the GVCP interface of the selected remote device.
+    /**
+     *  This is a read only element. It indicates the current gateway of the GVCP interface of the selected remote device.
+     */
+    PropertyI64 gevDeviceGateway;
+    /// \brief An enumerated integer property. Identifies the IP configuration of the GVCP interface of the selected remote device.
+    /**
+     *  This is a read only feature. This enumeration provides a value that indicates the Device IP configuration of the GVCP interface of the selected remote device. This value only changes on execution of the DeviceUpdateList command.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b DHCP (Display string: 'DHCP')
+     *  - \b PersistentIP (Display string: 'Persistent IP')
+     *  - \b LinkLocal (Display string: 'Link Local')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 gevDeviceIPConfigurationStatus;
+    /// \brief An integer property. Indicates the 48-bit MAC address of the GVCP interface of the selected remote device.
+    /**
+     *  This is a read only element. It indicates the 48-bit MAC address of the GVCP interface of the selected remote device.
+     */
+    PropertyI64 gevDeviceMACAddress;
+    /// \brief An enumerated integer property. The current control mode of the device.
+    /**
+     *  This enumeration provides a value that indicates the current control mode of the device.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Open (Display string: 'Open'): This enumeration value indicates that the device is open for control or exclusive access.
+     *  - \b ControlAccess (Display string: 'Control Access'): This enumeration value indicates that the device is controlled by another host, but switchover or read-only access is possible.
+     *  - \b ExclusiveAccess (Display string: 'Exclusive Access'): This enumeration value indicates that the device is under exclusive access by a host and cannot be accessed by another.
+     *  - \b NoAccess (Display string: 'No Access'): This enumeration value indicates that the device cannot be accessed, for instance it may be a GigE Vision device on a subnet different from the interface.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 gevCurrentControlMode;
+    /// \brief An integer property. Defines the maximum time in milli-seconds the host driver will wait for an ACK from the device to a previously sent command(deprecated).
+    /**
+     *  \deprecated
+     *  Defines the maximum time in milli-seconds the host driver will wait for an ACK from the device to a previously sent command. This feature has been declared deprecated. Use 'LinkCommandTimeout' of the DeviceModule instead.
      */
     PropertyI64 mvDeviceCommandChannelTransmissionTimeout;
-    /// \brief An integer property. Indicates the number of retransmissions allowed when command channel message timed out (no ACK was received from the device).
+    /// \brief An integer property. Indicates the number of retransmissions allowed when command channel message timed out (no ACK was received from the device)(deprecated).
     /**
-     *  Indicates the number of retransmissions allowed when command channel message timed out (no ACK was received from the device).
+     *  \deprecated
+     *  Indicates the number of retransmissions allowed when command channel message timed out (no ACK was received from the device). This feature has been declared deprecated. Use 'LinkCommandRetryCount' of the DeviceModule instead.
      */
     PropertyI64 mvDeviceCommandChannelRetryCount;
-    /// \brief An integer property. Major version of the specification.
+    /// \brief An integer property. Indicates the major version number of the GigE Vision specification this device complies with.
     /**
-     *  Major version of the specification.
+     *  This is a read only element. It indicates the major version number of the GigE Vision specification this device complies with.
      */
     PropertyI64 gevVersionMajor;
-    /// \brief An integer property. Minor version of the specification.
+    /// \brief An integer property. Indicates the minor version number of the GigE Vision specification this device complies with.
     /**
-     *  Minor version of the specification.
+     *  This is a read only element. It indicates the minor version number of the GigE Vision specification this device complies with.
      */
     PropertyI64 gevVersionMinor;
-    /// \brief An integer property. Indicates the major version number of the GenCP specification this GenTL Producer implementation complies with.
+    /// \brief An integer property. Indicates the major version number of the GenCP specification this device complies with.
     /**
-     *  This is a read only element. It indicates the major version number of the GenCP specification this GenTL Producer implementation complies with.
+     *  This is a read only element. It indicates the major version number of the GenCP specification this device complies with.
      */
     PropertyI64 genCPVersionMajor;
-    /// \brief An integer property. Indicates the minor version number of the GenCP specification this GenTL Producer implementation complies with.
+    /// \brief An integer property. Indicates the minor version number of the GenCP specification this device complies with.
     /**
-     *  This is a read only element. It indicates the minor version number of the GenCP specification this GenTL Producer implementation complies with.
+     *  This is a read only element. It indicates the minor version number of the GenCP specification this device complies with.
      */
     PropertyI64 genCPVersionMinor;
-    /// \brief An integer property. Indicates the major version number of the USB3 Vision specification this GenTL Producer implementation complies with.
+    /// \brief An integer property. Indicates the major version number of the USB3 Vision specification this device complies with.
     /**
-     *  This is a read only element. It indicates the major version number of the USB3 Vision specification this GenTL Producer implementation complies with.
+     *  This is a read only element. It indicates the major version number of the USB3 Vision specification this device complies with.
      */
     PropertyI64 u3vVersionMajor;
-    /// \brief An integer property. Indicates the minor version number of the USB3 Vision specification this GenTL Producer implementation complies with.
+    /// \brief An integer property. Indicates the minor version number of the USB3 Vision specification this device complies with.
     /**
-     *  This is a read only element. It indicates the minor version number of the USB3 Vision specification this GenTL Producer implementation complies with.
+     *  This is a read only element. It indicates the minor version number of the USB3 Vision specification this device complies with.
      */
     PropertyI64 u3vVersionMinor;
     /// \brief A boolean property. Reports the availability of the primary application switchover feature.
@@ -12754,69 +14828,274 @@ public:
     /**
      *  Controls the key to use to authenticate primary application switchover requests. If the device to take over has 'mvDevicePrimaryApplicationSwitchoverEnable' set to true and this key matches the devices internal key control access will be granted.
      */
-    PropertyI64 mvDevicePrimaryApplicationSwitchoverKey;
+    PropertyI64 gevApplicationSwitchoverKey;
     /// \brief An integer property. The number of physical network interfaces supported by this device.
     /**
      *  This is an integer feature. It contains the number of physical network interfaces supported by this device.
      */
     PropertyI64 mvDeviceNetworkInterfaceCount;
-    /// \brief An integer property. Indicates the current IP address of the GVCP interface of the selected remote device.
+    /// \brief A method object. Apply the force IP settings (GevDeviceForceIPAddress, GevDeviceForceSubnetMask and GevDeviceForceGateway) in the Device using ForceIP command.
     /**
-     *  This is a read only element. It indicates the current IP address of the GVCP interface of the selected remote device.
+     *  Apply the force IP settings (GevDeviceForceIPAddress, GevDeviceForceSubnetMask and GevDeviceForceGateway) in the Device using ForceIP command.
      */
-    PropertyI64 gevDeviceIPAddress;
-    /// \brief An integer property. Indicates the current subnet mask of the GVCP interface of the selected remote device.
+    Method gevDeviceForceIP;
+    /// \brief An integer property. Static IP address to set for the GVCP interface of the selected remote device.
     /**
-     *  This is a read only element. It indicates the current subnet mask of the GVCP interface of the selected remote device.
+     *  Static IP address to set for the GVCP interface of the selected remote device.
      */
-    PropertyI64 gevDeviceSubnetMask;
-    /// \brief An integer property. Indicates the 48-bit MAC address of the GVCP interface of the selected remote device.
+    PropertyI64 gevDeviceForceIPAddress;
+    /// \brief An integer property. Static subnet mask to set for the GVCP interface of the selected remote device.
     /**
-     *  This is a read only element. It indicates the 48-bit MAC address of the GVCP interface of the selected remote device.
+     *  Static subnet mask to set for the GVCP interface of the selected remote device.
      */
-    PropertyI64 gevDeviceMACAddress;
-    /// \brief An integer property. The device key for the action command
+    PropertyI64 gevDeviceForceSubnetMask;
+    /// \brief An integer property. Static gateway IP address to set for the GVCP interface of the selected remote device.
     /**
-     *  The device key is one of the three main components that constitute an action command packet. It partly defines which device(s) will positively assert the action command packet.
+     *  Static gateway IP address to set for the GVCP interface of the selected remote device.
      */
-    PropertyI64 mvActionDeviceKey;
-    /// \brief An integer property. The group key for the action command
-    /**
-     *  The group key is one of the three main components that constitute an action command packet. It partly defines which device(s) will positively assert the action command packet.
-     */
-    PropertyI64 mvActionGroupKey;
-    /// \brief An integer property. The group mask for the action command
-    /**
-     *  The group mask is one of the three main components that constitute an action command packet. It partly defines which device(s) will positively assert the action command packet.
-     */
-    PropertyI64 mvActionGroupMask;
-    /// \brief A boolean property. Enables or disables action command scheduling
-    /**
-     *  Action commands can be scheduled to execute at a particular moment in time, defined by the 'mvActionScheduledTime' property. If this is disabled the action command takes place immediately after it is received and asserted by each device.
-     */
-    PropertyIBoolean mvActionScheduledTimeEnable;
-    /// \brief An integer property. Sets the time in which the action command will be executed
-    /**
-     *  Sets the time in which the action command will be executed
-     */
-    PropertyI64 mvActionScheduledTime;
-    /// \brief An integer property. The IP address of the action command recipient
-    /**
-     *  A valid IP address if the action command shall be unicast. A broadcast subnet if the action command shall be broadcast.
-     */
-    PropertyI64 mvActionDestinationIPAddress;
+    PropertyI64 gevDeviceForceGateway;
     /// \brief A method object. Sends the action command
     /**
      *  It either sends an action command unicast packet to the IP address specified by the 'mvActionDestinationIPAddress' property, or broadcasts an action command broadcast packet on the broadcast domain specified by the 'mvActionDestinationIPAddress' property
      */
-    Method mvActionSend;
+    Method actionCommand;
+    /// \brief An integer property. The device key for the action command
+    /**
+     *  The device key is one of the three main components that constitute an action command packet. It partly defines which device(s) will positively assert the action command packet.
+     */
+    PropertyI64 actionDeviceKey;
+    /// \brief An integer property. The group key for the action command
+    /**
+     *  The group key is one of the three main components that constitute an action command packet. It partly defines which device(s) will positively assert the action command packet.
+     */
+    PropertyI64 actionGroupKey;
+    /// \brief An integer property. The group mask for the action command
+    /**
+     *  The group mask is one of the three main components that constitute an action command packet. It partly defines which device(s) will positively assert the action command packet.
+     */
+    PropertyI64 actionGroupMask;
+    /// \brief A boolean property. Enables or disables action command scheduling
+    /**
+     *  Action commands can be scheduled to execute at a particular moment in time, defined by the 'mvActionScheduledTime' property. If this is disabled the action command takes place immediately after it is received and asserted by each device.
+     */
+    PropertyIBoolean actionScheduledTimeEnable;
+    /// \brief An integer property. Sets the time in which the action command will be executed
+    /**
+     *  Sets the time in which the action command will be executed
+     */
+    PropertyI64 actionScheduledTime;
+    /// \brief An integer property. The IP address of the action command recipient
+    /**
+     *  A valid IP address if the action command shall be unicast. A broadcast subnet if the action command shall be broadcast.
+     */
+    PropertyI64 gevActionDestinationIPAddress;
+    /// \brief An enumerated integer property. Selects which Event to signal to the host application.
+    /**
+     *  Selects which Event to signal to the host application.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Device just received a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Device just missed a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Device just started the Acquisition of one or many Frames.
+     *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Device just completed the Acquisition of one or many Frames.
+     *  - \b AcquisitionTransferStart (Display string: 'Acquisition Transfer Start'): Device just started the transfer of one or many Frames.
+     *  - \b AcquisitionTransferEnd (Display string: 'Acquisition Transfer End'): Device just completed the transfer of one or many Frames.
+     *  - \b AcquisitionError (Display string: 'Acquisition Error'): Device just detected an error during the active Acquisition.
+     *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Device just started the capture of a burst of Frames.
+     *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Device just completed the capture of a burst of Frames.
+     *  - \b FrameTrigger (Display string: 'Frame Trigger'): Device just received a trigger to start the capture of one Frame.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Device just missed a trigger to start the capture of one Frame.
+     *  - \b FrameStart (Display string: 'Frame Start'): Device just started the capture of one Frame.
+     *  - \b FrameEnd (Display string: 'Frame End'): Device just completed the capture of one Frame.
+     *  - \b FrameTransferStart (Display string: 'Frame Transfer Start'): Device just started the transfer of one Frame.
+     *  - \b FrameTransferEnd (Display string: 'Frame Transfer End'): Device just completed the transfer of one Frame.
+     *  - \b LineTrigger (Display string: 'Line Trigger'): Device just received a trigger to start the capture of one Line.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Device just missed a trigger to start the capture of one Line.
+     *  - \b LineStart (Display string: 'Line Start'): Device just started the capture of one Line.
+     *  - \b LineEnd (Display string: 'Line End'): Device just completed the capture of one Line.
+     *  - \b ExposureStart (Display string: 'Exposure Start'): Device just started the exposure of one Frame (or Line).
+     *  - \b ExposureEnd (Display string: 'Exposure End'): Device just completed the exposure of one Frame (or Line).
+     *  - \b Stream0TransferStart (Display string: 'Stream 0 Transfer Start'): Device just started the transfer of one or many Blocks.
+     *  - \b Stream0TransferEnd (Display string: 'Stream 0 Transfer End'): Device just completed the transfer of one or many Blocks.
+     *  - \b Stream0TransferPause (Display string: 'Stream 0 Transfer Pause'): Device just paused the transfer.
+     *  - \b Stream0TransferResume (Display string: 'Stream 0 Transfer Resume'): Device just resumed the transfer.
+     *  - \b Stream0TransferBlockStart (Display string: 'Stream 0 Transfer Block Start'): Device just started the transfer of one Block.
+     *  - \b Stream0TransferBlockEnd (Display string: 'Stream 0 Transfer Block End'): Device just completed the transfer of one Block.
+     *  - \b Stream0TransferBlockTrigger (Display string: 'Stream 0 Transfer Block Trigger'): Device just received a trigger to start the transfer of one Block.
+     *  - \b Stream0TransferBurstStart (Display string: 'Stream 0 Transfer Burst Start'): Device just started the transfer of a burst of Blocks.
+     *  - \b Stream0TransferBurstEnd (Display string: 'Stream 0 Transfer Burst End'): Device just completed the transfer of a burst of Blocks.
+     *  - \b Stream0TransferOverflow (Display string: 'Stream 0 Transfer Overflow'): Device transfer queue overflowed.
+     *  - \b SequencerSetChange (Display string: 'Sequencer Set Change'): Device sequencer set has changed.
+     *  - \b Counter0Start (Display string: 'Counter 0 Start'): The event will be generated when counter 0 starts counting.
+     *  - \b Counter1Start (Display string: 'Counter 1 Start'): The event will be generated when counter 1 starts counting.
+     *  - \b Counter\#2\#Start (Display string: 'Counter \#2\# Start'): The event will be generated when counter \#2\# starts counting.
+     *  - \b Counter0End (Display string: 'Counter 0 End'): The event will be generated when counter 0 ends counting.
+     *  - \b Counter1End (Display string: 'Counter 1 End'): The event will be generated when counter 1 ends counting.
+     *  - \b Counter\#2\#End (Display string: 'Counter \#2\# End'): The event will be generated when counter \#2\# ends counting.
+     *  - \b Timer0Start (Display string: 'Timer 0 Start'): The event will be generated when Timer 0 starts counting.
+     *  - \b Timer1Start (Display string: 'Timer 1 Start'): The event will be generated when Timer 1 starts counting.
+     *  - \b Timer\#2\#Start (Display string: 'Timer \#2\# Start'): The event will be generated when Timer \#2\# starts counting.
+     *  - \b Timer0End (Display string: 'Timer 0 End'): The event will be generated when Timer 0 ends counting.
+     *  - \b Timer1End (Display string: 'Timer 1 End'): The event will be generated when Timer 1 ends counting.
+     *  - \b Timer\#2\#End (Display string: 'Timer \#2\# End'): The event will be generated when Timer \#2\# ends counting.
+     *  - \b Encoder0Stopped (Display string: 'Encoder 0 Stopped'): The event will be generated when the Encoder 0 stops for longer than EncoderTimeout.
+     *  - \b Encoder1Stopped (Display string: 'Encoder 1 Stopped'): The event will be generated when the Encoder 1 stops for longer than EncoderTimeout.
+     *  - \b Encoder\#2\#Stopped (Display string: 'Encoder \#2\# Stopped'): The event will be generated when the Encoder \#2\# stops for longer than EncoderTimeout.
+     *  - \b Encoder0Restarted (Display string: 'Encoder 0 Restarted'): The event will be generated when the Encoder 0 restarts moving.
+     *  - \b Encoder1Restarted (Display string: 'Encoder 1 Restarted'): The event will be generated when the Encoder 1 restarts moving.
+     *  - \b Encoder\#2\#Restarted (Display string: 'Encoder \#2\# Restarted'): The event will be generated when the Encoder \#2\# restarts moving.
+     *  - \b Line0RisingEdge (Display string: 'Line 0 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 0.
+     *  - \b Line1RisingEdge (Display string: 'Line 1 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 1.
+     *  - \b Line\#2\#RisingEdge (Display string: 'Line \#2\# Rising Edge'): The event will be generated when a Rising Edge is detected on the Line \#2\#.
+     *  - \b Line0FallingEdge (Display string: 'Line 0 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 0.
+     *  - \b Line1FallingEdge (Display string: 'Line 1 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 1.
+     *  - \b Line\#2\#FallingEdge (Display string: 'Line \#2\# Falling Edge'): The event will be generated when a Falling Edge is detected on the Line \#2\#.
+     *  - \b Line0AnyEdge (Display string: 'Line 0 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 0.
+     *  - \b Line1AnyEdge (Display string: 'Line 1 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 1.
+     *  - \b Line\#2\#AnyEdge (Display string: 'Line \#2\# Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line \#2\#.
+     *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): The event will be generated when a Rising Edge is detected on the LinkTrigger 0.
+     *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): The event will be generated when a Rising Edge is detected on the LinkTrigger 1.
+     *  - \b LinkTrigger\#2\# (Display string: 'Link Trigger \#2\#'): The event will be generated when a Rising Edge is detected on the LinkTrigger \#2\#.
+     *  - \b LinkSpeedChange (Display string: 'Link Speed Change'): The event will be generated when the link speed has changed.
+     *  - \b ActionLate (Display string: 'Action Late'): The event will be generated when a valid scheduled action command is received and is scheduled to be executed at a time that is already past.
+     *  - \b Test (Display string: 'Test'): The test event will be generated when the device receives the TestEventGenerate command (EventNotification for the Test event is always On).
+     *  - \b Error (Display string: 'Error'): Device just detected an error during the active Acquisition.
+     *  - \b PrimaryApplicationSwitch (Display string: 'Primary Application Switch'): The event will be generated when a primary application switchover has been granted (GigE Vision Specific).
+     *  - \b Counter2Start (Display string: 'Counter 2 Start'): The event will be generated when counter 2 starts counting.
+     *  - \b Counter3Start (Display string: 'Counter 3 Start'): The event will be generated when counter 3 starts counting.
+     *  - \b Counter4Start (Display string: 'Counter 4 Start'): The event will be generated when counter 4 starts counting.
+     *  - \b Counter5Start (Display string: 'Counter 5 Start'): The event will be generated when counter 5 starts counting.
+     *  - \b Counter6Start (Display string: 'Counter 6 Start'): The event will be generated when counter 6 starts counting.
+     *  - \b Counter7Start (Display string: 'Counter 7 Start'): The event will be generated when counter 7 starts counting.
+     *  - \b Counter8Start (Display string: 'Counter 8 Start'): The event will be generated when counter 8 starts counting.
+     *  - \b Counter9Start (Display string: 'Counter 9 Start'): The event will be generated when counter 9 starts counting.
+     *  - \b Counter10Start (Display string: 'Counter 10 Start'): The event will be generated when counter 10 starts counting.
+     *  - \b Counter11Start (Display string: 'Counter 11 Start'): The event will be generated when counter 11 starts counting.
+     *  - \b Counter12Start (Display string: 'Counter 12 Start'): The event will be generated when counter 12 starts counting.
+     *  - \b Counter13Start (Display string: 'Counter 13 Start'): The event will be generated when counter 13 starts counting.
+     *  - \b Counter14Start (Display string: 'Counter 14 Start'): The event will be generated when counter 14 starts counting.
+     *  - \b Counter15Start (Display string: 'Counter 15 Start'): The event will be generated when counter 15 starts counting.
+     *  - \b Counter2End (Display string: 'Counter 2 End'): The event will be generated when counter 2 ends counting.
+     *  - \b Counter3End (Display string: 'Counter 3 End'): The event will be generated when counter 3 ends counting.
+     *  - \b Counter4End (Display string: 'Counter 4 End'): The event will be generated when counter 4 ends counting.
+     *  - \b Counter5End (Display string: 'Counter 5 End'): The event will be generated when counter 5 ends counting.
+     *  - \b Counter6End (Display string: 'Counter 6 End'): The event will be generated when counter 6 ends counting.
+     *  - \b Counter7End (Display string: 'Counter 7 End'): The event will be generated when counter 7 ends counting.
+     *  - \b Counter8End (Display string: 'Counter 8 End'): The event will be generated when counter 8 ends counting.
+     *  - \b Counter9End (Display string: 'Counter 9 End'): The event will be generated when counter 9 ends counting.
+     *  - \b Counter10End (Display string: 'Counter 10 End'): The event will be generated when counter 10 ends counting.
+     *  - \b Counter11End (Display string: 'Counter 11 End'): The event will be generated when counter 11 ends counting.
+     *  - \b Counter12End (Display string: 'Counter 12 End'): The event will be generated when counter 12 ends counting.
+     *  - \b Counter13End (Display string: 'Counter 13 End'): The event will be generated when counter 13 ends counting.
+     *  - \b Counter14End (Display string: 'Counter 14 End'): The event will be generated when counter 14 ends counting.
+     *  - \b Counter15End (Display string: 'Counter 15 End'): The event will be generated when counter 15 ends counting.
+     *  - \b Timer2Start (Display string: 'Timer 2 Start'): The event will be generated when Timer 2 starts counting.
+     *  - \b Timer3Start (Display string: 'Timer 3 Start'): The event will be generated when Timer 3 starts counting.
+     *  - \b Timer4Start (Display string: 'Timer 4 Start'): The event will be generated when Timer 4 starts counting.
+     *  - \b Timer5Start (Display string: 'Timer 5 Start'): The event will be generated when Timer 5 starts counting.
+     *  - \b Timer6Start (Display string: 'Timer 6 Start'): The event will be generated when Timer 6 starts counting.
+     *  - \b Timer7Start (Display string: 'Timer 7 Start'): The event will be generated when Timer 7 starts counting.
+     *  - \b Timer8Start (Display string: 'Timer 8 Start'): The event will be generated when Timer 8 starts counting.
+     *  - \b Timer9Start (Display string: 'Timer 9 Start'): The event will be generated when Timer 9 starts counting.
+     *  - \b Timer10Start (Display string: 'Timer 10 Start'): The event will be generated when Timer 10 starts counting.
+     *  - \b Timer11Start (Display string: 'Timer 11 Start'): The event will be generated when Timer 11 starts counting.
+     *  - \b Timer12Start (Display string: 'Timer 12 Start'): The event will be generated when Timer 12 starts counting.
+     *  - \b Timer13Start (Display string: 'Timer 13 Start'): The event will be generated when Timer 13 starts counting.
+     *  - \b Timer14Start (Display string: 'Timer 14 Start'): The event will be generated when Timer 14 starts counting.
+     *  - \b Timer15Start (Display string: 'Timer 15 Start'): The event will be generated when Timer 15 starts counting.
+     *  - \b Timer2End (Display string: 'Timer 2 End'): The event will be generated when Timer 2 ends counting.
+     *  - \b Timer3End (Display string: 'Timer 3 End'): The event will be generated when Timer 3 ends counting.
+     *  - \b Timer4End (Display string: 'Timer 4 End'): The event will be generated when Timer 4 ends counting.
+     *  - \b Timer5End (Display string: 'Timer 5 End'): The event will be generated when Timer 5 ends counting.
+     *  - \b Timer6End (Display string: 'Timer 6 End'): The event will be generated when Timer 6 ends counting.
+     *  - \b Timer7End (Display string: 'Timer 7 End'): The event will be generated when Timer 7 ends counting.
+     *  - \b Timer8End (Display string: 'Timer 8 End'): The event will be generated when Timer 8 ends counting.
+     *  - \b Timer9End (Display string: 'Timer 9 End'): The event will be generated when Timer 9 ends counting.
+     *  - \b Timer10End (Display string: 'Timer 10 End'): The event will be generated when Timer 10 ends counting.
+     *  - \b Timer11End (Display string: 'Timer 11 End'): The event will be generated when Timer 11 ends counting.
+     *  - \b Timer12End (Display string: 'Timer 12 End'): The event will be generated when Timer 12 ends counting.
+     *  - \b Timer13End (Display string: 'Timer 13 End'): The event will be generated when Timer 13 ends counting.
+     *  - \b Timer14End (Display string: 'Timer 14 End'): The event will be generated when Timer 14 ends counting.
+     *  - \b Timer15End (Display string: 'Timer 15 End'): The event will be generated when Timer 15 ends counting.
+     *  - \b Line2RisingEdge (Display string: 'Line 2 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 2.
+     *  - \b Line3RisingEdge (Display string: 'Line 3 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 3.
+     *  - \b Line4RisingEdge (Display string: 'Line 4 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 4.
+     *  - \b Line5RisingEdge (Display string: 'Line 5 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 5.
+     *  - \b Line6RisingEdge (Display string: 'Line 6 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 6.
+     *  - \b Line7RisingEdge (Display string: 'Line 7 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 7.
+     *  - \b Line8RisingEdge (Display string: 'Line 8 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 8.
+     *  - \b Line9RisingEdge (Display string: 'Line 9 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 9.
+     *  - \b Line10RisingEdge (Display string: 'Line 10 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 10.
+     *  - \b Line11RisingEdge (Display string: 'Line 11 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 11.
+     *  - \b Line12RisingEdge (Display string: 'Line 12 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 12.
+     *  - \b Line13RisingEdge (Display string: 'Line 13 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 13.
+     *  - \b Line14RisingEdge (Display string: 'Line 14 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 14.
+     *  - \b Line15RisingEdge (Display string: 'Line 15 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 15.
+     *  - \b Line2FallingEdge (Display string: 'Line 2 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 2.
+     *  - \b Line3FallingEdge (Display string: 'Line 3 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 3.
+     *  - \b Line4FallingEdge (Display string: 'Line 4 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 4.
+     *  - \b Line5FallingEdge (Display string: 'Line 5 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 5.
+     *  - \b Line6FallingEdge (Display string: 'Line 6 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 6.
+     *  - \b Line7FallingEdge (Display string: 'Line 7 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 7.
+     *  - \b Line8FallingEdge (Display string: 'Line 8 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 8.
+     *  - \b Line9FallingEdge (Display string: 'Line 9 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 9.
+     *  - \b Line10FallingEdge (Display string: 'Line 10 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 10.
+     *  - \b Line11FallingEdge (Display string: 'Line 11 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 11.
+     *  - \b Line12FallingEdge (Display string: 'Line 12 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 12.
+     *  - \b Line13FallingEdge (Display string: 'Line 13 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 13.
+     *  - \b Line14FallingEdge (Display string: 'Line 14 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 14.
+     *  - \b Line15FallingEdge (Display string: 'Line 15 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 15.
+     *  - \b Line2AnyEdge (Display string: 'Line 2 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 2.
+     *  - \b Line3AnyEdge (Display string: 'Line 3 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 3.
+     *  - \b Line4AnyEdge (Display string: 'Line 4 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 4.
+     *  - \b Line5AnyEdge (Display string: 'Line 5 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 5.
+     *  - \b Line6AnyEdge (Display string: 'Line 6 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 6.
+     *  - \b Line7AnyEdge (Display string: 'Line 7 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 7.
+     *  - \b Line8AnyEdge (Display string: 'Line 8 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 8.
+     *  - \b Line9AnyEdge (Display string: 'Line 9 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 9.
+     *  - \b Line10AnyEdge (Display string: 'Line 10 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 10.
+     *  - \b Line11AnyEdge (Display string: 'Line 11 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 11.
+     *  - \b Line12AnyEdge (Display string: 'Line 12 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 12.
+     *  - \b Line13AnyEdge (Display string: 'Line 13 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 13.
+     *  - \b Line14AnyEdge (Display string: 'Line 14 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 14.
+     *  - \b Line15AnyEdge (Display string: 'Line 15 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 15.
+     *  - \b InterfaceListChanged (Display string: 'Interface List Changed'): This enumeration value indicates an event that is fired when the list of interfaces has been updated.
+     *  - \b InterfaceLost (Display string: 'Interface Lost'): This enumeration value indicates an event that is raised when the interface connection is lost.
+     *  - \b DeviceListChanged (Display string: 'Device List Changed'): This enumeration value indicates an event that is fired when the list of devices has been updated.
+     *  - \b DeviceLost (Display string: 'Device Lost'): This enumeration value indicates an event that is raised when the local host looses connection to the physical(remote) device.
+     *  - \b BufferTooSmall (Display string: 'Buffer Too Small'): This enumeration value indicates an event that is raised when the buffer was too small to receive the expected amount of data.
+     *  - \b BuffersDiscarded (Display string: 'Buffers Discarded'): This enumeration value indicates an event that is raised when buffers discared by GenTL or device. This event could optionally carry two numeric child data fields EventBuffersDiscardedDeviceCount and EventBuffersDiscardedProducerCount.
+     *  - \b BuffersDiscardedDeviceCount (Display string: 'Buffers Discarded Device Count'): This enumeration value indicates the number of buffers discarded by the device since last fired instance of this event (the producer would get to know about this for example by observing a gap in the block_id sequence).
+     *  - \b BuffersDiscardedProducerCount (Display string: 'Buffers Discarded Producer Count'): This enumeration value indicates the number of buffers discarded by the producer since last fired instance of this event (this would happen e.g. if there are no free buffers available or if given buffer handling mode requires discarding old buffers etc.).
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 eventSelector;
+    /// \brief An enumerated integer property. Activate or deactivate the notification to the host application of the occurrence of the selected Event.
+    /**
+     *  Activate or deactivate the notification to the host application of the occurrence of the selected Event.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Off (Display string: 'Off'): The selected Event notification is disabled.
+     *  - \b On (Display string: 'On'): The selected Event notification is enabled.
+     *  - \b Once (Display string: 'Once'): The selected Event notification is enabled for one event then return to Off state.
+     *  - \b GigEVisionEvent (Display string: 'Gig E Vision Event')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 eventNotification;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category contains items that belong to the device module of the transport layer.
 /**
  *  The Device category contains items that belong to the device module of the transport layer.
+ * \ingroup GenICamInterfaceProducer
  */
 class DeviceModule : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -12834,53 +15113,92 @@ public:
         const std::string& settingName = "Base" ) :
         mvIMPACT::acquire::ComponentCollection( pDev ),
         deviceID(),
+        deviceSerialNumber(),
+        deviceUserID(),
         deviceVendorName(),
         deviceModelName(),
+        deviceFamilyName(),
+        deviceVersion(),
+        deviceManufacturerInfo(),
         deviceType(),
-        deviceLinkSpeed(),
+        deviceDisplayName(),
+        deviceTimestampFrequency(),
+        deviceAccessStatus(),
+        deviceChunkDataFormat(),
+        deviceEventDataFormat(),
+        gevDeviceMACAddress(),
+        gevDeviceIPAddress(),
+        gevDeviceSubnetMask(),
+        gevDeviceGateway(),
         gevVersionMajor(),
         gevVersionMinor(),
         genCPVersionMajor(),
         genCPVersionMinor(),
         u3vVersionMajor(),
         u3vVersionMinor(),
-        gevDeviceIPAddress(),
-        gevDeviceSubnetMask(),
-        gevDeviceMACAddress(),
-        gevDeviceGateway(),
         deviceEndianessMechanism(),
+        linkCommandTimeout(),
+        linkCommandRetryCount(),
         streamSelector(),
-        streamID()
+        streamID(),
+        eventSelector(),
+        eventNotification()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenTL/Device" );
         m_hRoot = locator.searchbase_id();
         locator.bindComponent( deviceID, "DeviceID" );
+        locator.bindComponent( deviceSerialNumber, "DeviceSerialNumber" );
+        locator.bindComponent( deviceUserID, "DeviceUserID" );
         locator.bindComponent( deviceVendorName, "DeviceVendorName" );
         locator.bindComponent( deviceModelName, "DeviceModelName" );
+        locator.bindComponent( deviceFamilyName, "DeviceFamilyName" );
+        locator.bindComponent( deviceVersion, "DeviceVersion" );
+        locator.bindComponent( deviceManufacturerInfo, "DeviceManufacturerInfo" );
         locator.bindComponent( deviceType, "DeviceType" );
-        locator.bindComponent( deviceLinkSpeed, "DeviceLinkSpeed" );
+        locator.bindComponent( deviceDisplayName, "DeviceDisplayName" );
+        locator.bindComponent( deviceTimestampFrequency, "DeviceTimestampFrequency" );
+        locator.bindComponent( deviceAccessStatus, "DeviceAccessStatus" );
+        locator.bindComponent( deviceChunkDataFormat, "DeviceChunkDataFormat" );
+        locator.bindComponent( deviceEventDataFormat, "DeviceEventDataFormat" );
+        locator.bindComponent( gevDeviceMACAddress, "GevDeviceMACAddress" );
+        locator.bindComponent( gevDeviceIPAddress, "GevDeviceIPAddress" );
+        locator.bindComponent( gevDeviceSubnetMask, "GevDeviceSubnetMask" );
+        locator.bindComponent( gevDeviceGateway, "GevDeviceGateway" );
         locator.bindComponent( gevVersionMajor, "GevVersionMajor" );
         locator.bindComponent( gevVersionMinor, "GevVersionMinor" );
         locator.bindComponent( genCPVersionMajor, "GenCPVersionMajor" );
         locator.bindComponent( genCPVersionMinor, "GenCPVersionMinor" );
         locator.bindComponent( u3vVersionMajor, "U3vVersionMajor" );
         locator.bindComponent( u3vVersionMinor, "U3vVersionMinor" );
-        locator.bindComponent( gevDeviceIPAddress, "GevDeviceIPAddress" );
-        locator.bindComponent( gevDeviceSubnetMask, "GevDeviceSubnetMask" );
-        locator.bindComponent( gevDeviceMACAddress, "GevDeviceMACAddress" );
-        locator.bindComponent( gevDeviceGateway, "GevDeviceGateway" );
         locator.bindComponent( deviceEndianessMechanism, "DeviceEndianessMechanism" );
+        locator.bindComponent( linkCommandTimeout, "LinkCommandTimeout" );
+        locator.bindComponent( linkCommandRetryCount, "LinkCommandRetryCount" );
         locator.bindComponent( streamSelector, "StreamSelector" );
         locator.bindComponent( streamID, "StreamID" );
+        locator.bindComponent( eventSelector, "EventSelector" );
+        locator.bindComponent( eventNotification, "EventNotification" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief A string property. This feature is deprecated (See DeviceSerialNumber).
     /**
      *  \deprecated
      *  This feature is deprecated (See DeviceSerialNumber). It was representing the Device unique identifier (serial number).
      */
     PropertyS deviceID;
+    /// \brief A string property. Device's serial number.
+    /**
+     *  Device's serial number. This string is a unique identifier of the device.
+     */
+    PropertyS deviceSerialNumber;
+    /// \brief A string property. User-programmable device identifier.
+    /**
+     *  User-programmable device identifier.
+     */
+    PropertyS deviceUserID;
     /// \brief A string property. Name of the manufacturer of the device.
     /**
      *  Name of the manufacturer of the device.
@@ -12891,6 +15209,21 @@ public:
      *  Model of the device.
      */
     PropertyS deviceModelName;
+    /// \brief A string property. Identifier of the product family of the device.
+    /**
+     *  Identifier of the product family of the device.
+     */
+    PropertyS deviceFamilyName;
+    /// \brief A string property. Version of the device.
+    /**
+     *  Version of the device.
+     */
+    PropertyS deviceVersion;
+    /// \brief A string property. Manufacturer information about the device.
+    /**
+     *  Manufacturer information about the device.
+     */
+    PropertyS deviceManufacturerInfo;
     /// \brief An enumerated integer property. Returns the device type.
     /**
      *  Returns the device type.
@@ -12900,49 +15233,77 @@ public:
      *  - \b Receiver (Display string: 'Receiver'): Data stream receiver device.
      *  - \b Transceiver (Display string: 'Transceiver'): Data stream receiver and transmitter device.
      *  - \b Peripheral (Display string: 'Peripheral'): Controllable device (with no data stream handling).
+     *  - \b Mixed (Display string: 'Mixed'): This enumeration value indicates that this is a device for a mixed protocol.
      *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is a device for a custom protocol.
      *  - \b GEV (Display string: 'GigE Vision'): This enumeration value indicates that this is a device for the GigE Vision protocol.
+     *  - \b CameraLink (Display string: 'CameraLink'): This enumeration value indicates that this is a device for the CameraLink protocol.
+     *  - \b CoaXPress (Display string: 'CoaXPress'): This enumeration value indicates that this is a device for the CoaXPress protocol.
+     *  - \b CameraLinkHS (Display string: 'CameraLink HS'): This enumeration value indicates that this is a device for the CameraLink HS protocol.
      *  - \b U3V (Display string: 'USB3 Vision'): This enumeration value indicates that this is a device for the USB3 Vision protocol.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 deviceType;
-    /// \brief An integer property. Indicates the speed of transmission negotiated on the specified Link.
+    /// \brief A string property. Indicates user readable name for the remote device.
     /**
-     *  Indicates the speed of transmission negotiated on the specified Link.
+     *  This is a read only element. It is a string that indicates user readable name for the remote device model.
      */
-    PropertyI64 deviceLinkSpeed;
-    /// \brief An integer property. Major version of the specification.
+    PropertyS deviceDisplayName;
+    /// \brief An integer property. Indicates the tick-frequency of the timestamp clock of the remote device.
     /**
-     *  Major version of the specification.
+     *  Indicates the tick-frequency of the timestamp clock of the remote device.
      */
-    PropertyI64 gevVersionMajor;
-    /// \brief An integer property. Minor version of the specification.
+    PropertyI64 deviceTimestampFrequency;
+    /// \brief An enumerated integer property. Indicates the current access status for the device.
     /**
-     *  Minor version of the specification.
+     *  This is a read only feature. This enumeration gives the device's access status at the moment of the last execution of the DeviceUpdateList command. This value only changes on execution of the DeviceUpdateList command.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Unknown (Display string: 'Unknown'): This enumeration value indicates that the device accessibility is not known.
+     *  - \b ReadWrite (Display string: 'Read/Write'): This enumeration value indicates that full access to the device is available.
+     *  - \b ReadOnly (Display string: 'Read Only'): This enumeration value indicates that read access to the device is available.
+     *  - \b NoAccess (Display string: 'No Access'): This enumeration value indicates that no access to the device is available.
+     *  - \b Busy (Display string: 'Busy'): This enumeration value indicates that the device is already opened by another entity.
+     *  - \b OpenReadWrite (Display string: 'Open Read Write'): This enumeration value indicates that the device is open in Read/Write mode by this GenTL host.
+     *  - \b OpenReadOnly (Display string: 'Open Read Only'): This enumeration value indicates that the device is open in Read only mode by this GenTL host.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
-    PropertyI64 gevVersionMinor;
-    /// \brief An integer property. Indicates the major version number of the GenCP specification this GenTL Producer implementation complies with.
+    PropertyI64 deviceAccessStatus;
+    /// \brief An enumerated integer property. Indicates the chunk data format used by the remote device.
     /**
-     *  This is a read only element. It indicates the major version number of the GenCP specification this GenTL Producer implementation complies with.
+     *  This is a read only feature. This enumeration provides a value that indicates the chunk data format used by the remote device.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b None (Display string: 'None'): This enumeration value indicates that the device does not use chunk data at all.
+     *  - \b GigEVision (Display string: 'GigE Vision'): This enumeration value indicates that the device formats the chunk data using chunk data format defined by GigE Vision specification version 1.x. The chunk data decoding algorithm (chunk adapter) common for the GigE Vision devices can be used.
+     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that the device formats the chunk data using a custom, non-standard format. Without a-priori additional knowledge about the device and its implementation, the GenTL Consumer should always use the generic chunk adapter to decode the chunk data, not making any assumptions about the internal event data layout..
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
-    PropertyI64 genCPVersionMajor;
-    /// \brief An integer property. Indicates the minor version number of the GenCP specification this GenTL Producer implementation complies with.
+    PropertyI64 deviceChunkDataFormat;
+    /// \brief An enumerated integer property. Indicates the event data format used by the remote device.
     /**
-     *  This is a read only element. It indicates the minor version number of the GenCP specification this GenTL Producer implementation complies with.
+     *  This is a read only feature. This enumeration provides a value that indicates the event data format used by the remote device.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b None (Display string: 'None'): This enumeration value indicates that the device does not use event data at all.
+     *  - \b GigEVision (Display string: 'GigE Vision'): This enumeration value indicates that the device formats the event data using the event data format defined by GigE Vision specification version 1.x. The event data decoding algorithm (event adapter) common for the GigE Vision devices can be used.
+     *  - \b GigEVisionExtendedId (Display string: 'GigE Vision Extended Id'): This enumeration value indicates that the device formats the event data using the event data format defined by GigE Vision specification version 2.x. The event data decoding algorithm (event adapter) common for the GigE Vision devices can be used.
+     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that the device formats the event data using a custom, non-standard format. Without a-priori additional knowledge about the device and its implementation, the GenTL Consumer should always use the generic event adapter to decode the event data, not making any assumptions about the internal event data layout..
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
-    PropertyI64 genCPVersionMinor;
-    /// \brief An integer property. Indicates the major version number of the USB3 Vision specification this GenTL Producer implementation complies with.
+    PropertyI64 deviceEventDataFormat;
+    /// \brief An integer property. Indicates the 48-bit MAC address of the GVCP interface of the selected remote device.
     /**
-     *  This is a read only element. It indicates the major version number of the USB3 Vision specification this GenTL Producer implementation complies with.
+     *  This is a read only element. It indicates the 48-bit MAC address of the GVCP interface of the selected remote device.
      */
-    PropertyI64 u3vVersionMajor;
-    /// \brief An integer property. Indicates the minor version number of the USB3 Vision specification this GenTL Producer implementation complies with.
-    /**
-     *  This is a read only element. It indicates the minor version number of the USB3 Vision specification this GenTL Producer implementation complies with.
-     */
-    PropertyI64 u3vVersionMinor;
+    PropertyI64 gevDeviceMACAddress;
     /// \brief An integer property. Indicates the current IP address of the GVCP interface of the selected remote device.
     /**
      *  This is a read only element. It indicates the current IP address of the GVCP interface of the selected remote device.
@@ -12953,16 +15314,41 @@ public:
      *  This is a read only element. It indicates the current subnet mask of the GVCP interface of the selected remote device.
      */
     PropertyI64 gevDeviceSubnetMask;
-    /// \brief An integer property. Indicates the 48-bit MAC address of the GVCP interface of the selected remote device.
+    /// \brief An integer property. Indicates the current gateway of the GVCP interface of the selected remote device.
     /**
-     *  This is a read only element. It indicates the 48-bit MAC address of the GVCP interface of the selected remote device.
-     */
-    PropertyI64 gevDeviceMACAddress;
-    /// \brief An integer property. Indicates the current gateway of the GVCP interface of the remote device.
-    /**
-     *  This is a read only element. It indicates the current gateway of the GVCP interface of the remote device.
+     *  This is a read only element. It indicates the current gateway of the GVCP interface of the selected remote device.
      */
     PropertyI64 gevDeviceGateway;
+    /// \brief An integer property. Indicates the major version number of the GigE Vision specification this device complies with.
+    /**
+     *  This is a read only element. It indicates the major version number of the GigE Vision specification this device complies with.
+     */
+    PropertyI64 gevVersionMajor;
+    /// \brief An integer property. Indicates the minor version number of the GigE Vision specification this device complies with.
+    /**
+     *  This is a read only element. It indicates the minor version number of the GigE Vision specification this device complies with.
+     */
+    PropertyI64 gevVersionMinor;
+    /// \brief An integer property. Indicates the major version number of the GenCP specification this device complies with.
+    /**
+     *  This is a read only element. It indicates the major version number of the GenCP specification this device complies with.
+     */
+    PropertyI64 genCPVersionMajor;
+    /// \brief An integer property. Indicates the minor version number of the GenCP specification this device complies with.
+    /**
+     *  This is a read only element. It indicates the minor version number of the GenCP specification this device complies with.
+     */
+    PropertyI64 genCPVersionMinor;
+    /// \brief An integer property. Indicates the major version number of the USB3 Vision specification this device complies with.
+    /**
+     *  This is a read only element. It indicates the major version number of the USB3 Vision specification this device complies with.
+     */
+    PropertyI64 u3vVersionMajor;
+    /// \brief An integer property. Indicates the minor version number of the USB3 Vision specification this device complies with.
+    /**
+     *  This is a read only element. It indicates the minor version number of the USB3 Vision specification this device complies with.
+     */
+    PropertyI64 u3vVersionMinor;
     /// \brief An enumerated integer property. Identifies the endianess mode to be used for this device.
     /**
      *  This is a read only feature. This enumeration provides a value that indicates the endianess mode to be used for this device.
@@ -12975,6 +15361,16 @@ public:
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
      */
     PropertyI64 deviceEndianessMechanism;
+    /// \brief A floating point property. Specifies application timeout for the control channel communication.
+    /**
+     *  The feature specifies application timeout for the control channel communication. It defines the application timeout, and it is related to the device feature DeviceLinkCommandTimeout specifying the maximum time for handling a command in the device. Up to DeviceLinkCommandRetryCount attempts with this timeout are made before a command fails with a timout error.
+     */
+    PropertyF linkCommandTimeout;
+    /// \brief An integer property. Specifies maximum number of tries before failing the control channel commands.
+    /**
+     *  This feature specifies maximum number of tries before failing the control channel commands.
+     */
+    PropertyI64 linkCommandRetryCount;
     /// \brief An integer property. Selects the stream channel.
     /**
      *  Selects the stream channel.
@@ -12985,13 +15381,213 @@ public:
      *  This is a read only element. It is a string that indicates a device wide unique identifier of the selected stream.
      */
     PropertyS streamID;
+    /// \brief An enumerated integer property. Selects which Event to signal to the host application.
+    /**
+     *  Selects which Event to signal to the host application.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Device just received a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Device just missed a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Device just started the Acquisition of one or many Frames.
+     *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Device just completed the Acquisition of one or many Frames.
+     *  - \b AcquisitionTransferStart (Display string: 'Acquisition Transfer Start'): Device just started the transfer of one or many Frames.
+     *  - \b AcquisitionTransferEnd (Display string: 'Acquisition Transfer End'): Device just completed the transfer of one or many Frames.
+     *  - \b AcquisitionError (Display string: 'Acquisition Error'): Device just detected an error during the active Acquisition.
+     *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Device just started the capture of a burst of Frames.
+     *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Device just completed the capture of a burst of Frames.
+     *  - \b FrameTrigger (Display string: 'Frame Trigger'): Device just received a trigger to start the capture of one Frame.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Device just missed a trigger to start the capture of one Frame.
+     *  - \b FrameStart (Display string: 'Frame Start'): Device just started the capture of one Frame.
+     *  - \b FrameEnd (Display string: 'Frame End'): Device just completed the capture of one Frame.
+     *  - \b FrameTransferStart (Display string: 'Frame Transfer Start'): Device just started the transfer of one Frame.
+     *  - \b FrameTransferEnd (Display string: 'Frame Transfer End'): Device just completed the transfer of one Frame.
+     *  - \b LineTrigger (Display string: 'Line Trigger'): Device just received a trigger to start the capture of one Line.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Device just missed a trigger to start the capture of one Line.
+     *  - \b LineStart (Display string: 'Line Start'): Device just started the capture of one Line.
+     *  - \b LineEnd (Display string: 'Line End'): Device just completed the capture of one Line.
+     *  - \b ExposureStart (Display string: 'Exposure Start'): Device just started the exposure of one Frame (or Line).
+     *  - \b ExposureEnd (Display string: 'Exposure End'): Device just completed the exposure of one Frame (or Line).
+     *  - \b Stream0TransferStart (Display string: 'Stream 0 Transfer Start'): Device just started the transfer of one or many Blocks.
+     *  - \b Stream0TransferEnd (Display string: 'Stream 0 Transfer End'): Device just completed the transfer of one or many Blocks.
+     *  - \b Stream0TransferPause (Display string: 'Stream 0 Transfer Pause'): Device just paused the transfer.
+     *  - \b Stream0TransferResume (Display string: 'Stream 0 Transfer Resume'): Device just resumed the transfer.
+     *  - \b Stream0TransferBlockStart (Display string: 'Stream 0 Transfer Block Start'): Device just started the transfer of one Block.
+     *  - \b Stream0TransferBlockEnd (Display string: 'Stream 0 Transfer Block End'): Device just completed the transfer of one Block.
+     *  - \b Stream0TransferBlockTrigger (Display string: 'Stream 0 Transfer Block Trigger'): Device just received a trigger to start the transfer of one Block.
+     *  - \b Stream0TransferBurstStart (Display string: 'Stream 0 Transfer Burst Start'): Device just started the transfer of a burst of Blocks.
+     *  - \b Stream0TransferBurstEnd (Display string: 'Stream 0 Transfer Burst End'): Device just completed the transfer of a burst of Blocks.
+     *  - \b Stream0TransferOverflow (Display string: 'Stream 0 Transfer Overflow'): Device transfer queue overflowed.
+     *  - \b SequencerSetChange (Display string: 'Sequencer Set Change'): Device sequencer set has changed.
+     *  - \b Counter0Start (Display string: 'Counter 0 Start'): The event will be generated when counter 0 starts counting.
+     *  - \b Counter1Start (Display string: 'Counter 1 Start'): The event will be generated when counter 1 starts counting.
+     *  - \b Counter\#2\#Start (Display string: 'Counter \#2\# Start'): The event will be generated when counter \#2\# starts counting.
+     *  - \b Counter0End (Display string: 'Counter 0 End'): The event will be generated when counter 0 ends counting.
+     *  - \b Counter1End (Display string: 'Counter 1 End'): The event will be generated when counter 1 ends counting.
+     *  - \b Counter\#2\#End (Display string: 'Counter \#2\# End'): The event will be generated when counter \#2\# ends counting.
+     *  - \b Timer0Start (Display string: 'Timer 0 Start'): The event will be generated when Timer 0 starts counting.
+     *  - \b Timer1Start (Display string: 'Timer 1 Start'): The event will be generated when Timer 1 starts counting.
+     *  - \b Timer\#2\#Start (Display string: 'Timer \#2\# Start'): The event will be generated when Timer \#2\# starts counting.
+     *  - \b Timer0End (Display string: 'Timer 0 End'): The event will be generated when Timer 0 ends counting.
+     *  - \b Timer1End (Display string: 'Timer 1 End'): The event will be generated when Timer 1 ends counting.
+     *  - \b Timer\#2\#End (Display string: 'Timer \#2\# End'): The event will be generated when Timer \#2\# ends counting.
+     *  - \b Encoder0Stopped (Display string: 'Encoder 0 Stopped'): The event will be generated when the Encoder 0 stops for longer than EncoderTimeout.
+     *  - \b Encoder1Stopped (Display string: 'Encoder 1 Stopped'): The event will be generated when the Encoder 1 stops for longer than EncoderTimeout.
+     *  - \b Encoder\#2\#Stopped (Display string: 'Encoder \#2\# Stopped'): The event will be generated when the Encoder \#2\# stops for longer than EncoderTimeout.
+     *  - \b Encoder0Restarted (Display string: 'Encoder 0 Restarted'): The event will be generated when the Encoder 0 restarts moving.
+     *  - \b Encoder1Restarted (Display string: 'Encoder 1 Restarted'): The event will be generated when the Encoder 1 restarts moving.
+     *  - \b Encoder\#2\#Restarted (Display string: 'Encoder \#2\# Restarted'): The event will be generated when the Encoder \#2\# restarts moving.
+     *  - \b Line0RisingEdge (Display string: 'Line 0 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 0.
+     *  - \b Line1RisingEdge (Display string: 'Line 1 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 1.
+     *  - \b Line\#2\#RisingEdge (Display string: 'Line \#2\# Rising Edge'): The event will be generated when a Rising Edge is detected on the Line \#2\#.
+     *  - \b Line0FallingEdge (Display string: 'Line 0 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 0.
+     *  - \b Line1FallingEdge (Display string: 'Line 1 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 1.
+     *  - \b Line\#2\#FallingEdge (Display string: 'Line \#2\# Falling Edge'): The event will be generated when a Falling Edge is detected on the Line \#2\#.
+     *  - \b Line0AnyEdge (Display string: 'Line 0 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 0.
+     *  - \b Line1AnyEdge (Display string: 'Line 1 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 1.
+     *  - \b Line\#2\#AnyEdge (Display string: 'Line \#2\# Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line \#2\#.
+     *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): The event will be generated when a Rising Edge is detected on the LinkTrigger 0.
+     *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): The event will be generated when a Rising Edge is detected on the LinkTrigger 1.
+     *  - \b LinkTrigger\#2\# (Display string: 'Link Trigger \#2\#'): The event will be generated when a Rising Edge is detected on the LinkTrigger \#2\#.
+     *  - \b LinkSpeedChange (Display string: 'Link Speed Change'): The event will be generated when the link speed has changed.
+     *  - \b ActionLate (Display string: 'Action Late'): The event will be generated when a valid scheduled action command is received and is scheduled to be executed at a time that is already past.
+     *  - \b Test (Display string: 'Test'): The test event will be generated when the device receives the TestEventGenerate command (EventNotification for the Test event is always On).
+     *  - \b Error (Display string: 'Error'): Device just detected an error during the active Acquisition.
+     *  - \b PrimaryApplicationSwitch (Display string: 'Primary Application Switch'): The event will be generated when a primary application switchover has been granted (GigE Vision Specific).
+     *  - \b Counter2Start (Display string: 'Counter 2 Start'): The event will be generated when counter 2 starts counting.
+     *  - \b Counter3Start (Display string: 'Counter 3 Start'): The event will be generated when counter 3 starts counting.
+     *  - \b Counter4Start (Display string: 'Counter 4 Start'): The event will be generated when counter 4 starts counting.
+     *  - \b Counter5Start (Display string: 'Counter 5 Start'): The event will be generated when counter 5 starts counting.
+     *  - \b Counter6Start (Display string: 'Counter 6 Start'): The event will be generated when counter 6 starts counting.
+     *  - \b Counter7Start (Display string: 'Counter 7 Start'): The event will be generated when counter 7 starts counting.
+     *  - \b Counter8Start (Display string: 'Counter 8 Start'): The event will be generated when counter 8 starts counting.
+     *  - \b Counter9Start (Display string: 'Counter 9 Start'): The event will be generated when counter 9 starts counting.
+     *  - \b Counter10Start (Display string: 'Counter 10 Start'): The event will be generated when counter 10 starts counting.
+     *  - \b Counter11Start (Display string: 'Counter 11 Start'): The event will be generated when counter 11 starts counting.
+     *  - \b Counter12Start (Display string: 'Counter 12 Start'): The event will be generated when counter 12 starts counting.
+     *  - \b Counter13Start (Display string: 'Counter 13 Start'): The event will be generated when counter 13 starts counting.
+     *  - \b Counter14Start (Display string: 'Counter 14 Start'): The event will be generated when counter 14 starts counting.
+     *  - \b Counter15Start (Display string: 'Counter 15 Start'): The event will be generated when counter 15 starts counting.
+     *  - \b Counter2End (Display string: 'Counter 2 End'): The event will be generated when counter 2 ends counting.
+     *  - \b Counter3End (Display string: 'Counter 3 End'): The event will be generated when counter 3 ends counting.
+     *  - \b Counter4End (Display string: 'Counter 4 End'): The event will be generated when counter 4 ends counting.
+     *  - \b Counter5End (Display string: 'Counter 5 End'): The event will be generated when counter 5 ends counting.
+     *  - \b Counter6End (Display string: 'Counter 6 End'): The event will be generated when counter 6 ends counting.
+     *  - \b Counter7End (Display string: 'Counter 7 End'): The event will be generated when counter 7 ends counting.
+     *  - \b Counter8End (Display string: 'Counter 8 End'): The event will be generated when counter 8 ends counting.
+     *  - \b Counter9End (Display string: 'Counter 9 End'): The event will be generated when counter 9 ends counting.
+     *  - \b Counter10End (Display string: 'Counter 10 End'): The event will be generated when counter 10 ends counting.
+     *  - \b Counter11End (Display string: 'Counter 11 End'): The event will be generated when counter 11 ends counting.
+     *  - \b Counter12End (Display string: 'Counter 12 End'): The event will be generated when counter 12 ends counting.
+     *  - \b Counter13End (Display string: 'Counter 13 End'): The event will be generated when counter 13 ends counting.
+     *  - \b Counter14End (Display string: 'Counter 14 End'): The event will be generated when counter 14 ends counting.
+     *  - \b Counter15End (Display string: 'Counter 15 End'): The event will be generated when counter 15 ends counting.
+     *  - \b Timer2Start (Display string: 'Timer 2 Start'): The event will be generated when Timer 2 starts counting.
+     *  - \b Timer3Start (Display string: 'Timer 3 Start'): The event will be generated when Timer 3 starts counting.
+     *  - \b Timer4Start (Display string: 'Timer 4 Start'): The event will be generated when Timer 4 starts counting.
+     *  - \b Timer5Start (Display string: 'Timer 5 Start'): The event will be generated when Timer 5 starts counting.
+     *  - \b Timer6Start (Display string: 'Timer 6 Start'): The event will be generated when Timer 6 starts counting.
+     *  - \b Timer7Start (Display string: 'Timer 7 Start'): The event will be generated when Timer 7 starts counting.
+     *  - \b Timer8Start (Display string: 'Timer 8 Start'): The event will be generated when Timer 8 starts counting.
+     *  - \b Timer9Start (Display string: 'Timer 9 Start'): The event will be generated when Timer 9 starts counting.
+     *  - \b Timer10Start (Display string: 'Timer 10 Start'): The event will be generated when Timer 10 starts counting.
+     *  - \b Timer11Start (Display string: 'Timer 11 Start'): The event will be generated when Timer 11 starts counting.
+     *  - \b Timer12Start (Display string: 'Timer 12 Start'): The event will be generated when Timer 12 starts counting.
+     *  - \b Timer13Start (Display string: 'Timer 13 Start'): The event will be generated when Timer 13 starts counting.
+     *  - \b Timer14Start (Display string: 'Timer 14 Start'): The event will be generated when Timer 14 starts counting.
+     *  - \b Timer15Start (Display string: 'Timer 15 Start'): The event will be generated when Timer 15 starts counting.
+     *  - \b Timer2End (Display string: 'Timer 2 End'): The event will be generated when Timer 2 ends counting.
+     *  - \b Timer3End (Display string: 'Timer 3 End'): The event will be generated when Timer 3 ends counting.
+     *  - \b Timer4End (Display string: 'Timer 4 End'): The event will be generated when Timer 4 ends counting.
+     *  - \b Timer5End (Display string: 'Timer 5 End'): The event will be generated when Timer 5 ends counting.
+     *  - \b Timer6End (Display string: 'Timer 6 End'): The event will be generated when Timer 6 ends counting.
+     *  - \b Timer7End (Display string: 'Timer 7 End'): The event will be generated when Timer 7 ends counting.
+     *  - \b Timer8End (Display string: 'Timer 8 End'): The event will be generated when Timer 8 ends counting.
+     *  - \b Timer9End (Display string: 'Timer 9 End'): The event will be generated when Timer 9 ends counting.
+     *  - \b Timer10End (Display string: 'Timer 10 End'): The event will be generated when Timer 10 ends counting.
+     *  - \b Timer11End (Display string: 'Timer 11 End'): The event will be generated when Timer 11 ends counting.
+     *  - \b Timer12End (Display string: 'Timer 12 End'): The event will be generated when Timer 12 ends counting.
+     *  - \b Timer13End (Display string: 'Timer 13 End'): The event will be generated when Timer 13 ends counting.
+     *  - \b Timer14End (Display string: 'Timer 14 End'): The event will be generated when Timer 14 ends counting.
+     *  - \b Timer15End (Display string: 'Timer 15 End'): The event will be generated when Timer 15 ends counting.
+     *  - \b Line2RisingEdge (Display string: 'Line 2 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 2.
+     *  - \b Line3RisingEdge (Display string: 'Line 3 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 3.
+     *  - \b Line4RisingEdge (Display string: 'Line 4 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 4.
+     *  - \b Line5RisingEdge (Display string: 'Line 5 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 5.
+     *  - \b Line6RisingEdge (Display string: 'Line 6 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 6.
+     *  - \b Line7RisingEdge (Display string: 'Line 7 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 7.
+     *  - \b Line8RisingEdge (Display string: 'Line 8 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 8.
+     *  - \b Line9RisingEdge (Display string: 'Line 9 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 9.
+     *  - \b Line10RisingEdge (Display string: 'Line 10 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 10.
+     *  - \b Line11RisingEdge (Display string: 'Line 11 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 11.
+     *  - \b Line12RisingEdge (Display string: 'Line 12 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 12.
+     *  - \b Line13RisingEdge (Display string: 'Line 13 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 13.
+     *  - \b Line14RisingEdge (Display string: 'Line 14 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 14.
+     *  - \b Line15RisingEdge (Display string: 'Line 15 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 15.
+     *  - \b Line2FallingEdge (Display string: 'Line 2 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 2.
+     *  - \b Line3FallingEdge (Display string: 'Line 3 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 3.
+     *  - \b Line4FallingEdge (Display string: 'Line 4 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 4.
+     *  - \b Line5FallingEdge (Display string: 'Line 5 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 5.
+     *  - \b Line6FallingEdge (Display string: 'Line 6 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 6.
+     *  - \b Line7FallingEdge (Display string: 'Line 7 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 7.
+     *  - \b Line8FallingEdge (Display string: 'Line 8 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 8.
+     *  - \b Line9FallingEdge (Display string: 'Line 9 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 9.
+     *  - \b Line10FallingEdge (Display string: 'Line 10 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 10.
+     *  - \b Line11FallingEdge (Display string: 'Line 11 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 11.
+     *  - \b Line12FallingEdge (Display string: 'Line 12 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 12.
+     *  - \b Line13FallingEdge (Display string: 'Line 13 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 13.
+     *  - \b Line14FallingEdge (Display string: 'Line 14 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 14.
+     *  - \b Line15FallingEdge (Display string: 'Line 15 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 15.
+     *  - \b Line2AnyEdge (Display string: 'Line 2 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 2.
+     *  - \b Line3AnyEdge (Display string: 'Line 3 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 3.
+     *  - \b Line4AnyEdge (Display string: 'Line 4 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 4.
+     *  - \b Line5AnyEdge (Display string: 'Line 5 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 5.
+     *  - \b Line6AnyEdge (Display string: 'Line 6 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 6.
+     *  - \b Line7AnyEdge (Display string: 'Line 7 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 7.
+     *  - \b Line8AnyEdge (Display string: 'Line 8 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 8.
+     *  - \b Line9AnyEdge (Display string: 'Line 9 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 9.
+     *  - \b Line10AnyEdge (Display string: 'Line 10 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 10.
+     *  - \b Line11AnyEdge (Display string: 'Line 11 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 11.
+     *  - \b Line12AnyEdge (Display string: 'Line 12 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 12.
+     *  - \b Line13AnyEdge (Display string: 'Line 13 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 13.
+     *  - \b Line14AnyEdge (Display string: 'Line 14 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 14.
+     *  - \b Line15AnyEdge (Display string: 'Line 15 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 15.
+     *  - \b InterfaceListChanged (Display string: 'Interface List Changed'): This enumeration value indicates an event that is fired when the list of interfaces has been updated.
+     *  - \b InterfaceLost (Display string: 'Interface Lost'): This enumeration value indicates an event that is raised when the interface connection is lost.
+     *  - \b DeviceListChanged (Display string: 'Device List Changed'): This enumeration value indicates an event that is fired when the list of devices has been updated.
+     *  - \b DeviceLost (Display string: 'Device Lost'): This enumeration value indicates an event that is raised when the local host looses connection to the physical(remote) device.
+     *  - \b BufferTooSmall (Display string: 'Buffer Too Small'): This enumeration value indicates an event that is raised when the buffer was too small to receive the expected amount of data.
+     *  - \b BuffersDiscarded (Display string: 'Buffers Discarded'): This enumeration value indicates an event that is raised when buffers discared by GenTL or device. This event could optionally carry two numeric child data fields EventBuffersDiscardedDeviceCount and EventBuffersDiscardedProducerCount.
+     *  - \b BuffersDiscardedDeviceCount (Display string: 'Buffers Discarded Device Count'): This enumeration value indicates the number of buffers discarded by the device since last fired instance of this event (the producer would get to know about this for example by observing a gap in the block_id sequence).
+     *  - \b BuffersDiscardedProducerCount (Display string: 'Buffers Discarded Producer Count'): This enumeration value indicates the number of buffers discarded by the producer since last fired instance of this event (this would happen e.g. if there are no free buffers available or if given buffer handling mode requires discarding old buffers etc.).
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 eventSelector;
+    /// \brief An enumerated integer property. Activate or deactivate the notification to the host application of the occurrence of the selected Event.
+    /**
+     *  Activate or deactivate the notification to the host application of the occurrence of the selected Event.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Off (Display string: 'Off'): The selected Event notification is disabled.
+     *  - \b On (Display string: 'On'): The selected Event notification is enabled.
+     *  - \b Once (Display string: 'Once'): The selected Event notification is enabled for one event then return to Off state.
+     *  - \b GigEVisionEvent (Display string: 'Gig E Vision Event')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 eventNotification;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
 
 //-----------------------------------------------------------------------------
 /// \brief Category that contains items that belong to the data stream module of the transport layer.
 /**
  *  The DataStream category contains items that belong to the data stream module of the transport layer.
+ * \ingroup GenICamInterfaceProducer
  */
 class DataStreamModule : public mvIMPACT::acquire::ComponentCollection
 //-----------------------------------------------------------------------------
@@ -13011,12 +15607,9 @@ public:
         const std::string& settingName = "Base" ) :
         mvIMPACT::acquire::ComponentCollection( pDev ),
         streamID(),
-        streamAnnouncedBufferCount(),
-        mvStreamAnnounceBufferMaximum(),
-        streamBufferHandlingMode(),
-        streamAnnounceBufferMinimum(),
         streamType(),
         mvStreamDriverTechnology(),
+        mvAutoJoinMulticastGroups(),
         mvResendActive(),
         mvResendMode(),
         mvResendBatchingActive(),
@@ -13026,8 +15619,24 @@ public:
         mvResendRequestCredits(),
         mvResendResponseTimeout(),
         mvResendsPerTimeout(),
-        mvResendFeaturesLocked()
+        mvResendFeaturesLocked(),
+        streamAnnouncedBufferCount(),
+        streamBufferHandlingMode(),
+        streamAnnounceBufferMinimum(),
+        mvStreamAnnounceBufferMaximum(),
+        streamDeliveredFrameCount(),
+        streamLostFrameCount(),
+        streamInputBufferCount(),
+        streamOutputBufferCount(),
+        streamStartedFrameCount(),
+        payloadSize(),
+        streamIsGrabbing(),
+        streamChunkCountMaximum(),
+        streamBufferAlignment(),
+        eventSelector(),
+        eventNotification()
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         mvIMPACT::acquire::DeviceComponentLocator locator( pDev, mvIMPACT::acquire::dltSetting, settingName );
         locator.bindSearchBase( locator.searchbase_id(), "Camera/GenTL/DataStreams" );
         std::ostringstream oss;
@@ -13035,12 +15644,9 @@ public:
         locator = mvIMPACT::acquire::DeviceComponentLocator( locator.findComponent( oss.str() ) );
         m_hRoot = locator.searchbase_id();
         locator.bindComponent( streamID, "StreamID" );
-        locator.bindComponent( streamAnnouncedBufferCount, "StreamAnnouncedBufferCount" );
-        locator.bindComponent( mvStreamAnnounceBufferMaximum, "mvStreamAnnounceBufferMaximum" );
-        locator.bindComponent( streamBufferHandlingMode, "StreamBufferHandlingMode" );
-        locator.bindComponent( streamAnnounceBufferMinimum, "StreamAnnounceBufferMinimum" );
         locator.bindComponent( streamType, "StreamType" );
         locator.bindComponent( mvStreamDriverTechnology, "mvStreamDriverTechnology" );
+        locator.bindComponent( mvAutoJoinMulticastGroups, "mvAutoJoinMulticastGroups" );
         locator.bindComponent( mvResendActive, "mvResendActive" );
         locator.bindComponent( mvResendMode, "mvResendMode" );
         locator.bindComponent( mvResendBatchingActive, "mvResendBatchingActive" );
@@ -13051,47 +15657,42 @@ public:
         locator.bindComponent( mvResendResponseTimeout, "mvResendResponseTimeout" );
         locator.bindComponent( mvResendsPerTimeout, "mvResendsPerTimeout" );
         locator.bindComponent( mvResendFeaturesLocked, "mvResendFeaturesLocked" );
+        locator.bindComponent( streamAnnouncedBufferCount, "StreamAnnouncedBufferCount" );
+        locator.bindComponent( streamBufferHandlingMode, "StreamBufferHandlingMode" );
+        locator.bindComponent( streamAnnounceBufferMinimum, "StreamAnnounceBufferMinimum" );
+        locator.bindComponent( mvStreamAnnounceBufferMaximum, "mvStreamAnnounceBufferMaximum" );
+        locator.bindComponent( streamDeliveredFrameCount, "StreamDeliveredFrameCount" );
+        locator.bindComponent( streamLostFrameCount, "StreamLostFrameCount" );
+        locator.bindComponent( streamInputBufferCount, "StreamInputBufferCount" );
+        locator.bindComponent( streamOutputBufferCount, "StreamOutputBufferCount" );
+        locator.bindComponent( streamStartedFrameCount, "StreamStartedFrameCount" );
+        locator.bindComponent( payloadSize, "PayloadSize" );
+        locator.bindComponent( streamIsGrabbing, "StreamIsGrabbing" );
+        locator.bindComponent( streamChunkCountMaximum, "StreamChunkCountMaximum" );
+        locator.bindComponent( streamBufferAlignment, "StreamBufferAlignment" );
+        locator.bindComponent( eventSelector, "EventSelector" );
+        locator.bindComponent( eventNotification, "EventNotification" );
     }
+    // *INDENT-OFF*
     PYTHON_ONLY( %immutable; )
+    // *INDENT-ON*
     /// \brief A string property. Device wide unique ID of the selected stream.
     /**
      *  This is a read only element. It is a string that indicates a device wide unique identifier of the selected stream.
      */
     PropertyS streamID;
-    /// \brief An integer property. Number of announced (known) buffers on this stream. This value is volatile. It may change if additional buffers are announced and/or buffers are revoked by the GenTL Consumer.
-    /**
-     *  This is a read-only feature. It indicates the number of announced (known) buffers on this stream. This value is volatile. It may change if additional buffers are announced and/or buffers are revoked by the GenTL Consumer.
-     */
-    PropertyI64 streamAnnouncedBufferCount;
-    /// \brief An integer property. Maximal number of buffers to announce to enable selected acquisition mode.
-    /**
-     *  This feature indicates the maximal number of buffers to announce to enable selected acquisition mode.
-     */
-    PropertyI64 mvStreamAnnounceBufferMaximum;
-    /// \brief An enumerated integer property. Allows to select the buffer handling mode for the stream.
-    /**
-     *  This enumeration allows the selection of the buffer handling mode for the stream.
-     *
-     *  The following string values might be valid for this feature:
-     *  - \b OldestFirst (Display string: 'OldestFirst'): This enumeration value indicates that this stream is using the default acquisition mode.
-     *
-     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
-     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
-     */
-    PropertyI64 streamBufferHandlingMode;
-    /// \brief An integer property. Minimal number of buffers to announce to enable selected acquisition mode.
-    /**
-     *  This feature indicates the minimal number of buffers to announce to enable selected acquisition mode.
-     */
-    PropertyI64 streamAnnounceBufferMinimum;
     /// \brief An enumerated integer property. Identifies the stream technology of the GenTL Producer implementation.
     /**
      *  This is a read only feature. This enumeration provides a value that indicates stream technology of the GenTL Producer implementation.
      *
      *  The following string values might be valid for this feature:
-     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is a device for a custom protocol.
-     *  - \b GEV (Display string: 'GigE Vision'): This enumeration value indicates that this is a stream for the GigE Vision protocol.
-     *  - \b U3V (Display string: 'USB3 Vision'): This enumeration value indicates that this is a stream for the USB3 Vision protocol.
+     *  - \b Mixed (Display string: 'Mixed'): This enumeration value indicates that this is a data stream for a mixed protocol.
+     *  - \b Custom (Display string: 'Custom'): This enumeration value indicates that this is a data stream for a custom protocol.
+     *  - \b GEV (Display string: 'GigE Vision'): This enumeration value indicates that this is a data stream for the GigE Vision protocol.
+     *  - \b CameraLink (Display string: 'CameraLink'): This enumeration value indicates that this is a data stream for the CameraLink protocol.
+     *  - \b CoaXPress (Display string: 'CoaXPress'): This enumeration value indicates that this is a data stream for the CoaXPress protocol.
+     *  - \b CameraLinkHS (Display string: 'CameraLink HS'): This enumeration value indicates that this is a data stream for the CameraLink HS protocol.
+     *  - \b U3V (Display string: 'USB3 Vision'): This enumeration value indicates that this is a data stream for the USB3 Vision protocol.
      *
      *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
      *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
@@ -13102,6 +15703,11 @@ public:
      *  This is a read only element. It is a string that contains the underlying driver technology used by this stream.
      */
     PropertyS mvStreamDriverTechnology;
+    /// \brief A boolean property. This feature controls whether the host automatically joins the multicast group(s) of the camera(s) it configures.
+    /**
+     *  This feature controls whether the host automatically joins the multicast group(s) of the camera(s) it configures.
+     */
+    PropertyIBoolean mvAutoJoinMulticastGroups;
     /// \brief A boolean property. This feature controls if the stream will issue packet resend requests.
     /**
      *  This feature controls if the stream will issue packet resend requests.
@@ -13152,10 +15758,278 @@ public:
      *  Used by the driver to lock critical resend related parameters during the acquisition.
      */
     PropertyI64 mvResendFeaturesLocked;
+    /// \brief An integer property. Number of announced (known) buffers on this stream. This value is volatile. It may change if additional buffers are announced and/or buffers are revoked by the GenTL Consumer.
+    /**
+     *  This is a read-only feature. It indicates the number of announced (known) buffers on this stream. This value is volatile. It may change if additional buffers are announced and/or buffers are revoked by the GenTL Consumer.
+     */
+    PropertyI64 streamAnnouncedBufferCount;
+    /// \brief An enumerated integer property. Allows to select the buffer handling mode for the stream.
+    /**
+     *  This enumeration allows the selection of the buffer handling mode for the stream.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b OldestFirst (Display string: 'OldestFirst'): This enumeration value indicates that this stream is using the default acquisition mode.
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 streamBufferHandlingMode;
+    /// \brief An integer property. Minimal number of buffers to announce to enable selected acquisition mode.
+    /**
+     *  This feature indicates the minimal number of buffers to announce to enable selected acquisition mode.
+     */
+    PropertyI64 streamAnnounceBufferMinimum;
+    /// \brief An integer property. Maximal number of buffers to announce to enable selected acquisition mode.
+    /**
+     *  This feature indicates the maximal number of buffers to announce to enable selected acquisition mode.
+     */
+    PropertyI64 mvStreamAnnounceBufferMaximum;
+    /// \brief An integer property. Number of delivered frames since last acquisition start.
+    /**
+     *  This feature indicates the number of delivered frames since last acquisition start. It is not reset until the stream is closed.
+     */
+    PropertyI64 streamDeliveredFrameCount;
+    /// \brief An integer property. Number of lost frames due to queue underrun.
+    /**
+     *  This feature indicates the number of lost frames due to queue underrun. This number is initialized with zero at the time the stream is opened and incremented every time the data could not be acquired because there was no buffer in the input buffer pool. It is not reset until the stream is closed.
+     */
+    PropertyI64 streamLostFrameCount;
+    /// \brief An integer property. Number of buffers in the input buffer pool plus the buffers(s) currently being filled.
+    /**
+     *  This feature indicates the number of buffers in the input buffer pool plus the buffers(s) currently being filled.
+     */
+    PropertyI64 streamInputBufferCount;
+    /// \brief An integer property. Number of buffers in the output buffer queue.
+    /**
+     *  This feature indicates the number of buffers in the output buffer queue.
+     */
+    PropertyI64 streamOutputBufferCount;
+    /// \brief An integer property. Number of frames started in the acquisition engine.
+    /**
+     *  This feature indicates the number of frames started in the acquisition engine. This number is incremented every time in case of a new buffer is started and then to be filled (data written to) regardless even if the buffer is later delivered to the user or discarded for any reason. This number is initialized with 0 at the time the stream is opened. It is not reset until the stream is closed.
+     */
+    PropertyI64 streamStartedFrameCount;
+    /// \brief An integer property. Provides the number of bytes transferred for each image or chunk on the stream channel.
+    /**
+     *  Provides the number of bytes transferred for each image or chunk on the stream channel. This includes any end-of-line, end-of-frame statistics or other stamp data. This is the total size of data payload for a data block.
+     */
+    PropertyI64 payloadSize;
+    /// \brief A boolean property. Flag indicating whether the acquisition engine is started or not.
+    /**
+     *  This feature indicates whether the acquisition engine is started or not. This is independent from the acquisition status of the remote device.
+     */
+    PropertyIBoolean streamIsGrabbing;
+    /// \brief An integer property. Maximum number of chunks to be expected in a buffer (can be used to allocate the array for the DSGetBufferChunkData function).
+    /**
+     *  Maximum number of chunks to be expected in a buffer (can be used to allocate the array for the DSGetBufferChunkData function).
+     */
+    PropertyI64 streamChunkCountMaximum;
+    /// \brief An integer property. Alignment size in bytes of the buffers passed to DSAnnounceBuffer.
+    /**
+     *  This feature indicates the alignment size in bytes of the buffers passed to DSAnnounceBuffer. If a buffer is passed to DSAnnounceBuffer which is not aligned according to the alignment size it is up to the Producer to either reject the buffer and return a GC_ERR_INVALID_BUFFER error code or to cope with a potential overhead and use the unaligned buffer as is.
+     */
+    PropertyI64 streamBufferAlignment;
+    /// \brief An enumerated integer property. Selects which Event to signal to the host application.
+    /**
+     *  Selects which Event to signal to the host application.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b AcquisitionTrigger (Display string: 'Acquisition Trigger'): Device just received a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionTriggerMissed (Display string: 'Acquisition Trigger Missed'): Device just missed a trigger for the Acquisition of one or many Frames.
+     *  - \b AcquisitionStart (Display string: 'Acquisition Start'): Device just started the Acquisition of one or many Frames.
+     *  - \b AcquisitionEnd (Display string: 'Acquisition End'): Device just completed the Acquisition of one or many Frames.
+     *  - \b AcquisitionTransferStart (Display string: 'Acquisition Transfer Start'): Device just started the transfer of one or many Frames.
+     *  - \b AcquisitionTransferEnd (Display string: 'Acquisition Transfer End'): Device just completed the transfer of one or many Frames.
+     *  - \b AcquisitionError (Display string: 'Acquisition Error'): Device just detected an error during the active Acquisition.
+     *  - \b FrameBurstStart (Display string: 'Frame Burst Start'): Device just started the capture of a burst of Frames.
+     *  - \b FrameBurstEnd (Display string: 'Frame Burst End'): Device just completed the capture of a burst of Frames.
+     *  - \b FrameTrigger (Display string: 'Frame Trigger'): Device just received a trigger to start the capture of one Frame.
+     *  - \b FrameTriggerMissed (Display string: 'Frame Trigger Missed'): Device just missed a trigger to start the capture of one Frame.
+     *  - \b FrameStart (Display string: 'Frame Start'): Device just started the capture of one Frame.
+     *  - \b FrameEnd (Display string: 'Frame End'): Device just completed the capture of one Frame.
+     *  - \b FrameTransferStart (Display string: 'Frame Transfer Start'): Device just started the transfer of one Frame.
+     *  - \b FrameTransferEnd (Display string: 'Frame Transfer End'): Device just completed the transfer of one Frame.
+     *  - \b LineTrigger (Display string: 'Line Trigger'): Device just received a trigger to start the capture of one Line.
+     *  - \b LineTriggerMissed (Display string: 'Line Trigger Missed'): Device just missed a trigger to start the capture of one Line.
+     *  - \b LineStart (Display string: 'Line Start'): Device just started the capture of one Line.
+     *  - \b LineEnd (Display string: 'Line End'): Device just completed the capture of one Line.
+     *  - \b ExposureStart (Display string: 'Exposure Start'): Device just started the exposure of one Frame (or Line).
+     *  - \b ExposureEnd (Display string: 'Exposure End'): Device just completed the exposure of one Frame (or Line).
+     *  - \b Stream0TransferStart (Display string: 'Stream 0 Transfer Start'): Device just started the transfer of one or many Blocks.
+     *  - \b Stream0TransferEnd (Display string: 'Stream 0 Transfer End'): Device just completed the transfer of one or many Blocks.
+     *  - \b Stream0TransferPause (Display string: 'Stream 0 Transfer Pause'): Device just paused the transfer.
+     *  - \b Stream0TransferResume (Display string: 'Stream 0 Transfer Resume'): Device just resumed the transfer.
+     *  - \b Stream0TransferBlockStart (Display string: 'Stream 0 Transfer Block Start'): Device just started the transfer of one Block.
+     *  - \b Stream0TransferBlockEnd (Display string: 'Stream 0 Transfer Block End'): Device just completed the transfer of one Block.
+     *  - \b Stream0TransferBlockTrigger (Display string: 'Stream 0 Transfer Block Trigger'): Device just received a trigger to start the transfer of one Block.
+     *  - \b Stream0TransferBurstStart (Display string: 'Stream 0 Transfer Burst Start'): Device just started the transfer of a burst of Blocks.
+     *  - \b Stream0TransferBurstEnd (Display string: 'Stream 0 Transfer Burst End'): Device just completed the transfer of a burst of Blocks.
+     *  - \b Stream0TransferOverflow (Display string: 'Stream 0 Transfer Overflow'): Device transfer queue overflowed.
+     *  - \b SequencerSetChange (Display string: 'Sequencer Set Change'): Device sequencer set has changed.
+     *  - \b Counter0Start (Display string: 'Counter 0 Start'): The event will be generated when counter 0 starts counting.
+     *  - \b Counter1Start (Display string: 'Counter 1 Start'): The event will be generated when counter 1 starts counting.
+     *  - \b Counter\#2\#Start (Display string: 'Counter \#2\# Start'): The event will be generated when counter \#2\# starts counting.
+     *  - \b Counter0End (Display string: 'Counter 0 End'): The event will be generated when counter 0 ends counting.
+     *  - \b Counter1End (Display string: 'Counter 1 End'): The event will be generated when counter 1 ends counting.
+     *  - \b Counter\#2\#End (Display string: 'Counter \#2\# End'): The event will be generated when counter \#2\# ends counting.
+     *  - \b Timer0Start (Display string: 'Timer 0 Start'): The event will be generated when Timer 0 starts counting.
+     *  - \b Timer1Start (Display string: 'Timer 1 Start'): The event will be generated when Timer 1 starts counting.
+     *  - \b Timer\#2\#Start (Display string: 'Timer \#2\# Start'): The event will be generated when Timer \#2\# starts counting.
+     *  - \b Timer0End (Display string: 'Timer 0 End'): The event will be generated when Timer 0 ends counting.
+     *  - \b Timer1End (Display string: 'Timer 1 End'): The event will be generated when Timer 1 ends counting.
+     *  - \b Timer\#2\#End (Display string: 'Timer \#2\# End'): The event will be generated when Timer \#2\# ends counting.
+     *  - \b Encoder0Stopped (Display string: 'Encoder 0 Stopped'): The event will be generated when the Encoder 0 stops for longer than EncoderTimeout.
+     *  - \b Encoder1Stopped (Display string: 'Encoder 1 Stopped'): The event will be generated when the Encoder 1 stops for longer than EncoderTimeout.
+     *  - \b Encoder\#2\#Stopped (Display string: 'Encoder \#2\# Stopped'): The event will be generated when the Encoder \#2\# stops for longer than EncoderTimeout.
+     *  - \b Encoder0Restarted (Display string: 'Encoder 0 Restarted'): The event will be generated when the Encoder 0 restarts moving.
+     *  - \b Encoder1Restarted (Display string: 'Encoder 1 Restarted'): The event will be generated when the Encoder 1 restarts moving.
+     *  - \b Encoder\#2\#Restarted (Display string: 'Encoder \#2\# Restarted'): The event will be generated when the Encoder \#2\# restarts moving.
+     *  - \b Line0RisingEdge (Display string: 'Line 0 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 0.
+     *  - \b Line1RisingEdge (Display string: 'Line 1 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 1.
+     *  - \b Line\#2\#RisingEdge (Display string: 'Line \#2\# Rising Edge'): The event will be generated when a Rising Edge is detected on the Line \#2\#.
+     *  - \b Line0FallingEdge (Display string: 'Line 0 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 0.
+     *  - \b Line1FallingEdge (Display string: 'Line 1 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 1.
+     *  - \b Line\#2\#FallingEdge (Display string: 'Line \#2\# Falling Edge'): The event will be generated when a Falling Edge is detected on the Line \#2\#.
+     *  - \b Line0AnyEdge (Display string: 'Line 0 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 0.
+     *  - \b Line1AnyEdge (Display string: 'Line 1 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 1.
+     *  - \b Line\#2\#AnyEdge (Display string: 'Line \#2\# Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line \#2\#.
+     *  - \b LinkTrigger0 (Display string: 'Link Trigger 0'): The event will be generated when a Rising Edge is detected on the LinkTrigger 0.
+     *  - \b LinkTrigger1 (Display string: 'Link Trigger 1'): The event will be generated when a Rising Edge is detected on the LinkTrigger 1.
+     *  - \b LinkTrigger\#2\# (Display string: 'Link Trigger \#2\#'): The event will be generated when a Rising Edge is detected on the LinkTrigger \#2\#.
+     *  - \b LinkSpeedChange (Display string: 'Link Speed Change'): The event will be generated when the link speed has changed.
+     *  - \b ActionLate (Display string: 'Action Late'): The event will be generated when a valid scheduled action command is received and is scheduled to be executed at a time that is already past.
+     *  - \b Test (Display string: 'Test'): The test event will be generated when the device receives the TestEventGenerate command (EventNotification for the Test event is always On).
+     *  - \b Error (Display string: 'Error'): Device just detected an error during the active Acquisition.
+     *  - \b PrimaryApplicationSwitch (Display string: 'Primary Application Switch'): The event will be generated when a primary application switchover has been granted (GigE Vision Specific).
+     *  - \b Counter2Start (Display string: 'Counter 2 Start'): The event will be generated when counter 2 starts counting.
+     *  - \b Counter3Start (Display string: 'Counter 3 Start'): The event will be generated when counter 3 starts counting.
+     *  - \b Counter4Start (Display string: 'Counter 4 Start'): The event will be generated when counter 4 starts counting.
+     *  - \b Counter5Start (Display string: 'Counter 5 Start'): The event will be generated when counter 5 starts counting.
+     *  - \b Counter6Start (Display string: 'Counter 6 Start'): The event will be generated when counter 6 starts counting.
+     *  - \b Counter7Start (Display string: 'Counter 7 Start'): The event will be generated when counter 7 starts counting.
+     *  - \b Counter8Start (Display string: 'Counter 8 Start'): The event will be generated when counter 8 starts counting.
+     *  - \b Counter9Start (Display string: 'Counter 9 Start'): The event will be generated when counter 9 starts counting.
+     *  - \b Counter10Start (Display string: 'Counter 10 Start'): The event will be generated when counter 10 starts counting.
+     *  - \b Counter11Start (Display string: 'Counter 11 Start'): The event will be generated when counter 11 starts counting.
+     *  - \b Counter12Start (Display string: 'Counter 12 Start'): The event will be generated when counter 12 starts counting.
+     *  - \b Counter13Start (Display string: 'Counter 13 Start'): The event will be generated when counter 13 starts counting.
+     *  - \b Counter14Start (Display string: 'Counter 14 Start'): The event will be generated when counter 14 starts counting.
+     *  - \b Counter15Start (Display string: 'Counter 15 Start'): The event will be generated when counter 15 starts counting.
+     *  - \b Counter2End (Display string: 'Counter 2 End'): The event will be generated when counter 2 ends counting.
+     *  - \b Counter3End (Display string: 'Counter 3 End'): The event will be generated when counter 3 ends counting.
+     *  - \b Counter4End (Display string: 'Counter 4 End'): The event will be generated when counter 4 ends counting.
+     *  - \b Counter5End (Display string: 'Counter 5 End'): The event will be generated when counter 5 ends counting.
+     *  - \b Counter6End (Display string: 'Counter 6 End'): The event will be generated when counter 6 ends counting.
+     *  - \b Counter7End (Display string: 'Counter 7 End'): The event will be generated when counter 7 ends counting.
+     *  - \b Counter8End (Display string: 'Counter 8 End'): The event will be generated when counter 8 ends counting.
+     *  - \b Counter9End (Display string: 'Counter 9 End'): The event will be generated when counter 9 ends counting.
+     *  - \b Counter10End (Display string: 'Counter 10 End'): The event will be generated when counter 10 ends counting.
+     *  - \b Counter11End (Display string: 'Counter 11 End'): The event will be generated when counter 11 ends counting.
+     *  - \b Counter12End (Display string: 'Counter 12 End'): The event will be generated when counter 12 ends counting.
+     *  - \b Counter13End (Display string: 'Counter 13 End'): The event will be generated when counter 13 ends counting.
+     *  - \b Counter14End (Display string: 'Counter 14 End'): The event will be generated when counter 14 ends counting.
+     *  - \b Counter15End (Display string: 'Counter 15 End'): The event will be generated when counter 15 ends counting.
+     *  - \b Timer2Start (Display string: 'Timer 2 Start'): The event will be generated when Timer 2 starts counting.
+     *  - \b Timer3Start (Display string: 'Timer 3 Start'): The event will be generated when Timer 3 starts counting.
+     *  - \b Timer4Start (Display string: 'Timer 4 Start'): The event will be generated when Timer 4 starts counting.
+     *  - \b Timer5Start (Display string: 'Timer 5 Start'): The event will be generated when Timer 5 starts counting.
+     *  - \b Timer6Start (Display string: 'Timer 6 Start'): The event will be generated when Timer 6 starts counting.
+     *  - \b Timer7Start (Display string: 'Timer 7 Start'): The event will be generated when Timer 7 starts counting.
+     *  - \b Timer8Start (Display string: 'Timer 8 Start'): The event will be generated when Timer 8 starts counting.
+     *  - \b Timer9Start (Display string: 'Timer 9 Start'): The event will be generated when Timer 9 starts counting.
+     *  - \b Timer10Start (Display string: 'Timer 10 Start'): The event will be generated when Timer 10 starts counting.
+     *  - \b Timer11Start (Display string: 'Timer 11 Start'): The event will be generated when Timer 11 starts counting.
+     *  - \b Timer12Start (Display string: 'Timer 12 Start'): The event will be generated when Timer 12 starts counting.
+     *  - \b Timer13Start (Display string: 'Timer 13 Start'): The event will be generated when Timer 13 starts counting.
+     *  - \b Timer14Start (Display string: 'Timer 14 Start'): The event will be generated when Timer 14 starts counting.
+     *  - \b Timer15Start (Display string: 'Timer 15 Start'): The event will be generated when Timer 15 starts counting.
+     *  - \b Timer2End (Display string: 'Timer 2 End'): The event will be generated when Timer 2 ends counting.
+     *  - \b Timer3End (Display string: 'Timer 3 End'): The event will be generated when Timer 3 ends counting.
+     *  - \b Timer4End (Display string: 'Timer 4 End'): The event will be generated when Timer 4 ends counting.
+     *  - \b Timer5End (Display string: 'Timer 5 End'): The event will be generated when Timer 5 ends counting.
+     *  - \b Timer6End (Display string: 'Timer 6 End'): The event will be generated when Timer 6 ends counting.
+     *  - \b Timer7End (Display string: 'Timer 7 End'): The event will be generated when Timer 7 ends counting.
+     *  - \b Timer8End (Display string: 'Timer 8 End'): The event will be generated when Timer 8 ends counting.
+     *  - \b Timer9End (Display string: 'Timer 9 End'): The event will be generated when Timer 9 ends counting.
+     *  - \b Timer10End (Display string: 'Timer 10 End'): The event will be generated when Timer 10 ends counting.
+     *  - \b Timer11End (Display string: 'Timer 11 End'): The event will be generated when Timer 11 ends counting.
+     *  - \b Timer12End (Display string: 'Timer 12 End'): The event will be generated when Timer 12 ends counting.
+     *  - \b Timer13End (Display string: 'Timer 13 End'): The event will be generated when Timer 13 ends counting.
+     *  - \b Timer14End (Display string: 'Timer 14 End'): The event will be generated when Timer 14 ends counting.
+     *  - \b Timer15End (Display string: 'Timer 15 End'): The event will be generated when Timer 15 ends counting.
+     *  - \b Line2RisingEdge (Display string: 'Line 2 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 2.
+     *  - \b Line3RisingEdge (Display string: 'Line 3 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 3.
+     *  - \b Line4RisingEdge (Display string: 'Line 4 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 4.
+     *  - \b Line5RisingEdge (Display string: 'Line 5 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 5.
+     *  - \b Line6RisingEdge (Display string: 'Line 6 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 6.
+     *  - \b Line7RisingEdge (Display string: 'Line 7 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 7.
+     *  - \b Line8RisingEdge (Display string: 'Line 8 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 8.
+     *  - \b Line9RisingEdge (Display string: 'Line 9 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 9.
+     *  - \b Line10RisingEdge (Display string: 'Line 10 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 10.
+     *  - \b Line11RisingEdge (Display string: 'Line 11 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 11.
+     *  - \b Line12RisingEdge (Display string: 'Line 12 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 12.
+     *  - \b Line13RisingEdge (Display string: 'Line 13 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 13.
+     *  - \b Line14RisingEdge (Display string: 'Line 14 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 14.
+     *  - \b Line15RisingEdge (Display string: 'Line 15 Rising Edge'): The event will be generated when a Rising Edge is detected on the Line 15.
+     *  - \b Line2FallingEdge (Display string: 'Line 2 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 2.
+     *  - \b Line3FallingEdge (Display string: 'Line 3 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 3.
+     *  - \b Line4FallingEdge (Display string: 'Line 4 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 4.
+     *  - \b Line5FallingEdge (Display string: 'Line 5 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 5.
+     *  - \b Line6FallingEdge (Display string: 'Line 6 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 6.
+     *  - \b Line7FallingEdge (Display string: 'Line 7 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 7.
+     *  - \b Line8FallingEdge (Display string: 'Line 8 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 8.
+     *  - \b Line9FallingEdge (Display string: 'Line 9 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 9.
+     *  - \b Line10FallingEdge (Display string: 'Line 10 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 10.
+     *  - \b Line11FallingEdge (Display string: 'Line 11 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 11.
+     *  - \b Line12FallingEdge (Display string: 'Line 12 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 12.
+     *  - \b Line13FallingEdge (Display string: 'Line 13 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 13.
+     *  - \b Line14FallingEdge (Display string: 'Line 14 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 14.
+     *  - \b Line15FallingEdge (Display string: 'Line 15 Falling Edge'): The event will be generated when a Falling Edge is detected on the Line 15.
+     *  - \b Line2AnyEdge (Display string: 'Line 2 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 2.
+     *  - \b Line3AnyEdge (Display string: 'Line 3 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 3.
+     *  - \b Line4AnyEdge (Display string: 'Line 4 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 4.
+     *  - \b Line5AnyEdge (Display string: 'Line 5 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 5.
+     *  - \b Line6AnyEdge (Display string: 'Line 6 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 6.
+     *  - \b Line7AnyEdge (Display string: 'Line 7 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 7.
+     *  - \b Line8AnyEdge (Display string: 'Line 8 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 8.
+     *  - \b Line9AnyEdge (Display string: 'Line 9 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 9.
+     *  - \b Line10AnyEdge (Display string: 'Line 10 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 10.
+     *  - \b Line11AnyEdge (Display string: 'Line 11 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 11.
+     *  - \b Line12AnyEdge (Display string: 'Line 12 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 12.
+     *  - \b Line13AnyEdge (Display string: 'Line 13 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 13.
+     *  - \b Line14AnyEdge (Display string: 'Line 14 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 14.
+     *  - \b Line15AnyEdge (Display string: 'Line 15 Any Edge'): The event will be generated when a Falling or Rising Edge is detected on the Line 15.
+     *  - \b InterfaceListChanged (Display string: 'Interface List Changed'): This enumeration value indicates an event that is fired when the list of interfaces has been updated.
+     *  - \b InterfaceLost (Display string: 'Interface Lost'): This enumeration value indicates an event that is raised when the interface connection is lost.
+     *  - \b DeviceListChanged (Display string: 'Device List Changed'): This enumeration value indicates an event that is fired when the list of devices has been updated.
+     *  - \b DeviceLost (Display string: 'Device Lost'): This enumeration value indicates an event that is raised when the local host looses connection to the physical(remote) device.
+     *  - \b BufferTooSmall (Display string: 'Buffer Too Small'): This enumeration value indicates an event that is raised when the buffer was too small to receive the expected amount of data.
+     *  - \b BuffersDiscarded (Display string: 'Buffers Discarded'): This enumeration value indicates an event that is raised when buffers discared by GenTL or device. This event could optionally carry two numeric child data fields EventBuffersDiscardedDeviceCount and EventBuffersDiscardedProducerCount.
+     *  - \b BuffersDiscardedDeviceCount (Display string: 'Buffers Discarded Device Count'): This enumeration value indicates the number of buffers discarded by the device since last fired instance of this event (the producer would get to know about this for example by observing a gap in the block_id sequence).
+     *  - \b BuffersDiscardedProducerCount (Display string: 'Buffers Discarded Producer Count'): This enumeration value indicates the number of buffers discarded by the producer since last fired instance of this event (this would happen e.g. if there are no free buffers available or if given buffer handling mode requires discarding old buffers etc.).
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 eventSelector;
+    /// \brief An enumerated integer property. Activate or deactivate the notification to the host application of the occurrence of the selected Event.
+    /**
+     *  Activate or deactivate the notification to the host application of the occurrence of the selected Event.
+     *
+     *  The following string values might be valid for this feature:
+     *  - \b Off (Display string: 'Off'): The selected Event notification is disabled.
+     *  - \b On (Display string: 'On'): The selected Event notification is enabled.
+     *  - \b Once (Display string: 'Once'): The selected Event notification is enabled for one event then return to Off state.
+     *  - \b GigEVisionEvent (Display string: 'Gig E Vision Event')
+     *
+     *  \note Depending on the device some of these values might not be supported and especially when working with third party devices there might be custom values which are not listed here.
+     *  To get a complete and reliable list of supported values at runtime an application should therefore call <b>mvIMPACT::acquire::EnumPropertyI::getTranslationDictStrings()</b> or one of the other functions dealing with translation dictionaries for enumerated properties.
+     */
+    PropertyI64 eventNotification;
+    // *INDENT-OFF*
     PYTHON_ONLY( %mutable; )
+    // *INDENT-ON*
 };
-
-/// @}
 
 } // namespace GenICam
 } // namespace acquire

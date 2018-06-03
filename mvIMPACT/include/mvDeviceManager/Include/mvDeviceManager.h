@@ -1,8 +1,8 @@
 //-----------------------------------------------------------------------------
 #ifndef mvDeviceManagerH
-#if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #   define mvDeviceManagerH mvDeviceManagerH
-#endif // DOXYGEN_SHOULD_SKIP_THIS && WRAP_ANY
+#endif // #ifndef DOXYGEN_SHOULD_SKIP_THIS
 //-----------------------------------------------------------------------------
 #ifndef WRAP_ANY
 #   include <stddef.h>
@@ -57,11 +57,11 @@ namespace acquire
 #endif // #ifdef DOXYGEN_SHOULD_SKIP_THIS
 
 #ifdef __GNUC__
-#define ATTR_PACK __attribute__((packed)) __attribute__ ((aligned (8)))
+#   define ATTR_PACK __attribute__((packed)) __attribute__ ((aligned (8)))
 #else
 #define ATTR_PACK
-#pragma pack(push, 8) // 8 byte structure alignment
-#endif
+#   pragma pack(push, 8) // 8 byte structure alignment
+#endif // #ifdef __GNUC__
 
 #if !defined(MVIMPACT_DEPRECATED_C) && !defined(DOXYGEN_SHOULD_SKIP_THIS)
 #   if !defined(MVIMPACT_ACQUIRE_H_) && !defined(NO_MVIMPACT_DEPRECATED_C_WARNINGS)
@@ -103,7 +103,7 @@ struct ChannelData
 
 #if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
 typedef struct ChannelData ChannelData;
-#endif // DOXYGEN_SHOULD_SKIP_THIS && WARP_ANY
+#endif // #if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
 
 //-----------------------------------------------------------------------------
 /// \brief Fully describes a captured image.
@@ -190,9 +190,18 @@ struct RequestInfo
      *
      *  \note For some devices this property will only contain meaningful data if the device supports <b>HRTC</b> and a program is running and writing data to
      *  the property.
+     *
+     *  \attention
+     *  with version 2.4.0 this feature internally became a 64-bit value thus in order not to get truncated data the use of this parameter
+     *  from this structure is discouraged. Use direct access functions to the \a FrameID property of each request instead!
      */
     int frameID;
     /// \brief The number of images captured since the driver has been initialised including the current image.
+    /**
+     *  \attention
+     *  with version 2.4.0 this feature internally became a 64-bit value thus in order not to get truncated data the use of this parameter
+     *  from this structure is discouraged. Use direct access functions to the \a FrameNr property of each request instead!
+     */
     int frameNr;
     /// \brief A timestamp (in us) defining the time the device started the exposure of the image associated with this request object.
     /**
@@ -217,9 +226,13 @@ struct RequestInfo
     int transferDelay_us;
     /// \brief The gain(in dB) this image has been taken with.
     double gain_dB;
-    /// \brief A timestamp to define the exact time this image has been captured (stored after the integration).
+    /// \brief A timestamp to define the exact time this image has been captured (usually either at exposure start or exposure end, depending on the device).
     /**
      *  The timestamp is independent from the FPGA and has a resolution of 1 us.
+     *
+     *  \attention
+     *  with version 1.9.7 this feature internally became a 64-bit value thus in order not to get truncated data the use of this parameter
+     *  from this structure is discouraged. Use direct access functions to the \a TimeStamp_us property of each request instead!
      *
      *  \b mvBlueFOX \b specific:
      *  The counter of the timestamp starts when the camera gets initialized. It is measured in us.
@@ -289,6 +302,7 @@ struct RequestResult
 } ATTR_PACK;
 #endif // #if !defined(DOXYGEN_CPP_DOCUMENTATION) && !defined(WRAP_ANY)
 
+#if !defined(WRAP_ANY)
 //-----------------------------------------------------------------------------
 /// \brief A structure containing information about an event that has been reported by the device driver and has been successfully waited for.
 /**
@@ -310,6 +324,7 @@ struct EventData
      */
     unsigned int timestamp_highPart;
 } ATTR_PACK;
+#endif // #if !defined(WRAP_ANY)
 
 //-----------------------------------------------------------------------------
 /// \brief Defines valid image request parameters.
@@ -500,6 +515,11 @@ enum TOBJ_StringQuery // no_managed_type
      */
     sqMethParamString       = 5,
     /// \brief The display name of the object referenced by HOBJ.
+    /**
+     *
+     * \since 1.11.20
+     *
+     */
     sqObjDisplayName        = 6
 };
 
@@ -567,6 +587,8 @@ enum TDMR_DeviceInfoType
      *  use either by the current process, by another process running on this machine
      *  or even by a process running on a different machine(e.g. when talking to a
      *  network device).
+     *
+     *  \since 2.0.11
      */
     dmditDeviceIsInUse          = 1,
     /// \brief Returns a handle providing access to device driver library specific features.
@@ -574,6 +596,8 @@ enum TDMR_DeviceInfoType
      *  The output value will be a HOBJ.
      *  This list does exist only once per device driver library. Changes in this list will affect all
      *  devices that are operated using this device driver library.
+     *
+     *  \since 2.17.0
      */
     dmdithDeviceDriver          = 2
 };
@@ -649,10 +673,10 @@ enum TDMR_ListType // no_managed_type
      *  all properties that can be describe the current mode an event is operated in user can be found.
      *
      *  \deprecated
-     *  This value has been declared deprecated and will be removed in future versions of this interface.
+     *  This value has been declared <b>deprecated</b> and will be removed in future versions of this interface.
      *  A more flexible way of getting informed about changes in driver features
      *  has been added to the interface and should be used instead. An example for this new method
-     *  is \b Callback_C.c.
+     *  is \b Callback.c.
      */
     dmltEventSubSystemSettings = 10,
     /// \brief Specifies the driver interface list providing access to the device specific event type results lists (\b deprecated).
@@ -663,10 +687,10 @@ enum TDMR_ListType // no_managed_type
      *  all result properties that can be queried by the user can be found.
      *
      *  \deprecated
-     *  This value has been declared deprecated and will be removed in future versions of this interface.
+     *  This value has been declared <b>deprecated</b> and will be removed in future versions of this interface.
      *  A more flexible way of getting informed about changes in driver features
      *  has been added to the interface and should be used instead. An example for this new method
-     *  is \b Callback_C.c.
+     *  is \b Callback.c.
      */
     dmltEventSubSystemResults = 11,
     /// \brief Specifies the driver interface list providing access to the devices memory manager list.
@@ -680,7 +704,14 @@ enum TDMR_ListType // no_managed_type
      *  \note
      *  Properties in this list should only be modified by advanced users.
      */
-    dmltImageMemoryManager = 12
+    dmltImageMemoryManager = 12,
+    /// \brief Specifies the device driver lib
+    /**
+     *  An additional string defines the name of the device driver lib to look for.
+     *
+     *  \since 2.17.0
+     */
+    dmltDeviceDriverLib = 13
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
@@ -696,6 +727,7 @@ typedef enum TDMR_DeviceSearchMode TDMR_DeviceSearchMode;
 MVDMR_API TDMR_ERROR DMR_CALL DMR_Init( HDMR* pHDmr );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_Close( void );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_GetDevice( HDEV* pHDev, TDMR_DeviceSearchMode searchMode, const char* pSearchString, unsigned int devNr, char wildcard );
+MVDMR_API TDMR_ERROR DMR_CALL DMR_GetDeviceWithStringID( HDEV* pHDev, TDMR_DeviceSearchMode searchMode, const char* pSearchString, const char* pStringID, char wildcard );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_GetDeviceCount( unsigned int* pDevCnt );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_OpenDevice( HDEV hDev, HDRV* pHDrv );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_CloseDevice( HDRV hDrv, HDEV hDev );
@@ -718,6 +750,7 @@ MVDMR_API TDMR_ERROR DMR_CALL DMR_ImageRequestUnlock( HDRV hDrv, int requestNr )
 MVDMR_API TDMR_ERROR DMR_CALL DMR_ImageRequestConfigure( HDRV hDrv, int requestNr, int reserved, void* pReserved );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_ImageRequestWaitFor( HDRV hDrv, int timeout_ms, int queueNr, int* pRequestNr );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_ImageRequestResultQueueElementCount( HDRV hDrv, int queueNr, int* pResultQueueElements );
+MVDMR_API TDMR_ERROR DMR_CALL DMR_ImageRequestSave( HDRV hDrv, int requestNr, const char* pFileName, TImageFileFormat format );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_GetImageRequestBuffer( HDRV hDrv, int requestNr, ImageBuffer** ppBuffer );
 // functions only needed to query certain information from other languages such as VB.
 MVDMR_API TDMR_ERROR DMR_CALL DMR_GetImageRequestBufferData( HDRV hDrv, int requestNr, int* pBytesPerPixel, int* pChannelCount, int* pHeight, int* pWidth, int* pSize, TImageBufferPixelFormat* pPixelFormat, void** ppData );
@@ -735,11 +768,13 @@ MVDMR_API TDMR_ERROR DMR_CALL DMR_GetImageRequestParamS( HDRV hDrv, int requestN
 // file I/O functions
 MVDMR_API TDMR_ERROR DMR_CALL DMR_LoadRTCtrProgram( HDRV hDrv, HLIST hRTCtrList );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_SaveRTCtrProgram( HDRV hDrv, HLIST hRTCtrList );
-MVDMR_API TDMR_ERROR DMR_CALL DMR_LoadSetting( HDRV hDrv, const char* pName, TStorageFlag storageflags, TScope scope );
-MVDMR_API TDMR_ERROR DMR_CALL DMR_SaveSetting( HDRV hDrv, const char* pName, TStorageFlag storageflags, TScope scope );
+MVDMR_API TDMR_ERROR DMR_CALL DMR_LoadSetting( HDRV hDrv, const char* pName, TStorageFlag storageFlags, TScope scope );
+MVDMR_API TDMR_ERROR DMR_CALL DMR_SaveSetting( HDRV hDrv, const char* pName, TStorageFlag storageFlags, TScope scope );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_LoadSettingFromDefault( HDRV hDrv, TScope scope );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_SaveSettingToDefault( HDRV hDrv, TScope scope );
 MVIMPACT_DEPRECATED_C( MVDMR_API TDMR_ERROR DMR_CALL DMR_SaveSystemToDefault( HDRV hDrv, TScope scope ) );
+MVDMR_API TDMR_ERROR DMR_CALL DMR_IsSettingAvailable( const char* pName, TStorageLocation storageLocation, TScope scope );
+MVDMR_API TDMR_ERROR DMR_CALL DMR_DeleteSetting( const char* pName, TStorageLocation location, TScope scope );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_ExportCameraDescription( HDRV hDrv, HLIST hCameraDescList );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_ImportCameraDescription( HDRV hDrv, HLIST hCameraDescList );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_CopyCameraDescription( HDRV hDrv, HLIST hCameraDescList, const char* pNewName );
@@ -754,19 +789,22 @@ MVDMR_API TDMR_ERROR DMR_CALL DMR_WriteUserDataToHardware( HDEV hDev );
 MVIMPACT_DEPRECATED_C( MVDMR_API TDMR_ERROR DMR_CALL DMR_EventWaitFor( HDRV hDrv, int timeout_ms, TDeviceEventType mask, int reserved, int reserved2, TDeviceEventType* pResultType ) );
 MVIMPACT_DEPRECATED_C( MVDMR_API TDMR_ERROR DMR_CALL DMR_EventGetData( HDRV hDrv, TDeviceEventType type, int reserved, int reserved2, EventData* pResult, size_t resultSize ) );
 
-// device indepentdent image buffer related functions
+// device independent image buffer related functions
 MVDMR_API TDMR_ERROR DMR_CALL DMR_AllocImageRequestBufferDesc( ImageBuffer** ppBuffer, int channelCount );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_ReleaseImageRequestBufferDesc( ImageBuffer** ppBuffer );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_CopyImageRequestBufferDesc( const ImageBuffer* pSrc, ImageBuffer** ppDst, int flags );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_AllocImageBuffer( ImageBuffer** ppBuffer, TImageBufferPixelFormat pixelFormat, int width, int height );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_ReleaseImageBuffer( ImageBuffer** ppBuffer );
 MVDMR_API TDMR_ERROR DMR_CALL DMR_CopyImageBuffer( const ImageBuffer* pSrc, ImageBuffer** ppDst, int flags );
+MVDMR_API TDMR_ERROR DMR_CALL DMR_LoadImageBuffer( ImageBuffer** ppBuffer, const char* pFileName, TImageFileFormat format );
+MVDMR_API TDMR_ERROR DMR_CALL DMR_SaveImageBuffer( const ImageBuffer* pBuffer, const char* pFileName, TImageFileFormat format );
 // miscellaneous functions
 MVDMR_API const char* DMR_CALL DMR_ErrorCodeToString( int errorCode );
 MVDMR_API const char* DMR_CALL DMR_GetVersion( TLibraryQuery libraryQuery );
+MVDMR_API TDMR_ERROR  DMR_CALL DMR_GetLastError( TDMR_ERROR* pErrorCode, char* pErrorText, size_t* pErrorTextSize );
 // general object specific functions
-MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_IsSettingAvailable( const char* pName, TStorageFlag storageflags, TScope scope );
-MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_DeleteSetting( const char* pName, TStorageFlag storageflags, TScope scope );
+MVIMPACT_DEPRECATED_C( MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_IsSettingAvailable( const char* pName, TStorageFlag storageFlags, TScope scope ) );
+MVIMPACT_DEPRECATED_C( MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_DeleteSetting( const char* pName, TStorageFlag storageFlags, TScope scope ) );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_CheckHandle( HOBJ hObj, TOBJ_HandleCheckMode mode );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetChangedCounter( HOBJ hObj, unsigned int* pChangedCounter );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetChangedCounterAttr( HOBJ hObj, unsigned int* pChangedCounter );
@@ -781,6 +819,9 @@ MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetTypeS( HOBJ hObj, char* pBuf, size
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetVisibility( HOBJ hObj, TComponentVisibility* pVisibility );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetVisibilityS( HOBJ hObj, char* pBuf, size_t bufSize );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_VisibilityToString( TComponentVisibility visibility, char* pBuf, size_t bufSize );
+MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetRepresentation( HOBJ hObj, TComponentRepresentation* pRepresentation );
+MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetRepresentationS( HOBJ hObj, char* pBuf, size_t bufSize );
+MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_RepresentationToString( TComponentRepresentation representation, char* pBuf, size_t bufSize );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_IsDefault( HOBJ hObj, unsigned int* pResult );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_RestoreDefault( HOBJ hObj );
 MVIMPACT_DEPRECATED_C( MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetHandle( HLIST hList, const char* pPathAndObjName, HOBJ* phObj ) );
@@ -803,7 +844,7 @@ MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_CreateCallback( TCallbackType type, C
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_DeleteCallback( CallbackHandle hCallback );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_AttachCallback( HOBJ hObj, CallbackHandle hCallback );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_DetachCallback( HOBJ hObj, CallbackHandle hCallback );
-// navigation within object hierachies
+// navigation within object hierarchies
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetFirstSibling( HOBJ hObj, HOBJ* phFirstSibling );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetNextSibling( HOBJ hObj, HOBJ* phNextSibling );
 MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_GetLastSibling( HOBJ hObj, HOBJ* phLastSibling );
@@ -867,6 +908,7 @@ MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_FreeSMemory( char* pBuffer );
 #ifndef __GNUC__
 #pragma pack(pop) // restore previous structure alignment
 #endif
+#undef ATTR_PACK
 
 #if defined(MVIMPACT_ACQUIRE_H_) || defined(DOXYGEN_CPP_DOCUMENTATION)
 } // namespace acquire
@@ -884,6 +926,6 @@ MVDMR_API TPROPHANDLING_ERROR DMR_CALL OBJ_FreeSMemory( char* pBuffer );
 #           pragma option pop
 #       endif // __BORLANDC__
 #   endif // _WIN32
-#endif // !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
+#endif // #if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
 
 #endif // mvDeviceManagerH

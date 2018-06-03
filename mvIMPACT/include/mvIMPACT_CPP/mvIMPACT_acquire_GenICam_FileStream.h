@@ -1,16 +1,20 @@
-#ifndef MVIMPACT_ACQUIRE__GENICAM__FILESTREAM_H_
-#if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_ANY)
-#   define MVIMPACT_ACQUIRE__GENICAM__FILESTREAM_H_ MVIMPACT_ACQUIRE__GENICAM__FILESTREAM_H_
-#endif // DOXYGEN_SHOULD_SKIP_THIS && WRAP_ANY
-
-#include <iostream>
-#include <streambuf>
-#include <iomanip>
-#include <iosfwd>
+//-----------------------------------------------------------------------------
+#ifndef MVIMPACT_ACQUIRE_GENICAM_FILESTREAM_H_
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#   define MVIMPACT_ACQUIRE_GENICAM_FILESTREAM_H_ MVIMPACT_ACQUIRE_GENICAM_FILESTREAM_H_
+#endif // #ifndef DOXYGEN_SHOULD_SKIP_THIS
+//-----------------------------------------------------------------------------
 #include <mvIMPACT_CPP/mvIMPACT_acquire.h>
-#include <string>
-#include <sstream>
-#include <algorithm>
+
+#ifndef WRAP_ANY
+#   include <iostream>
+#   include <streambuf>
+#   include <iomanip>
+#   include <iosfwd>
+#   include <string>
+#   include <sstream>
+#   include <algorithm>
+#endif // #ifndef WRAP_ANY
 
 #ifdef _MSC_VER
 #   pragma push_macro("min")
@@ -37,35 +41,35 @@ namespace GenICam
  */
 
 //-----------------------------------------------------------------------------
-/// \brief Adapter between the std::iostreambuf and the SFNC Features representing the device filesystem
+/// \brief Adapter between the std::iostreambuf and the SFNC Features representing the device file system
 /**
- *  The adapter assumes, that the features provide stdio fileaccess compatible semantic
+ *  The adapter assumes, that the features provide stdio file access compatible semantic
  */
 class FileProtocolAdapter
 //-----------------------------------------------------------------------------
 {
     /// \brief Align an integer
     /**
-     *  \return v aligned at i
+     *  \return \c value aligned at \c alignment
      */
     int64_type Align(
         /// value to align
-        int64_type v,
-        /// Alignment
-        const int64_type i )
+        int64_type value,
+        /// alignment
+        const int64_type alignment )
     {
-        if( i > 1 )
+        if( alignment > 1 )
         {
-            int64_type r = ( v + ( i - 1 ) ) / i;
-            return r * i;
+            int64_type r = ( value + ( alignment - 1 ) ) / alignment;
+            return r * alignment;
         }
-        else if( i < 1 )
+        else if( alignment < 1 )
         {
             std::ostringstream oss;
-            oss << "Unexpected increment " << i;
-            ExceptionFactory::raiseException( __FUNCTION__, __LINE__, DMR_INVALID_PARAMETER, INVALID_ID, oss.str() );
+            oss << "Unexpected alignment " << alignment;
+            ExceptionFactory::raiseException( __FUNCTION__, __LINE__, DMR_INVALID_PARAMETER, oss.str() );
         }
-        return v;
+        return value;
     }
 public:
     /// \brief Constructor
@@ -85,6 +89,7 @@ public:
         /// <b>mvIMPACT::acquire::FunctionInterface::createSetting</b>
         const std::string& settingName = "Base" )
     {
+        pDev->validateInterfaceLayout( dilGenICam );
         if( !pDev->isOpen() )
         {
             pDev->open();
@@ -109,9 +114,9 @@ public:
      *  \return true on success, false on error
      */
     bool openFile(
-        /// Name of the file to open. The filename must exist in the Enumeration FileSelector
+        /// Name of the file to open. The file name must exist in the Enumeration FileSelector
         const char* pFileName,
-        /// mode to open the file. The mode must exist in the Enunmeration FileOpenMode
+        /// mode to open the file. The mode must exist in the Enumeration FileOpenMode
         std::ios_base::openmode mode )
     {
         if( !m_ptrFileSelector.isValid() )
@@ -142,7 +147,7 @@ public:
      *  \return true on success, false on error
      */
     bool closeFile(
-        /// Name of the file to open. The filename must exist in the Enumeration FileSelector
+        /// Name of the file to open. The file name must exist in the Enumeration FileSelector
         const char* pFileName )
     {
         m_ptrFileSelector.writeS( pFileName );
@@ -161,7 +166,7 @@ public:
         int64_type offs,
         /// Number of bytes to write
         int64_type len,
-        /// Name of the file to write into The filename must exist in the Enumeration FileSelector
+        /// Name of the file to write into The file name must exist in the Enumeration FileSelector
         const char* pFileName )
     {
         m_ptrFileSelector.writeS( pFileName );
@@ -169,7 +174,7 @@ public:
 
         const std::streamsize maxWriteLen( static_cast<std::streamsize>( m_ptrFileAccessBuffer.binaryDataBufferMaxSize() ) );
         std::streamsize bytesWritten = 0;
-        while ( bytesWritten < len )
+        while( bytesWritten < len )
         {
             // copy streamdata to xchange buffer
             const int64_type remain( len - bytesWritten );
@@ -185,7 +190,7 @@ public:
             m_ptrFileAccessOffset.write( offs + bytesWritten );
             m_ptrFileAccessLength.write( writeSize );
             // set the buffer
-            std::string bufS( pBuf + bytesWritten, static_cast<unsigned int>( Align( writeSize, 4 ) ) );
+            const std::string bufS( pBuf + bytesWritten, static_cast<unsigned int>( Align( writeSize, 4 ) ) );
             m_ptrFileAccessBuffer.writeBinary( bufS );
             m_ptrFileOperationExecute.call();
             bytesWritten += static_cast<std::streamsize>( m_ptrFileOperationResult.read() );
@@ -208,7 +213,7 @@ public:
         int64_type offs,
         /// Number of bytes to read
         std::streamsize len,
-        /// Name of the file to write into The filename must exist in the Enumeration FileSelector
+        /// Name of the file to write into The file name must exist in the Enumeration FileSelector
         const char* pFileName )
     {
         m_ptrFileSelector.writeS( pFileName );
@@ -229,8 +234,8 @@ public:
             m_ptrFileAccessLength.write( readSize );
             // fetch file data into xchange buffer
             m_ptrFileOperationExecute.call();
-            std::streamsize result = static_cast<std::streamsize>( m_ptrFileOperationResult.read() );
-            std::string bufS( m_ptrFileAccessBuffer.readBinary() );
+            const std::streamsize result = static_cast<std::streamsize>( m_ptrFileOperationResult.read() );
+            const std::string bufS( m_ptrFileAccessBuffer.readBinary() );
             memcpy( pBuf + bytesRead, bufS.c_str(), static_cast<size_t>( readSize ) );
             bytesRead += result;
             if( m_ptrFileOperationStatus.readS() != "Success" )
@@ -246,9 +251,9 @@ public:
      *  \return Max length of FileAccessBuffer in the given mode on the given file
      */
     int64_type getBufSize(
-        /// Name of the file to open. The filename must exist in the Enumeration FileSelector
+        /// Name of the file to open. The file name must exist in the Enumeration FileSelector
         const char* pFileName,
-        /// mode to open the file. The mode must exist in the Enunmeration FileOpenMode
+        /// mode to open the file. The mode must exist in the Enumeration FileOpenMode
         std::ios_base::openmode mode )
     {
         m_ptrFileSelector.writeS( pFileName );
@@ -315,7 +320,7 @@ public:
     /// \brief class destructor.
     ~IDevFileStreamBuf()
     {
-        // catch and dump all exceptions - we're in a desctructor...
+        // catch and dump all exceptions - we're in a destructor...
         try
         {
             this->close();
@@ -335,6 +340,11 @@ public:
         /// File open mode. One of the enumerations in ios_base::openmode
         std::ios_base::openmode mode = std::ios_base::in )
     {
+        if( m_pAdapter )
+        {
+            delete m_pAdapter;
+            m_pAdapter = 0;
+        }
         m_pAdapter = new FileProtocolAdapter();
         if( !m_pAdapter )
         {
@@ -349,7 +359,7 @@ public:
         }
 
         m_file = pFileName;
-        // allocate buffer according to fileinfo
+        // allocate buffer according to file info
         m_BufSize = ( std::streamsize )m_pAdapter->getBufSize( m_file, mode );
         m_pBuffer = new char_type[static_cast<size_t>( m_BufSize ) / sizeof( char_type )];
         // setg(buffer+pbSize, buffer+pbSize, buffer+pbSize);
@@ -482,7 +492,7 @@ public:
     /// \brief class destructor.
     ~ODevFileStreamBuf()
     {
-        // catch and dump all exceptions - we're in a desctructor...
+        // catch and dump all exceptions - we're in a destructor...
         try
         {
             this->close();
@@ -502,6 +512,11 @@ public:
         /// File open mode
         std::ios_base::openmode mode )
     {
+        if( m_pAdapter )
+        {
+            delete m_pAdapter;
+            m_pAdapter = 0;
+        }
         m_pAdapter = new FileProtocolAdapter();
         if( !m_pAdapter )
         {
@@ -516,7 +531,7 @@ public:
         }
 
         m_file = pFileName;
-        // allocate buffer according to fileinfo
+        // allocate buffer according to file info
         const int64_type bufSize = m_pAdapter->getBufSize( m_file, mode );
         m_pBuffer = new char_type[static_cast<size_t>( bufSize ) / sizeof( char_type )];
         std::basic_streambuf<CharType, Traits>::setp( m_pBuffer, m_pBuffer + bufSize );
@@ -541,9 +556,9 @@ public:
     filebuf_type* close( void )
     {
         filebuf_type* ret = 0;
-        bool syncFailed = false;
         if( this->is_open() )
         {
+            bool syncFailed = false;
             if( sync() )
             {
                 syncFailed = true;
@@ -582,11 +597,11 @@ protected:
     }
     int_type overflow( int_type c = traits_type::eof() )
     {
-        if ( buffer_out() < 0 )
+        if( buffer_out() < 0 )
         {
             return traits_type::eof();
         }
-        else if ( !traits_type::eq_int_type( c, traits_type::eof() ) )
+        else if( !traits_type::eq_int_type( c, traits_type::eof() ) )
         {
             return std::basic_streambuf<CharType, Traits>::sputc( static_cast<char_type>( c ) );
         }
@@ -672,7 +687,7 @@ public:
         this->init( &m_streambuf );
         this->open( pDev, pFileName, mode );
     }
-#else
+#elif !defined(SWIG)
 #   error Unknown C++ library
 #endif
     /// \brief Returns the address of the stored stream buffer.
@@ -775,7 +790,7 @@ public:
         this->init( &m_streambuf );
         this->open( pDev, pFileName, mode );
     }
-#else
+#elif !defined(SWIG)
 #   error Unknown C++ library
 #endif
     /// \brief Returns the address of the stored stream buffer.
@@ -1009,8 +1024,14 @@ typedef IDevFileStreamBase<char, std::char_traits<char> > IDevFileStream;
 } // namespace acquire
 } // namespace mvIMPACT
 
+#if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_PYTHON)
+#   ifndef MVIMPACT_USE_NAMESPACES
+using namespace mvIMPACT::acquire::GenICam;
+#   endif // #ifndef MVIMPACT_USE_NAMESPACES
+#endif // #if !defined(DOXYGEN_SHOULD_SKIP_THIS) && !defined(WRAP_PYTHON)
+
 #ifdef _MSC_VER
 #   pragma pop_macro("min")
 #endif
 
-#endif // MVIMPACT_ACQUIRE__GENICAM__FILESTREAM_H_
+#endif // MVIMPACT_ACQUIRE_GENICAM_FILESTREAM_H_
